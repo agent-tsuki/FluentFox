@@ -1,0 +1,66 @@
+/* Feature Cards Styles */
+.features {
+  background: var(--bg-primary);
+  padding: 4rem 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  margin-top: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.featureGrid {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.featureCard {
+  background: #fff;
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 0.9rem;
+  padding: 1.25rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.featureIcon {
+  font-size: 1.75rem;
+}
+
+.featureTitle {
+  margin-top: 0.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.featureDescription {
+  margin-top: 0.25rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 900px) {
+  .featureGrid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .featureGrid { grid-template-columns: 1fr; }
+}
