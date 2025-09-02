@@ -1,10 +1,14 @@
 /* components/LearningPathSection.module.css */
 .learningPath {
   padding: var(--space-3xl) 0;
-  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  background: 
+    linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #e0e7ff 100%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236366f1' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-attachment: fixed;
   position: relative;
   overflow: hidden;
   min-height: 100vh;
+  perspective: 1200px;
 }
 
 .learningPath::before {
@@ -15,9 +19,11 @@
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.03) 0%, transparent 50%);
+    radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
   pointer-events: none;
+  will-change: transform;
 }
 
 .container {
@@ -28,10 +34,11 @@
   z-index: 1;
 }
 
-/* Section Header */
+/* Enhanced Section Header */
 .sectionHeader {
   text-align: center;
   margin-bottom: var(--space-3xl);
+  position: relative;
 }
 
 .title {
@@ -40,13 +47,23 @@
   line-height: 1.1;
   color: var(--text-primary);
   margin-bottom: var(--space-lg);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  will-change: transform;
 }
 
 .gradient {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+  background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: gradient-shift 4s ease-in-out infinite;
+  position: relative;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .subtitle {
@@ -57,178 +74,339 @@
   line-height: 1.6;
 }
 
-/* Progress Line */
+/* FIXED: Combined Layout Container */
 .progressContainer {
   position: relative;
   margin: var(--space-2xl) 0;
-  height: 120px;
+  height: auto; /* Changed from 900px to auto */
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding: var(--space-xl) 0;
 }
 
 .progressTrack {
   position: absolute;
-  width: 2px;
+  width: 8px;
   height: 100%;
-  background: rgba(102, 126, 234, 0.2);
+  background: rgba(99, 102, 241, 0.15);
   left: 50%;
   transform: translateX(-50%);
-  border-radius: 1px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 5;
 }
 
 .progressLine {
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
-  border-radius: 1px;
-  transform-origin: top;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(180deg, 
+    #6366f1 0%, 
+    #8b5cf6 25%, 
+    #06b6d4 50%, 
+    #10b981 75%, 
+    #f59e0b 100%
+  );
+  border-radius: 4px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-shadow: 
+    0 0 20px rgba(99, 102, 241, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  will-change: transform;
+  transform: scaleY(0);
+  transform-origin: top center;
+  opacity: 0;
 }
 
-/* Path Grid */
+.progressLine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, 
+    rgba(255,255,255,0.4) 0%, 
+    transparent 30%, 
+    transparent 70%, 
+    rgba(255,255,255,0.2) 100%
+  );
+  border-radius: 4px;
+  animation: shimmer-vertical 3s infinite;
+}
+
+.progressParticles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 6;
+}
+
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #ffffff, #06b6d4);
+  border-radius: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: particle-float 4s infinite ease-in-out;
+  box-shadow: 
+    0 0 10px rgba(6, 182, 212, 0.8),
+    0 0 20px rgba(99, 102, 241, 0.4);
+  opacity: 0;
+}
+
+.particle:nth-child(1) { animation-delay: 0s; }
+.particle:nth-child(2) { animation-delay: 1.3s; }
+.particle:nth-child(3) { animation-delay: 2.6s; }
+
+@keyframes particle-float {
+  0% { 
+    top: 100%; 
+    opacity: 0; 
+    transform: translateX(-50%) scale(0.3);
+  }
+  10% { 
+    opacity: 1; 
+    transform: translateX(-50%) scale(1);
+  }
+  90% { 
+    opacity: 1; 
+    transform: translateX(-50%) scale(1);
+  }
+  100% { 
+    top: 0%; 
+    opacity: 0; 
+    transform: translateX(-50%) scale(0.3);
+  }
+}
+
+.progressIndicator {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.9);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  white-space: nowrap;
+  animation: pulse-gentle 2s infinite ease-in-out;
+  z-index: 10;
+}
+
+@keyframes pulse-gentle {
+  0%, 100% { 
+    opacity: 0.7; 
+    transform: translateX(-50%) scale(1);
+  }
+  50% { 
+    opacity: 1; 
+    transform: translateX(-50%) scale(1.05);
+  }
+}
+
+/* FIXED: Path Grid Layout */
 .pathGrid {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
-  margin: var(--space-3xl) 0;
+  gap: var(--space-3xl); /* Increased gap for better spacing */
+  margin: 0; /* Remove margin to align with progress container */
+  padding: var(--space-xl) 0;
+  min-height: 800px; /* Set minimum height for progress track */
 }
 
 .stepWrapper {
   display: flex;
   align-items: center;
   position: relative;
-  animation: slideInFade 0.8s ease-out both;
-  transition: all 0.3s ease;
+  will-change: transform;
+  z-index: 8;
 }
 
 .stepWrapper.left {
   justify-content: flex-end;
-  padding-right: calc(50% + 40px);
+  padding-right: calc(50% + 80px); /* Increased padding for better spacing */
 }
 
 .stepWrapper.right {
   justify-content: flex-start;
-  padding-left: calc(50% + 40px);
+  padding-left: calc(50% + 80px); /* Increased padding for better spacing */
 }
 
-/* Connector Dot */
+/* FIXED: Connector Dots positioned relative to steps */
 .connectorDot {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 20px;
+  top: 50%; /* Center vertically with the card */
+  transform: translate(-50%, -50%);
+  width: 32px; /* Increased size for better visibility */
+  height: 32px;
   border-radius: 50%;
-  border: 4px solid var(--bg-accent);
-  background: rgba(102, 126, 234, 0.2);
-  z-index: 3;
-  transition: all 0.3s ease;
+  border: 4px solid #ffffff;
+  background: rgba(99, 102, 241, 0.3);
+  z-index: 15;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 8px 25px rgba(0,0,0,0.15),
+    0 0 0 0px rgba(99, 102, 241, 0.3);
+  will-change: transform;
+  backdrop-filter: blur(10px);
 }
 
 .connectorDot.completed {
-  background: linear-gradient(135deg, #43e97b 0%, #38d9a9 100%);
-  box-shadow: 0 4px 15px rgba(67, 233, 123, 0.4);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 
+    0 10px 30px rgba(16, 185, 129, 0.4),
+    0 0 0 6px rgba(16, 185, 129, 0.1);
+  border-color: #10b981;
 }
 
 .connectorDot.in-progress {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-  animation: pulse 2s infinite;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  box-shadow: 
+    0 10px 30px rgba(99, 102, 241, 0.4),
+    0 0 0 6px rgba(99, 102, 241, 0.1);
+  border-color: #6366f1;
+  animation: pulse-ring 3s infinite;
 }
 
 .connectorDot.locked {
-  background: #e2e8f0;
-  border-color: #cbd5e0;
+  background: #e5e7eb;
+  border-color: #d1d5db;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
 
-/* Step Card */
+@keyframes pulse-ring {
+  0% { 
+    box-shadow: 
+      0 10px 30px rgba(99, 102, 241, 0.4),
+      0 0 0 0px rgba(99, 102, 241, 0.4);
+  }
+  50% { 
+    box-shadow: 
+      0 10px 30px rgba(99, 102, 241, 0.4),
+      0 0 0 25px rgba(99, 102, 241, 0);
+  }
+  100% { 
+    box-shadow: 
+      0 10px 30px rgba(99, 102, 241, 0.4),
+      0 0 0 0px rgba(99, 102, 241, 0);
+  }
+}
+
+/* Enhanced Step Card */
 .stepCard {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--radius-2xl);
   padding: var(--space-xl);
-  max-width: 400px;
+  max-width: 420px; /* Slightly reduced for better fit */
   width: 100%;
   cursor: pointer;
   position: relative;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.1),
-    0 4px 16px rgba(102, 126, 234, 0.05);
-  transform: translateZ(0);
+    0 12px 50px rgba(0, 0, 0, 0.1),
+    0 6px 25px rgba(99, 102, 241, 0.05);
+  transform-style: preserve-3d;
+  overflow: hidden;
+  will-change: transform, box-shadow, background-color;
+  z-index: 10;
 }
 
-.stepCard:hover {
-  transform: translateY(-12px) translateZ(20px) scale(1.02);
-  box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.15),
-    0 8px 32px rgba(102, 126, 234, 0.1);
-  border-color: rgba(102, 126, 234, 0.2);
+.cardHighlight {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(99, 102, 241, 0.1), 
+    transparent
+  );
+  transition: left 1s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.stepCard:hover .cardHighlight {
+  left: 100%;
 }
 
 .stepCard.active {
-  background: rgba(102, 126, 234, 0.05);
-  border-color: var(--primary);
-  transform: translateY(-16px) translateZ(30px) scale(1.05);
+  background: rgba(99, 102, 241, 0.08);
+  border-color: #6366f1;
   box-shadow: 
-    0 24px 80px rgba(102, 126, 234, 0.2),
-    0 12px 40px rgba(102, 126, 234, 0.15);
+    0 35px 120px rgba(99, 102, 241, 0.25),
+    0 18px 60px rgba(99, 102, 241, 0.15);
 }
 
 .stepCard.completed {
-  background: rgba(67, 233, 123, 0.03);
-  border-color: rgba(67, 233, 123, 0.3);
+  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.3);
 }
 
 .stepCard.locked {
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(0, 0, 0, 0.03);
   border-color: rgba(0, 0, 0, 0.1);
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .stepCard.locked:hover {
-  transform: none;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transform: none !important;
 }
 
-/* Card Shadow Effect */
+/* Enhanced Card Shadow */
 .cardShadow {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-  background: rgba(102, 126, 234, 0.1);
+  width: 130%;
+  height: 130%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
   border-radius: var(--radius-2xl);
   z-index: -1;
+  filter: blur(40px);
   opacity: 0;
-  transition: all 0.3s ease;
-  filter: blur(20px);
+  transition: all 0.4s ease;
+  will-change: transform, opacity;
 }
 
 .stepCard:hover .cardShadow {
   opacity: 0.6;
-  transform: translate(-50%, -40%) scale(1.1);
+  transform: translate(-50%, -45%) scale(1.1);
 }
 
-/* Step Header */
+/* Enhanced Step Header */
 .stepHeader {
   display: flex;
   align-items: center;
   gap: var(--space-md);
   margin-bottom: var(--space-lg);
+  position: relative;
+  z-index: 2;
 }
 
 .stepNumber {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -236,26 +414,82 @@
   justify-content: center;
   font-weight: var(--font-bold);
   font-size: var(--font-lg);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 
+    0 8px 25px rgba(99, 102, 241, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.stepNumber::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, 
+    transparent, 
+    rgba(255,255,255,0.3), 
+    transparent
+  );
+  transform: rotate(-45deg);
+  transition: all 0.6s ease;
+}
+
+.stepNumber:hover::before {
+  transform: rotate(-45deg) translate(100%, 100%);
 }
 
 .stepIcon {
   font-size: var(--font-2xl);
   margin-left: auto;
+  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+  animation: float-icon 4s ease-in-out infinite;
+  will-change: transform;
 }
 
-/* Step Content */
+@keyframes float-icon {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-5px) rotate(2deg); }
+  50% { transform: translateY(-8px) rotate(0deg); }
+  75% { transform: translateY(-5px) rotate(-2deg); }
+}
+
+/* Enhanced Step Content */
 .stepContent {
   margin-bottom: var(--space-lg);
+  position: relative;
+  z-index: 2;
 }
 
 .stepLevel {
   font-size: var(--font-sm);
   font-weight: var(--font-semibold);
-  color: var(--primary);
+  color: #6366f1;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   margin-bottom: var(--space-xs);
+  position: relative;
+  display: inline-block;
+}
+
+.stepLevel::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  border-radius: 1px;
+  animation: level-glow 3s ease-in-out infinite;
+}
+
+@keyframes level-glow {
+  0%, 100% { opacity: 0.6; transform: scaleX(1); }
+  50% { opacity: 1; transform: scaleX(1.1); }
 }
 
 .stepTitle {
@@ -269,27 +503,37 @@
 .stepDescription {
   font-size: var(--font-base);
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.6;
   margin-bottom: var(--space-lg);
 }
 
-/* Progress Bar */
+/* Enhanced Progress Bar */
 .progressBar {
   position: relative;
   width: 100%;
-  height: 8px;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: var(--radius-sm);
+  height: 12px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
   overflow: hidden;
   margin-bottom: var(--space-md);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .progressFill {
   height: 100%;
-  background: linear-gradient(90deg, #43e97b 0%, #38d9a9 100%);
-  border-radius: var(--radius-sm);
-  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(90deg, 
+    #10b981 0%, 
+    #06d6a0 25%, 
+    #059669 50%, 
+    #047857 100%
+  );
+  border-radius: 6px;
   position: relative;
+  box-shadow: 
+    0 2px 8px rgba(16, 185, 129, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  will-change: width;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .progressFill::after {
@@ -299,36 +543,63 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
-  animation: shimmer 2s infinite;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.4) 50%, 
+    transparent 100%
+  );
+  animation: shimmer-horizontal 2.5s infinite;
+}
+
+@keyframes shimmer-horizontal {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes shimmer-vertical {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
 }
 
 .progressText {
   position: absolute;
-  top: 12px;
+  top: 18px;
   right: 0;
   font-size: var(--font-xs);
   font-weight: var(--font-semibold);
   color: var(--text-muted);
 }
 
-/* Step Actions */
+/* Enhanced Step Actions */
 .stepActions {
   display: flex;
   justify-content: center;
+  position: relative;
+  z-index: 2;
 }
 
 .completedBadge {
-  color: #43e97b;
+  color: #10b981;
   font-weight: var(--font-semibold);
   font-size: var(--font-sm);
   display: flex;
   align-items: center;
   gap: var(--space-xs);
+  background: rgba(16, 185, 129, 0.1);
+  padding: 8px 16px;
+  border-radius: 25px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  backdrop-filter: blur(10px);
+  animation: completed-glow 3s ease-in-out infinite;
+}
+
+@keyframes completed-glow {
+  0%, 100% { box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); }
+  50% { box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4); }
 }
 
 .continueBtn {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   color: white;
   border: none;
   border-radius: var(--radius-lg);
@@ -336,35 +607,69 @@
   font-weight: var(--font-semibold);
   font-size: var(--font-sm);
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.continueBtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255,255,255,0.2), 
+    transparent
+  );
+  transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .continueBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+}
+
+.continueBtn:hover::before {
+  left: 100%;
 }
 
 .lockedBadge {
-  color: #a0aec0;
+  color: #9ca3af;
   font-weight: var(--font-semibold);
   font-size: var(--font-sm);
   display: flex;
   align-items: center;
   gap: var(--space-xs);
+  background: rgba(156, 163, 175, 0.1);
+  padding: 8px 16px;
+  border-radius: 25px;
+  border: 1px solid rgba(156, 163, 175, 0.2);
+  backdrop-filter: blur(10px);
+  animation: locked-pulse 2s ease-in-out infinite;
 }
 
-/* Call to Action */
+@keyframes locked-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Enhanced Call to Action */
 .pathCTA {
   text-align: center;
   margin-top: var(--space-3xl);
+  position: relative;
 }
 
 .startBtn {
   display: inline-flex;
   align-items: center;
   gap: var(--space-md);
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
   color: white;
   border: none;
   border-radius: var(--radius-2xl);
@@ -373,14 +678,12 @@
   font-weight: var(--font-bold);
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+  box-shadow: 
+    0 12px 50px rgba(99, 102, 241, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
-}
-
-.startBtn:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 16px 48px rgba(102, 126, 234, 0.4);
+  will-change: transform;
 }
 
 .startBtn::before {
@@ -390,8 +693,19 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.3), 
+    transparent
+  );
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.startBtn:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 
+    0 20px 80px rgba(99, 102, 241, 0.4),
+    0 8px 30px rgba(99, 102, 241, 0.3);
 }
 
 .startBtn:hover::before {
@@ -405,11 +719,17 @@
 
 .btnIcon {
   font-size: var(--font-xl);
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: rocket-float 3s ease-in-out infinite;
+}
+
+@keyframes rocket-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(5deg); }
 }
 
 .startBtn:hover .btnIcon {
-  transform: translateX(4px);
+  transform: translateX(6px) rotate(15deg);
 }
 
 .encouragement {
@@ -417,40 +737,19 @@
   font-size: var(--font-base);
   color: var(--text-secondary);
   font-weight: var(--font-medium);
+  animation: encouragement-fade 4s ease-in-out infinite;
 }
 
-/* Animations */
-@keyframes slideInFade {
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes encouragement-fade {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
 }
 
-@keyframes pulse {
-  0%, 100% {
-    transform: translateX(-50%) scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(-50%) scale(1.1);
-    opacity: 0.8;
-  }
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-/* Responsive Design */
+/* Enhanced Responsive Design */
 @media (max-width: 768px) {
   .pathGrid {
     gap: var(--space-xl);
+    min-height: 600px;
   }
 
   .stepWrapper.left,
@@ -465,7 +764,11 @@
   }
 
   .progressContainer {
-    display: none;
+    height: auto;
+  }
+
+  .progressTrack {
+    height: 500px; /* Fixed height for mobile */
   }
 
   .connectorDot {
@@ -483,6 +786,10 @@
   .stepCard {
     max-width: none;
   }
+
+  .stepCard:hover {
+    transform: translateY(-10px) scale(1.02) !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -495,12 +802,35 @@
     margin: 0;
   }
 
-  .stepWrapper.left .stepCard,
-  .stepWrapper.right .stepCard {
-    margin: 0;
-  }
-
   .title {
     font-size: var(--font-3xl);
+  }
+
+  .progressContainer {
+    display: none;
+  }
+
+  .pathGrid {
+    min-height: auto;
+  }
+}
+
+/* Performance Optimizations */
+.stepCard,
+.connectorDot,
+.progressLine,
+.stepNumber {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
