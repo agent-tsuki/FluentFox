@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styles from './Navbar.module.css';
+import styles from '../../../styles/layout/Navbar.module.css';
 
 type LinkItem = { label: string; href: string };
 

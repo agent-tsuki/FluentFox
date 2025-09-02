@@ -1,6 +1,6 @@
 // components/LearningPathSection.tsx
 import React, { useState, useRef, useEffect } from 'react';
-import styles from './LearningPathSection.module.css';
+import styles from '../../styles/pages/LearningPathSection.module.css';
 
 const pathSteps = [
   { level: 'Beginner', title: 'Hiragana & Katakana', description: 'Master the Japanese alphabets', progress: 100, icon: '🔤' },

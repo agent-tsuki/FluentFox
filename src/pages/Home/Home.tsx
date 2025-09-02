@@ -6,7 +6,7 @@ import LearningPathSection from '../../components/HomePage/LearningPathSection';
 import SocialProofSection from '../../components/HomePage/SocialProofSection';
 import HowItWorksSection from '../../components/HomePage/HowItWorksSection';
 import PricingPreview from '../../components/HomePage/PricingPreview';
-import styles from './Home.module.css';
+import styles from '../../styles/pages/Home.module.css';
 
 const HomePage: React.FC = () => {
   return (

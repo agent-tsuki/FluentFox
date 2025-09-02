@@ -1,6 +1,6 @@
 // components/HeroSection.tsx
 import React, { useState, useEffect } from 'react';
-import styles from './HeroSection.module.css';
+import styles from '../../styles/pages/HeroSection.module.css';
 
 const HeroSection: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);

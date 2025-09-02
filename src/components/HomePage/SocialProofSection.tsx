@@ -1,6 +1,6 @@
 // components/SocialProofSection.tsx
 import React from 'react';
-import styles from './SocialProofSection.module.css';
+import styles from '../../styles/pages/SocialProofSection.module.css';
 
 const stats = [
   { number: '50,000+', label: 'Active Learners', icon: '👥' },

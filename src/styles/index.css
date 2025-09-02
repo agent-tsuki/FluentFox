@@ -1,0 +1,24 @@
+/* FluentFox Styles - Main Index */
+
+/* Core styles - these should be imported in your main App component */
+@import './variables.css';
+@import './reset.css';
+@import './globals.css';
+
+/* 
+Component styles are organized as follows:
+- ./components/ - Reusable component styles
+- ./layout/ - Layout-specific styles (Header, Footer, Navbar, etc.)
+- ./pages/ - Page-specific styles
+- ./utilities/ - Utility classes and mixins
+
+To use component styles, import them directly in your components:
+import styles from '../styles/components/Button.module.css';
+
+This approach provides:
+1. Centralized style management
+2. Better maintainability
+3. Consistent design system
+4. Easier theming and customization
+5. Reduced CSS conflicts
+*/

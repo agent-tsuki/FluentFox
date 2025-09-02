@@ -1,110 +1,95 @@
+/* FluentFox Global Styles */
+
+/* Import design system variables and reset */
+@import './variables.css';
+@import './reset.css';
+
+/* Modern FluentFox Design System */
 :root {
-  /* Modern FluentFox Color Palette */
-  --bg-primary: #f7fafc;          /* Light gray background */
-  --bg-secondary: #edf2f7;        /* Slightly darker gray */
-  --bg-accent: #ffffff;           /* Pure white for cards/components */
-  --bg-glass: rgba(255, 255, 255, 0.7);  /* Glassmorphism background */
+  /* Legacy variables for backward compatibility */
+  --bg-primary: var(--color-gray-50);
+  --bg-secondary: var(--color-gray-100);
+  --bg-accent: white;
+  --bg-glass: rgba(255, 255, 255, 0.7);
   
-  /* Brand Colors - Matching the gradient system */
-  --primary: #667eea;             /* Primary blue */
-  --primary-dark: #764ba2;        /* Primary purple */
-  --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --primary: var(--color-primary-500);
+  --primary-dark: var(--color-primary-600);
+  --gradient: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-secondary-500) 100%);
   
-  /* Accent Colors for Learning Types */
-  --accent-kanji: #f093fb;        /* Pink for kanji */
-  --accent-hiragana: #4facfe;     /* Light blue for hiragana */
-  --accent-katakana: #43e97b;     /* Green for katakana */
-  --accent-grammar: #f5576c;      /* Red for grammar */
-  --accent-jlpt: #ffd93d;         /* Yellow for JLPT */
+  --accent-kanji: var(--color-kanji);
+  --accent-hiragana: var(--color-hiragana);
+  --accent-katakana: var(--color-katakana);
+  --accent-grammar: var(--color-grammar);
+  --accent-jlpt: var(--color-jlpt);
   
-  /* Text Colors */
-  --text-primary: #1a202c;        /* Dark text */
-  --text-secondary: #4a5568;      /* Medium text */
-  --text-muted: #718096;          /* Light text */
-  --text-accent: #667eea;         /* Accent text */
+  --text-primary: var(--color-gray-900);
+  --text-secondary: var(--color-gray-600);
+  --text-muted: var(--color-gray-500);
+  --text-accent: var(--color-primary-600);
   
-  /* Border & Shadow Colors */
   --border-light: rgba(0, 0, 0, 0.08);
   --border-medium: rgba(0, 0, 0, 0.12);
   --border-accent: rgba(102, 126, 234, 0.2);
   
-  --shadow-sm: 0 4px 12px rgba(102, 126, 234, 0.1);
-  --shadow-md: 0 8px 25px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
-  --shadow-accent: 0 8px 25px rgba(102, 126, 234, 0.3);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-base);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-accent: var(--shadow-primary);
   
-  /* Interactive States */
   --hover-bg: rgba(102, 126, 234, 0.08);
   --hover-border: rgba(102, 126, 234, 0.3);
   --active-bg: rgba(102, 126, 234, 0.12);
   
-  /* Success/Error States */
-  --success: #43e97b;
-  --warning: #ffd93d;
-  --error: #f5576c;
-  --info: #4facfe;
+  --success: var(--color-success);
+  --warning: var(--color-warning);
+  --error: var(--color-error);
+  --info: var(--color-info);
   
-  /* Spacing Scale */
-  --space-xs: 0.5rem;    /* 8px */
-  --space-sm: 0.75rem;   /* 12px */
-  --space-md: 1rem;      /* 16px */
-  --space-lg: 1.5rem;    /* 24px */
-  --space-xl: 2rem;      /* 32px */
-  --space-2xl: 3rem;     /* 48px */
-  --space-3xl: 4rem;     /* 64px */
+  /* Legacy spacing for backward compatibility */
+  --space-xs: var(--space-2);
+  --space-sm: var(--space-3);
+  --space-md: var(--space-4);
+  --space-lg: var(--space-6);
+  --space-xl: var(--space-8);
+  --space-2xl: var(--space-12);
+  --space-3xl: var(--space-16);
   
-  /* Border Radius Scale */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-2xl: 24px;
+  /* Legacy radius for backward compatibility */
+  --radius-sm: var(--radius-lg);
+  --radius-md: var(--radius-xl);
+  --radius-lg: var(--radius-2xl);
+  --radius-xl: var(--radius-2xl);
+  --radius-2xl: var(--radius-3xl);
   
-  /* Typography Scale */
-  --font-xs: 0.75rem;    /* 12px */
-  --font-sm: 0.875rem;   /* 14px */
-  --font-base: 1rem;     /* 16px */
-  --font-lg: 1.125rem;   /* 18px */
-  --font-xl: 1.25rem;    /* 20px */
-  --font-2xl: 1.5rem;    /* 24px */
-  --font-3xl: 2rem;      /* 32px */
-  --font-4xl: 2.5rem;    /* 40px */
-  --font-5xl: 3rem;      /* 48px */
-  --font-6xl: 4rem;      /* 64px */
+  /* Legacy font sizes for backward compatibility */
+  --font-xs: var(--font-size-xs);
+  --font-sm: var(--font-size-sm);
+  --font-base: var(--font-size-base);
+  --font-lg: var(--font-size-lg);
+  --font-xl: var(--font-size-xl);
+  --font-2xl: var(--font-size-2xl);
+  --font-3xl: var(--font-size-3xl);
+  --font-4xl: var(--font-size-4xl);
+  --font-5xl: var(--font-size-5xl);
+  --font-6xl: var(--font-size-6xl);
   
-  /* Font Weights */
-  --font-normal: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  --font-bold: 700;
-  --font-extrabold: 800;
+  /* Legacy font weights for backward compatibility */
+  --font-normal: var(--font-weight-normal);
+  --font-medium: var(--font-weight-medium);
+  --font-semibold: var(--font-weight-semibold);
+  --font-bold: var(--font-weight-bold);
+  --font-extrabold: var(--font-weight-extrabold);
 }
 
-/* Global Reset & Base Styles */
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 16px;
-  scroll-behavior: smooth;
+/* Base body styles */
+body {
+  background: linear-gradient(125deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  color: var(--text-primary);
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  font-size: var(--font-base);
-  font-weight: var(--font-normal);
-  line-height: 1.6;
-  color: var(--text-primary);
-  /* Match HeroSection gradient for seamless blend */
-  background: linear-gradient(125deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
 }
 
 #root {
@@ -115,29 +100,29 @@ body {
 
 /* Typography Utilities */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: var(--font-bold);
-  line-height: 1.2;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
   margin-bottom: var(--space-md);
   color: var(--text-primary);
 }
 
-h1 { font-size: var(--font-6xl); }
-h2 { font-size: var(--font-5xl); }
-h3 { font-size: var(--font-3xl); }
-h4 { font-size: var(--font-2xl); }
-h5 { font-size: var(--font-xl); }
-h6 { font-size: var(--font-lg); }
+h1 { font-size: var(--font-size-6xl); }
+h2 { font-size: var(--font-size-5xl); }
+h3 { font-size: var(--font-size-3xl); }
+h4 { font-size: var(--font-size-2xl); }
+h5 { font-size: var(--font-size-xl); }
+h6 { font-size: var(--font-size-lg); }
 
 p {
   margin-bottom: var(--space-md);
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 a {
   color: var(--text-accent);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: var(--transition-colors);
 }
 
 a:hover {
@@ -177,7 +162,7 @@ a:hover {
   border: 1px solid var(--border-accent);
 }
 
-/* Button Utilities */
+/* Button Utilities (for non-component use) */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -190,7 +175,7 @@ a:hover {
   font-weight: var(--font-semibold);
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: var(--transition-all);
   user-select: none;
 }
 
@@ -223,7 +208,7 @@ a:hover {
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-md);
   padding: var(--space-xl);
-  transition: all 0.3s ease;
+  transition: var(--transition-all);
 }
 
 .card:hover {
@@ -237,7 +222,7 @@ a:hover {
   border: 1px solid var(--border-light);
   border-radius: var(--radius-xl);
   padding: var(--space-xl);
-  transition: all 0.3s ease;
+  transition: var(--transition-all);
 }
 
 /* Gradient Text Utility */
@@ -293,41 +278,12 @@ a:hover {
 }
 
 /* Focus States for Accessibility */
-button:focus,
-a:focus,
-input:focus,
-textarea:focus {
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
-}
-
-/* Selection Styles */
-::selection {
-  background: var(--primary);
-  color: white;
-}
-
-::-moz-selection {
-  background: var(--primary);
-  color: white;
-}
-
-/* Scrollbar Styles */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border-radius: var(--radius-sm);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-dark);
 }
 
 /* Responsive Design */
@@ -336,8 +292,8 @@ textarea:focus {
     padding: 0 var(--space-lg);
   }
   
-  h1 { font-size: var(--font-5xl); }
-  h2 { font-size: var(--font-4xl); }
+  h1 { font-size: var(--font-size-5xl); }
+  h2 { font-size: var(--font-size-4xl); }
 }
 
 @media (max-width: 768px) {
@@ -345,9 +301,9 @@ textarea:focus {
     padding: 0 var(--space-md);
   }
   
-  h1 { font-size: var(--font-4xl); }
-  h2 { font-size: var(--font-3xl); }
-  h3 { font-size: var(--font-2xl); }
+  h1 { font-size: var(--font-size-4xl); }
+  h2 { font-size: var(--font-size-3xl); }
+  h3 { font-size: var(--font-size-2xl); }
   
   .btn {
     padding: var(--space-md) var(--space-lg);
@@ -364,8 +320,8 @@ textarea:focus {
     padding: 0 var(--space-md);
   }
   
-  h1 { font-size: var(--font-3xl); }
-  h2 { font-size: var(--font-2xl); }
+  h1 { font-size: var(--font-size-3xl); }
+  h2 { font-size: var(--font-size-2xl); }
 }
 
 /* Utility Classes */

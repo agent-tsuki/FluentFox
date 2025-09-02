@@ -1,6 +1,6 @@
 // components/FeaturesSection.tsx
 import React, { useState } from 'react';
-import styles from './FeaturesSection.module.css';
+import styles from '../../styles/pages/FeaturesSection.module.css';
 
 const features = [
   {

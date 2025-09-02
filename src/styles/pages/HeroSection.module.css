@@ -1,0 +1,305 @@
+/* components/HeroSection.module.css */
+.hero {
+  padding: 140px 0 80px;
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.heroContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.heroText {
+  max-width: 600px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #667eea;
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.badge.fadeIn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.badgeIcon {
+  font-size: 16px;
+}
+
+.title {
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #1a202c;
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+.title.slideUp {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.subtitle {
+  font-size: 20px;
+  line-height: 1.6;
+  color: #4a5568;
+  margin-bottom: 40px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+}
+
+.subtitle.slideUp {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.heroActions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 48px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.6s;
+}
+
+.heroActions.slideUp {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.primaryBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.primaryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+}
+
+.arrow {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+
+.primaryBtn:hover .arrow {
+  transform: translateX(4px);
+}
+
+.secondaryBtn {
+  background: transparent;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  color: #4a5568;
+  border-radius: 16px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.secondaryBtn:hover {
+  border-color: rgba(102, 126, 234, 0.3);
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.trustIndicators {
+  display: flex;
+  gap: 32px;
+}
+
+.indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #718096;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.indicatorIcon {
+  font-size: 16px;
+}
+
+.heroVisual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.foxContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.foxAvatar {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+  animation: float 3s ease-in-out infinite;
+  position: relative;
+}
+
+.speechBubble {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 12px 20px;
+  border-radius: 20px;
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  font-size: 16px;
+  font-weight: 600;
+  color: #4a5568;
+  white-space: nowrap;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.speechBubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 10px solid transparent;
+  border-top-color: white;
+}
+
+.floatingElements {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+}
+
+.floatingCard {
+  position: absolute;
+  background: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  font-size: 18px;
+  font-weight: 600;
+  color: #4a5568;
+  animation: float 3s ease-in-out infinite;
+}
+
+.floatingCard:nth-child(1) {
+  top: 20px;
+  left: -40px;
+  animation-delay: 0s;
+}
+
+.floatingCard:nth-child(2) {
+  top: 60px;
+  right: -60px;
+  animation-delay: 1s;
+}
+
+.floatingCard:nth-child(3) {
+  bottom: 40px;
+  left: 20px;
+  animation-delay: 2s;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero {
+    padding: 120px 0 60px;
+  }
+
+  .heroContent {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .title {
+    font-size: 48px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+
+  .heroActions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .trustIndicators {
+    justify-content: center;
+  }
+
+  .foxAvatar {
+    width: 100px;
+    height: 100px;
+    font-size: 48px;
+  }
+
+  .speechBubble {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
