@@ -1,0 +1,42 @@
+-- db/seeds/characters.sql
+-- Hiragana and Katakana characters. Idempotent.
+
+INSERT INTO characters (script, character, romaji) VALUES
+    ('hiragana', 'あ', 'a'), ('hiragana', 'い', 'i'), ('hiragana', 'う', 'u'),
+    ('hiragana', 'え', 'e'), ('hiragana', 'お', 'o'),
+    ('hiragana', 'か', 'ka'), ('hiragana', 'き', 'ki'), ('hiragana', 'く', 'ku'),
+    ('hiragana', 'け', 'ke'), ('hiragana', 'こ', 'ko'),
+    ('hiragana', 'さ', 'sa'), ('hiragana', 'し', 'shi'), ('hiragana', 'す', 'su'),
+    ('hiragana', 'せ', 'se'), ('hiragana', 'そ', 'so'),
+    ('hiragana', 'た', 'ta'), ('hiragana', 'ち', 'chi'), ('hiragana', 'つ', 'tsu'),
+    ('hiragana', 'て', 'te'), ('hiragana', 'と', 'to'),
+    ('hiragana', 'な', 'na'), ('hiragana', 'に', 'ni'), ('hiragana', 'ぬ', 'nu'),
+    ('hiragana', 'ね', 'ne'), ('hiragana', 'の', 'no'),
+    ('hiragana', 'は', 'ha'), ('hiragana', 'ひ', 'hi'), ('hiragana', 'ふ', 'fu'),
+    ('hiragana', 'へ', 'he'), ('hiragana', 'ほ', 'ho'),
+    ('hiragana', 'ま', 'ma'), ('hiragana', 'み', 'mi'), ('hiragana', 'む', 'mu'),
+    ('hiragana', 'め', 'me'), ('hiragana', 'も', 'mo'),
+    ('hiragana', 'や', 'ya'), ('hiragana', 'ゆ', 'yu'), ('hiragana', 'よ', 'yo'),
+    ('hiragana', 'ら', 'ra'), ('hiragana', 'り', 'ri'), ('hiragana', 'る', 'ru'),
+    ('hiragana', 'れ', 're'), ('hiragana', 'ろ', 'ro'),
+    ('hiragana', 'わ', 'wa'), ('hiragana', 'を', 'wo'), ('hiragana', 'ん', 'n'),
+    -- Katakana
+    ('katakana', 'ア', 'a'), ('katakana', 'イ', 'i'), ('katakana', 'ウ', 'u'),
+    ('katakana', 'エ', 'e'), ('katakana', 'オ', 'o'),
+    ('katakana', 'カ', 'ka'), ('katakana', 'キ', 'ki'), ('katakana', 'ク', 'ku'),
+    ('katakana', 'ケ', 'ke'), ('katakana', 'コ', 'ko'),
+    ('katakana', 'サ', 'sa'), ('katakana', 'シ', 'shi'), ('katakana', 'ス', 'su'),
+    ('katakana', 'セ', 'se'), ('katakana', 'ソ', 'so'),
+    ('katakana', 'タ', 'ta'), ('katakana', 'チ', 'chi'), ('katakana', 'ツ', 'tsu'),
+    ('katakana', 'テ', 'te'), ('katakana', 'ト', 'to'),
+    ('katakana', 'ナ', 'na'), ('katakana', 'ニ', 'ni'), ('katakana', 'ヌ', 'nu'),
+    ('katakana', 'ネ', 'ne'), ('katakana', 'ノ', 'no'),
+    ('katakana', 'ハ', 'ha'), ('katakana', 'ヒ', 'hi'), ('katakana', 'フ', 'fu'),
+    ('katakana', 'ヘ', 'he'), ('katakana', 'ホ', 'ho'),
+    ('katakana', 'マ', 'ma'), ('katakana', 'ミ', 'mi'), ('katakana', 'ム', 'mu'),
+    ('katakana', 'メ', 'me'), ('katakana', 'モ', 'mo'),
+    ('katakana', 'ヤ', 'ya'), ('katakana', 'ユ', 'yu'), ('katakana', 'ヨ', 'yo'),
+    ('katakana', 'ラ', 'ra'), ('katakana', 'リ', 'ri'), ('katakana', 'ル', 'ru'),
+    ('katakana', 'レ', 're'), ('katakana', 'ロ', 'ro'),
+    ('katakana', 'ワ', 'wa'), ('katakana', 'ヲ', 'wo'), ('katakana', 'ン', 'n')
+ON CONFLICT (script, character) DO NOTHING;

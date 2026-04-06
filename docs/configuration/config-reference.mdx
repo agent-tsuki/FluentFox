@@ -1,0 +1,277 @@
+---
+title: Configuration Reference
+description: Every config file and environment variable — what it is, why it exists, and when to change it.
+---
+
+# Configuration Reference
+
+FluentFox has two kinds of configuration: **environment variables** (loaded at runtime by `config/config.go`) and **static config files** (`.golangci.yml`, `.air.toml`, `docker-compose.yml`, etc., read by tooling).
+
+---
+
+## Environment Variables
+
+All runtime configuration is set through environment variables. The application **panics on startup** if any required variable is missing — this is intentional so misconfiguration fails loudly before traffic hits the server.
+
+The active `.env` file is selected by `APP_ENV`:
+
+| `APP_ENV` | File loaded | When used |
+|-----------|------------|-----------|
+| `development` | `.env.development` | Local dev via `make dev` |
+| `test` | `.env.test` | `make test` — isolated test DB |
+| `production` | _(none — vars injected by Railway)_ | Deployed app |
+
+---
+
+### Server
+
+| Variable | Example | Required | Why it exists |
+|----------|---------|----------|---------------|
+| `PORT` | `8080` | Yes | Port the HTTP server listens on. Docker Compose maps this to the host. Railway auto-sets it. |
+| `APP_ENV` | `development` | Yes | Selects which `.env` file to load and toggles behaviour (dev logger vs prod logger, etc.). |
+| `APP_URL` | `http://localhost:3000` | Yes | Base URL of the **frontend** app. Used to build email verification and password reset links that point users back to the UI. |
+| `ALLOWED_ORIGINS` | `http://localhost:3000,http://localhost:5173` | Yes | Comma-separated list of origins the CORS middleware will accept. In dev, include both Vite (`5173`) and any other frontend port you use. In production, set to your exact frontend domain. |
+
+---
+
+### Database
+
+| Variable | Example | Required | Why it exists |
+|----------|---------|----------|---------------|
+| `DATABASE_URL` | `postgres://fluentfox:fluentfox_dev@localhost:5432/fluentfox_dev?sslmode=disable` | Yes | Full PostgreSQL DSN. Used by `pgxpool` and the `migrate` CLI. In production, Railway injects this automatically from the Postgres plugin. |
+| `DB_MAX_CONNS` | `25` | Yes | Maximum open connections in the pool. Set based on your Postgres plan's connection limit. Too high → Postgres rejects connections. Too low → requests queue. |
+| `DB_MIN_CONNS` | `5` | Yes | Minimum connections kept open. Pre-warming avoids cold-connect latency on the first requests after idle periods. |
+
+**Pool behaviour:** Connections idle for 30 minutes are closed. Connections older than 1 hour are rotated. The pool pings Postgres every 60 seconds to detect dead connections.
+
+---
+
+### JWT (Authentication)
+
+| Variable | Example | Required | Why it exists |
+|----------|---------|----------|---------------|
+| `JWT_ACCESS_SECRET` | `change-me-to-a-long-random-string-in-prod` | Yes | HMAC-SHA256 key used to sign and verify access tokens. Must be long (≥32 chars) and random. Never reuse the refresh secret. |
+| `JWT_REFRESH_SECRET` | `another-long-random-string-different-from-access` | Yes | Separate key for refresh token operations. Having two distinct secrets means a leaked access secret does not compromise refresh tokens. |
+| `JWT_ACCESS_EXPIRY_MINUTES` | `60` | Yes | How long an access token is valid. Short-lived by design — clients must use the refresh token to get a new one. |
+| `JWT_REFRESH_EXPIRY_DAYS` | `30` | Yes | How long a refresh token is valid. Longer window for user convenience. Refresh tokens are rotated on each use (old one is revoked, new one issued). |
+
+**In production:** Generate secrets with `openssl rand -base64 64`.
+
+---
+
+### Email
+
+| Variable | Example | Required | Why it exists |
+|----------|---------|----------|---------------|
+| `RESEND_API_KEY` | `re_xxxxxxxxxxxxxxxxxxxx` | Yes | API key for the Resend transactional email service. Used for email verification and password reset emails. Get one at resend.com. |
+| `EMAIL_FROM_ADDRESS` | `no-reply@fluentfox.app` | Yes | The `From:` address on all outgoing emails. Must be a verified sender domain in your Resend account. |
+
+**In dev:** You can point `RESEND_API_KEY` at a test key from Resend's dashboard that routes emails to their sink (no real delivery). Alternatively, swap `pkg/mailer/resend.go` with a console logger implementation for fully offline development.
+
+---
+
+### Storage (Cloudflare R2)
+
+| Variable | Example | Required | Why it exists |
+|----------|---------|----------|---------------|
+| `R2_ACCOUNT_ID` | `your-cloudflare-account-id` | Yes | Cloudflare account identifier. Found in the Cloudflare dashboard → R2. Used to construct the S3-compatible API endpoint. |
+| `R2_ACCESS_KEY` | `your-r2-access-key` | Yes | R2 API token key ID. Created under Cloudflare → R2 → Manage API Tokens. |
+| `R2_SECRET_KEY` | `your-r2-secret-key` | Yes | R2 API token secret. Shown only once at creation time. |
+| `R2_BUCKET_NAME` | `fluentfox-assets` | Yes | Name of the R2 bucket where user-uploaded assets (avatars, etc.) are stored. |
+| `R2_PUBLIC_URL` | `https://assets.fluentfox.app` | Yes | Public-facing base URL for the bucket (set up via a Cloudflare custom domain or the R2 public URL). Used to construct asset URLs returned in API responses. |
+
+**In dev:** R2 storage is currently used for avatar uploads. You can leave these as placeholder values if you are not working on avatar functionality — the app will only fail when a storage call is actually made.
+
+---
+
+### Logging
+
+| Variable | Default | Required | Why it exists |
+|----------|---------|----------|---------------|
+| `LOG_LEVEL` | `info` | No | Minimum log level for `go.uber.org/zap`. Valid values: `debug`, `info`, `warn`, `error`. In dev, `debug` gives verbose output including SQL query times. In production, `info` is appropriate. |
+
+The logger format switches automatically based on `APP_ENV`: structured JSON in production, human-readable colored output in development.
+
+---
+
+## Static Config Files
+
+### `.golangci.yml` — Linter
+
+Controls `golangci-lint`, run via `make lint`.
+
+**Key settings:**
+
+```yaml
+run:
+  timeout: 5m       # abort if lint takes longer (indicates a build problem)
+  tests: true       # lint test files too
+
+linters-settings:
+  gofmt:
+    simplify: true  # equivalent to gofmt -s (collapse slice/map literals)
+  goimports:
+    local-prefixes: github.com/fluentfox/api  # keeps internal imports in a separate group
+  errcheck:
+    check-type-assertions: true   # (x.(T)) must use the two-value form
+    check-blank: false            # _ = err is allowed
+```
+
+**Exclusions:**
+- `db/migrations/` and `db/seeds/` — SQL, not Go
+- `_test.go` files — exempt from `godot` (comment punctuation) only
+
+See [code-style.mdx](/contributing/code-style) for what each linter enforces.
+
+---
+
+### `.air.toml` — Hot Reload
+
+Controls `air` (github.com/air-verse/air), which runs inside the API Docker container during development.
+
+```toml
+[build]
+  cmd = "go build -o ./tmp/server ./cmd/api"
+  entrypoint = "./tmp/server"
+  delay = 1000              # wait 1s after a file change before rebuilding (debounce)
+  include_ext = ["go"]      # only watch .go files — not .mdx, .sql, .env
+  exclude_dir = ["vendor", "tmp", "db/migrations", "content", "node_modules"]
+  exclude_regex = ["_test\\.go$"]  # test files don't trigger a server rebuild
+  log = "build-errors.log"
+```
+
+`clear_on_rebuild = true` clears the terminal on each successful rebuild so build output is always visible at the top.
+
+**When to change:** Add new directories to `exclude_dir` if they contain files that change often but should not trigger a rebuild (e.g., generated files, log directories).
+
+---
+
+### `docker-compose.yml` — Development Stack
+
+Defines the two containers that `make dev` starts:
+
+**`postgres` service:**
+- Image: `postgres:16-alpine`
+- Database: `fluentfox_dev`, user: `fluentfox`, password: `fluentfox_dev`
+- Port: `5432:5432` (host:container)
+- Data persisted in a named Docker volume (`postgres_data`) — survives `make dev-down`
+- Healthcheck: `pg_isready` every 5 seconds; API container waits until healthy
+
+**`api` service:**
+- Built from `docker/Dockerfile.dev`
+- Source code bind-mounted (`./:/app`) — air picks up changes without rebuilding the image
+- Env loaded from `.env.development`
+- Port: `${PORT:-8080}:${PORT:-8080}` (defaults to 8080)
+- Depends on Postgres healthcheck — never starts before the DB is ready
+
+**Commented out — `redis`:**
+A Redis service is commented out. It is available to enable when a persistent cache or queue is needed (e.g., rate limiting shared across instances, job queue). Currently the in-memory cache (`pkg/cache/memory.go`) is sufficient.
+
+**When to change:**
+- Update the Postgres image version here when upgrading.
+- Add environment overrides here if you need a dev-specific value that differs from `.env.development`.
+- Uncomment redis when you need it.
+
+---
+
+### `docker-compose.test.yml` — Test Database
+
+A minimal, ephemeral Postgres instance used only during `make test`.
+
+```yaml
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5433:5432"       # different host port to avoid conflicting with dev DB
+    tmpfs:
+      - /var/lib/postgresql/data   # data stored in RAM — wiped on container stop
+    healthcheck:
+      interval: 3s
+      retries: 10
+```
+
+**Why ephemeral:** Tests must start from a known-clean state. Using `tmpfs` instead of a named volume means no leftover data between runs.
+
+**When to change:** Rarely. If you update the Postgres version in `docker-compose.yml`, update it here too to match.
+
+---
+
+### `docker/Dockerfile.dev` — Development Image
+
+```
+Base: golang:1.25-alpine
+Installs: air (hot reload)
+Pre-downloads: go module dependencies (cached as a Docker layer)
+Does NOT copy source code — it is bind-mounted at runtime
+CMD: air -c .air.toml
+```
+
+**When to change:** When the Go version is upgraded, update the base image tag. If you add a system dependency (e.g., `gcc` for CGO), install it here with `apk add`.
+
+---
+
+### `docker/Dockerfile.prod` — Production Image
+
+Multi-stage build, final image is under 30MB.
+
+```
+Stage 1 (builder): golang:1.25-alpine
+  - Compiles /app/server (API binary) and /app/sync-content (CLI)
+  - Strips debug symbols: -ldflags="-s -w"
+
+Stage 2 (runner): alpine:3.19
+  - Copies binaries from builder
+  - Copies db/migrations/ and content/
+  - Runs as non-root user (uid 1001)
+  - EXPOSE 8080
+  - CMD ["/app/server"]
+```
+
+**When to change:** When adding a new binary in `cmd/`, add a corresponding `go build` line in the builder stage and `COPY` in the runner stage.
+
+---
+
+### `Makefile` — Developer Commands
+
+The single interface for all development tasks. All commands assume you have Docker, `go`, `migrate` (golang-migrate), and `golangci-lint` installed.
+
+| Command | What it does |
+|---------|-------------|
+| `make dev` | `docker compose up` — starts Postgres + API with hot reload |
+| `make dev-down` | Stops containers, keeps the `postgres_data` volume |
+| `make build` | Builds the production Docker image locally |
+| `make test` | Starts ephemeral test DB → runs `go test -race ./...` → tears down |
+| `make test-coverage` | Same as `test` + generates `coverage.html` and opens it |
+| `make migrate-up` | Applies all pending migrations (`DATABASE_URL` must be set) |
+| `make migrate-down` | Rolls back exactly one migration |
+| `make migrate-new name=X` | Creates `000NNN_X.{up,down}.sql` in `db/migrations/` |
+| `make seed` | Runs all `db/seeds/*.sql` files (idempotent) |
+| `make sync-content` | Parses `content/grammar/**/*.mdx` and upserts into the DB |
+| `make lint` | Runs `golangci-lint` with `.golangci.yml` |
+| `make tidy` | `go mod tidy` + `go mod verify` |
+
+`make help` prints all available targets with descriptions.
+
+---
+
+### `railway.json` — Deployment
+
+Configures Railway to build and run the production image.
+
+```json
+{
+  "build": { "dockerfile": "docker/Dockerfile.prod" },
+  "deploy": {
+    "startCommand": "/app/server",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 30,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 5
+  }
+}
+```
+
+Railway injects all production environment variables from its dashboard. The `/health` endpoint checks the database connection — if it fails, Railway will not route traffic to that instance.
+
+**When to change:** If you rename the binary or add a pre-start command (e.g., auto-migrate on deploy), update `startCommand` here.

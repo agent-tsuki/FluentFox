@@ -1,0 +1,40 @@
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - gosimple
+    - unused
+    - gofmt
+    - goimports
+    - misspell
+    - godot
+
+linters-settings:
+  gofmt:
+    simplify: true
+  goimports:
+    local-prefixes: github.com/fluentfox/api
+  errcheck:
+    check-type-assertions: true
+    check-blank: false
+
+issues:
+  exclude-rules:
+    - path: "db/migrations"
+      linters: [all]
+    - path: "db/seeds"
+      linters: [all]
+    - path: "_test\\.go"
+      linters: [godot]
+  max-issues-per-linter: 50
+  max-same-issues: 10
+
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true

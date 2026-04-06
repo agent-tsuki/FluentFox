@@ -1,0 +1,25 @@
+# Environment files — never commit real secrets
+.env.development
+.env.test
+.env.production
+.env.local
+
+# Build artifacts
+tmp/
+/server
+/sync-content
+
+# Coverage reports
+coverage.out
+coverage.html
+build-errors.log
+
+# Go
+vendor/
+*.test
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

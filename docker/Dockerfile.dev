@@ -1,0 +1,23 @@
+# docker/Dockerfile.dev
+# Local development only — NEVER used in production.
+# Installs air for hot reload. Source code is mounted as a volume;
+# no go build happens at image build time.
+
+FROM golang:1.25-alpine
+
+WORKDIR /app
+
+# Install air for hot reload.
+RUN go install github.com/air-verse/air@latest
+
+# Pre-download deps at build time
+COPY go.mod go.sum ./
+RUN go mod download
+
+# create temp if not exit
+RUN mkdir -p tmp
+
+# air watches .go files, rebuilds ./cmd/api, and reruns on changes.
+# The actual source is mounted via docker-compose volume — no COPY here.
+
+CMD ["air", "-c", ".air.toml"]

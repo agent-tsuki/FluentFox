@@ -1,0 +1,54 @@
+# docker/Dockerfile.prod
+# Multi-stage production build.
+# Stage 1 compiles both binaries; stage 2 copies only the result.
+# Final image target: under 30MB.
+
+# ── Stage 1: builder ──────────────────────────────────────────────────────────
+FROM golang:1.23-alpine AS builder
+
+WORKDIR /build
+
+# Cache dependencies before copying source.
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy source.
+COPY . .
+
+# Build the API server. -s -w strips debug symbols for a smaller binary.
+RUN CGO_ENABLED=0 GOOS=linux go build \
+    -ldflags="-s -w" \
+    -o /app/server \
+    ./cmd/api
+
+# Build the content sync CLI.
+RUN CGO_ENABLED=0 GOOS=linux go build \
+    -ldflags="-s -w" \
+    -o /app/sync-content \
+    ./cmd/sync-content
+
+# ── Stage 2: runner ───────────────────────────────────────────────────────────
+FROM alpine:3.19
+
+# SSL certificates and timezone data are required at runtime.
+RUN apk add --no-cache ca-certificates tzdata && \
+    addgroup -S appgroup && adduser -S appuser -G appgroup
+
+WORKDIR /app
+
+# Copy binaries from builder.
+COPY --from=builder /app/server ./server
+COPY --from=builder /app/sync-content ./sync-content
+
+# Copy migration files — the server runs migrations on startup if configured.
+COPY --from=builder /build/db/migrations ./db/migrations
+
+# Copy content directory for the sync-content binary.
+COPY --from=builder /build/content ./content
+
+# Run as non-root user.
+USER appuser
+
+EXPOSE 8080
+
+CMD ["./server"]
