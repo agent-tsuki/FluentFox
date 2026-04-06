@@ -2,10 +2,19 @@
 # This is the single interface for all developer commands.
 # Run `make help` to see available targets.
 
-.PHONY: help dev dev-down build test test-coverage migrate-up migrate-down \
-        migrate-new seed sync-content lint tidy docker-build
+.PHONY: help dev dev-down build test test-coverage migration-up migration-down \
+        migration-new seed sync-content lint tidy docker-build docs
 
-MIGRATE := migrate -path db/migrations -database "$(DATABASE_URL)"
+# Run migrations via Docker — no local `migrate` install required.
+# Targets the postgres port exposed to the host (5435).
+DEV_DB_URL  := postgres://fluentfox:fluentfox_dev@localhost:5435/fluentfox_dev?sslmode=disable
+TEST_DB_URL := postgres://fluentfox:fluentfox_test@localhost:5431/fluentfox_test?sslmode=disable
+
+MIGRATE_RUN = docker run --rm --network host \
+                -v $(PWD)/db/migrations:/migrations \
+                --user $(shell id -u):$(shell id -g) \
+                migrate/migrate \
+                -path=/migrations
 
 help: ## Show available make targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -14,7 +23,7 @@ help: ## Show available make targets
 # ── Development ────────────────────────────────────────────────────────────────
 
 dev: ## Start all services (API + Postgres) with hot reload
-	docker compose up
+	docker compose up --build -d
 
 dev-down: ## Stop containers without deleting named volumes
 	docker compose down
@@ -47,17 +56,17 @@ test-coverage: ## Run tests with coverage report
 
 # ── Database ───────────────────────────────────────────────────────────────────
 
-migrate-up: ## Apply all pending migrations
-	$(MIGRATE) up
+migration-up: ## Apply all pending migrations (usage: make migration-up)
+	$(MIGRATE_RUN) -database "$(DEV_DB_URL)" up
 
-migrate-down: ## Roll back exactly one migration
-	$(MIGRATE) down 1
+migration-down: ## Roll back exactly one migration
+	$(MIGRATE_RUN) -database "$(DEV_DB_URL)" down 1
 
-migrate-new: ## Create a new migration pair (usage: make migrate-new name=add_something)
+migration-new: ## Create a new migration pair (usage: make migration-new name=add_something)
 ifndef name
-	$(error name is required. Usage: make migrate-new name=add_something)
+	$(error name is required. Usage: make migration-new name=add_something)
 endif
-	$(MIGRATE) create -ext sql -dir db/migrations -seq $(name)
+	$(MIGRATE_RUN) -database "$(DEV_DB_URL)" create -ext sql -dir /migrations -seq $(name)
 
 seed: ## Run all seed SQL files against the dev database
 	@for f in db/seeds/*.sql; do \
@@ -72,6 +81,13 @@ sync-content: ## Parse MDX files and upsert into the dev database
 	go run ./cmd/sync-content
 
 # ── Code quality ───────────────────────────────────────────────────────────────
+
+SWAG := $(shell go env GOPATH)/bin/swag
+
+docs: ## Generate OpenAPI spec and Swagger UI
+	@if [ ! -f "$(SWAG)" ]; then go install github.com/swaggo/swag/cmd/swag@latest; fi
+	$(SWAG) init -g cmd/api/main.go -o docs --parseDependency --parseInternal
+	@echo "✓ OpenAPI spec written to docs/. Swagger UI available at /swagger/index.html"
 
 lint: ## Run golangci-lint
 	golangci-lint run --config .golangci.yml ./...

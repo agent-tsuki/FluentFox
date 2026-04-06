@@ -3,10 +3,11 @@
 -- One insight per chapter maximum. Optional — not every chapter needs one.
 
 CREATE TABLE IF NOT EXISTS cultural_insights (
-    id         SERIAL      PRIMARY KEY,
-    chapter_id INTEGER     NOT NULL,
+    id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    chapter_id UUID        NOT NULL,
+    title      VARCHAR(255) NOT NULL,
     -- HTML content; sanitised by sync-content tool before insertion
-    content    TEXT        NOT NULL,
+    body       TEXT        NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 

@@ -37,7 +37,7 @@ cp .env.example .env.development
 make dev
 
 # 4. In another terminal, apply all migrations
-make migrate-up
+make migration-up
 
 # 5. Seed the database with characters, kanji, and XP config
 make seed
@@ -58,9 +58,9 @@ make dev-down       # Stop containers (preserves DB data)
 make test           # Run all tests against isolated test DB
 make lint           # Run golangci-lint
 make tidy           # go mod tidy + verify
-make migrate-up     # Apply pending migrations
-make migrate-down   # Roll back one migration
-make migrate-new name=add_something  # Create new migration pair
+make migration-up     # Apply pending migrations
+make migration-downdown   # Roll back one migration
+make migration-new name=add_something  # Create new migration pair
 make seed           # Run seed SQL files
 make sync-content   # Parse MDX and upsert to DB
 make build          # Build production Docker image

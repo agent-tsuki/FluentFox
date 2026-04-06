@@ -21,7 +21,16 @@ func NewHandler(svc *Service, log *zap.Logger) *Handler {
 	return &Handler{svc: svc, log: log}
 }
 
-// GetXP handles GET /xp.
+// GetXP godoc
+// @Summary      Get XP and level
+// @Description  Returns the user's total XP, current level, XP to next level, and progress percentage.
+// @Tags         xp
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {object} XPResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /xp [get]
 func (h *Handler) GetXP(w http.ResponseWriter, r *http.Request) {
 	userID := middleware.ContextUserID(r.Context())
 	xp, err := h.svc.GetXP(r.Context(), userID)
@@ -33,7 +42,16 @@ func (h *Handler) GetXP(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, xp)
 }
 
-// GetLeaderboard handles GET /xp/leaderboard.
+// GetLeaderboard godoc
+// @Summary      Get XP leaderboard
+// @Description  Returns the global XP leaderboard ranked by total XP.
+// @Tags         xp
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {array} LeaderboardEntry
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /xp/leaderboard [get]
 func (h *Handler) GetLeaderboard(w http.ResponseWriter, r *http.Request) {
 	entries, err := h.svc.GetLeaderboard(r.Context())
 	if err != nil {

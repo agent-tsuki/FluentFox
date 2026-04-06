@@ -243,9 +243,9 @@ The single interface for all development tasks. All commands assume you have Doc
 | `make build` | Builds the production Docker image locally |
 | `make test` | Starts ephemeral test DB → runs `go test -race ./...` → tears down |
 | `make test-coverage` | Same as `test` + generates `coverage.html` and opens it |
-| `make migrate-up` | Applies all pending migrations (`DATABASE_URL` must be set) |
-| `make migrate-down` | Rolls back exactly one migration |
-| `make migrate-new name=X` | Creates `000NNN_X.{up,down}.sql` in `db/migrations/` |
+| `make migration-up` | Applies all pending migrations (`DATABASE_URL` must be set) |
+| `make migration-downdown` | Rolls back exactly one migration |
+| `make migration-new name=X` | Creates `000NNN_X.{up,down}.sql` in `db/migrations/` |
 | `make seed` | Runs all `db/seeds/*.sql` files (idempotent) |
 | `make sync-content` | Parses `content/grammar/**/*.mdx` and upserts into the DB |
 | `make lint` | Runs `golangci-lint` with `.golangci.yml` |

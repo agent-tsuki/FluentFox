@@ -3,10 +3,10 @@
 -- Each ## Concept XX heading in the MDX file produces one row.
 
 CREATE TABLE IF NOT EXISTS concepts (
-    id          SERIAL       PRIMARY KEY,
-    chapter_id  INTEGER      NOT NULL,
+    id          UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
+    chapter_id  UUID         NOT NULL,
     title       VARCHAR(255) NOT NULL,
-    description TEXT         NOT NULL,
+    explanation TEXT         NOT NULL,
     -- Core rule distilled to one sentence; parsed from "> **Key Rule:**" blockquotes
     key_rule    TEXT         NULL,
     -- Supplementary tip; parsed from "> **Pro Tip:**" or "> **Note:**" blockquotes

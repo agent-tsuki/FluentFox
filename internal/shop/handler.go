@@ -25,7 +25,16 @@ func NewHandler(svc *Service, v *validator.Validator, log *zap.Logger) *Handler 
 	return &Handler{svc: svc, validator: v, log: log}
 }
 
-// ListItems handles GET /shop.
+// ListItems godoc
+// @Summary      List shop items
+// @Description  Returns all currently available items in the XP shop.
+// @Tags         shop
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {array} ShopItemResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /shop [get]
 func (h *Handler) ListItems(w http.ResponseWriter, r *http.Request) {
 	items, err := h.svc.ListItems(r.Context())
 	if err != nil {
@@ -36,7 +45,20 @@ func (h *Handler) ListItems(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, items)
 }
 
-// Purchase handles POST /shop/purchase.
+// Purchase godoc
+// @Summary      Purchase a shop item
+// @Description  Spends XP to purchase an item. Returns inventory ID of the new item.
+// @Tags         shop
+// @Accept       json
+// @Produce      json
+// @Security     BearerAuth
+// @Param        body body PurchaseRequest true "Item ID to purchase"
+// @Success      200 {object} PurchaseResponse
+// @Failure      400 {object} response.ErrorResponse "Insufficient XP or item unavailable"
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      422 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /shop/purchase [post]
 func (h *Handler) Purchase(w http.ResponseWriter, r *http.Request) {
 	var req PurchaseRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -66,7 +88,16 @@ func (h *Handler) Purchase(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, result)
 }
 
-// GetInventory handles GET /shop/inventory.
+// GetInventory godoc
+// @Summary      Get user inventory
+// @Description  Returns all items the authenticated user has purchased.
+// @Tags         shop
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {array} InventoryResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /shop/inventory [get]
 func (h *Handler) GetInventory(w http.ResponseWriter, r *http.Request) {
 	userID := middleware.ContextUserID(r.Context())
 	inv, err := h.svc.GetInventory(r.Context(), userID)

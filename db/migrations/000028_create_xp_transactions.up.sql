@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS xp_transactions (
     -- XP amount. Positive for earned/refunded, negative for spent.
     amount           INTEGER              NOT NULL,
     -- Optional references to the context that generated the XP
-    chapter_id       INTEGER              NULL,
+    chapter_id       UUID                 NULL,
     quiz_session_id  UUID                 NULL,
     created_at       TIMESTAMPTZ          NOT NULL DEFAULT NOW(),
 

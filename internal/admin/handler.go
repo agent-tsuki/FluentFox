@@ -27,7 +27,17 @@ func NewHandler(svc *Service, v *validator.Validator, log *zap.Logger) *Handler 
 	return &Handler{svc: svc, validator: v, log: log}
 }
 
-// GetStats handles GET /admin/stats.
+// GetStats godoc
+// @Summary      Get platform stats
+// @Description  Returns platform-wide statistics (total users, active today, reviews, published chapters). Requires admin role.
+// @Tags         admin
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {object} StatsResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      403 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /admin/stats [get]
 func (h *Handler) GetStats(w http.ResponseWriter, r *http.Request) {
 	stats, err := h.svc.GetStats(r.Context())
 	if err != nil {
@@ -38,7 +48,19 @@ func (h *Handler) GetStats(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, stats)
 }
 
-// ListUsers handles GET /admin/users.
+// ListUsers godoc
+// @Summary      List all users
+// @Description  Returns a paginated list of all users with admin-only fields. Requires admin role.
+// @Tags         admin
+// @Produce      json
+// @Security     BearerAuth
+// @Param        page     query int false "Page number"
+// @Param        per_page query int false "Results per page"
+// @Success      200 {array} AdminUserResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      403 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /admin/users [get]
 func (h *Handler) ListUsers(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 	perPage, _ := strconv.Atoi(r.URL.Query().Get("per_page"))
@@ -53,7 +75,22 @@ func (h *Handler) ListUsers(w http.ResponseWriter, r *http.Request) {
 	response.JSONWithMeta(w, http.StatusOK, users, response.Meta{Total: total})
 }
 
-// BanUser handles POST /admin/users/{id}/ban.
+// BanUser godoc
+// @Summary      Ban a user
+// @Description  Bans a user account with a mandatory reason. Requires admin role.
+// @Tags         admin
+// @Accept       json
+// @Produce      json
+// @Security     BearerAuth
+// @Param        id   path string        true "Target user UUID"
+// @Param        body body BanUserRequest true "Ban reason"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} response.ErrorResponse "Invalid user ID"
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      403 {object} response.ErrorResponse
+// @Failure      422 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /admin/users/{id}/ban [post]
 func (h *Handler) BanUser(w http.ResponseWriter, r *http.Request) {
 	targetID, err := uuid.Parse(chi.URLParam(r, "id"))
 	if err != nil {

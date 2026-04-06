@@ -22,7 +22,19 @@ func NewHandler(svc *Service, log *zap.Logger) *Handler {
 	return &Handler{svc: svc, log: log}
 }
 
-// List handles GET /chapters.
+// List godoc
+// @Summary      List chapters
+// @Description  Returns a paginated list of published chapters, optionally filtered by JLPT level.
+// @Tags         chapters
+// @Produce      json
+// @Security     BearerAuth
+// @Param        level    query string false "JLPT level filter" Enums(N5,N4,N3,N2,N1)
+// @Param        page     query int    false "Page number (default: 1)"
+// @Param        per_page query int    false "Results per page (default: 20)"
+// @Success      200 {array} ChapterResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /chapters [get]
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	level := r.URL.Query().Get("level")
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
@@ -38,7 +50,17 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	response.JSONWithMeta(w, http.StatusOK, chapters, response.Meta{Total: total})
 }
 
-// GetDetail handles GET /chapters/{slug}.
+// GetDetail godoc
+// @Summary      Get chapter detail
+// @Description  Returns a single chapter with its grammar concepts and cultural insights.
+// @Tags         chapters
+// @Produce      json
+// @Security     BearerAuth
+// @Param        slug path string true "Chapter slug"
+// @Success      200 {object} ChapterDetailResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      404 {object} response.ErrorResponse
+// @Router       /chapters/{slug} [get]
 func (h *Handler) GetDetail(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "slug")
 	detail, err := h.svc.GetDetail(r.Context(), slug)

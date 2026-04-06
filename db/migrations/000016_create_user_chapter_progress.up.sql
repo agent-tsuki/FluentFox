@@ -5,7 +5,7 @@
 CREATE TABLE IF NOT EXISTS user_chapter_progress (
     id           UUID            PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id      UUID            NOT NULL,
-    chapter_id   INTEGER         NOT NULL,
+    chapter_id   UUID            NOT NULL,
     status       progress_status NOT NULL DEFAULT 'not_started',
     -- Set when user clicks "Mark Chapter Complete"
     completed_at TIMESTAMPTZ     NULL,

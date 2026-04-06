@@ -2,6 +2,21 @@
 // The single entry point for the HTTP API server.
 // Wires all dependencies together and starts the server.
 // This is the only place in the codebase that may use init-like setup sequences.
+
+// @title           FluentFox API
+// @version         1.0
+// @description     Japanese language learning API — chapters, SRS flashcard reviews, quizzes, XP levelling, streaks, and in-app shop.
+// @description     All successful responses are wrapped in {"data": ...}. Paginated responses also include {"meta": {...}}.
+// @description     All error responses follow {"error": {"code": "...", "message": "..."}}.
+
+// @host      localhost:8080
+// @BasePath  /
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Enter "Bearer <your_access_token>"
+
 package main
 
 import (
@@ -15,9 +30,11 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"go.uber.org/zap"
 
 	"github.com/fluentfox/api/config"
+	_ "github.com/fluentfox/api/docs"
 	"github.com/fluentfox/api/internal/admin"
 	"github.com/fluentfox/api/internal/auth"
 	"github.com/fluentfox/api/internal/chapter"
@@ -122,6 +139,11 @@ func main() {
 	r.Use(chimiddleware.Recoverer)
 	r.Use(middleware.CORS(cfg.AllowedOrigins))
 	r.Use(middleware.Logger(log))
+
+	// Swagger UI — available in all environments at /swagger/index.html.
+	r.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("/swagger/doc.json"),
+	))
 
 	// Health check — used by Railway to confirm deployment.
 	r.Get("/health", func(w http.ResponseWriter, req *http.Request) {

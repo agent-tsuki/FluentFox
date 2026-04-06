@@ -21,7 +21,16 @@ func NewHandler(svc *Service, log *zap.Logger) *Handler {
 	return &Handler{svc: svc, log: log}
 }
 
-// GetOverall handles GET /progress.
+// GetOverall godoc
+// @Summary      Get overall progress
+// @Description  Returns a summary of the user's progress across all chapters and vocabulary.
+// @Tags         progress
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {object} OverallProgressResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /progress [get]
 func (h *Handler) GetOverall(w http.ResponseWriter, r *http.Request) {
 	userID := middleware.ContextUserID(r.Context())
 	prog, err := h.svc.GetOverallProgress(r.Context(), userID)

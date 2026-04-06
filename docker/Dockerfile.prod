@@ -1,54 +1,67 @@
 # docker/Dockerfile.prod
-# Multi-stage production build.
-# Stage 1 compiles both binaries; stage 2 copies only the result.
-# Final image target: under 30MB.
+# Multi-stage production build — final image target: under 20 MB.
+#
+# Layer order (least → most frequently changed):
+#   1. OS packages           — almost never
+#   2. go mod download       — only when go.mod/go.sum change
+#   3. go build              — every code change
+#   4. runtime image copy    — every code change
 
-# ── Stage 1: builder ──────────────────────────────────────────────────────────
-FROM golang:1.23-alpine AS builder
+# Stage 1: deps
+FROM golang:1.23-alpine AS deps
 
 WORKDIR /build
 
-# Cache dependencies before copying source.
+# Only copy dependency manifests first, cache this layer independently.
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy source.
+# Stage 2: builder
+FROM deps AS builder
+
+# Copy source after deps are cached.
 COPY . .
 
-# Build the API server. -s -w strips debug symbols for a smaller binary.
-RUN CGO_ENABLED=0 GOOS=linux go build \
+# -s -w strips DWARF debug info and symbol table → smaller binary.
+# CGO_ENABLED=0 produces a fully static binary (no glibc dependency).
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
     -ldflags="-s -w" \
-    -o /app/server \
+    -trimpath \
+    -o /out/server \
     ./cmd/api
 
-# Build the content sync CLI.
-RUN CGO_ENABLED=0 GOOS=linux go build \
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
     -ldflags="-s -w" \
-    -o /app/sync-content \
+    -trimpath \
+    -o /out/sync-content \
     ./cmd/sync-content
 
-# ── Stage 2: runner ───────────────────────────────────────────────────────────
-FROM alpine:3.19
+# Stage 3: runtime
+FROM alpine:3.21 AS runtime
 
-# SSL certificates and timezone data are required at runtime.
+# ca-certificates  → HTTPS outbound calls
+# tzdata           → time.LoadLocation() support
 RUN apk add --no-cache ca-certificates tzdata && \
-    addgroup -S appgroup && adduser -S appuser -G appgroup
+    addgroup -S appgroup && \
+    adduser  -S appuser -G appgroup
 
 WORKDIR /app
 
-# Copy binaries from builder.
-COPY --from=builder /app/server ./server
-COPY --from=builder /app/sync-content ./sync-content
+# Binaries
+COPY --from=builder /out/server        ./server
+COPY --from=builder /out/sync-content  ./sync-content
 
-# Copy migration files — the server runs migrations on startup if configured.
+# Migrations run on startup when RUN_MIGRATIONS=true
 COPY --from=builder /build/db/migrations ./db/migrations
 
-# Copy content directory for the sync-content binary.
+# Static content for sync-content binary
 COPY --from=builder /build/content ./content
 
-# Run as non-root user.
 USER appuser
 
 EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD wget -qO- http://localhost:8080/health || exit 1
 
 CMD ["./server"]

@@ -21,7 +21,16 @@ func NewHandler(svc *Service, log *zap.Logger) *Handler {
 	return &Handler{svc: svc, log: log}
 }
 
-// GetStreak handles GET /streak.
+// GetStreak godoc
+// @Summary      Get streak
+// @Description  Returns the user's current and longest streak, freeze count, and whether the streak is alive today.
+// @Tags         streak
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {object} StreakResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /streak [get]
 func (h *Handler) GetStreak(w http.ResponseWriter, r *http.Request) {
 	userID := middleware.ContextUserID(r.Context())
 	streak, err := h.svc.GetStreak(r.Context(), userID)

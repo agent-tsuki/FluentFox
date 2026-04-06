@@ -3,8 +3,8 @@
 -- The Japanese sentence is NOT stored here — it lives in example_segments.
 
 CREATE TABLE IF NOT EXISTS concept_examples (
-    id          SERIAL       PRIMARY KEY,
-    concept_id  INTEGER      NOT NULL,
+    id          UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
+    concept_id  UUID         NOT NULL,
     -- English translation of the example. Example: "I am a company employee."
     english     VARCHAR(500) NOT NULL,
     -- Position of this example within its concept

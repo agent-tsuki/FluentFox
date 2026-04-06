@@ -4,8 +4,8 @@
 -- Each row is one token in the sentence.
 
 CREATE TABLE IF NOT EXISTS example_segments (
-    id          SERIAL       PRIMARY KEY,
-    example_id  INTEGER      NOT NULL,
+    id          UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
+    example_id  UUID         NOT NULL,
     -- Position in the sentence, starts at 0
     order_index INTEGER      NOT NULL,
     type        segment_type NOT NULL,

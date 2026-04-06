@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS quiz_sessions (
 
     -- Context: at most one of these is set
     -- Set for grammar and vocabulary quizzes
-    chapter_id       INTEGER     NULL,
+    chapter_id       UUID        NULL,
     -- Set for kanji quizzes
     jlpt_level       jlpt_level  NULL,
 

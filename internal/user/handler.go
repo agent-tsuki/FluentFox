@@ -25,7 +25,16 @@ func NewHandler(svc *Service, v *validator.Validator, log *zap.Logger) *Handler 
 	return &Handler{svc: svc, validator: v, log: log}
 }
 
-// GetMe handles GET /users/me.
+// GetMe godoc
+// @Summary      Get current user
+// @Description  Returns the authenticated user's account details.
+// @Tags         users
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {object} UserResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /users/me [get]
 func (h *Handler) GetMe(w http.ResponseWriter, r *http.Request) {
 	userID := middleware.ContextUserID(r.Context())
 	user, err := h.svc.GetMe(r.Context(), userID)
@@ -37,7 +46,16 @@ func (h *Handler) GetMe(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, user)
 }
 
-// GetProfile handles GET /users/me/profile.
+// GetProfile godoc
+// @Summary      Get user profile
+// @Description  Returns the authenticated user's public profile (display name, bio, JLPT goal).
+// @Tags         users
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {object} ProfileResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /users/me/profile [get]
 func (h *Handler) GetProfile(w http.ResponseWriter, r *http.Request) {
 	userID := middleware.ContextUserID(r.Context())
 	profile, err := h.svc.GetProfile(r.Context(), userID)
@@ -49,7 +67,19 @@ func (h *Handler) GetProfile(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, profile)
 }
 
-// UpdateProfile handles PATCH /users/me/profile.
+// UpdateProfile godoc
+// @Summary      Update user profile
+// @Description  Updates display name, bio, native language, and/or JLPT goal.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Security     BearerAuth
+// @Param        body body UpdateProfileRequest true "Profile fields to update (all optional)"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} response.ErrorResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      422 {object} response.ErrorResponse
+// @Router       /users/me/profile [patch]
 func (h *Handler) UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	var req UpdateProfileRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -72,7 +102,16 @@ func (h *Handler) UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, map[string]string{"message": "profile updated"})
 }
 
-// GetSettings handles GET /users/me/settings.
+// GetSettings godoc
+// @Summary      Get user settings
+// @Description  Returns the authenticated user's app preferences (daily XP goal, SRS card count, reminders).
+// @Tags         users
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {object} SettingsResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      500 {object} response.ErrorResponse
+// @Router       /users/me/settings [get]
 func (h *Handler) GetSettings(w http.ResponseWriter, r *http.Request) {
 	userID := middleware.ContextUserID(r.Context())
 	settings, err := h.svc.GetSettings(r.Context(), userID)
@@ -84,7 +123,19 @@ func (h *Handler) GetSettings(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, settings)
 }
 
-// UpdateSettings handles PATCH /users/me/settings.
+// UpdateSettings godoc
+// @Summary      Update user settings
+// @Description  Updates one or more app preferences for the authenticated user.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Security     BearerAuth
+// @Param        body body UpdateSettingsRequest true "Settings fields to update (all optional)"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} response.ErrorResponse
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      422 {object} response.ErrorResponse
+// @Router       /users/me/settings [patch]
 func (h *Handler) UpdateSettings(w http.ResponseWriter, r *http.Request) {
 	var req UpdateSettingsRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -107,7 +158,19 @@ func (h *Handler) UpdateSettings(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, map[string]string{"message": "settings updated"})
 }
 
-// ChangePassword handles POST /users/me/change-password.
+// ChangePassword godoc
+// @Summary      Change password
+// @Description  Changes the authenticated user's password after verifying the current one.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Security     BearerAuth
+// @Param        body body ChangePasswordRequest true "Current and new password"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} response.ErrorResponse "Current password incorrect"
+// @Failure      401 {object} response.ErrorResponse
+// @Failure      422 {object} response.ErrorResponse
+// @Router       /users/me/change-password [post]
 func (h *Handler) ChangePassword(w http.ResponseWriter, r *http.Request) {
 	var req ChangePasswordRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

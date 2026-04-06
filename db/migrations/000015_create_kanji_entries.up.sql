@@ -3,13 +3,13 @@
 -- Seeded from db/seeds/kanji.sql — never updated by users.
 
 CREATE TABLE IF NOT EXISTS kanji_entries (
-    id           SERIAL       PRIMARY KEY,
+    id           UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
     -- The kanji character. Example: "私", "学", "人"
     character    VARCHAR(5)   NOT NULL,
     -- On-reading (Chinese-derived), stored in katakana. Comma-separated. Example: "ガク, ハク"
-    onyomi       VARCHAR(255) NULL,
+    on_reading   VARCHAR(255) NULL,
     -- Kun-reading (native Japanese), stored in hiragana. Dot notation for okurigana. Example: "まな.ぶ"
-    kunyomi      VARCHAR(255) NULL,
+    kun_reading  VARCHAR(255) NULL,
     -- Primary English meaning(s), comma-separated. Example: "I, me, my"
     meaning      VARCHAR(500) NOT NULL,
     -- Number of strokes to write the character. NULL if not available.

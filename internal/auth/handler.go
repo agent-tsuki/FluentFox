@@ -25,7 +25,19 @@ func NewHandler(svc *Service, v *validator.Validator, log *zap.Logger) *Handler 
 	return &Handler{svc: svc, validator: v, log: log}
 }
 
-// Register handles POST /auth/register.
+// Register godoc
+// @Summary      Register a new account
+// @Description  Creates a user account and sends an email verification link.
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        body body RegisterRequest true "Registration payload"
+// @Success      201 {object} RegisterResponse
+// @Failure      400 {object} response.ErrorResponse
+// @Failure      409 {object} response.ErrorResponse "Email already in use"
+// @Failure      422 {object} response.ErrorResponse
+// @Failure      429 {object} response.ErrorResponse "Rate limited"
+// @Router       /auth/register [post]
 func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	var req RegisterRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -55,7 +67,19 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// Login handles POST /auth/login.
+// Login godoc
+// @Summary      Log in
+// @Description  Authenticates credentials and returns access + refresh tokens.
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        body body LoginRequest true "Login payload"
+// @Success      200 {object} TokenResponse
+// @Failure      400 {object} response.ErrorResponse
+// @Failure      401 {object} response.ErrorResponse "Invalid credentials"
+// @Failure      422 {object} response.ErrorResponse
+// @Failure      429 {object} response.ErrorResponse "Rate limited"
+// @Router       /auth/login [post]
 func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	var req LoginRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -82,7 +106,17 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, tokens)
 }
 
-// Refresh handles POST /auth/refresh.
+// Refresh godoc
+// @Summary      Refresh tokens
+// @Description  Exchanges a valid refresh token for a new access + refresh token pair.
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        body body RefreshRequest true "Refresh token"
+// @Success      200 {object} TokenResponse
+// @Failure      400 {object} response.ErrorResponse
+// @Failure      401 {object} response.ErrorResponse "Invalid or expired refresh token"
+// @Router       /auth/refresh [post]
 func (h *Handler) Refresh(w http.ResponseWriter, r *http.Request) {
 	var req RefreshRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -104,7 +138,15 @@ func (h *Handler) Refresh(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, tokens)
 }
 
-// Logout handles POST /auth/logout.
+// Logout godoc
+// @Summary      Log out
+// @Description  Revokes the supplied refresh token.
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        body body RefreshRequest true "Refresh token to revoke"
+// @Success      200 {object} map[string]string
+// @Router       /auth/logout [post]
 func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
 	var req RefreshRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -116,7 +158,17 @@ func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, map[string]string{"message": "logged out successfully"})
 }
 
-// ForgotPassword handles POST /auth/forgot-password.
+// ForgotPassword godoc
+// @Summary      Request password reset
+// @Description  Sends a password reset link to the email if an account exists. Always returns 200 to prevent email enumeration.
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        body body ForgotPasswordRequest true "Account email"
+// @Success      200 {object} map[string]string
+// @Failure      422 {object} response.ErrorResponse
+// @Failure      429 {object} response.ErrorResponse "Rate limited"
+// @Router       /auth/forgot-password [post]
 func (h *Handler) ForgotPassword(w http.ResponseWriter, r *http.Request) {
 	var req ForgotPasswordRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -136,7 +188,17 @@ func (h *Handler) ForgotPassword(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// ResetPassword handles POST /auth/reset-password.
+// ResetPassword godoc
+// @Summary      Reset password
+// @Description  Resets the user's password using a one-time token from the reset email.
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        body body ResetPasswordRequest true "Reset token and new password"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} response.ErrorResponse "Token invalid, expired, or already used"
+// @Failure      422 {object} response.ErrorResponse
+// @Router       /auth/reset-password [post]
 func (h *Handler) ResetPassword(w http.ResponseWriter, r *http.Request) {
 	var req ResetPasswordRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -163,7 +225,17 @@ func (h *Handler) ResetPassword(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, map[string]string{"message": "password updated successfully"})
 }
 
-// VerifyEmail handles POST /auth/verify-email.
+// VerifyEmail godoc
+// @Summary      Verify email address
+// @Description  Marks the user's email as verified using the token sent during registration.
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        body body VerifyEmailRequest true "Verification token"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} response.ErrorResponse "Token invalid, expired, or already used"
+// @Failure      422 {object} response.ErrorResponse
+// @Router       /auth/verify-email [post]
 func (h *Handler) VerifyEmail(w http.ResponseWriter, r *http.Request) {
 	var req VerifyEmailRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

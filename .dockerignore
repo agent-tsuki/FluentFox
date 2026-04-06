@@ -1,0 +1,32 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Dev tooling & IDE
+.air.toml
+.golangci.yml
+.vscode/
+.idea/
+*.code-workspace
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Build artefacts
+tmp/
+dist/
+coverage.out
+coverage.html
+build-errors.log
+
+# Docker files themselves
+docker-compose*.yml
+docker/
+
+# Docs & misc
+docs/
+*.md
+LICENSE

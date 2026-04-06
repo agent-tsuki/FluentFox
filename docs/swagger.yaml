@@ -1,0 +1,1503 @@
+basePath: /
+definitions:
+  github_com_fluentfox_api_pkg_response.ErrorBody:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    type: object
+  github_com_fluentfox_api_pkg_response.ErrorResponse:
+    properties:
+      error:
+        $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorBody'
+    type: object
+  internal_admin.AdminUserResponse:
+    properties:
+      banned:
+        type: boolean
+      created_at:
+        type: string
+      email:
+        type: string
+      email_verified:
+        type: boolean
+      id:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+  internal_admin.BanUserRequest:
+    properties:
+      reason:
+        maxLength: 500
+        type: string
+    required:
+    - reason
+    type: object
+  internal_admin.StatsResponse:
+    properties:
+      active_today:
+        type: integer
+      chapters_published:
+        type: integer
+      total_reviews:
+        type: integer
+      total_users:
+        type: integer
+    type: object
+  internal_auth.ForgotPasswordRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  internal_auth.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  internal_auth.RefreshRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  internal_auth.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        maxLength: 72
+        minLength: 8
+        type: string
+      username:
+        maxLength: 30
+        minLength: 3
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  internal_auth.RegisterResponse:
+    properties:
+      message:
+        type: string
+      user_id:
+        type: string
+    type: object
+  internal_auth.ResetPasswordRequest:
+    properties:
+      password:
+        maxLength: 72
+        minLength: 8
+        type: string
+      token:
+        type: string
+    required:
+    - password
+    - token
+    type: object
+  internal_auth.TokenResponse:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        description: seconds until access token expires
+        type: integer
+      refresh_token:
+        description: raw opaque value sent to client
+        type: string
+    type: object
+  internal_auth.VerifyEmailRequest:
+    properties:
+      token:
+        type: string
+    required:
+    - token
+    type: object
+  internal_chapter.ChapterDetailResponse:
+    properties:
+      concepts:
+        items:
+          $ref: '#/definitions/internal_chapter.ConceptResponse'
+        type: array
+      cultural_insights:
+        items:
+          $ref: '#/definitions/internal_chapter.CulturalInsightResponse'
+        type: array
+      description:
+        type: string
+      id:
+        type: string
+      jlpt_level:
+        type: string
+      order_index:
+        type: integer
+      slug:
+        type: string
+      title:
+        type: string
+    type: object
+  internal_chapter.ChapterResponse:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      jlpt_level:
+        type: string
+      order_index:
+        type: integer
+      slug:
+        type: string
+      title:
+        type: string
+    type: object
+  internal_chapter.ConceptResponse:
+    properties:
+      explanation:
+        type: string
+      id:
+        type: string
+      order_index:
+        type: integer
+      title:
+        type: string
+    type: object
+  internal_chapter.CulturalInsightResponse:
+    properties:
+      body:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+    type: object
+  internal_progress.OverallProgressResponse:
+    properties:
+      chapters_completed:
+        type: integer
+      chapters_total:
+        type: integer
+      completion_percent:
+        type: number
+      vocab_mastered:
+        type: integer
+      vocab_total:
+        type: integer
+    type: object
+  internal_quiz.AnswerResultResponse:
+    properties:
+      correct:
+        type: boolean
+      correct_answer:
+        type: string
+      explanation:
+        type: string
+      xp_earned:
+        type: integer
+    type: object
+  internal_quiz.SessionResponse:
+    properties:
+      chapter_id:
+        type: string
+      id:
+        type: string
+      quiz_type:
+        type: string
+      total_cards:
+        type: integer
+    type: object
+  internal_quiz.SessionSummaryResponse:
+    properties:
+      accuracy:
+        type: number
+      correct:
+        type: integer
+      incorrect:
+        type: integer
+      session_id:
+        type: string
+      xp_earned:
+        type: integer
+    type: object
+  internal_quiz.StartSessionRequest:
+    properties:
+      card_count:
+        maximum: 50
+        minimum: 5
+        type: integer
+      chapter_id:
+        type: string
+      quiz_type:
+        enum:
+        - multiple_choice
+        - fill_blank
+        - listening
+        type: string
+    required:
+    - quiz_type
+    type: object
+  internal_quiz.SubmitAnswerRequest:
+    properties:
+      content_id:
+        type: string
+      time_taken_ms:
+        minimum: 0
+        type: integer
+      user_answer:
+        type: string
+    required:
+    - content_id
+    - time_taken_ms
+    - user_answer
+    type: object
+  internal_shop.InventoryResponse:
+    properties:
+      id:
+        type: string
+      item_name:
+        type: string
+      item_type:
+        type: string
+      used_at:
+        type: string
+    type: object
+  internal_shop.PurchaseRequest:
+    properties:
+      item_id:
+        type: string
+    required:
+    - item_id
+    type: object
+  internal_shop.PurchaseResponse:
+    properties:
+      inventory_id:
+        type: string
+      message:
+        type: string
+    type: object
+  internal_shop.ShopItemResponse:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      item_type:
+        type: string
+      name:
+        type: string
+      xp_cost:
+        type: integer
+    type: object
+  internal_srs.CardResponse:
+    properties:
+      card_face:
+        type: string
+      card_type:
+        type: string
+      content_id:
+        type: string
+      due:
+        type: string
+      id:
+        type: string
+      is_new:
+        type: boolean
+      lapses:
+        type: integer
+    type: object
+  internal_srs.DueCountResponse:
+    properties:
+      new:
+        type: integer
+      review:
+        type: integer
+      total:
+        type: integer
+    type: object
+  internal_srs.ReviewResultResponse:
+    properties:
+      card_id:
+        type: string
+      is_leech:
+        type: boolean
+      next_due:
+        type: string
+      scheduled_days:
+        type: integer
+      xp_earned:
+        type: integer
+    type: object
+  internal_srs.SubmitReviewRequest:
+    properties:
+      card_id:
+        type: string
+      rating:
+        maximum: 4
+        minimum: 1
+        type: integer
+    required:
+    - card_id
+    - rating
+    type: object
+  internal_streak.StreakResponse:
+    properties:
+      current_streak:
+        type: integer
+      freeze_count:
+        type: integer
+      is_alive:
+        type: boolean
+      last_activity_date:
+        type: string
+      longest_streak:
+        type: integer
+    type: object
+  internal_user.ChangePasswordRequest:
+    properties:
+      current_password:
+        type: string
+      new_password:
+        maxLength: 72
+        minLength: 8
+        type: string
+    required:
+    - current_password
+    - new_password
+    type: object
+  internal_user.ProfileResponse:
+    properties:
+      bio:
+        type: string
+      display_name:
+        type: string
+      jlpt_goal:
+        type: string
+      native_language:
+        type: string
+    type: object
+  internal_user.SettingsResponse:
+    properties:
+      daily_xp_goal:
+        type: integer
+      email_reminders:
+        type: boolean
+      reminder_time:
+        type: string
+      srs_cards_per_session:
+        type: integer
+    type: object
+  internal_user.UpdateProfileRequest:
+    properties:
+      bio:
+        maxLength: 300
+        type: string
+      display_name:
+        maxLength: 50
+        type: string
+      jlpt_goal:
+        enum:
+        - N5
+        - N4
+        - N3
+        - N2
+        - N1
+        type: string
+      native_language:
+        maxLength: 50
+        type: string
+    type: object
+  internal_user.UpdateSettingsRequest:
+    properties:
+      daily_xp_goal:
+        maximum: 500
+        minimum: 10
+        type: integer
+      email_reminders:
+        type: boolean
+      reminder_time:
+        type: string
+      srs_cards_per_session:
+        maximum: 100
+        minimum: 5
+        type: integer
+    type: object
+  internal_user.UserResponse:
+    properties:
+      avatar_url:
+        type: string
+      email:
+        type: string
+      email_verified:
+        type: boolean
+      id:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+  internal_xp.LeaderboardEntry:
+    properties:
+      level:
+        type: integer
+      rank:
+        type: integer
+      total_xp:
+        type: integer
+      user_id:
+        type: string
+      username:
+        type: string
+    type: object
+  internal_xp.XPResponse:
+    properties:
+      level:
+        type: integer
+      progress_percent:
+        type: number
+      total_xp:
+        type: integer
+      xp_to_next_level:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: |-
+    Japanese language learning API — chapters, SRS flashcard reviews, quizzes, XP levelling, streaks, and in-app shop.
+    All successful responses are wrapped in {"data": ...}. Paginated responses also include {"meta": {...}}.
+    All error responses follow {"error": {"code": "...", "message": "..."}}.
+  title: FluentFox API
+  version: "1.0"
+paths:
+  /admin/stats:
+    get:
+      description: Returns platform-wide statistics (total users, active today, reviews,
+        published chapters). Requires admin role.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_admin.StatsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get platform stats
+      tags:
+      - admin
+  /admin/users:
+    get:
+      description: Returns a paginated list of all users with admin-only fields. Requires
+        admin role.
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Results per page
+        in: query
+        name: per_page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/internal_admin.AdminUserResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all users
+      tags:
+      - admin
+  /admin/users/{id}/ban:
+    post:
+      consumes:
+      - application/json
+      description: Bans a user account with a mandatory reason. Requires admin role.
+      parameters:
+      - description: Target user UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Ban reason
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_admin.BanUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid user ID
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Ban a user
+      tags:
+      - admin
+  /auth/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Sends a password reset link to the email if an account exists.
+        Always returns 200 to prevent email enumeration.
+      parameters:
+      - description: Account email
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_auth.ForgotPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "429":
+          description: Rate limited
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      summary: Request password reset
+      tags:
+      - auth
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates credentials and returns access + refresh tokens.
+      parameters:
+      - description: Login payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_auth.TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "429":
+          description: Rate limited
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      summary: Log in
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Revokes the supplied refresh token.
+      parameters:
+      - description: Refresh token to revoke
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_auth.RefreshRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Log out
+      tags:
+      - auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Exchanges a valid refresh token for a new access + refresh token
+        pair.
+      parameters:
+      - description: Refresh token
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_auth.RefreshRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_auth.TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "401":
+          description: Invalid or expired refresh token
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      summary: Refresh tokens
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Creates a user account and sends an email verification link.
+      parameters:
+      - description: Registration payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_auth.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/internal_auth.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "409":
+          description: Email already in use
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "429":
+          description: Rate limited
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      summary: Register a new account
+      tags:
+      - auth
+  /auth/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Resets the user's password using a one-time token from the reset
+        email.
+      parameters:
+      - description: Reset token and new password
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_auth.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Token invalid, expired, or already used
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      summary: Reset password
+      tags:
+      - auth
+  /auth/verify-email:
+    post:
+      consumes:
+      - application/json
+      description: Marks the user's email as verified using the token sent during
+        registration.
+      parameters:
+      - description: Verification token
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_auth.VerifyEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Token invalid, expired, or already used
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      summary: Verify email address
+      tags:
+      - auth
+  /chapters:
+    get:
+      description: Returns a paginated list of published chapters, optionally filtered
+        by JLPT level.
+      parameters:
+      - description: JLPT level filter
+        enum:
+        - N5
+        - N4
+        - N3
+        - N2
+        - N1
+        in: query
+        name: level
+        type: string
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Results per page (default: 20)'
+        in: query
+        name: per_page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/internal_chapter.ChapterResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List chapters
+      tags:
+      - chapters
+  /chapters/{slug}:
+    get:
+      description: Returns a single chapter with its grammar concepts and cultural
+        insights.
+      parameters:
+      - description: Chapter slug
+        in: path
+        name: slug
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_chapter.ChapterDetailResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get chapter detail
+      tags:
+      - chapters
+  /progress:
+    get:
+      description: Returns a summary of the user's progress across all chapters and
+        vocabulary.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_progress.OverallProgressResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get overall progress
+      tags:
+      - progress
+  /quiz/sessions:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new quiz session of the given type. Optionally scoped
+        to a specific chapter.
+      parameters:
+      - description: Quiz type, optional chapter, card count
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_quiz.StartSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/internal_quiz.SessionResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Start a quiz session
+      tags:
+      - quiz
+  /quiz/sessions/{id}/answers:
+    post:
+      consumes:
+      - application/json
+      description: Submits an answer for one item in an active quiz session. Returns
+        correctness and XP earned.
+      parameters:
+      - description: Quiz session UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Answer payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_quiz.SubmitAnswerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_quiz.AnswerResultResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Submit a quiz answer
+      tags:
+      - quiz
+  /quiz/sessions/{id}/finish:
+    post:
+      description: Marks the quiz session as completed and returns a summary with
+        accuracy and total XP earned.
+      parameters:
+      - description: Quiz session UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_quiz.SessionSummaryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Finish a quiz session
+      tags:
+      - quiz
+  /shop:
+    get:
+      description: Returns all currently available items in the XP shop.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/internal_shop.ShopItemResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List shop items
+      tags:
+      - shop
+  /shop/inventory:
+    get:
+      description: Returns all items the authenticated user has purchased.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/internal_shop.InventoryResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get user inventory
+      tags:
+      - shop
+  /shop/purchase:
+    post:
+      consumes:
+      - application/json
+      description: Spends XP to purchase an item. Returns inventory ID of the new
+        item.
+      parameters:
+      - description: Item ID to purchase
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_shop.PurchaseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_shop.PurchaseResponse'
+        "400":
+          description: Insufficient XP or item unavailable
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Purchase a shop item
+      tags:
+      - shop
+  /srs/due:
+    get:
+      description: Returns cards that are due for review today, ordered by due date.
+        Limit defaults to the user's deck setting.
+      parameters:
+      - description: Maximum number of cards to return
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/internal_srs.CardResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get due SRS cards
+      tags:
+      - srs
+  /srs/due/count:
+    get:
+      description: Returns counts of new cards and review cards due today.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_srs.DueCountResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get due card count
+      tags:
+      - srs
+  /srs/review:
+    post:
+      consumes:
+      - application/json
+      description: Records a review rating (1=Again, 2=Hard, 3=Good, 4=Easy) and reschedules
+        the card using the FSRS algorithm. Awards XP.
+      parameters:
+      - description: Card ID and rating
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_srs.SubmitReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_srs.ReviewResultResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Submit a card review
+      tags:
+      - srs
+  /streak:
+    get:
+      description: Returns the user's current and longest streak, freeze count, and
+        whether the streak is alive today.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_streak.StreakResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get streak
+      tags:
+      - streak
+  /users/me:
+    get:
+      description: Returns the authenticated user's account details.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_user.UserResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get current user
+      tags:
+      - users
+  /users/me/change-password:
+    post:
+      consumes:
+      - application/json
+      description: Changes the authenticated user's password after verifying the current
+        one.
+      parameters:
+      - description: Current and new password
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_user.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Current password incorrect
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Change password
+      tags:
+      - users
+  /users/me/profile:
+    get:
+      description: Returns the authenticated user's public profile (display name,
+        bio, JLPT goal).
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_user.ProfileResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get user profile
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      description: Updates display name, bio, native language, and/or JLPT goal.
+      parameters:
+      - description: Profile fields to update (all optional)
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_user.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update user profile
+      tags:
+      - users
+  /users/me/settings:
+    get:
+      description: Returns the authenticated user's app preferences (daily XP goal,
+        SRS card count, reminders).
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_user.SettingsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get user settings
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      description: Updates one or more app preferences for the authenticated user.
+      parameters:
+      - description: Settings fields to update (all optional)
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_user.UpdateSettingsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update user settings
+      tags:
+      - users
+  /xp:
+    get:
+      description: Returns the user's total XP, current level, XP to next level, and
+        progress percentage.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_xp.XPResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get XP and level
+      tags:
+      - xp
+  /xp/leaderboard:
+    get:
+      description: Returns the global XP leaderboard ranked by total XP.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/internal_xp.LeaderboardEntry'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_fluentfox_api_pkg_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get XP leaderboard
+      tags:
+      - xp
+securityDefinitions:
+  BearerAuth:
+    description: Enter "Bearer <your_access_token>"
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

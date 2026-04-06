@@ -1,28 +1,49 @@
-version: "3.9"
+# docker-compose.yml — local development stack
+# Usage: make dev
 
 services:
+
   postgres:
+    container_name: fluentfox-db
     image: postgres:16-alpine
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: fluentfox
+      POSTGRES_USER:     fluentfox
       POSTGRES_PASSWORD: fluentfox_dev
-      POSTGRES_DB: fluentfox_dev
+      POSTGRES_DB:       fluentfox_dev
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_dev_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5435:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U fluentfox -d fluentfox_dev"]
+      test:     ["CMD-SHELL", "pg_isready -U fluentfox -d fluentfox_dev"]
       interval: 5s
-      timeout: 5s
-      retries: 5
+      timeout:  5s
+      retries:  5
+    networks:
+      - fluentfox-net
+
+  # redis:
+  #   container_name: fluentfox-redis-dev
+  #   image: redis:7-alpine
+  #   restart: unless-stopped
+  #   volumes:
+  #     - redis_dev_data:/data
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - fluentfox-net
 
   api:
+    container_name: fluentfox-services
     build:
-      context: .
+      context:    .
       dockerfile: docker/Dockerfile.dev
+      target:     dev
+    restart: unless-stopped
     volumes:
       - ./:/app
+      - go_mod_cache:/go/pkg/mod
     env_file:
       - .env.development
     ports:
@@ -30,11 +51,14 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-
-  # redis:
-  #   image: redis:7-alpine
-  #   ports:
-  #     - "6379:6379"
+    networks:
+      - fluentfox-net
 
 volumes:
-  postgres_data:
+  postgres_dev_data:
+  go_mod_cache:
+  # redis_dev_data:
+
+networks:
+  fluentfox-net:
+    driver: bridge

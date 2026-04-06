@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS srs_cards (
     id               UUID           PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id          UUID           NOT NULL,
     card_type        srs_card_type  NOT NULL,
-    -- Polymorphic reference — points to INTEGER PK in content tables
-    content_id       INTEGER        NOT NULL,
+    -- Polymorphic reference — points to UUID PK in content tables
+    content_id       UUID           NOT NULL,
     card_face        srs_card_face  NOT NULL,
 
     -- FSRS algorithm state (mirrors fsrs.Card struct)

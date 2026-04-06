@@ -25,6 +25,18 @@ type errorBody struct {
 	Message string `json:"message"`
 }
 
+// ErrorResponse is the JSON envelope for all error responses.
+// Used by Swagger documentation — mirrors the actual wire format.
+type ErrorResponse struct {
+	Error ErrorBody `json:"error"`
+}
+
+// ErrorBody is the structured error detail inside ErrorResponse.
+type ErrorBody struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
 // JSON writes a 200 OK response with the given data wrapped in {"data": ...}.
 func JSON(w http.ResponseWriter, status int, data any) {
 	write(w, status, envelope{"data": data})

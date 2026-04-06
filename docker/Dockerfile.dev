@@ -1,23 +1,22 @@
 # docker/Dockerfile.dev
 # Local development only — NEVER used in production.
-# Installs air for hot reload. Source code is mounted as a volume;
-# no go build happens at image build time.
+# Source is mounted as a volume; air handles hot reload + rebuild.
 
-FROM golang:1.25-alpine
+# Separate deps layer so go mod download is only re-run when go.mod/go.sum change.
+FROM golang:1.25-alpine AS deps
 
 WORKDIR /app
 
-# Install air for hot reload.
 RUN go install github.com/air-verse/air@latest
 
-# Pre-download deps at build time
 COPY go.mod go.sum ./
 RUN go mod download
 
-# create temp if not exit
+# Stage 2
+FROM deps AS dev
+
 RUN mkdir -p tmp
 
-# air watches .go files, rebuilds ./cmd/api, and reruns on changes.
-# The actual source is mounted via docker-compose volume — no COPY here.
-
+# Source is bind-mounted at runtime via docker-compose volume.
+# Air watches .go files, rebuilds ./tmp/server, and reruns on changes.
 CMD ["air", "-c", ".air.toml"]
