@@ -1,10 +1,9 @@
-// internal/auth/repository.go
 package users
 
 import (
 	"context"
-	"errors"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -19,86 +18,83 @@ func UserRepository(pool *pgxpool.Pool) *Repository {
 	return &Repository{pool: pool}
 }
 
-// ExistsByEmail checks if an email is already registered
-func (r *Repository) ExistsByEmail(ctx context.Context, email string) (bool, error) {
-	var exists bool
-	err := r.pool.QueryRow(ctx,
-		`SELECT EXISTS(SELECT 1 FROM users WHERE email = $1 AND is_deleted = FALSE)`,
-		email,
-	).Scan(&exists)
+
+func (r *Repository) CreateUser(
+	ctx context.Context, tx pgx.Tx, email string,
+	username string, passwordHash string, phone_no *string,
+) (uuid.UUID, error) {
+	query := `
+        INSERT INTO users (email, username, password_hash, phone_no) 
+        VALUES ($1, $2, $3, $4) 
+        RETURNING id
+	`
+	
+	var id uuid.UUID
+	err := tx.QueryRow(ctx, query, email, username, passwordHash, phone_no).Scan(&id)
 	if err != nil {
-		return false, fmt.Errorf("auth: check email exists: %w", err)
+		return uuid.Nil, fmt.Errorf("failed to insert user: %w", err)
 	}
-	return exists, nil
+	return id, nil
 }
 
-// Create inserts a new user row and returns the created user
-func (r *Repository) Create(ctx context.Context, user *User) (*User, error) {
+func (r *Repository) CreateProfile(
+	ctx context.Context, tx pgx.Tx, userID uuid.UUID,
+	firstName string, lastName *string, nativeLang string,
+) error {
 	query := `
-		INSERT INTO users (id, username, email, secret_key, phone_no, is_active)
-		VALUES ($1, $2, $3, $4, $5, TRUE)
-		RETURNING id, username, email, phone_no,
-		          is_email_verified, is_admin, is_active,
-		          created_at, updated_at
-	`
-	created := &User{}
-	err := r.pool.QueryRow(ctx, query,
-		user.ID, user.Username, user.Email, user.SecretKey, user.PhoneNo,
-	).Scan(
-		&created.ID, &created.Username, &created.Email, &created.PhoneNo,
-		&created.IsEmailVerified, &created.IsAdmin, &created.IsActive,
-		&created.CreatedAt, &created.UpdatedAt,
-	)
+		INSERT INTO users_profile (user_id, first_name, last_name, native_language)
+		VALUES ($1, $2, $3, $4)`
+	
+	_, err := tx.Exec(ctx, query, userID, firstName, lastName, nativeLang)
 	if err != nil {
-		return nil, fmt.Errorf("auth: create user: %w", err)
+		return fmt.Errorf("failed to insert user profile: %w", err)
 	}
-	return created, nil
+	return nil
 }
 
-// GetByEmail fetches a user by email including hashed password
-func (r *Repository) GetByEmail(ctx context.Context, email string) (*User, error) {
+func (r *Repository) CreateUsersSettings(ctx context.Context, tx pgx.Tx, userID uuid.UUID, current_time_zone *string, reminder_time *time.Time) error {
 	query := `
-		SELECT id, username, email, secret_key, phone_no,
-		       is_email_verified, is_admin, is_active, is_deleted,
-		       created_at, updated_at
-		FROM users
-		WHERE email = $1 AND is_deleted = FALSE
-	`
-	user := &User{}
-	err := r.pool.QueryRow(ctx, query, email).Scan(
-		&user.ID, &user.Username, &user.Email, &user.SecretKey, &user.PhoneNo,
-		&user.IsEmailVerified, &user.IsAdmin, &user.IsActive, &user.IsDeleted,
-		&user.CreatedAt, &user.UpdatedAt,
-	)
+		INSERT INTO users_settings (user_id, current_time_zone, reminder_time)
+		VALUES ($1, $2, $3)`
+	
+	_, err := tx.Exec(ctx, query, userID, current_time_zone, reminder_time)
 	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, ErrInvalidCredentials
-		}
-		return nil, fmt.Errorf("auth: get by email: %w", err)
+		return fmt.Errorf("failed to insert user profile: %w", err)
 	}
-	return user, nil
+	return nil
 }
 
-// GetByID fetches a user by UUID
-func (r *Repository) GetByID(ctx context.Context, id uuid.UUID) (*User, error) {
+func (r *Repository) CreateUserVerification(ctx context.Context, tx pgx.Tx, userID uuid.UUID, hash_code string, expires_at *time.Time) error {
 	query := `
-		SELECT id, username, email, phone_no,
-		       is_email_verified, is_admin, is_active,
-		       created_at, updated_at
-		FROM users
-		WHERE id = $1 AND is_deleted = FALSE
-	`
-	user := &User{}
-	err := r.pool.QueryRow(ctx, query, id).Scan(
-		&user.ID, &user.Username, &user.Email, &user.PhoneNo,
-		&user.IsEmailVerified, &user.IsAdmin, &user.IsActive,
-		&user.CreatedAt, &user.UpdatedAt,
-	)
+		INSERT INTO user_verification (user_id, hash_code, expires_at)
+		VALUES ($1, $2, $3)`
+	
+	_, err := tx.Exec(ctx, query, userID, hash_code, expires_at)
 	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, ErrUserNotFound
-		}
-		return nil, fmt.Errorf("auth: get by id: %w", err)
+		return fmt.Errorf("failed to insert user profile: %w", err)
 	}
-	return user, nil
+	return nil
 }
+
+
+// // 1. Start Transaction
+// tx, err := r.pool.Begin(ctx)
+// if err != nil {
+// 	return err
+// }
+// // 2. Ensure rollback on failure
+// defer tx.Rollback(ctx)
+
+// // 3. Chain the operations
+// userID, err := r.CreateUser(ctx, tx, email)
+// if err != nil {
+// 	return err
+// }
+
+// err = r.CreateProfile(ctx, tx, userID, fName, lName, lang)
+// if err != nil {
+// 	return err
+// }
+
+// // 4. Commit
+// return tx.Commit(ctx)
