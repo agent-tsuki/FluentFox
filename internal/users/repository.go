@@ -18,6 +18,9 @@ func UserRepository(pool *pgxpool.Pool) *Repository {
 	return &Repository{pool: pool}
 }
 
+func (r *Repository) BeginTx(ctx context.Context) (pgx.Tx, error) {
+    return r.pool.Begin(ctx)
+}
 
 func (r *Repository) CreateUser(
 	ctx context.Context, tx pgx.Tx, email string,
@@ -77,24 +80,25 @@ func (r *Repository) CreateUserVerification(ctx context.Context, tx pgx.Tx, user
 }
 
 
-// // 1. Start Transaction
-// tx, err := r.pool.Begin(ctx)
-// if err != nil {
-// 	return err
-// }
-// // 2. Ensure rollback on failure
-// defer tx.Rollback(ctx)
+func (r *Repository) GetExistingUserForEmail(ctx context.Context, email string) (bool, error) {
+    query := `SELECT id, email FROM users WHERE email=$1`
+    var exists bool
+    err := r.pool.QueryRow(ctx, query, email).Scan(&exists)
+    if err != nil {
+        return false, fmt.Errorf("error fetching user for email %s: %w", email, err)
+    }
+    return exists, nil
+}
 
-// // 3. Chain the operations
-// userID, err := r.CreateUser(ctx, tx, email)
-// if err != nil {
-// 	return err
-// }
 
-// err = r.CreateProfile(ctx, tx, userID, fName, lName, lang)
-// if err != nil {
-// 	return err
-// }
-
-// // 4. Commit
-// return tx.Commit(ctx)
+func (r *Repository) GetExistingUserForUsername(ctx context.Context, username string) (bool, error) {
+	query := `
+		SELECT id, username FROM users WHERE email=$1
+	`
+	var exists bool
+	err := r.pool.QueryRow(ctx, query, username).Scan(&exists)
+	if err != nil {
+		return false, fmt.Errorf("Error while fetching user for email %s error: %w", username, err)
+	}
+	return exists, err
+}
