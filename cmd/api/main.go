@@ -31,6 +31,8 @@ import (
 
 	"github.com/fluentfox/api/config"
 	_ "github.com/fluentfox/api/docs"
+	"github.com/fluentfox/api/internal/auth"
+	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/database"
 	"github.com/fluentfox/api/pkg/middleware"
 	"github.com/fluentfox/api/pkg/token"
@@ -69,6 +71,11 @@ func main() {
 	_ = validator.New()
 	_ = tokenMaker
 
+	// ── Handlers ──────────────────────────────────────────────────────────────
+	userRepo := users.UserRepository(pool)
+	authService := auth.NewAuthService(userRepo)
+	authHandler := auth.NewAuthHandler(authService, log)
+
 	// ── Router ─────────────────────────────────────────────────────────────────
 	r := chi.NewRouter()
 
@@ -80,6 +87,11 @@ func main() {
 	r.Get("/swagger/*", httpSwagger.Handler(
 		httpSwagger.URL("/swagger/doc.json"),
 	))
+
+	// Auth routes
+	r.Route("/auth", func(r chi.Router) {
+		r.Post("/register", authHandler.Register)
+	})
 
 	// Health check
 	r.Get("/health", func(w http.ResponseWriter, req *http.Request) {

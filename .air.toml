@@ -2,7 +2,7 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-  cmd = "sh -c 'go build -o ./tmp/server ./cmd/api 2>./tmp/build-errors.log'"
+  cmd = "sh -c 'go build -o ./tmp/server ./cmd/api 2>&1 | tee ./tmp/build-errors.log'"
   entrypoint = "./tmp/server"
   delay = 1000
   exclude_dir = ["vendor", "tmp", "db/migrations", "content", "node_modules"]

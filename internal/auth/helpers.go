@@ -2,7 +2,9 @@ package auth
 
 import (
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"fmt"
 	"math/big"
 
@@ -93,4 +95,9 @@ func generateString(length int) (string, error) {
         result[i] = common.CHARSET[n.Int64()]
     }
 	return string(result), nil
+}
+
+func hashVerificationToken(token string) string {
+    h := sha256.Sum256([]byte(token))
+    return hex.EncodeToString(h[:])
 }

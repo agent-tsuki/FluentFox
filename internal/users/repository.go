@@ -92,13 +92,11 @@ func (r *Repository) GetExistingUserForEmail(ctx context.Context, email string) 
 
 
 func (r *Repository) GetExistingUserForUsername(ctx context.Context, username string) (bool, error) {
-	query := `
-		SELECT id, username FROM users WHERE email=$1
-	`
+	query := `SELECT EXISTS(SELECT 1 FROM users WHERE username=$1)`
 	var exists bool
 	err := r.pool.QueryRow(ctx, query, username).Scan(&exists)
 	if err != nil {
-		return false, fmt.Errorf("Error while fetching user for email %s error: %w", username, err)
+		return false, fmt.Errorf("error fetching user for username %s: %w", username, err)
 	}
-	return exists, err
+	return exists, nil
 }

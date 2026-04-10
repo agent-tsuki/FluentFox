@@ -17,13 +17,18 @@ type AuthService struct {
 	userRepo *users.Repository
 	argon  Argon2Config
 	tokenService *TokenService
-	
-
 }
 
 type TokenService struct {
 	userRepo *users.Repository
 	argon  Argon2Config
+}
+
+func NewAuthService(userRepo *users.Repository) *AuthService {
+	argon := Argon2Config{}
+	cfg := argon.defaultConfig()
+	ts := &TokenService{userRepo: userRepo, argon: cfg}
+	return &AuthService{userRepo: userRepo, argon: cfg, tokenService: ts}
 }
 
 
@@ -173,21 +178,15 @@ func (s *AuthService) generateUsername(firstName string, lastName *string) (stri
     return fmt.Sprintf("%s%s", firstName, suffix) , nil
 }
 
-func (t *TokenService) generateAuthToken() (map[string]string, error){
-	tokenData := make(map[string]string)
-	// generate token
-	token, err := generateString(common.AUTH_TOKEN_LEN)
-	if err != nil{
-		return tokenData, err
-	}
-
-	hashToken, err := t.argon.hashedString(token)
-	if err != nil{
-		return tokenData, err
-	}
-	tokenData["token"] = token
-	tokenData["hashed"] = hashToken
-	return  tokenData, err
+func (t *TokenService) generateAuthToken() (map[string]string, error) {
+    token, err := generateString(common.AUTH_TOKEN_LEN)
+    if err != nil {
+        return nil, err
+    }
+    return map[string]string{
+        "token":  token,
+        "hashed": hashVerificationToken(token),
+    }, nil
 }
 
 func (t *TokenService) authTokenExpireTime() time.Time {
