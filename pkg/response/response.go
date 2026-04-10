@@ -6,6 +6,9 @@ package response
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/fluentfox/api/pkg/exceptions"
+	"go.uber.org/zap"
 )
 
 // envelope is the outer wrapper for all API responses.
@@ -94,6 +97,18 @@ func Conflict(w http.ResponseWriter, message string) {
 func TooManyRequests(w http.ResponseWriter, retryAfterSeconds int) {
 	w.Header().Set("Retry-After", string(rune('0'+retryAfterSeconds)))
 	Error(w, http.StatusTooManyRequests, "RATE_LIMITED", "too many requests — please slow down")
+}
+
+// HandleError is the central error dispatcher for all HTTP handlers.
+// If err is (or wraps) an *exceptions.AppError, it writes the correct status + JSON body.
+// Any other error is treated as an internal server error: logged and returned as 500.
+func HandleError(w http.ResponseWriter, err error, log *zap.Logger) {
+	if appErr, ok := exceptions.As(err); ok {
+		Error(w, appErr.Status, appErr.Code, appErr.Message)
+		return
+	}
+	log.Error("unhandled internal error", zap.Error(err))
+	InternalServerError(w)
 }
 
 // write marshals the envelope to JSON and writes it to the response writer.

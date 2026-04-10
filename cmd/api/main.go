@@ -31,8 +31,8 @@ import (
 
 	"github.com/fluentfox/api/config"
 	_ "github.com/fluentfox/api/docs"
-	"github.com/fluentfox/api/internal/middleware"
 	"github.com/fluentfox/api/pkg/database"
+	"github.com/fluentfox/api/pkg/middleware"
 	"github.com/fluentfox/api/pkg/token"
 	"github.com/fluentfox/api/pkg/validator"
 )

@@ -81,7 +81,7 @@ func (r *Repository) CreateUserVerification(ctx context.Context, tx pgx.Tx, user
 
 
 func (r *Repository) GetExistingUserForEmail(ctx context.Context, email string) (bool, error) {
-    query := `SELECT id, email FROM users WHERE email=$1`
+    query := `SELECT EXISTS(SELECT 1 FROM users WHERE email=$1)`
     var exists bool
     err := r.pool.QueryRow(ctx, query, email).Scan(&exists)
     if err != nil {
