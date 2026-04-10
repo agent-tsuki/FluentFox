@@ -9,6 +9,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/danielgtaylor/huma/v2"
+	"github.com/danielgtaylor/huma/v2/adapters/humagin"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
@@ -75,13 +77,17 @@ func main() {
 	r.Use(middleware.Logger(log))
 	r.Use(otelgin.Middleware("fluentfox-api"))
 
+	// Huma wraps the Gin router to provide automatic OpenAPI 3.1 spec + docs UI.
+	// Plain Gin routes (health, metrics) registered on r still work alongside it.
+	api := humagin.New(r, huma.DefaultConfig("FluentFox API", "1.0.0"))
+
 	// Domain routes — add new domains here
 	authHandler := auth.NewHandler(
 		auth.NewAuthService(userRepo),
 		auth.NewTokenVerificationService(userRepo, log),
 		log, v,
 	)
-	auth.RegisterRoutes(r, authHandler)
+	auth.RegisterRoutes(api, authHandler)
 
 	// Health check
 	r.GET("/health", func(c *gin.Context) {

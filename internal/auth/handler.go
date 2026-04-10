@@ -1,11 +1,10 @@
 package auth
 
 import (
-	"net/http"
+	"context"
 
-	"github.com/gin-gonic/gin"
+	"github.com/fluentfox/api/pkg/humautil"
 	"github.com/fluentfox/api/pkg/middleware"
-	"github.com/fluentfox/api/pkg/response"
 	"github.com/fluentfox/api/pkg/validator"
 	"go.uber.org/zap"
 )
@@ -26,42 +25,32 @@ func NewHandler(authService *AuthService, verifyService *TokenVerificationServic
 	}
 }
 
-// POST /auth/register
-func (h *Handler) AuthRegister(c *gin.Context) {
-	log := middleware.LoggerFromContext(c.Request.Context(), h.logger)
-
-	var req RegisterRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		response.BadRequest(c.Writer, "invalid request body")
-		return
-	}
-	if err := h.validate.Validate(req); err != nil {
-		response.HandleError(c.Writer, err, log)
-		return
-	}
-	if err := h.authService.registerUser(c.Request.Context(), req); err != nil {
-		response.HandleError(c.Writer, err, log)
-		return
-	}
-	response.JSON(c.Writer, http.StatusCreated, map[string]string{
-		"message": "registration successful, check your email to verify",
-	})
+type AuthVerifyInput struct {
+	Token string `query:"token" doc:"Email verification token sent to the user's inbox"`
 }
 
-// POST /auth/verify?token=<token>
-func (h *Handler) AuthVerify(c *gin.Context) {
-	log := middleware.LoggerFromContext(c.Request.Context(), h.logger)
+// AuthRegister handles POST /auth/register.
+func (h *Handler) AuthRegister(ctx context.Context, input *humautil.Input[RegisterRequest]) (*humautil.Output[humautil.MessageBody], error) {
+	log := middleware.LoggerFromContext(ctx, h.logger)
 
-	token := c.Query("token")
-	if token == "" {
-		response.BadRequest(c.Writer, "token is required")
-		return
+	if err := h.authService.registerUser(ctx, input.Body); err != nil {
+		return nil, humautil.MapErr(err, log)
 	}
-	if err := h.verifyService.VerifyUserToken(c.Request.Context(), token); err != nil {
-		response.HandleError(c.Writer, err, log)
-		return
+
+	return &humautil.Output[humautil.MessageBody]{
+		Body: humautil.MessageBody{Message: "registration successful, check your email to verify"},
+	}, nil
+}
+
+// AuthVerify handles POST /auth/verify?token=<token>.
+func (h *Handler) AuthVerify(ctx context.Context, input *AuthVerifyInput) (*humautil.Output[humautil.MessageBody], error) {
+	log := middleware.LoggerFromContext(ctx, h.logger)
+
+	if err := h.verifyService.VerifyUserToken(ctx, input.Token); err != nil {
+		return nil, humautil.MapErr(err, log)
 	}
-	response.JSON(c.Writer, http.StatusOK, map[string]string{
-		"message": "email verified successfully",
-	})
+
+	return &humautil.Output[humautil.MessageBody]{
+		Body: humautil.MessageBody{Message: "email verified successfully"},
+	}, nil
 }
