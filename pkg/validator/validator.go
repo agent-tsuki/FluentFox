@@ -1,6 +1,6 @@
-// Package validator wraps go-playground/validator with a convenience API.
-// Handlers call Validate(struct) and receive either nil or a human-readable
-// error string describing which fields failed and why.
+// Package validator wraps go-playground/validator with a structured error API.
+// Handlers call Validate(struct) and receive either nil or a *ValidationError
+// containing per-field details suitable for JSON API responses.
 package validator
 
 import (
@@ -10,6 +10,26 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// FieldError describes a single field-level validation failure.
+type FieldError struct {
+	Field   string `json:"field"`
+	Message string `json:"message"`
+}
+
+// ValidationError is returned by Validate when one or more fields fail.
+// It implements the error interface so it can flow through HandleError.
+type ValidationError struct {
+	Fields []FieldError
+}
+
+func (e *ValidationError) Error() string {
+	msgs := make([]string, len(e.Fields))
+	for i, f := range e.Fields {
+		msgs[i] = f.Field + ": " + f.Message
+	}
+	return strings.Join(msgs, "; ")
+}
+
 // Validator wraps the go-playground validator instance.
 // Create one with New() and reuse it for the application lifetime.
 type Validator struct {
@@ -18,46 +38,46 @@ type Validator struct {
 
 // New returns an initialised Validator. Register any custom validators here.
 func New() *Validator {
-	v := validator.New()
-	return &Validator{v: v}
+	return &Validator{v: validator.New()}
 }
 
 // Validate checks the struct pointed to by s against its `validate:` tags.
-// Returns nil on success or a descriptive error message suitable for API responses.
+// Returns nil on success, *ValidationError on field failures, or a plain error
+// for unexpected internal failures.
 func (vl *Validator) Validate(s any) error {
 	err := vl.v.Struct(s)
 	if err == nil {
 		return nil
 	}
 
-	var errs validator.ValidationErrors
-	if ok := strings.Contains(err.Error(), "Key:"); !ok {
+	valErrs, ok := err.(validator.ValidationErrors)
+	if !ok {
 		return fmt.Errorf("validation: %w", err)
 	}
 
-	_ = errs
-	var messages []string
-	for _, fe := range err.(validator.ValidationErrors) {
-		messages = append(messages, fieldError(fe))
+	fields := make([]FieldError, 0, len(valErrs))
+	for _, fe := range valErrs {
+		fields = append(fields, FieldError{
+			Field:   strings.ToLower(fe.Field()),
+			Message: fieldMessage(fe),
+		})
 	}
-	return fmt.Errorf("%s", strings.Join(messages, "; "))
+	return &ValidationError{Fields: fields}
 }
 
-// fieldError converts a single validation failure into a readable sentence.
-func fieldError(fe validator.FieldError) string {
-	field := strings.ToLower(fe.Field())
+func fieldMessage(fe validator.FieldError) string {
 	switch fe.Tag() {
 	case "required":
-		return fmt.Sprintf("%s is required", field)
+		return "is required"
 	case "email":
-		return fmt.Sprintf("%s must be a valid email address", field)
+		return "must be a valid email address"
 	case "min":
-		return fmt.Sprintf("%s must be at least %s characters long", field, fe.Param())
+		return fmt.Sprintf("must be at least %s characters long", fe.Param())
 	case "max":
-		return fmt.Sprintf("%s must be at most %s characters long", field, fe.Param())
+		return fmt.Sprintf("must be at most %s characters long", fe.Param())
 	case "oneof":
-		return fmt.Sprintf("%s must be one of: %s", field, fe.Param())
+		return fmt.Sprintf("must be one of: %s", fe.Param())
 	default:
-		return fmt.Sprintf("%s failed validation: %s", field, fe.Tag())
+		return fmt.Sprintf("failed validation: %s", fe.Tag())
 	}
 }

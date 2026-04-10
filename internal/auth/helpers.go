@@ -2,11 +2,10 @@ package auth
 
 import (
 	"crypto/rand"
-	"crypto/sha256"
 	"encoding/base64"
-	"encoding/hex"
 	"fmt"
 	"math/big"
+	"reflect"
 
 	"golang.org/x/crypto/argon2"
 
@@ -97,7 +96,31 @@ func generateString(length int) (string, error) {
 	return string(result), nil
 }
 
-func hashVerificationToken(token string) string {
-    h := sha256.Sum256([]byte(token))
-    return hex.EncodeToString(h[:])
+func GenerateHashedToken(length int) (string, error) {
+	randomBytes := make([]byte, length)
+
+	_, err := rand.Read(randomBytes)
+	if err != nil{
+		return "", err
+	}
+
+	// Encoding random byte to base64
+	randomString := base64.URLEncoding.EncodeToString(randomBytes)
+	
+	return randomString, nil
+}
+
+
+
+func UniversalInvoke(fn any, args ...any) {
+	v := reflect.ValueOf(fn)
+	
+	// Convert our []any into []reflect.Value
+	inputs := make([]reflect.Value, len(args))
+	for i, arg := range args {
+		inputs[i] = reflect.ValueOf(arg)
+	}
+
+	// Call the function
+	v.Call(inputs)
 }

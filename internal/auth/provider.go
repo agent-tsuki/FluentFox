@@ -1,7 +1,5 @@
 package auth
 
-
-func mailServer(){
-	// TODO: Write malign service
-	// sample mailing service 
-}
+// TODO: implement email dispatch for verification and password-reset flows.
+// The pkg/mailer package (Resend) is already wired — inject it into the
+// relevant service and call it after CreateUserVerification succeeds.

@@ -1,49 +1,67 @@
 package auth
 
 import (
-	"encoding/json"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
+	"github.com/fluentfox/api/pkg/middleware"
 	"github.com/fluentfox/api/pkg/response"
+	"github.com/fluentfox/api/pkg/validator"
 	"go.uber.org/zap"
 )
 
-type AuthHandler struct {
-	service *AuthService
-	logger     *zap.Logger
+type Handler struct {
+	authService   *AuthService
+	verifyService *TokenVerificationService
+	logger        *zap.Logger
+	validate      *validator.Validator
 }
 
-func NewAuthHandler(service *AuthService, log *zap.Logger) *AuthHandler {
-	return &AuthHandler{service: service, logger: log}
+func NewHandler(authService *AuthService, verifyService *TokenVerificationService, log *zap.Logger, v *validator.Validator) *Handler {
+	return &Handler{
+		authService:   authService,
+		verifyService: verifyService,
+		logger:        log,
+		validate:      v,
+	}
 }
 
-// Register godoc                                                                                                                                                                           
-// @Summary      Register a new user                                                                                                                                                        
-// @Description  Creates a new user account and sends a verification email                                                                                                                  
-// @Tags         auth                                                                                                                                                                       
-// @Accept       json                                                                                                                                                                       
-// @Produce      json                                                                                                                                                                       
-// @Param        request  body      RegisterRequest  true  "Registration payload"                                                                                                           
-// @Success      201      {object}  map[string]string                                                                                                                                       
-// @Failure      400      {object}  response.ErrorResponse                                                                                                                                  
-// @Failure      409      {object}  response.ErrorResponse                                                                                                                                  
-// @Failure      422      {object}  response.ErrorResponse                                                                                                                                  
-// @Failure      500      {object}  response.ErrorResponse                                                                                                                                  
-// @Router       /auth/register [post] 
-func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
-	h.logger.Info("Registering new user ")
+// POST /auth/register
+func (h *Handler) AuthRegister(c *gin.Context) {
+	log := middleware.LoggerFromContext(c.Request.Context(), h.logger)
+
 	var req RegisterRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		response.BadRequest(w, "invalid request body")
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.BadRequest(c.Writer, "invalid request body")
 		return
 	}
-
-	if err := h.service.registerUser(r.Context(), req); err != nil {
-		response.HandleError(w, err, h.logger)
+	if err := h.validate.Validate(req); err != nil {
+		response.HandleError(c.Writer, err, log)
 		return
 	}
-
-	response.JSON(w, http.StatusCreated, map[string]string{
+	if err := h.authService.registerUser(c.Request.Context(), req); err != nil {
+		response.HandleError(c.Writer, err, log)
+		return
+	}
+	response.JSON(c.Writer, http.StatusCreated, map[string]string{
 		"message": "registration successful, check your email to verify",
+	})
+}
+
+// POST /auth/verify?token=<token>
+func (h *Handler) AuthVerify(c *gin.Context) {
+	log := middleware.LoggerFromContext(c.Request.Context(), h.logger)
+
+	token := c.Query("token")
+	if token == "" {
+		response.BadRequest(c.Writer, "token is required")
+		return
+	}
+	if err := h.verifyService.VerifyUserToken(c.Request.Context(), token); err != nil {
+		response.HandleError(c.Writer, err, log)
+		return
+	}
+	response.JSON(c.Writer, http.StatusOK, map[string]string{
+		"message": "email verified successfully",
 	})
 }

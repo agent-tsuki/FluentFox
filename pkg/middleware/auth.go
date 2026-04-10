@@ -1,77 +1,69 @@
-// Package middleware — auth.go.
+// Package middleware — auth.go
 // RequireAuth validates the JWT in the Authorization header and injects
-// the parsed Claims into the request context. Downstream handlers and services
-// retrieve the authenticated user via ContextUserID / ContextUserRole.
+// parsed Claims into both the Gin context and the request context so
+// downstream services can read them via ContextUserID etc.
 package middleware
 
 import (
 	"context"
-	"net/http"
 	"strings"
 
+	"github.com/gin-gonic/gin"
 	"github.com/fluentfox/api/pkg/response"
 	"github.com/fluentfox/api/pkg/token"
 	"github.com/google/uuid"
 )
 
-// RequireAuth returns a middleware that enforces a valid JWT access token.
-// It reads the token from the "Authorization: Bearer <token>" header.
-// On success it injects the user_id and role into the request context.
-// On failure it writes 401 and stops the chain.
-func RequireAuth(maker *token.Maker) func(http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			authHeader := r.Header.Get("Authorization")
-			if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
-				response.Unauthorized(w, "missing or malformed Authorization header")
-				return
-			}
-
-			raw := strings.TrimPrefix(authHeader, "Bearer ")
-			claims, err := maker.ValidateAccessToken(raw)
-			if err != nil {
-				response.Unauthorized(w, "invalid or expired access token")
-				return
-			}
-
-			ctx := context.WithValue(r.Context(), contextUserIDKey, claims.UserID)
-			ctx = context.WithValue(ctx, contextUserRoleKey, claims.Role)
-			ctx = context.WithValue(ctx, contextEmailVerifiedKey, claims.EmailVerified)
-
-			// Enrich the request-scoped logger with user_id.
-			if l, ok := ctx.Value(loggerKey).(interface {
-				With(...interface{}) interface{}
-			}); ok {
-				_ = l
-			}
-
-			next.ServeHTTP(w, r.WithContext(ctx))
-		})
-	}
-}
-
-// RequireEmailVerified is a middleware that rejects requests from users
-// whose email address has not been verified yet.
-func RequireEmailVerified(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if !ContextEmailVerified(r.Context()) {
-			response.Forbidden(w)
-			return
-		}
-		next.ServeHTTP(w, r)
-	})
-}
-
 type authContextKey string
 
 const (
-	contextUserIDKey       authContextKey = "auth_user_id"
-	contextUserRoleKey     authContextKey = "auth_user_role"
+	contextUserIDKey        authContextKey = "auth_user_id"
+	contextUserRoleKey      authContextKey = "auth_user_role"
 	contextEmailVerifiedKey authContextKey = "auth_email_verified"
 )
 
+// RequireAuth enforces a valid JWT access token.
+func RequireAuth(maker *token.Maker) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
+			response.Unauthorized(c.Writer, "missing or malformed Authorization header")
+			c.Abort()
+			return
+		}
+
+		raw := strings.TrimPrefix(authHeader, "Bearer ")
+		claims, err := maker.ValidateAccessToken(raw)
+		if err != nil {
+			response.Unauthorized(c.Writer, "invalid or expired access token")
+			c.Abort()
+			return
+		}
+
+		// Inject into stdlib context so services can read via ContextUserID(ctx).
+		ctx := context.WithValue(c.Request.Context(), contextUserIDKey, claims.UserID)
+		ctx = context.WithValue(ctx, contextUserRoleKey, claims.Role)
+		ctx = context.WithValue(ctx, contextEmailVerifiedKey, claims.EmailVerified)
+		c.Request = c.Request.WithContext(ctx)
+
+		c.Next()
+	}
+}
+
+// RequireEmailVerified rejects requests from users whose email is not verified.
+// Must run after RequireAuth.
+func RequireEmailVerified() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if !ContextEmailVerified(c.Request.Context()) {
+			response.Forbidden(c.Writer)
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
+}
+
 // ContextUserID extracts the authenticated user ID from the context.
-// Returns uuid.Nil if the user is not authenticated.
 func ContextUserID(ctx context.Context) uuid.UUID {
 	if id, ok := ctx.Value(contextUserIDKey).(uuid.UUID); ok {
 		return id

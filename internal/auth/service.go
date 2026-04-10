@@ -4,195 +4,175 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/fluentfox/api/internal/common"
-	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/exceptions"
-	"github.com/jackc/pgx/v5"
+	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
-
 type AuthService struct {
-	userRepo *users.Repository
-	argon  Argon2Config
+	userRepo     UserRepo
+	argon        Argon2Config
 	tokenService *TokenService
 }
 
 type TokenService struct {
-	userRepo *users.Repository
-	argon  Argon2Config
+	argon Argon2Config
 }
 
-func NewAuthService(userRepo *users.Repository) *AuthService {
+type TokenVerificationService struct {
+	userRepo UserRepo
+	logger   *zap.Logger
+}
+
+func NewTokenVerificationService(userRepo UserRepo, log *zap.Logger) *TokenVerificationService {
+	return &TokenVerificationService{userRepo: userRepo, logger: log}
+}
+
+func NewAuthService(userRepo UserRepo) *AuthService {
 	argon := Argon2Config{}
 	cfg := argon.defaultConfig()
-	ts := &TokenService{userRepo: userRepo, argon: cfg}
+	ts := &TokenService{argon: cfg}
 	return &AuthService{userRepo: userRepo, argon: cfg, tokenService: ts}
 }
 
-
-func (s *AuthService) registerUser(ctx context.Context, req RegisterRequest) error{
-	// validating if email and username allergy exist in db
-	err := s.validateUserCredential(ctx, &req)
-	if err != nil{
+func (s *AuthService) registerUser(ctx context.Context, req RegisterRequest) error {
+	if err := s.validateUserCredential(ctx, &req); err != nil {
 		return err
 	}
 
-	// Generate and Hash token 
-	hashedData, err := s.tokenService.generateAuthToken()
+	hashedToken, err := s.tokenService.generateAuthToken()
 	if err != nil {
 		return err
 	}
 
 	hashPassword, err := s.argon.hashedString(req.Password)
-	if err != nil{
-		return err
-	}
-
-	// Start Transaction
-	tx, err := s.userRepo.BeginTx(ctx)
 	if err != nil {
 		return err
 	}
 
-	defer tx.Rollback(ctx)
-
-	// Create user data
-	createUserErr := s.createUser(ctx, tx, hashPassword, hashedData["hashed"], req)
-	if createUserErr != nil{
-		// log here
-		return createUserErr
-	}
-
-	// commit changes to db
-	err = tx.Commit(ctx)
-	if err != nil{
-		return  err
-	}
-
-
-	// send mail this place holder actual mail service yet to register
-	mailServer()
-
-	return nil
-
+	return s.userRepo.Transaction(ctx, func(tx *gorm.DB) error {
+		return s.createUser(ctx, tx, hashPassword, hashedToken, req)
+	})
 }
 
-func (s *AuthService) createUser(ctx context.Context, tx pgx.Tx, hashPassword string, hashedToken string, req RegisterRequest) error{
-	// create user 
+func (s *AuthService) createUser(ctx context.Context, tx *gorm.DB, hashPassword, hashedToken string, req RegisterRequest) error {
 	userID, err := s.userRepo.CreateUser(ctx, tx, req.Email, *req.UserName, hashPassword, req.PhoneNumber)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
-	// create profile
-	// TODO: newNativeLang is place holder if user not provide we will get from location
-	newNativeLang := "india" 
-	profileErr := s.userRepo.CreateProfile(ctx, tx, userID, req.FirstName, req.LastName, newNativeLang)
-	if profileErr != nil{
-		return profileErr
+	if err := s.userRepo.CreateProfile(ctx, tx, userID, req.FirstName, req.LastName, req.NativeLang); err != nil {
+		return err
 	}
 
-	// create use settings
-	settingErr := s.userRepo.CreateUsersSettings(ctx, tx, userID, nil, nil)
-	if settingErr != nil{
-		return settingErr
+	if err := s.userRepo.CreateUsersSettings(ctx, tx, userID, nil, nil); err != nil {
+		return err
 	}
 
-	// create verification
 	tokenExpireAt := s.tokenService.authTokenExpireTime()
-	verificationErr := s.userRepo.CreateUserVerification(ctx, tx, userID, hashedToken, &tokenExpireAt)
-	if verificationErr != nil{
-		return verificationErr
+	if err := s.userRepo.CreateUserVerification(ctx, tx, userID, hashedToken, &tokenExpireAt); err != nil {
+		return err
 	}
 
 	return nil
 }
-
 
 func (s *AuthService) validateUserCredential(ctx context.Context, req *RegisterRequest) error {
-	// check user email
 	exist, err := s.userRepo.GetExistingUserForEmail(ctx, req.Email)
-
 	if err != nil {
-		return exceptions.Wrap(500, "INTERNAL_ERROR", "error while fetching email", err)
+		return exceptions.Wrap(http.StatusInternalServerError, "INTERNAL_ERROR", "error while fetching email", err)
 	}
-
 	if exist {
 		return exceptions.ErrEmailAlreadyInUse
 	}
 
-	// check user name if given
 	if req.UserName != nil {
 		exist, err := s.userRepo.GetExistingUserForUsername(ctx, *req.UserName)
 		if err != nil {
-			return exceptions.Wrap(500, "INTERNAL_ERROR", "error while fetching username", err)
+			return exceptions.Wrap(http.StatusInternalServerError, "INTERNAL_ERROR", "error while fetching username", err)
 		}
-
 		if exist {
 			return exceptions.ErrUsernameAlreadyInUse
 		}
 	} else {
-		generatedUserName, err := s.getGenerateUsername(ctx, *req)
+		generated, err := s.getGenerateUsername(ctx, *req)
 		if err != nil {
-			return errors.New("Error while generating username")
+			return errors.New("error while generating username")
 		}
-		req.UserName = &generatedUserName
+		req.UserName = &generated
 	}
 
 	return nil
 }
 
 func (s *AuthService) getGenerateUsername(ctx context.Context, req RegisterRequest) (string, error) {
-	for i:=0; i<common.USERNAME_RETRY; i++  {
-		newUsername, err := s.generateUsername(req.FirstName, req.LastName)
-		if err != nil{
-			// Will be here logs
+	for i := 0; i < common.USERNAME_RETRY; i++ {
+		username, err := s.generateUsername(req.FirstName, req.LastName)
+		if err != nil {
 			continue
 		}
-		exist, err := s.userRepo.GetExistingUserForUsername(ctx, newUsername)
-		if err != nil{
-			// if we are not able to fetch user name due to error 
-			// we will try for some time, before return error
+		exist, err := s.userRepo.GetExistingUserForUsername(ctx, username)
+		if err != nil {
 			continue
 		}
-
-		if !exist{
-			// we will log there
-			return newUsername, nil
+		if !exist {
+			return username, nil
 		}
 	}
-
-	return  "", errors.New("Username not generated try again")
+	return "", errors.New("username not generated, try again")
 }
 
 func (s *AuthService) generateUsername(firstName string, lastName *string) (string, error) {
 	suffix, err := generateString(common.USERNAME_SUFFIX_LEN)
 	if err != nil {
-		return  suffix, err
+		return "", err
 	}
-	if lastName != nil{
-		return fmt.Sprintf("%s%s%s", firstName, *lastName, suffix) , nil
+	if lastName != nil {
+		return fmt.Sprintf("%s%s%s", firstName, *lastName, suffix), nil
 	}
-    return fmt.Sprintf("%s%s", firstName, suffix) , nil
+	return fmt.Sprintf("%s%s", firstName, suffix), nil
 }
 
-func (t *TokenService) generateAuthToken() (map[string]string, error) {
-    token, err := generateString(common.AUTH_TOKEN_LEN)
-    if err != nil {
-        return nil, err
-    }
-    return map[string]string{
-        "token":  token,
-        "hashed": hashVerificationToken(token),
-    }, nil
+func (t *TokenService) generateAuthToken() (string, error) {
+	return GenerateHashedToken(common.AUTH_TOKEN_LEN)
 }
 
 func (t *TokenService) authTokenExpireTime() time.Time {
-	// current time
-	currentTime := time.Now().UTC()
+	return time.Now().UTC().Add(time.Duration(common.AUTH_TOKEN_EXPIRE_HOUR) * time.Hour)
+}
 
-	// Time when token expire
-	return currentTime.Add(time.Duration(common.AUTH_TOKEN_EXPIRE_HOUR) * time.Hour)
+func (t *TokenVerificationService) VerifyUserToken(ctx context.Context, token string) error {
+	if token == "" {
+		return exceptions.ErrBadRequest
+	}
+
+	fetchedData, err := t.userRepo.GetVerificationToken(ctx, token)
+	if err != nil {
+		return exceptions.Wrap(http.StatusNotFound, "RESOURCE_NOT_FOUND", "error fetching token from db", err)
+	}
+
+	if fetchedData.ExpiresAt.IsZero() {
+		return exceptions.Wrap(http.StatusBadRequest, "INVALID_TOKEN", "token has no expiry date", nil)
+	}
+
+	if err := t.ValidateTokenExpiryTime(fetchedData.ExpiresAt); err != nil {
+		return err
+	}
+
+	if fetchedData.VerifiedAt != nil {
+		return exceptions.ErrBadRequest
+	}
+
+	return t.userRepo.UpdateVerificationToken(ctx, time.Now().UTC(), token)
+}
+
+func (t *TokenVerificationService) ValidateTokenExpiryTime(expiryTime time.Time) error {
+	if time.Now().UTC().After(expiryTime) {
+		return exceptions.ErrStatusGone
+	}
+	return nil
 }

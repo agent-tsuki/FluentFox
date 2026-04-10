@@ -1,13 +1,13 @@
-// Package middleware provides HTTP middleware for chi.
-// logger.go generates a UUID request_id per request, injects it into context,
-// and logs method, path, status, latency, and request_id using zap.
+// Package middleware — logger.go
+// Generates a UUID request_id per request, injects it into the stdlib context,
+// and logs method, path, status, and latency using zap after the handler returns.
 package middleware
 
 import (
 	"context"
-	"net/http"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
@@ -17,7 +17,6 @@ type contextKey string
 const (
 	requestIDKey contextKey = "request_id"
 	loggerKey    contextKey = "logger"
-	userIDKey    contextKey = "user_id"
 )
 
 // RequestIDFromContext extracts the request ID from the context.
@@ -28,8 +27,7 @@ func RequestIDFromContext(ctx context.Context) string {
 	return ""
 }
 
-// LoggerFromContext extracts the enriched zap logger from the context.
-// Falls back to the base logger if none is set.
+// LoggerFromContext returns the per-request zap logger, falling back to base.
 func LoggerFromContext(ctx context.Context, base *zap.Logger) *zap.Logger {
 	if l, ok := ctx.Value(loggerKey).(*zap.Logger); ok {
 		return l
@@ -37,48 +35,28 @@ func LoggerFromContext(ctx context.Context, base *zap.Logger) *zap.Logger {
 	return base
 }
 
-// responseWriter wraps http.ResponseWriter to capture the status code.
-type responseWriter struct {
-	http.ResponseWriter
-	status int
-	written bool
-}
+// Logger attaches a request_id and enriched logger to every request,
+// then logs the completed request after the handler chain returns.
+func Logger(base *zap.Logger) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		requestID := uuid.NewString()
+		start := time.Now()
 
-func (rw *responseWriter) WriteHeader(status int) {
-	if !rw.written {
-		rw.status = status
-		rw.written = true
-	}
-	rw.ResponseWriter.WriteHeader(status)
-}
+		reqLogger := base.With(zap.String("request_id", requestID))
 
-// Logger returns a middleware that:
-//   - Generates a UUID request_id and injects it into the context.
-//   - Attaches an enriched zap.Logger (with request_id field) to the context.
-//   - Logs method, path, status, latency, and request_id after the handler returns.
-func Logger(base *zap.Logger) func(http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			requestID := uuid.NewString()
-			start := time.Now()
+		ctx := context.WithValue(c.Request.Context(), requestIDKey, requestID)
+		ctx = context.WithValue(ctx, loggerKey, reqLogger)
+		c.Request = c.Request.WithContext(ctx)
+		c.Header("X-Request-ID", requestID)
 
-			reqLogger := base.With(zap.String("request_id", requestID))
+		c.Next()
 
-			ctx := context.WithValue(r.Context(), requestIDKey, requestID)
-			ctx = context.WithValue(ctx, loggerKey, reqLogger)
-
-			wrapped := &responseWriter{ResponseWriter: w, status: http.StatusOK}
-			w.Header().Set("X-Request-ID", requestID)
-
-			next.ServeHTTP(wrapped, r.WithContext(ctx))
-
-			reqLogger.Info("request",
-				zap.String("method", r.Method),
-				zap.String("path", r.URL.Path),
-				zap.Int("status", wrapped.status),
-				zap.Duration("latency", time.Since(start)),
-				zap.String("remote_addr", r.RemoteAddr),
-			)
-		})
+		reqLogger.Info("request",
+			zap.String("method", c.Request.Method),
+			zap.String("path", c.Request.URL.Path),
+			zap.Int("status", c.Writer.Status()),
+			zap.Duration("latency", time.Since(start)),
+			zap.String("remote_addr", c.ClientIP()),
+		)
 	}
 }

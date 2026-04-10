@@ -5,9 +5,12 @@ package response
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
+	"strconv"
 
 	"github.com/fluentfox/api/pkg/exceptions"
+	"github.com/fluentfox/api/pkg/validator"
 	"go.uber.org/zap"
 )
 
@@ -22,10 +25,17 @@ type Meta struct {
 	Total      int `json:"total,omitempty"`
 }
 
-// errorBody is the shape of an error response.
+// errorBody is the shape of a simple error response.
 type errorBody struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
+}
+
+// validationErrorBody is the shape of a field-level validation error response.
+type validationErrorBody struct {
+	Code    string               `json:"code"`
+	Message string               `json:"message"`
+	Fields  []validator.FieldError `json:"fields"`
 }
 
 // ErrorResponse is the JSON envelope for all error responses.
@@ -40,7 +50,7 @@ type ErrorBody struct {
 	Message string `json:"message"`
 }
 
-// JSON writes a 200 OK response with the given data wrapped in {"data": ...}.
+// JSON writes a success response with the given data wrapped in {"data": ...}.
 func JSON(w http.ResponseWriter, status int, data any) {
 	write(w, status, envelope{"data": data})
 }
@@ -78,9 +88,20 @@ func BadRequest(w http.ResponseWriter, message string) {
 	Error(w, http.StatusBadRequest, "BAD_REQUEST", message)
 }
 
-// UnprocessableEntity writes a 422 response used for validation failures.
+// UnprocessableEntity writes a 422 response used for simple validation failures.
 func UnprocessableEntity(w http.ResponseWriter, message string) {
 	Error(w, http.StatusUnprocessableEntity, "VALIDATION_ERROR", message)
+}
+
+// ValidationErrors writes a 422 response with per-field error details.
+func ValidationErrors(w http.ResponseWriter, fields []validator.FieldError) {
+	write(w, http.StatusUnprocessableEntity, envelope{
+		"error": validationErrorBody{
+			Code:    "VALIDATION_ERROR",
+			Message: "validation failed",
+			Fields:  fields,
+		},
+	})
 }
 
 // InternalServerError writes a 500 response without leaking internal details.
@@ -95,18 +116,27 @@ func Conflict(w http.ResponseWriter, message string) {
 
 // TooManyRequests writes a 429 response with a Retry-After header.
 func TooManyRequests(w http.ResponseWriter, retryAfterSeconds int) {
-	w.Header().Set("Retry-After", string(rune('0'+retryAfterSeconds)))
+	w.Header().Set("Retry-After", strconv.Itoa(retryAfterSeconds))
 	Error(w, http.StatusTooManyRequests, "RATE_LIMITED", "too many requests — please slow down")
 }
 
 // HandleError is the central error dispatcher for all HTTP handlers.
-// If err is (or wraps) an *exceptions.AppError, it writes the correct status + JSON body.
-// Any other error is treated as an internal server error: logged and returned as 500.
+// Dispatch order:
+//  1. *validator.ValidationError  → 422 with per-field details
+//  2. *exceptions.AppError        → status + code from the error
+//  3. anything else               → 500, logged internally
 func HandleError(w http.ResponseWriter, err error, log *zap.Logger) {
+	var valErr *validator.ValidationError
+	if errors.As(err, &valErr) {
+		ValidationErrors(w, valErr.Fields)
+		return
+	}
+
 	if appErr, ok := exceptions.As(err); ok {
 		Error(w, appErr.Status, appErr.Code, appErr.Message)
 		return
 	}
+
 	log.Error("unhandled internal error", zap.Error(err))
 	InternalServerError(w)
 }
@@ -119,8 +149,6 @@ func write(w http.ResponseWriter, status int, payload envelope) {
 	enc := json.NewEncoder(w)
 	enc.SetEscapeHTML(true)
 	if err := enc.Encode(payload); err != nil {
-		// At this point headers are already written; we cannot change the status.
-		// Log this at the call site if needed.
 		_ = err
 	}
 }

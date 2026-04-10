@@ -1,1 +1,0 @@
-ALTER TABLE fsrs_card ADD COLUMN content_type srs_content_type NOT NULL;

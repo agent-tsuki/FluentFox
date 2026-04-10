@@ -2,6 +2,9 @@ package users
 
 import (
 	"time"
+
+	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type JLPTLevel string
@@ -14,70 +17,95 @@ const (
 	JLPTLevelN5 JLPTLevel = "N5"
 )
 
-
 type User struct {
-	ID       		string    `db:"id"`
-	Username 		string    `db:"username"`
-	Email    		string    `db:"email"`
-	PhoneNo  		*string   `db:"phone_no"`
-	PasswordHash	string    `db:"password_hash"`
+	ID           uuid.UUID `gorm:"type:uuid;primaryKey"`
+	Username     string    `gorm:"column:username;not null"`
+	Email        string    `gorm:"column:email;uniqueIndex;not null"`
+	PhoneNo      *string   `gorm:"column:phone_no"`
+	PasswordHash string    `gorm:"column:password_hash;not null"`
 
-	// user config
-	IsEmailVerified bool      `db:"is_email_verified"`
-	IsAdmin         bool      `db:"is_admin"`
-	IsActive        bool      `db:"is_active"`
-	IsDeleted       bool      `db:"is_deleted"`
+	IsEmailVerified bool `gorm:"column:is_email_verified;default:false"`
+	IsAdmin         bool `gorm:"column:is_admin;default:false"`
+	IsActive        bool `gorm:"column:is_active;default:true"`
+	IsDeleted       bool `gorm:"column:is_deleted;default:false"`
 
-	CreatedAt       time.Time `db:"created_at"`
-	UpdatedAt       time.Time `db:"updated_at"`
+	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime"`
+	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
 }
 
+func (User) TableName() string { return "users" }
+
+func (u *User) BeforeCreate(_ *gorm.DB) error {
+	if u.ID == uuid.Nil {
+		u.ID = uuid.New()
+	}
+	return nil
+}
 
 type UserProfile struct {
-	ID             string     `db:"id"`
-	UserID         string     `db:"user_id"`
-	FirstName      string     `db:"first_name"`
-	LastName        *string   `db:"last_name"`    
-	Bio            *string    `db:"bio"`           
-	ProfileImage   *string    `db:"profile_image"` 
+	ID           uuid.UUID  `gorm:"type:uuid;primaryKey"`
+	UserID       uuid.UUID  `gorm:"column:user_id;not null"`
+	FirstName    string     `gorm:"column:first_name;not null"`
+	LastName     *string    `gorm:"column:last_name"`
+	Bio          *string    `gorm:"column:bio"`
+	ProfileImage *string    `gorm:"column:profile_image"`
+	NativeLanguage string   `gorm:"column:native_language;not null"`
+	CountryCode  *string    `gorm:"column:country_code"`
+	TargetLevel  *JLPTLevel `gorm:"column:target_level;type:text;check:target_level IN ('N1','N2','N3','N4','N5')"`
 
-	// user config
-	NativeLanguage string     `db:"native_language"`
-	CountryCode    *string    `db:"country_code"`  
-	TargetLevel    *JLPTLevel `db:"target_level"`  
-
-	CreatedAt      time.Time  `db:"created_at"`
-	UpdatedAt      time.Time  `db:"updated_at"`
+	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime"`
+	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
 }
 
+func (UserProfile) TableName() string { return "users_profile" }
+
+func (u *UserProfile) BeforeCreate(_ *gorm.DB) error {
+	if u.ID == uuid.Nil {
+		u.ID = uuid.New()
+	}
+	return nil
+}
 
 type UserSettings struct {
-	ID              string    `db:"id"`
-	UserID          string    `db:"user_id"`
+	ID      uuid.UUID `gorm:"type:uuid;primaryKey"`
+	UserID  uuid.UUID `gorm:"column:user_id;not null"`
 
-	// location config
-	CurrentTimeZone *string   `db:"current_time_zone"` 
+	CurrentTimeZone     *string `gorm:"column:current_time_zone"`
+	CursorTail          bool    `gorm:"column:cursor_tail;default:false"`
+	BackgroundAnimation bool    `gorm:"column:background_animation;default:false"`
+	DailyReminder       bool    `gorm:"column:daily_reminder;default:false"`
+	ReminderTime        *string `gorm:"column:reminder_time"`
 
-	// config
-	CursorTail          	bool      `db:"cursor_tail"`
-	BackgroundAnimation 	bool      `db:"background_animation"`
-	DailyReminder       	bool      `db:"daily_reminder"`
-	ReminderTime        	*string   `db:"reminder_time"`
-	CreatedAt       time.Time `db:"created_at"`
-	UpdatedAt       time.Time `db:"updated_at"`
+	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime"`
+	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
 }
 
+func (UserSettings) TableName() string { return "users_settings" }
+
+func (u *UserSettings) BeforeCreate(_ *gorm.DB) error {
+	if u.ID == uuid.Nil {
+		u.ID = uuid.New()
+	}
+	return nil
+}
 
 type UserVerification struct {
-	ID         string     `db:"id"`
-	UserID     string     `db:"user_id"`
+	ID         uuid.UUID  `gorm:"type:uuid;primaryKey"`
+	UserID     uuid.UUID  `gorm:"column:user_id;not null"`
+	HashCode   string     `gorm:"column:hash_code;not null"`
+	ExpiresAt  time.Time  `gorm:"column:expires_at;not null"`
+	VerifiedAt *time.Time `gorm:"column:verified_at"`
+	LastSentAt *time.Time `gorm:"column:last_sent_at"`
 
-	// email verification
-	HashCode   string     `db:"hash_code"`
-	ExpiresAt  time.Time  `db:"expires_at"`
-	VerifiedAt *time.Time `db:"verified_at"`  
-	LastSentAt *time.Time `db:"last_sent_at"` 
+	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime"`
+	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
+}
 
-	CreatedAt  time.Time  `db:"created_at"`
-	UpdatedAt  time.Time  `db:"updated_at"`
+func (UserVerification) TableName() string { return "user_verification" }
+
+func (u *UserVerification) BeforeCreate(_ *gorm.DB) error {
+	if u.ID == uuid.Nil {
+		u.ID = uuid.New()
+	}
+	return nil
 }

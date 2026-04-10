@@ -5,98 +5,123 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/fluentfox/api/pkg/exceptions"
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
+	"gorm.io/gorm"
 )
 
 type Repository struct {
-	pool *pgxpool.Pool
+	db *gorm.DB
 }
 
-func UserRepository(pool *pgxpool.Pool) *Repository {
-	return &Repository{pool: pool}
+func NewRepository(db *gorm.DB) *Repository {
+	return &Repository{db: db}
 }
 
-func (r *Repository) BeginTx(ctx context.Context) (pgx.Tx, error) {
-    return r.pool.Begin(ctx)
+// Transaction runs fn inside a GORM transaction.
+// Commit on nil return, rollback on error.
+func (r *Repository) Transaction(ctx context.Context, fn func(*gorm.DB) error) error {
+	return r.db.WithContext(ctx).Transaction(fn)
 }
 
-func (r *Repository) CreateUser(
-	ctx context.Context, tx pgx.Tx, email string,
-	username string, passwordHash string, phone_no *string,
-) (uuid.UUID, error) {
-	query := `
-        INSERT INTO users (email, username, password_hash, phone_no) 
-        VALUES ($1, $2, $3, $4) 
-        RETURNING id
-	`
-	
-	var id uuid.UUID
-	err := tx.QueryRow(ctx, query, email, username, passwordHash, phone_no).Scan(&id)
-	if err != nil {
+func (r *Repository) CreateUser(ctx context.Context, tx *gorm.DB, email, username, passwordHash string, phoneNo *string) (uuid.UUID, error) {
+	user := User{
+		Email:        email,
+		Username:     username,
+		PasswordHash: passwordHash,
+		PhoneNo:      phoneNo,
+	}
+	if err := tx.WithContext(ctx).Create(&user).Error; err != nil {
 		return uuid.Nil, fmt.Errorf("failed to insert user: %w", err)
 	}
-	return id, nil
+	return user.ID, nil
 }
 
-func (r *Repository) CreateProfile(
-	ctx context.Context, tx pgx.Tx, userID uuid.UUID,
-	firstName string, lastName *string, nativeLang string,
-) error {
-	query := `
-		INSERT INTO users_profile (user_id, first_name, last_name, native_language)
-		VALUES ($1, $2, $3, $4)`
-	
-	_, err := tx.Exec(ctx, query, userID, firstName, lastName, nativeLang)
-	if err != nil {
+func (r *Repository) CreateProfile(ctx context.Context, tx *gorm.DB, userID uuid.UUID, firstName string, lastName *string, nativeLang string) error {
+	profile := UserProfile{
+		UserID:         userID,
+		FirstName:      firstName,
+		LastName:       lastName,
+		NativeLanguage: nativeLang,
+	}
+	if err := tx.WithContext(ctx).Create(&profile).Error; err != nil {
 		return fmt.Errorf("failed to insert user profile: %w", err)
 	}
 	return nil
 }
 
-func (r *Repository) CreateUsersSettings(ctx context.Context, tx pgx.Tx, userID uuid.UUID, current_time_zone *string, reminder_time *time.Time) error {
-	query := `
-		INSERT INTO users_settings (user_id, current_time_zone, reminder_time)
-		VALUES ($1, $2, $3)`
-	
-	_, err := tx.Exec(ctx, query, userID, current_time_zone, reminder_time)
-	if err != nil {
-		return fmt.Errorf("failed to insert user profile: %w", err)
+func (r *Repository) CreateUsersSettings(ctx context.Context, tx *gorm.DB, userID uuid.UUID, timeZone *string, reminderTime *time.Time) error {
+	var rt *string
+	if reminderTime != nil {
+		s := reminderTime.Format("15:04:05")
+		rt = &s
+	}
+	settings := UserSettings{
+		UserID:          userID,
+		CurrentTimeZone: timeZone,
+		ReminderTime:    rt,
+	}
+	if err := tx.WithContext(ctx).Create(&settings).Error; err != nil {
+		return fmt.Errorf("failed to insert user settings: %w", err)
 	}
 	return nil
 }
 
-func (r *Repository) CreateUserVerification(ctx context.Context, tx pgx.Tx, userID uuid.UUID, hash_code string, expires_at *time.Time) error {
-	query := `
-		INSERT INTO user_verification (user_id, hash_code, expires_at)
-		VALUES ($1, $2, $3)`
-	
-	_, err := tx.Exec(ctx, query, userID, hash_code, expires_at)
-	if err != nil {
-		return fmt.Errorf("failed to insert user profile: %w", err)
+func (r *Repository) CreateUserVerification(ctx context.Context, tx *gorm.DB, userID uuid.UUID, hashCode string, expiresAt *time.Time) error {
+	v := UserVerification{
+		UserID:   userID,
+		HashCode: hashCode,
+	}
+	if expiresAt != nil {
+		v.ExpiresAt = *expiresAt
+	}
+	if err := tx.WithContext(ctx).Create(&v).Error; err != nil {
+		return fmt.Errorf("failed to insert user verification: %w", err)
 	}
 	return nil
 }
-
 
 func (r *Repository) GetExistingUserForEmail(ctx context.Context, email string) (bool, error) {
-    query := `SELECT EXISTS(SELECT 1 FROM users WHERE email=$1)`
-    var exists bool
-    err := r.pool.QueryRow(ctx, query, email).Scan(&exists)
-    if err != nil {
-        return false, fmt.Errorf("error fetching user for email %s: %w", email, err)
-    }
-    return exists, nil
+	var count int64
+	if err := r.db.WithContext(ctx).Model(&User{}).Where("email = ?", email).Count(&count).Error; err != nil {
+		return false, fmt.Errorf("error fetching user for email %s: %w", email, err)
+	}
+	return count > 0, nil
 }
 
-
 func (r *Repository) GetExistingUserForUsername(ctx context.Context, username string) (bool, error) {
-	query := `SELECT EXISTS(SELECT 1 FROM users WHERE username=$1)`
-	var exists bool
-	err := r.pool.QueryRow(ctx, query, username).Scan(&exists)
-	if err != nil {
+	var count int64
+	if err := r.db.WithContext(ctx).Model(&User{}).Where("username = ?", username).Count(&count).Error; err != nil {
 		return false, fmt.Errorf("error fetching user for username %s: %w", username, err)
 	}
-	return exists, nil
+	return count > 0, nil
+}
+
+func (r *Repository) GetVerificationToken(ctx context.Context, token string) (VerificationModel, error) {
+	var v UserVerification
+	if err := r.db.WithContext(ctx).Where("hash_code = ?", token).First(&v).Error; err != nil {
+		return VerificationModel{}, fmt.Errorf("error fetching token %s: %w", token, err)
+	}
+	return VerificationModel{
+		HashCode:   v.HashCode,
+		ExpiresAt:  v.ExpiresAt,
+		VerifiedAt: v.VerifiedAt,
+	}, nil
+}
+
+func (r *Repository) UpdateVerificationToken(ctx context.Context, verifiedAt time.Time, token string) error {
+	result := r.db.WithContext(ctx).
+		Model(&UserVerification{}).
+		Where("hash_code = ?", token).
+		Updates(map[string]any{
+			"verified_at": verifiedAt,
+			"updated_at":  verifiedAt,
+		})
+	if result.Error != nil {
+		return fmt.Errorf("error updating token %s: %w", token, result.Error)
+	}
+	if result.RowsAffected == 0 {
+		return exceptions.ErrUpdateFail
+	}
+	return nil
 }

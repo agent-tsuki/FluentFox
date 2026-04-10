@@ -1,16 +1,17 @@
-// Package main — cmd/sync-content/main.go.
-// CLI tool that parses MDX files from content/ and upserts them into PostgreSQL.
-// Run via: make sync-content
-// It must never be imported by the HTTP server — it is a standalone binary.
+// Package main — cmd/migrate/main.go
+// Runs GORM AutoMigrate to create/update database tables from model definitions.
+// Run via: make migrate
 package main
 
 import (
 	"fmt"
 	"os"
 
-	"github.com/fluentfox/api/config"
-	"github.com/fluentfox/api/pkg/database"
 	"go.uber.org/zap"
+
+	"github.com/fluentfox/api/config"
+	"github.com/fluentfox/api/internal/users"
+	"github.com/fluentfox/api/pkg/database"
 )
 
 func main() {
@@ -30,5 +31,16 @@ func main() {
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 
-	log.Info("content sync complete")
+	log.Info("running auto-migrate")
+
+	if err := db.AutoMigrate(
+		&users.User{},
+		&users.UserProfile{},
+		&users.UserSettings{},
+		&users.UserVerification{},
+	); err != nil {
+		log.Fatal("auto-migrate failed", zap.Error(err))
+	}
+
+	log.Info("auto-migrate complete")
 }

@@ -1,18 +1,3 @@
-// Package main — cmd/api/main.go.
-// The single entry point for the HTTP API server.
-
-// @title           FluentFox API
-// @version         1.0
-// @description     Japanese language learning API.
-
-// @host      localhost:8080
-// @BasePath  /
-
-// @securityDefinitions.apikey BearerAuth
-// @in header
-// @name Authorization
-// @description Enter "Bearer <your_access_token>"
-
 package main
 
 import (
@@ -24,17 +9,17 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/go-chi/chi/v5"
-	chimiddleware "github.com/go-chi/chi/v5/middleware"
-	httpSwagger "github.com/swaggo/http-swagger"
+	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"go.uber.org/zap"
 
 	"github.com/fluentfox/api/config"
-	_ "github.com/fluentfox/api/docs"
 	"github.com/fluentfox/api/internal/auth"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/database"
 	"github.com/fluentfox/api/pkg/middleware"
+	"github.com/fluentfox/api/pkg/telemetry"
 	"github.com/fluentfox/api/pkg/token"
 	"github.com/fluentfox/api/pkg/validator"
 )
@@ -42,7 +27,7 @@ import (
 func main() {
 	cfg := config.Load()
 
-	// ── Logger ──────────────────────────────────────────────────────────────
+	// Logger
 	var log *zap.Logger
 	var err error
 	if cfg.IsDevelopment() {
@@ -56,56 +41,65 @@ func main() {
 	}
 	defer log.Sync() //nolint:errcheck
 
-	// ── Database ─────────────────────────────────────────────────────────────
-	pool, err := database.NewPool(context.Background(), cfg.DatabaseURL, cfg.DBMaxConns, cfg.DBMinConns)
+	// Telemetry
+	_, cleanupTelemetry, err := telemetry.Setup("fluentfox-api")
+	if err != nil {
+		log.Fatal("failed to setup telemetry", zap.Error(err))
+	}
+	defer cleanupTelemetry()
+
+	// Database
+	db, err := database.NewDB(cfg.DatabaseURL, cfg.DBMaxConns, cfg.DBMinConns)
 	if err != nil {
 		log.Fatal("failed to connect to database", zap.Error(err))
 	}
-	defer pool.Close()
 
-	// ── Infrastructure ────────────────────────────────────────────────────────
+	// Infrastructure
 	tokenMaker := token.NewMaker(
 		cfg.JWTAccessSecret, cfg.JWTRefreshSecret,
 		cfg.JWTAccessExpiryMinutes, cfg.JWTRefreshExpiryDays,
 	)
-	_ = validator.New()
 	_ = tokenMaker
 
-	// ── Handlers ──────────────────────────────────────────────────────────────
-	userRepo := users.UserRepository(pool)
-	authService := auth.NewAuthService(userRepo)
-	authHandler := auth.NewAuthHandler(authService, log)
+	v := validator.New()
+	userRepo := users.NewRepository(db)
 
-	// ── Router ─────────────────────────────────────────────────────────────────
-	r := chi.NewRouter()
+	// Router
+	if !cfg.IsDevelopment() {
+		gin.SetMode(gin.ReleaseMode)
+	}
 
-	r.Use(chimiddleware.Recoverer)
+	r := gin.New()
+	r.Use(gin.Recovery())
 	r.Use(middleware.CORS(cfg.AllowedOrigins))
 	r.Use(middleware.Logger(log))
+	r.Use(otelgin.Middleware("fluentfox-api"))
 
-	// Swagger UI
-	r.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("/swagger/doc.json"),
-	))
-
-	// Auth routes
-	r.Route("/auth", func(r chi.Router) {
-		r.Post("/register", authHandler.Register)
-	})
+	// Domain routes — add new domains here
+	authHandler := auth.NewHandler(
+		auth.NewAuthService(userRepo),
+		auth.NewTokenVerificationService(userRepo, log),
+		log, v,
+	)
+	auth.RegisterRoutes(r, authHandler)
 
 	// Health check
-	r.Get("/health", func(w http.ResponseWriter, req *http.Request) {
-		if err := pool.Ping(req.Context()); err != nil {
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusServiceUnavailable)
-			fmt.Fprintf(w, `{"status":"error","error":"database unreachable"}`)
+	r.GET("/health", func(c *gin.Context) {
+		sqlDB, err := db.DB()
+		if err != nil || sqlDB.Ping() != nil {
+			c.JSON(http.StatusServiceUnavailable, gin.H{
+				"status": "error",
+				"error":  "database unreachable",
+			})
 			return
 		}
-		w.Header().Set("Content-Type", "application/json")
-		fmt.Fprintf(w, `{"status":"ok","env":%q}`, cfg.AppEnv)
+		c.JSON(http.StatusOK, gin.H{"status": "ok", "env": cfg.AppEnv})
 	})
 
-	// ── Server ─────────────────────────────────────────────────────────────────
+	// Prometheus metrics — scraped by Prometheus / Grafana
+	r.GET("/metrics", gin.WrapH(promhttp.Handler()))
+
+	// Server
 	srv := &http.Server{
 		Addr:         ":" + cfg.Port,
 		Handler:      r,

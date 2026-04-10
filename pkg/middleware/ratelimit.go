@@ -1,26 +1,23 @@
-// Package middleware — ratelimit.go.
-// RateLimit enforces a per-IP request limit on sensitive endpoints.
-// Currently uses an in-process sliding window counter backed by a sync.Map.
+// Package middleware — ratelimit.go
+// Per-IP sliding window rate limiter backed by sync.Map.
 // For multi-instance deployments, replace the store with Redis.
 package middleware
 
 import (
-	"net/http"
-	"strings"
 	"sync"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/fluentfox/api/pkg/response"
 )
 
-// windowEntry tracks the request count and window start for one IP.
 type windowEntry struct {
 	mu        sync.Mutex
 	count     int
 	windowEnd time.Time
 }
 
-// RateLimiter holds per-IP state.
+// RateLimiter holds per-IP window state.
 type RateLimiter struct {
 	store        sync.Map
 	maxRequests  int
@@ -30,19 +27,15 @@ type RateLimiter struct {
 // NewRateLimiter constructs a RateLimiter.
 // maxRequests is the allowed count per windowPeriod per IP.
 func NewRateLimiter(maxRequests int, windowPeriod time.Duration) *RateLimiter {
-	rl := &RateLimiter{
-		maxRequests:  maxRequests,
-		windowPeriod: windowPeriod,
-	}
+	rl := &RateLimiter{maxRequests: maxRequests, windowPeriod: windowPeriod}
 	go rl.cleanup()
 	return rl
 }
 
-// Limit returns a chi middleware that enforces the rate limit.
-// Returns HTTP 429 with a Retry-After header when the limit is exceeded.
-func (rl *RateLimiter) Limit(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ip := extractIP(r)
+// Limit returns a Gin middleware that enforces the rate limit.
+func (rl *RateLimiter) Limit() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ip := c.ClientIP()
 
 		raw, _ := rl.store.LoadOrStore(ip, &windowEntry{
 			windowEnd: time.Now().Add(rl.windowPeriod),
@@ -60,15 +53,15 @@ func (rl *RateLimiter) Limit(next http.Handler) http.Handler {
 		entry.mu.Unlock()
 
 		if count > rl.maxRequests {
-			response.TooManyRequests(w, int(rl.windowPeriod.Seconds()))
+			response.TooManyRequests(c.Writer, int(rl.windowPeriod.Seconds()))
+			c.Abort()
 			return
 		}
 
-		next.ServeHTTP(w, r)
-	})
+		c.Next()
+	}
 }
 
-// cleanup periodically removes expired window entries to prevent unbounded growth.
 func (rl *RateLimiter) cleanup() {
 	ticker := time.NewTicker(5 * time.Minute)
 	defer ticker.Stop()
@@ -85,17 +78,4 @@ func (rl *RateLimiter) cleanup() {
 			return true
 		})
 	}
-}
-
-// extractIP returns the client IP from X-Forwarded-For or RemoteAddr.
-func extractIP(r *http.Request) string {
-	if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
-		parts := strings.Split(xff, ",")
-		return strings.TrimSpace(parts[0])
-	}
-	addr := r.RemoteAddr
-	if colon := strings.LastIndex(addr, ":"); colon != -1 {
-		return addr[:colon]
-	}
-	return addr
 }

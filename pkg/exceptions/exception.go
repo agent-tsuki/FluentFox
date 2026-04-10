@@ -54,7 +54,14 @@ var (
 
 	// 400 Bad Request
 	ErrBadRequest = New(http.StatusBadRequest, "BAD_REQUEST", "invalid request")
+	ErrUpdateFail = New(http.StatusBadRequest, "BAD_REQUEST", "db update request failed")
+
 
 	// 422 Unprocessable Entity
 	ErrValidation = New(http.StatusUnprocessableEntity, "VALIDATION_ERROR", "validation failed")
+
+	// 410 time expired
+	ErrStatusGone = New(http.StatusGone, "REQUEST_EXPIRED", "request expired")
+
+
 )

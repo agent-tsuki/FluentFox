@@ -1,44 +1,38 @@
-// Package database provides the PostgreSQL connection pool and helpers.
-// It owns the pgxpool setup and nothing else. Domain packages must never
-// import this package directly — they receive the pool via dependency injection.
+// Package database provides the GORM database connection.
 package database
 
 import (
-	"context"
 	"fmt"
 	"time"
 
-	"github.com/jackc/pgx/v5/pgxpool"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-// NewPool creates and validates a pgxpool.Pool using the provided DSN.
-// It applies min/max connection counts from the caller and pings the database
-// to confirm connectivity before returning.
-// Returns an error if the connection cannot be established within 10 seconds.
-func NewPool(ctx context.Context, dsn string, maxConns, minConns int32) (*pgxpool.Pool, error) {
-	cfg, err := pgxpool.ParseConfig(dsn)
+// NewDB creates a *gorm.DB connected to PostgreSQL using the provided DSN.
+// Connection pool limits are configured from the caller.
+func NewDB(dsn string, maxConns, minConns int32) (*gorm.DB, error) {
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 	if err != nil {
-		return nil, fmt.Errorf("database: parse config: %w", err)
+		return nil, fmt.Errorf("database: open: %w", err)
 	}
 
-	cfg.MaxConns = maxConns
-	cfg.MinConns = minConns
-	cfg.MaxConnLifetime = 1 * time.Hour
-	cfg.MaxConnIdleTime = 30 * time.Minute
-	cfg.HealthCheckPeriod = 1 * time.Minute
-
-	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	pool, err := pgxpool.NewWithConfig(ctx, cfg)
+	sqlDB, err := db.DB()
 	if err != nil {
-		return nil, fmt.Errorf("database: create pool: %w", err)
+		return nil, fmt.Errorf("database: get sql.DB: %w", err)
 	}
 
-	if err := pool.Ping(ctx); err != nil {
-		pool.Close()
+	sqlDB.SetMaxOpenConns(int(maxConns))
+	sqlDB.SetMaxIdleConns(int(minConns))
+	sqlDB.SetConnMaxLifetime(1 * time.Hour)
+	sqlDB.SetConnMaxIdleTime(30 * time.Minute)
+
+	if err := sqlDB.Ping(); err != nil {
 		return nil, fmt.Errorf("database: ping: %w", err)
 	}
 
-	return pool, nil
+	return db, nil
 }
