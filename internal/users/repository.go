@@ -8,6 +8,7 @@ import (
 	"github.com/fluentfox/api/pkg/exceptions"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type Repository struct {
@@ -109,19 +110,41 @@ func (r *Repository) GetVerificationToken(ctx context.Context, token string) (Ve
 	}, nil
 }
 
-func (r *Repository) UpdateVerificationToken(ctx context.Context, verifiedAt time.Time, token string) error {
-	result := r.db.WithContext(ctx).
-		Model(&UserVerification{}).
-		Where("hash_code = ?", token).
+func (r *Repository) UpdateVerificationToken(ctx context.Context, tx *gorm.DB, verifiedAt time.Time, hashedToken string) (uuid.UUID, error) {
+	var updated UserVerification
+
+	result := tx.WithContext(ctx).
+		Model(&updated).
+		Clauses(clause.Returning{Columns: []clause.Column{{Name: "user_id"}}}).
+		Where("hash_code = ?", hashedToken).
 		Updates(map[string]any{
 			"verified_at": verifiedAt,
 			"updated_at":  verifiedAt,
 		})
+
 	if result.Error != nil {
-		return fmt.Errorf("error updating token %s: %w", token, result.Error)
+		return uuid.Nil, fmt.Errorf("error updating token: %w", result.Error)
+	}
+	if result.RowsAffected == 0 {
+		return uuid.Nil, exceptions.ErrUpdateFail
+	}
+	return updated.UserID, nil
+}
+
+func (r *Repository) UpdateUserForVerification(ctx context.Context, tx *gorm.DB, userID uuid.UUID) error {
+	result := tx.WithContext(ctx).
+		Model(&User{}).
+		Where("id = ?", userID).
+		Updates(map[string]any{
+			"is_email_verified": true,
+			"updated_at": time.Now().UTC(),
+		})
+	if result.Error != nil {
+		return fmt.Errorf("error updating user %s: %w", userID, result.Error)
 	}
 	if result.RowsAffected == 0 {
 		return exceptions.ErrUpdateFail
 	}
 	return nil
 }
+

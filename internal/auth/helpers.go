@@ -2,7 +2,9 @@ package auth
 
 import (
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"fmt"
 	"math/big"
 	"reflect"
@@ -110,7 +112,10 @@ func GenerateHashedToken(length int) (string, error) {
 	return randomString, nil
 }
 
-
+func hashVerificationToken(token string) string {
+    h := sha256.Sum256([]byte(token))
+    return hex.EncodeToString(h[:])
+}
 
 func UniversalInvoke(fn any, args ...any) {
 	v := reflect.ValueOf(fn)

@@ -17,6 +17,7 @@ type AuthService struct {
 	userRepo     UserRepo
 	argon        Argon2Config
 	tokenService *TokenService
+	logger   *zap.Logger
 }
 
 type TokenService struct {
@@ -32,11 +33,11 @@ func NewTokenVerificationService(userRepo UserRepo, log *zap.Logger) *TokenVerif
 	return &TokenVerificationService{userRepo: userRepo, logger: log}
 }
 
-func NewAuthService(userRepo UserRepo) *AuthService {
+func NewAuthService(userRepo UserRepo, log *zap.Logger) *AuthService {
 	argon := Argon2Config{}
 	cfg := argon.defaultConfig()
 	ts := &TokenService{argon: cfg}
-	return &AuthService{userRepo: userRepo, argon: cfg, tokenService: ts}
+	return &AuthService{userRepo: userRepo, argon: cfg, tokenService: ts, logger: log}
 }
 
 func (s *AuthService) registerUser(ctx context.Context, req RegisterRequest) error {
@@ -44,10 +45,11 @@ func (s *AuthService) registerUser(ctx context.Context, req RegisterRequest) err
 		return err
 	}
 
-	hashedToken, err := s.tokenService.generateAuthToken()
+	hashedData, err := s.tokenService.generateAuthToken()
 	if err != nil {
 		return err
 	}
+	s.logger.Info("verification token (use this to verify email)", zap.String("token", hashedData["token"]))
 
 	hashPassword, err := s.argon.hashedString(req.Password)
 	if err != nil {
@@ -55,7 +57,7 @@ func (s *AuthService) registerUser(ctx context.Context, req RegisterRequest) err
 	}
 
 	return s.userRepo.Transaction(ctx, func(tx *gorm.DB) error {
-		return s.createUser(ctx, tx, hashPassword, hashedToken, req)
+		return s.createUser(ctx, tx, hashPassword, hashedData["hashed"], req)
 	})
 }
 
@@ -137,8 +139,15 @@ func (s *AuthService) generateUsername(firstName string, lastName *string) (stri
 	return fmt.Sprintf("%s%s", firstName, suffix), nil
 }
 
-func (t *TokenService) generateAuthToken() (string, error) {
-	return GenerateHashedToken(common.AUTH_TOKEN_LEN)
+func (t *TokenService) generateAuthToken() (map[string]string, error) {
+    token, err := GenerateHashedToken(common.AUTH_TOKEN_LEN)
+    if err != nil {
+        return nil, err
+    }
+    return map[string]string{
+        "token":  token,
+        "hashed": hashVerificationToken(token),
+    }, nil
 }
 
 func (t *TokenService) authTokenExpireTime() time.Time {
@@ -150,13 +159,13 @@ func (t *TokenVerificationService) VerifyUserToken(ctx context.Context, token st
 		return exceptions.ErrBadRequest
 	}
 
-	fetchedData, err := t.userRepo.GetVerificationToken(ctx, token)
+	// Hash once here — both the fetch and update must use the same value that
+	// is stored in the DB (SHA-256 of the raw token sent to the user's inbox).
+	hashedToken := hashVerificationToken(token)
+
+	fetchedData, err := t.userRepo.GetVerificationToken(ctx, hashedToken)
 	if err != nil {
 		return exceptions.Wrap(http.StatusNotFound, "RESOURCE_NOT_FOUND", "error fetching token from db", err)
-	}
-
-	if fetchedData.ExpiresAt.IsZero() {
-		return exceptions.Wrap(http.StatusBadRequest, "INVALID_TOKEN", "token has no expiry date", nil)
 	}
 
 	if err := t.ValidateTokenExpiryTime(fetchedData.ExpiresAt); err != nil {
@@ -164,15 +173,31 @@ func (t *TokenVerificationService) VerifyUserToken(ctx context.Context, token st
 	}
 
 	if fetchedData.VerifiedAt != nil {
-		return exceptions.ErrBadRequest
+		return exceptions.Wrap(http.StatusConflict, "OPERATION_ALREADY_PERFORMED", "email already verified", nil)
 	}
 
-	return t.userRepo.UpdateVerificationToken(ctx, time.Now().UTC(), token)
+	return t.userRepo.Transaction(ctx, func(tx *gorm.DB) error {
+		return t.UpdateValidatedToken(ctx, tx, hashedToken)
+	})
 }
 
 func (t *TokenVerificationService) ValidateTokenExpiryTime(expiryTime time.Time) error {
 	if time.Now().UTC().After(expiryTime) {
 		return exceptions.ErrStatusGone
 	}
+	return nil
+}
+
+func (t *TokenVerificationService) UpdateValidatedToken(ctx context.Context, tx *gorm.DB, hashedToken string) error {
+	userID, err := t.userRepo.UpdateVerificationToken(ctx, tx, time.Now().UTC(), hashedToken)
+	if err != nil {
+		return err
+	}
+	t.logger.Info("verification table updated")
+
+	if err := t.userRepo.UpdateUserForVerification(ctx, tx, userID); err != nil {
+		return err
+	}
+	t.logger.Info("user table updated for email verification")
 	return nil
 }

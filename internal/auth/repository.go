@@ -20,5 +20,6 @@ type UserRepo interface {
 	GetExistingUserForEmail(ctx context.Context, email string) (bool, error)
 	GetExistingUserForUsername(ctx context.Context, username string) (bool, error)
 	GetVerificationToken(ctx context.Context, token string) (users.VerificationModel, error)
-	UpdateVerificationToken(ctx context.Context, verifiedAt time.Time, token string) error
+	UpdateVerificationToken(ctx context.Context, tx *gorm.DB, verifiedAt time.Time, token string) (uuid.UUID, error)
+	UpdateUserForVerification(ctx context.Context, tx *gorm.DB, userID uuid.UUID) error
 }

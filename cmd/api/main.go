@@ -81,9 +81,15 @@ func main() {
 	// Plain Gin routes (health, metrics) registered on r still work alongside it.
 	api := humagin.New(r, huma.DefaultConfig("FluentFox API", "1.0.0"))
 
-	// Domain routes — add new domains here
+	//sync logs
+	log, err = zap.NewDevelopment()
+	if err != nil {
+		panic(fmt.Sprintf("failed to initialize logger: %v", err))
+	}
+	defer log.Sync()
+		// Domain routes — add new domains here
 	authHandler := auth.NewHandler(
-		auth.NewAuthService(userRepo),
+		auth.NewAuthService(userRepo, log),
 		auth.NewTokenVerificationService(userRepo, log),
 		log, v,
 	)
