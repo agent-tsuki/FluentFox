@@ -12,14 +12,16 @@ import (
 type Handler struct {
 	authService   *AuthService
 	verifyService *TokenVerificationService
+	loginService *LoginService
 	logger        *zap.Logger
 	validate      *validator.Validator
 }
 
-func NewHandler(authService *AuthService, verifyService *TokenVerificationService, log *zap.Logger, v *validator.Validator) *Handler {
+func NewHandler(authService *AuthService, verifyService *TokenVerificationService, loginService *LoginService, log *zap.Logger, v *validator.Validator) *Handler {
 	return &Handler{
 		authService:   authService,
 		verifyService: verifyService,
+		loginService: loginService,
 		logger:        log,
 		validate:      v,
 	}
@@ -54,3 +56,18 @@ func (h *Handler) AuthVerify(ctx context.Context, input *AuthVerifyInput) (*huma
 		Body: humautil.MessageBody{Message: "email verified successfully"},
 	}, nil
 }
+
+
+// AuthVerify handles POST /auth/login.
+func (h *Handler) Login(ctx context.Context, input *humautil.Input[LoginRequest]) (*humautil.Output[humautil.MessageBody], error) {
+	log := middleware.LoggerFromContext(ctx, h.logger)
+
+	if err := h.loginService.Login(ctx, input.Body); err != nil {
+		return nil, humautil.MapErr(err, log)
+	}
+
+	return &humautil.Output[humautil.MessageBody]{
+		Body: humautil.MessageBody{Message: "User logged IN"},
+	}, nil
+}
+

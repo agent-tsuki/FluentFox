@@ -7,11 +7,13 @@ import (
 	"encoding/hex"
 	"fmt"
 	"math/big"
-	"reflect"
+	"net/http"
+	"strings"
 
 	"golang.org/x/crypto/argon2"
 
 	"github.com/fluentfox/api/internal/common"
+	"github.com/fluentfox/api/pkg/exceptions"
 )
 
 
@@ -21,6 +23,10 @@ type Argon2Config struct {
 	Parallelism uint8
 	SaltLength  uint32
 	KeyLength   uint32
+}
+
+type HashManager struct {
+
 }
 
 func (argon *Argon2Config) defaultConfig() Argon2Config {
@@ -42,7 +48,7 @@ func (argon *Argon2Config) generateSalt(length uint32) ([]byte, error) {
 	return salt, nil
 }
 
-func (argon *Argon2Config) hashedString(token string) (string, error) {
+func (argon *Argon2Config) hashStringWithSalt(token string) (string, error){
 	// If Argon config give else we will use default config
 	config := argon
 	if argon == nil{
@@ -50,11 +56,24 @@ func (argon *Argon2Config) hashedString(token string) (string, error) {
 		config = &defaultConfig
 
 	}
-
-	// Generating random salt
 	salt, err := argon.generateSalt(config.SaltLength)
 	if err != nil {
 		return "", err
+	}
+
+	hashedData := argon.hashedString(token, salt)
+
+	return hashedData, err
+}
+
+
+func (argon *Argon2Config) hashedString(token string, salt []byte) string {
+	// If Argon config give else we will use default config
+	config := argon
+	if argon == nil{
+		defaultConfig := argon.defaultConfig()
+		config = &defaultConfig
+
 	}
 
 	// Hashing the token
@@ -82,7 +101,7 @@ func (argon *Argon2Config) hashedString(token string) (string, error) {
 		b64Hash,
 	)
 
-	return encodedHash, nil
+	return encodedHash
 }
 
 // Generate username with first and last name
@@ -117,15 +136,22 @@ func hashVerificationToken(token string) string {
     return hex.EncodeToString(h[:])
 }
 
-func UniversalInvoke(fn any, args ...any) {
-	v := reflect.ValueOf(fn)
+func GetHashedSalt(token string) (string, error) {
+	// split string '$'
+	splitData := strings.Split(token, "$")
 	
-	// Convert our []any into []reflect.Value
-	inputs := make([]reflect.Value, len(args))
-	for i, arg := range args {
-		inputs[i] = reflect.ValueOf(arg)
+	if len(splitData) < 5{
+		return "", exceptions.Wrap(http.StatusBadRequest, "BAD REQUEST", "Error while logging", nil)
 	}
 
-	// Call the function
-	v.Call(inputs)
+	return  splitData[4], nil
+}
+
+func DecodeHashSalt(saltStr string) ([]byte, error) {
+	saltBytes, err := base64.RawStdEncoding.DecodeString(saltStr)
+	if err != nil {
+		// If it's not RawStd, try base64.StdEncoding (with padding)
+		saltBytes, err = base64.StdEncoding.DecodeString(saltStr)
+	}
+	return  saltBytes, nil
 }

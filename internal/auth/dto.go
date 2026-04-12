@@ -1,8 +1,6 @@
 package auth
 
-// RegisterRequest is both the huma input body and the struct validated by
-// go-playground/validator. Huma enforces schema constraints (format, minLength)
-// before the handler runs; validate tags are kept for any non-huma code paths.
+
 type RegisterRequest struct {
 	Email       string  `json:"email"        validate:"required,email"   format:"email"   doc:"User's email address"`
 	UserName    *string `json:"user_name,omitempty"                                          doc:"Username; auto-generated if omitted"`
@@ -12,3 +10,10 @@ type RegisterRequest struct {
 	NativeLang  string  `json:"native_lang"  validate:"required"                             doc:"Native language code (e.g. en, ja)"`
 	Password    string  `json:"password"     validate:"required,min=8"   minLength:"8"       doc:"Password — minimum 8 characters"`
 }
+
+
+type LoginRequest struct {
+	Email       string  `json:"email"        validate:"required,email"   format:"email"   doc:"User's email address"`
+	Password    string  `json:"password"     validate:"required,min=8"   minLength:"8"       doc:"Password — minimum 8 characters"`
+}
+

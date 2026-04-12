@@ -148,3 +148,14 @@ func (r *Repository) UpdateUserForVerification(ctx context.Context, tx *gorm.DB,
 	return nil
 }
 
+
+func (r *Repository) GetUserForEmail(ctx context.Context, email string) (User, error) {
+	var userData User
+	result := r.db.WithContext(ctx).
+		Model(&userData).Where("email = ?", email).
+		First(&userData)
+	if result.Error != nil {
+		return userData, fmt.Errorf("error fetching user for email %s: %w", email, result.Error)
+	}
+	return userData, nil
+}

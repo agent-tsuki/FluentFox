@@ -22,4 +22,5 @@ type UserRepo interface {
 	GetVerificationToken(ctx context.Context, token string) (users.VerificationModel, error)
 	UpdateVerificationToken(ctx context.Context, tx *gorm.DB, verifiedAt time.Time, token string) (uuid.UUID, error)
 	UpdateUserForVerification(ctx context.Context, tx *gorm.DB, userID uuid.UUID) error
+	GetUserForEmail(ctx context.Context, email string) (users.User, error)
 }

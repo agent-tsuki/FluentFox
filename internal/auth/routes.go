@@ -26,4 +26,12 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		Summary:     "Verify user email address",
 		Tags:        []string{"Auth"},
 	}, h.AuthVerify)
+
+	huma.Register(api, huma.Operation{
+		OperationID: "login-user",
+		Method:      http.MethodPost,
+		Path:        "/auth/login",
+		Summary:     "Login user",
+		Tags:        []string{"Auth"},
+	}, h.Login)
 }

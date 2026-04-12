@@ -2,12 +2,14 @@ package auth
 
 import (
 	"context"
+	"crypto/subtle"
 	"errors"
 	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/fluentfox/api/internal/common"
+	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/exceptions"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -29,6 +31,12 @@ type TokenVerificationService struct {
 	logger   *zap.Logger
 }
 
+type LoginService struct {
+	userRepo UserRepo
+	argon 	Argon2Config
+	logger  *zap.Logger 
+}
+
 func NewTokenVerificationService(userRepo UserRepo, log *zap.Logger) *TokenVerificationService {
 	return &TokenVerificationService{userRepo: userRepo, logger: log}
 }
@@ -38,6 +46,12 @@ func NewAuthService(userRepo UserRepo, log *zap.Logger) *AuthService {
 	cfg := argon.defaultConfig()
 	ts := &TokenService{argon: cfg}
 	return &AuthService{userRepo: userRepo, argon: cfg, tokenService: ts, logger: log}
+}
+
+func NewLogin(userRepo UserRepo, log *zap.Logger) *LoginService{
+	argon := Argon2Config{}
+	cfg := argon.defaultConfig()
+	return &LoginService{userRepo: userRepo, argon: cfg, logger: log}
 }
 
 func (s *AuthService) registerUser(ctx context.Context, req RegisterRequest) error {
@@ -51,7 +65,7 @@ func (s *AuthService) registerUser(ctx context.Context, req RegisterRequest) err
 	}
 	s.logger.Info("verification token (use this to verify email)", zap.String("token", hashedData["token"]))
 
-	hashPassword, err := s.argon.hashedString(req.Password)
+	hashPassword, err := s.argon.hashStringWithSalt(req.Password)
 	if err != nil {
 		return err
 	}
@@ -199,5 +213,66 @@ func (t *TokenVerificationService) UpdateValidatedToken(ctx context.Context, tx 
 		return err
 	}
 	t.logger.Info("user table updated for email verification")
+	return nil
+}
+
+
+func (t *LoginService) Login(ctx context.Context, loginReq LoginRequest) error {
+	t.logger.Info("Attempting login", zap.String("email", loginReq.Email))
+
+	// Fetch user by email
+	userData, err := t.userRepo.GetUserForEmail(ctx, loginReq.Email)
+	if err != nil{
+		t.logger.Warn("Login failed: email not found", zap.String("email", loginReq.Email))
+		return exceptions.ErrUserEmailNotFound
+	}
+
+	// Validate user
+	err = t.ValidateUserDetail(userData)
+		if err != nil{
+		t.logger.Warn("Login failed while validating user")
+		return err
+	}
+
+	// get salt 
+	salt, err := GetHashedSalt(userData.PasswordHash)
+	if err != nil{
+			t.logger.Error("Failed to parse stored hash", zap.Error(err))
+			return err
+	}
+	saltByte, err := DecodeHashSalt(salt)
+	if err != nil{
+		t.logger.Error("Failed to decode hashed sale")
+		return err
+	}
+
+
+	// hash in coming password
+	incomingHash := t.argon.hashedString(loginReq.Password, saltByte)
+	
+	// compare two password
+	if subtle.ConstantTimeCompare([]byte(incomingHash), []byte(userData.PasswordHash)) != 1 {
+        t.logger.Warn("Login failed: password mismatch", zap.String("email", loginReq.Email))
+        return exceptions.ErrInvalidCredentials
+    }
+
+	t.logger.Info("User logged in successfully", zap.String("email", loginReq.Email))
+    return nil
+
+}
+
+func (t *LoginService) ValidateUserDetail(userData users.User) error{
+	if !userData.IsEmailVerified{
+		t.logger.Warn("User is not verified for email")
+		return exceptions.Wrap(http.StatusUnauthorized, "UNAUTHORIZE", "Please verify email first", nil)
+	}
+	if !userData.IsActive{
+		t.logger.Warn("User account is suspended")
+		return exceptions.Wrap(http.StatusUnauthorized, "UNAUTHORIZE", "Your account is suspended contact, customer care", nil)
+	}
+	if userData.IsDeleted{
+		t.logger.Warn("User account is deleted")
+		return exceptions.Wrap(http.StatusUnauthorized, "UNAUTHORIZE", "You don't have any account any longer contact, customer care", nil)
+	}
 	return nil
 }

@@ -91,6 +91,7 @@ func main() {
 	authHandler := auth.NewHandler(
 		auth.NewAuthService(userRepo, log),
 		auth.NewTokenVerificationService(userRepo, log),
+		auth.NewLogin(userRepo, log),
 		log, v,
 	)
 	auth.RegisterRoutes(api, authHandler)
