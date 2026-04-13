@@ -159,3 +159,53 @@ func (r *Repository) GetUserForEmail(ctx context.Context, email string) (User, e
 	}
 	return userData, nil
 }
+
+func (r *Repository) GetUserByID(ctx context.Context, userID uuid.UUID) (User, error) {
+	var user User
+	if err := r.db.WithContext(ctx).Where("id = ?", userID).First(&user).Error; err != nil {
+		return User{}, fmt.Errorf("error fetching user by id %s: %w", userID, err)
+	}
+	return user, nil
+}
+
+func (r *Repository) GetRefreshTokenByHash(ctx context.Context, hash string) (RefreshToken, error) {
+	var rf RefreshToken
+
+	if err := r.db.WithContext(ctx).Where("token_hash = ?", hash).First(&rf).Error; err != nil {
+		return RefreshToken{}, fmt.Errorf("refresh token not found: %w", err)
+	}
+	return rf, nil
+}
+func (r *Repository) RevokeRefreshToken(ctx context.Context, userID uuid.UUID) error {
+	result := r.db.WithContext(ctx).
+		Model(&RefreshToken{}).
+		Where("user_id = ?", userID).
+		Update("is_revoked", true)
+	if result.Error != nil {
+		return fmt.Errorf("revoke refresh token: %w", result.Error)
+	}
+	return nil
+}
+
+func (r *Repository) UpsertRefreshToken(ctx context.Context, userID uuid.UUID, hashToken string, expiresAt time.Time) (RefreshToken, error) {
+	rf := RefreshToken{
+		UserID:    userID,
+		TokenHash: hashToken,
+		ExpiresAt: expiresAt,
+	}
+
+	result := r.db.WithContext(ctx).
+		Where(RefreshToken{UserID: userID}).
+		Assign(RefreshToken{
+			TokenHash: hashToken,
+			ExpiresAt: expiresAt,
+			IsRevoked: false,
+		}).
+		FirstOrCreate(&rf)
+
+	if result.Error != nil {
+		return RefreshToken{}, fmt.Errorf("upsert refresh token: %w", result.Error)
+	}
+
+	return rf, nil
+}

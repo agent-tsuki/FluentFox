@@ -109,3 +109,22 @@ func (u *UserVerification) BeforeCreate(_ *gorm.DB) error {
 	}
 	return nil
 }
+
+type RefreshToken struct {
+    ID        uuid.UUID  `gorm:"type:uuid;primaryKey"`
+    UserID    uuid.UUID  `gorm:"column:user_id;not null"`
+    TokenHash string     `gorm:"column:token_hash;not null"`
+    IsRevoked bool       `gorm:"column:is_revoked;default:false"`
+    ExpiresAt time.Time  `gorm:"column:expires_at;not null"`
+    CreatedAt time.Time  `gorm:"column:created_at;autoCreateTime"`
+    UpdatedAt time.Time  `gorm:"column:updated_at;autoUpdateTime"`
+}
+
+func (RefreshToken) TableName() string { return "refresh_tokens" }
+
+func (u *RefreshToken) BeforeCreate(_ *gorm.DB) error {
+	if u.ID == uuid.Nil {
+		u.ID = uuid.New()
+	}
+	return nil
+}

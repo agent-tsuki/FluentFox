@@ -38,6 +38,7 @@ func main() {
 		&users.UserProfile{},
 		&users.UserSettings{},
 		&users.UserVerification{},
+		&users.RefreshToken{},
 	); err != nil {
 		log.Fatal("auto-migrate failed", zap.Error(err))
 	}

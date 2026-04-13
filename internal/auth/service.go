@@ -11,6 +11,8 @@ import (
 	"github.com/fluentfox/api/internal/common"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/exceptions"
+	"github.com/fluentfox/api/pkg/token"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -33,8 +35,9 @@ type TokenVerificationService struct {
 
 type LoginService struct {
 	userRepo UserRepo
-	argon 	Argon2Config
-	logger  *zap.Logger 
+	argon    Argon2Config
+	maker    *token.Maker
+	logger   *zap.Logger
 }
 
 func NewTokenVerificationService(userRepo UserRepo, log *zap.Logger) *TokenVerificationService {
@@ -48,10 +51,10 @@ func NewAuthService(userRepo UserRepo, log *zap.Logger) *AuthService {
 	return &AuthService{userRepo: userRepo, argon: cfg, tokenService: ts, logger: log}
 }
 
-func NewLogin(userRepo UserRepo, log *zap.Logger) *LoginService{
+func NewLogin(userRepo UserRepo, maker *token.Maker, log *zap.Logger) *LoginService {
 	argon := Argon2Config{}
 	cfg := argon.defaultConfig()
-	return &LoginService{userRepo: userRepo, argon: cfg, logger: log}
+	return &LoginService{userRepo: userRepo, argon: cfg, maker: maker, logger: log}
 }
 
 func (s *AuthService) registerUser(ctx context.Context, req RegisterRequest) error {
@@ -217,48 +220,55 @@ func (t *TokenVerificationService) UpdateValidatedToken(ctx context.Context, tx 
 }
 
 
-func (t *LoginService) Login(ctx context.Context, loginReq LoginRequest) error {
+func (t *LoginService) Login(ctx context.Context, loginReq LoginRequest) (LoginResponse, error) {
 	t.logger.Info("Attempting login", zap.String("email", loginReq.Email))
 
 	// Fetch user by email
 	userData, err := t.userRepo.GetUserForEmail(ctx, loginReq.Email)
-	if err != nil{
+	if err != nil {
 		t.logger.Warn("Login failed: email not found", zap.String("email", loginReq.Email))
-		return exceptions.ErrUserEmailNotFound
+		return LoginResponse{}, exceptions.ErrUserEmailNotFound
 	}
 
 	// Validate user
-	err = t.ValidateUserDetail(userData)
-		if err != nil{
+	if err = t.ValidateUserDetail(userData); err != nil {
 		t.logger.Warn("Login failed while validating user")
-		return err
+		return LoginResponse{}, err
 	}
 
-	// get salt 
+	// Get salt from stored hash
 	salt, err := GetHashedSalt(userData.PasswordHash)
-	if err != nil{
-			t.logger.Error("Failed to parse stored hash", zap.Error(err))
-			return err
+	if err != nil {
+		t.logger.Error("Failed to parse stored hash", zap.Error(err))
+		return LoginResponse{}, err
 	}
 	saltByte, err := DecodeHashSalt(salt)
-	if err != nil{
-		t.logger.Error("Failed to decode hashed sale")
-		return err
+	if err != nil {
+		t.logger.Error("Failed to decode hashed salt")
+		return LoginResponse{}, err
 	}
 
-
-	// hash in coming password
+	// Hash incoming password and compare
 	incomingHash := t.argon.hashedString(loginReq.Password, saltByte)
-	
-	// compare two password
 	if subtle.ConstantTimeCompare([]byte(incomingHash), []byte(userData.PasswordHash)) != 1 {
-        t.logger.Warn("Login failed: password mismatch", zap.String("email", loginReq.Email))
-        return exceptions.ErrInvalidCredentials
-    }
+		t.logger.Warn("Login failed: password mismatch", zap.String("email", loginReq.Email))
+		return LoginResponse{}, exceptions.ErrInvalidCredentials
+	}
+
+	// Derive role from user record
+	role := "user"
+	if userData.IsAdmin {
+		role = "admin"
+	}
+
+	// Issue tokens
+	resp, err := t.JetTokenAssigner(ctx, userData.ID, role, userData.IsEmailVerified)
+	if err != nil {
+		return LoginResponse{}, err
+	}
 
 	t.logger.Info("User logged in successfully", zap.String("email", loginReq.Email))
-    return nil
-
+	return resp, nil
 }
 
 func (t *LoginService) ValidateUserDetail(userData users.User) error{
@@ -274,5 +284,93 @@ func (t *LoginService) ValidateUserDetail(userData users.User) error{
 		t.logger.Warn("User account is deleted")
 		return exceptions.Wrap(http.StatusUnauthorized, "UNAUTHORIZE", "You don't have any account any longer contact, customer care", nil)
 	}
+	return nil
+}
+
+func (t *LoginService) JetTokenAssigner(ctx context.Context, userID uuid.UUID, role string, emailVerified bool) (LoginResponse, error) {
+	// Generate short-lived JWT access token
+	accessToken, err := t.maker.GenerateAccessToken(userID, role, emailVerified)
+	if err != nil {
+		t.logger.Info("Error while generating JWT token", zap.String("Error", err.Error()))
+		return LoginResponse{}, err
+	}
+
+	// Generate long-lived opaque refresh token
+	refreshToken, err := t.maker.GenerateRefreshToken()
+	if err != nil {
+		t.logger.Info("Error while generating refresh token", zap.String("Error", err.Error()))
+		return LoginResponse{}, err
+	}
+
+	hashedRefresh := hashVerificationToken(refreshToken)
+
+	expireAt := t.maker.RefreshExpiryTime()
+	if _, err := t.userRepo.UpsertRefreshToken(ctx, userID, hashedRefresh, expireAt); err != nil {
+		t.logger.Info("Error while storing refresh token", zap.String("Error", err.Error()))
+		return LoginResponse{}, err
+	}
+
+	return LoginResponse{AccessToken: accessToken, RefreshToken: refreshToken}, nil
+}
+
+func (t *LoginService) RefreshToken(ctx context.Context, raw string) (LoginResponse, error) {
+	if raw == "" {
+		return LoginResponse{}, exceptions.ErrBadRequest
+	}
+
+	hash := hashVerificationToken(raw)
+	record, err := t.userRepo.GetRefreshTokenByHash(ctx, hash)
+	if err != nil {
+		t.logger.Warn("Refresh failed: token not found")
+		return LoginResponse{}, exceptions.ErrTokenInvalid
+	}
+
+	if record.IsRevoked {
+		t.logger.Warn("Refresh failed: token is revoked", zap.Stringer("user_id", record.UserID))
+		return LoginResponse{}, exceptions.ErrTokenInvalid
+	}
+
+	if time.Now().UTC().After(record.ExpiresAt) {
+		t.logger.Warn("Refresh failed: token expired", zap.Stringer("user_id", record.UserID))
+		return LoginResponse{}, exceptions.ErrTokenExpired
+	}
+
+	userData, err := t.userRepo.GetUserByID(ctx, record.UserID)
+	if err != nil {
+		t.logger.Warn("Refresh failed: user not found", zap.Stringer("user_id", record.UserID))
+		return LoginResponse{}, exceptions.ErrUserNotFound
+	}
+
+	if err = t.ValidateUserDetail(userData); err != nil {
+		return LoginResponse{}, err
+	}
+
+	role := "user"
+	if userData.IsAdmin {
+		role = "admin"
+	}
+
+	// Rotate: issue a brand-new token pair
+	return t.JetTokenAssigner(ctx, userData.ID, role, userData.IsEmailVerified)
+}
+
+func (t *LoginService) Logout(ctx context.Context, raw string) error {
+	if raw == "" {
+		return exceptions.ErrBadRequest
+	}
+
+	hash := hashVerificationToken(raw)
+	record, err := t.userRepo.GetRefreshTokenByHash(ctx, hash)
+	if err != nil {
+		t.logger.Warn("Logout failed: token not found")
+		return exceptions.ErrTokenInvalid
+	}
+
+	if err := t.userRepo.RevokeRefreshToken(ctx, record.UserID); err != nil {
+		t.logger.Error("Logout failed: could not revoke token", zap.Error(err))
+		return err
+	}
+
+	t.logger.Info("User logged out", zap.Stringer("user_id", record.UserID))
 	return nil
 }

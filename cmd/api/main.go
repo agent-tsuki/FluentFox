@@ -61,7 +61,6 @@ func main() {
 		cfg.JWTAccessSecret, cfg.JWTRefreshSecret,
 		cfg.JWTAccessExpiryMinutes, cfg.JWTRefreshExpiryDays,
 	)
-	_ = tokenMaker
 
 	v := validator.New()
 	userRepo := users.NewRepository(db)
@@ -91,7 +90,7 @@ func main() {
 	authHandler := auth.NewHandler(
 		auth.NewAuthService(userRepo, log),
 		auth.NewTokenVerificationService(userRepo, log),
-		auth.NewLogin(userRepo, log),
+		auth.NewLogin(userRepo, tokenMaker, log),
 		log, v,
 	)
 	auth.RegisterRoutes(api, authHandler)

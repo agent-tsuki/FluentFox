@@ -58,16 +58,40 @@ func (h *Handler) AuthVerify(ctx context.Context, input *AuthVerifyInput) (*huma
 }
 
 
-// AuthVerify handles POST /auth/login.
-func (h *Handler) Login(ctx context.Context, input *humautil.Input[LoginRequest]) (*humautil.Output[humautil.MessageBody], error) {
+// Login handles POST /auth/login.
+func (h *Handler) Login(ctx context.Context, input *humautil.Input[LoginRequest]) (*humautil.Output[LoginResponse], error) {
 	log := middleware.LoggerFromContext(ctx, h.logger)
 
-	if err := h.loginService.Login(ctx, input.Body); err != nil {
+	resp, err := h.loginService.Login(ctx, input.Body)
+	if err != nil {
+		return nil, humautil.MapErr(err, log)
+	}
+
+	return &humautil.Output[LoginResponse]{Body: resp}, nil
+}
+
+// Refresh handles POST /auth/refresh.
+func (h *Handler) Refresh(ctx context.Context, input *humautil.Input[RefreshTokenRequest]) (*humautil.Output[LoginResponse], error) {
+	log := middleware.LoggerFromContext(ctx, h.logger)
+
+	resp, err := h.loginService.RefreshToken(ctx, input.Body.RefreshToken)
+	if err != nil {
+		return nil, humautil.MapErr(err, log)
+	}
+
+	return &humautil.Output[LoginResponse]{Body: resp}, nil
+}
+
+// Logout handles POST /auth/logout.
+func (h *Handler) Logout(ctx context.Context, input *humautil.Input[RefreshTokenRequest]) (*humautil.Output[humautil.MessageBody], error) {
+	log := middleware.LoggerFromContext(ctx, h.logger)
+
+	if err := h.loginService.Logout(ctx, input.Body.RefreshToken); err != nil {
 		return nil, humautil.MapErr(err, log)
 	}
 
 	return &humautil.Output[humautil.MessageBody]{
-		Body: humautil.MessageBody{Message: "User logged IN"},
+		Body: humautil.MessageBody{Message: "logged out successfully"},
 	}, nil
 }
 

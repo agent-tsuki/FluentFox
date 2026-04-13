@@ -28,10 +28,29 @@ func RegisterRoutes(api huma.API, h *Handler) {
 	}, h.AuthVerify)
 
 	huma.Register(api, huma.Operation{
-		OperationID: "login-user",
-		Method:      http.MethodPost,
-		Path:        "/auth/login",
-		Summary:     "Login user",
-		Tags:        []string{"Auth"},
+		OperationID:   "login-user",
+		Method:        http.MethodPost,
+		Path:          "/auth/login",
+		Summary:       "Login user",
+		Tags:          []string{"Auth"},
+		DefaultStatus: http.StatusOK,
 	}, h.Login)
+
+	huma.Register(api, huma.Operation{
+		OperationID:   "refresh-token",
+		Method:        http.MethodPost,
+		Path:          "/auth/refresh",
+		Summary:       "Refresh access token",
+		Tags:          []string{"Auth"},
+		DefaultStatus: http.StatusOK,
+	}, h.Refresh)
+
+	huma.Register(api, huma.Operation{
+		OperationID:   "logout-user",
+		Method:        http.MethodPost,
+		Path:          "/auth/logout",
+		Summary:       "Logout user",
+		Tags:          []string{"Auth"},
+		DefaultStatus: http.StatusOK,
+	}, h.Logout)
 }
