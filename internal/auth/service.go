@@ -12,7 +12,6 @@ import (
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/exceptions"
 	"github.com/fluentfox/api/pkg/token"
-	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -255,14 +254,8 @@ func (t *LoginService) Login(ctx context.Context, loginReq LoginRequest) (LoginR
 		return LoginResponse{}, exceptions.ErrInvalidCredentials
 	}
 
-	// Derive role from user record
-	role := "user"
-	if userData.IsAdmin {
-		role = "admin"
-	}
-
 	// Issue tokens
-	resp, err := t.JetTokenAssigner(ctx, userData.ID, role, userData.IsEmailVerified)
+	resp, err := t.JetTokenAssigner(ctx, userData)
 	if err != nil {
 		return LoginResponse{}, err
 	}
@@ -287,9 +280,9 @@ func (t *LoginService) ValidateUserDetail(userData users.User) error{
 	return nil
 }
 
-func (t *LoginService) JetTokenAssigner(ctx context.Context, userID uuid.UUID, role string, emailVerified bool) (LoginResponse, error) {
+func (t *LoginService) JetTokenAssigner(ctx context.Context, userData users.User) (LoginResponse, error) {
 	// Generate short-lived JWT access token
-	accessToken, err := t.maker.GenerateAccessToken(userID, role, emailVerified)
+	accessToken, err := t.maker.GenerateAccessToken(userData.ID, userData.IsAdmin, userData.IsEmailVerified)
 	if err != nil {
 		t.logger.Info("Error while generating JWT token", zap.String("Error", err.Error()))
 		return LoginResponse{}, err
@@ -305,12 +298,22 @@ func (t *LoginService) JetTokenAssigner(ctx context.Context, userID uuid.UUID, r
 	hashedRefresh := hashVerificationToken(refreshToken)
 
 	expireAt := t.maker.RefreshExpiryTime()
-	if _, err := t.userRepo.UpsertRefreshToken(ctx, userID, hashedRefresh, expireAt); err != nil {
+	if _, err := t.userRepo.UpsertRefreshToken(ctx, userData.ID, hashedRefresh, expireAt); err != nil {
 		t.logger.Info("Error while storing refresh token", zap.String("Error", err.Error()))
 		return LoginResponse{}, err
 	}
 
-	return LoginResponse{AccessToken: accessToken, RefreshToken: refreshToken}, nil
+	return LoginResponse{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+		User: UserSummary{
+			UserID:        userData.ID,
+			Username:      userData.Username,
+			IsAdmin:       userData.IsAdmin,
+			EmailVerified: userData.IsEmailVerified,
+			IsActive:      userData.IsActive,
+		},
+	}, nil
 }
 
 func (t *LoginService) RefreshToken(ctx context.Context, raw string) (LoginResponse, error) {
@@ -345,13 +348,8 @@ func (t *LoginService) RefreshToken(ctx context.Context, raw string) (LoginRespo
 		return LoginResponse{}, err
 	}
 
-	role := "user"
-	if userData.IsAdmin {
-		role = "admin"
-	}
-
 	// Rotate: issue a brand-new token pair
-	return t.JetTokenAssigner(ctx, userData.ID, role, userData.IsEmailVerified)
+	return t.JetTokenAssigner(ctx, userData)
 }
 
 func (t *LoginService) Logout(ctx context.Context, raw string) error {

@@ -188,18 +188,14 @@ func (r *Repository) RevokeRefreshToken(ctx context.Context, userID uuid.UUID) e
 }
 
 func (r *Repository) UpsertRefreshToken(ctx context.Context, userID uuid.UUID, hashToken string, expiresAt time.Time) (RefreshToken, error) {
-	rf := RefreshToken{
-		UserID:    userID,
-		TokenHash: hashToken,
-		ExpiresAt: expiresAt,
-	}
+	var rf RefreshToken
 
 	result := r.db.WithContext(ctx).
 		Where(RefreshToken{UserID: userID}).
-		Assign(RefreshToken{
-			TokenHash: hashToken,
-			ExpiresAt: expiresAt,
-			IsRevoked: false,
+		Assign(map[string]any{
+			"token_hash": hashToken,
+			"expires_at": expiresAt,
+			"is_revoked": false,
 		}).
 		FirstOrCreate(&rf)
 

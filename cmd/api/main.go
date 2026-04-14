@@ -20,6 +20,7 @@ import (
 	"github.com/fluentfox/api/internal/auth"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/database"
+	"github.com/fluentfox/api/pkg/humautil"
 	"github.com/fluentfox/api/pkg/middleware"
 	"github.com/fluentfox/api/pkg/telemetry"
 	"github.com/fluentfox/api/pkg/token"
@@ -78,7 +79,12 @@ func main() {
 
 	// Huma wraps the Gin router to provide automatic OpenAPI 3.1 spec + docs UI.
 	// Plain Gin routes (health, metrics) registered on r still work alongside it.
-	api := humagin.New(r, huma.DefaultConfig("FluentFox API", "1.0.0"))
+	// Build config without the SchemaLinkTransformer so responses never include
+	// a `$schema` field.
+	humaConfig := huma.DefaultConfig("FluentFox API", "1.0.0")
+	humaConfig.CreateHooks = nil // removes the $schema link transformer
+	api := humagin.New(r, humaConfig)
+	humautil.InitHumaErrors()
 
 	//sync logs
 	log, err = zap.NewDevelopment()

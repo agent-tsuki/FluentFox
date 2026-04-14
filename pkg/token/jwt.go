@@ -12,7 +12,7 @@ import (
 // Claims is the payload embedded in every access token.
 type Claims struct {
 	UserID        uuid.UUID `json:"user_id"`
-	Role          string    `json:"role"`
+	IsAdmin          bool    `json:"is_admin"`
 	EmailVerified bool      `json:"email_verified"`
 	jwt.RegisteredClaims
 }
@@ -33,10 +33,10 @@ func NewMaker(accessSecret, refreshSecret string, accessExpiryMinutes, refreshEx
 	}
 }
 
-func (m *Maker) GenerateAccessToken(userID uuid.UUID, role string, emailVerified bool) (string, error) {
+func (m *Maker) GenerateAccessToken(userID uuid.UUID, is_admin bool, emailVerified bool) (string, error) {
 	claims := Claims{
 		UserID:        userID,
-		Role:          role,
+		IsAdmin:          is_admin,
 		EmailVerified: emailVerified,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(m.accessExpiry)),

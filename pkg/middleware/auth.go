@@ -8,9 +8,9 @@ import (
 	"context"
 	"strings"
 
-	"github.com/gin-gonic/gin"
 	"github.com/fluentfox/api/pkg/response"
 	"github.com/fluentfox/api/pkg/token"
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
@@ -18,7 +18,7 @@ type authContextKey string
 
 const (
 	contextUserIDKey        authContextKey = "auth_user_id"
-	contextUserRoleKey      authContextKey = "auth_user_role"
+	contextIsAdminKey       authContextKey = "auth_is_admin"
 	contextEmailVerifiedKey authContextKey = "auth_email_verified"
 )
 
@@ -42,7 +42,7 @@ func RequireAuth(maker *token.Maker) gin.HandlerFunc {
 
 		// Inject into stdlib context so services can read via ContextUserID(ctx).
 		ctx := context.WithValue(c.Request.Context(), contextUserIDKey, claims.UserID)
-		ctx = context.WithValue(ctx, contextUserRoleKey, claims.Role)
+		ctx = context.WithValue(ctx, contextIsAdminKey, claims.IsAdmin)
 		ctx = context.WithValue(ctx, contextEmailVerifiedKey, claims.EmailVerified)
 		c.Request = c.Request.WithContext(ctx)
 
@@ -71,12 +71,12 @@ func ContextUserID(ctx context.Context) uuid.UUID {
 	return uuid.Nil
 }
 
-// ContextUserRole extracts the authenticated user role from the context.
-func ContextUserRole(ctx context.Context) string {
-	if role, ok := ctx.Value(contextUserRoleKey).(string); ok {
-		return role
+// ContextIsAdmin reports whether the authenticated user is an admin.
+func ContextIsAdmin(ctx context.Context) bool {
+	if v, ok := ctx.Value(contextIsAdminKey).(bool); ok {
+		return v
 	}
-	return ""
+	return false
 }
 
 // ContextEmailVerified reports whether the authenticated user has verified their email.

@@ -11,10 +11,11 @@ import (
 
 	"github.com/fluentfox/api/pkg/exceptions"
 	"github.com/fluentfox/api/pkg/validator"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 
-// envelope is the outer wrapper for all API responses.
+// envelope is the outer wrapper for success API responses.
 type envelope map[string]any
 
 // Meta holds optional pagination or context metadata attached to success responses.
@@ -25,29 +26,33 @@ type Meta struct {
 	Total      int `json:"total,omitempty"`
 }
 
-// errorBody is the shape of a simple error response.
-type errorBody struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
+// errDetail is the structured error payload inside every error response.
+type errDetail struct {
+	LogID     string                 `json:"log_id"`
+	ErrorCode string                 `json:"error_code"`
+	Message   string                 `json:"message"`
+	Fields    []validator.FieldError `json:"fields,omitempty"`
 }
 
-// validationErrorBody is the shape of a field-level validation error response.
-type validationErrorBody struct {
-	Code    string               `json:"code"`
-	Message string               `json:"message"`
-	Fields  []validator.FieldError `json:"fields"`
+// errEnvelope is the outer wrapper for all error responses.
+//
+//	{ "status": "failed", "error": { "log_id": "...", "error_code": "...", "message": "..." } }
+type errEnvelope struct {
+	Status string    `json:"status"`
+	Error  errDetail `json:"error"`
 }
 
-// ErrorResponse is the JSON envelope for all error responses.
-// Used by Swagger documentation — mirrors the actual wire format.
+// ErrorResponse is the JSON envelope for all error responses (used by OpenAPI docs).
 type ErrorResponse struct {
-	Error ErrorBody `json:"error"`
+	Status string    `json:"status"`
+	Error  ErrorBody `json:"error"`
 }
 
 // ErrorBody is the structured error detail inside ErrorResponse.
 type ErrorBody struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
+	LogID     string `json:"log_id"`
+	ErrorCode string `json:"error_code"`
+	Message   string `json:"message"`
 }
 
 // JSON writes a success response with the given data wrapped in {"data": ...}.
@@ -60,9 +65,15 @@ func JSONWithMeta(w http.ResponseWriter, status int, data any, meta Meta) {
 	write(w, status, envelope{"data": data, "meta": meta})
 }
 
-// Error writes a structured error response: {"error": {"code": ..., "message": ...}}.
+// Error writes a structured error response:
+//
+//	{ "status": "failed", "error": { "log_id": "...", "error_code": "...", "message": "..." } }
 func Error(w http.ResponseWriter, status int, code, message string) {
-	write(w, status, envelope{"error": errorBody{Code: code, Message: message}})
+	writeError(w, status, errDetail{
+		LogID:     uuid.New().String(),
+		ErrorCode: code,
+		Message:   message,
+	})
 }
 
 // NotFound writes a 404 response.
@@ -95,12 +106,11 @@ func UnprocessableEntity(w http.ResponseWriter, message string) {
 
 // ValidationErrors writes a 422 response with per-field error details.
 func ValidationErrors(w http.ResponseWriter, fields []validator.FieldError) {
-	write(w, http.StatusUnprocessableEntity, envelope{
-		"error": validationErrorBody{
-			Code:    "VALIDATION_ERROR",
-			Message: "validation failed",
-			Fields:  fields,
-		},
+	writeError(w, http.StatusUnprocessableEntity, errDetail{
+		LogID:     uuid.New().String(),
+		ErrorCode: "VALIDATION_ERROR",
+		Message:   "validation failed",
+		Fields:    fields,
 	})
 }
 
@@ -141,8 +151,13 @@ func HandleError(w http.ResponseWriter, err error, log *zap.Logger) {
 	InternalServerError(w)
 }
 
-// write marshals the envelope to JSON and writes it to the response writer.
-func write(w http.ResponseWriter, status int, payload envelope) {
+// writeError marshals an errEnvelope to the response writer.
+func writeError(w http.ResponseWriter, status int, detail errDetail) {
+	write(w, status, errEnvelope{Status: "failed", Error: detail})
+}
+
+// write marshals the payload to JSON and writes it to the response writer.
+func write(w http.ResponseWriter, status int, payload any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 

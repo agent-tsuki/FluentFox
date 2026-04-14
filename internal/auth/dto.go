@@ -1,5 +1,6 @@
 package auth
 
+import "github.com/google/uuid"
 
 type RegisterRequest struct {
 	Email       string  `json:"email"        validate:"required,email"   format:"email"   doc:"User's email address"`
@@ -17,9 +18,19 @@ type LoginRequest struct {
 	Password string `json:"password" validate:"required,min=8" minLength:"8"  doc:"Password — minimum 8 characters"`
 }
 
+// UserSummary carries the fields a client needs immediately after auth.
+type UserSummary struct {
+	UserID        uuid.UUID `json:"user_id"        doc:"User's unique identifier"`
+	Username      string    `json:"username"       doc:"User's handle"`
+	IsAdmin       bool      `json:"is_admin"       doc:"User role: user or admin"`
+	EmailVerified bool      `json:"email_verified" doc:"User verified account or not"`
+	IsActive      bool      `json:"is_active"      doc:"Account is active or suspended"`
+}
+
 type LoginResponse struct {
-	AccessToken  string `json:"access_token"  doc:"Short-lived JWT access token"`
-	RefreshToken string `json:"refresh_token" doc:"Long-lived opaque refresh token"`
+	AccessToken  string      `json:"access_token"  doc:"Short-lived JWT access token"`
+	RefreshToken string      `json:"refresh_token" doc:"Long-lived opaque refresh token"`
+	User         UserSummary `json:"user"          doc:"Authenticated user summary"`
 }
 
 type RefreshTokenRequest struct {
