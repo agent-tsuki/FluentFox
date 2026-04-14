@@ -29,8 +29,11 @@ type Config struct {
 	JWTAccessExpiryMinutes int
 	JWTRefreshExpiryDays   int
 
-	// Email
-	ResendAPIKey     string
+	// Email (Gmail SMTP)
+	SMTPHost         string
+	SMTPPort         string
+	SMTPUsername     string
+	SMTPPassword     string
 	EmailFromAddress string
 
 	// Storage (Cloudflare R2)
@@ -89,7 +92,10 @@ func Load() *Config {
 		JWTAccessExpiryMinutes: requireInt(v, "JWT_ACCESS_EXPIRY_MINUTES"),
 		JWTRefreshExpiryDays:   requireInt(v, "JWT_REFRESH_EXPIRY_DAYS"),
 
-		ResendAPIKey:     require(v, "RESEND_API_KEY"),
+		SMTPHost:         require(v, "SMTP_HOST"),
+		SMTPPort:         require(v, "SMTP_PORT"),
+		SMTPUsername:     require(v, "SMTP_USERNAME"),
+		SMTPPassword:     require(v, "SMTP_APP_PASSWORD"),
 		EmailFromAddress: require(v, "EMAIL_FROM_ADDRESS"),
 
 		R2AccountID:  require(v, "R2_ACCOUNT_ID"),

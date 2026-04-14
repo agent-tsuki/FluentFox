@@ -12,15 +12,24 @@ import (
 type Handler struct {
 	authService   *AuthService
 	verifyService *TokenVerificationService
+	resendService *ResendVerificationService
 	loginService  *LoginService
 	logger        *zap.Logger
 	validate      *validator.Validator
 }
 
-func NewHandler(authService *AuthService, verifyService *TokenVerificationService, loginService *LoginService, log *zap.Logger, v *validator.Validator) *Handler {
+func NewHandler(
+	authService *AuthService,
+	verifyService *TokenVerificationService,
+	resendService *ResendVerificationService,
+	loginService *LoginService,
+	log *zap.Logger,
+	v *validator.Validator,
+) *Handler {
 	return &Handler{
 		authService:   authService,
 		verifyService: verifyService,
+		resendService: resendService,
 		loginService:  loginService,
 		logger:        log,
 		validate:      v,
@@ -75,6 +84,17 @@ func (h *Handler) Refresh(ctx context.Context, input *humautil.Input[RefreshToke
 	}
 
 	return humautil.OK(resp), nil
+}
+
+// Returns 200 immediately; the email is sent asynchronously.
+func (h *Handler) ResendVerification(ctx context.Context, input *humautil.Input[ResendVerificationRequest]) (*humautil.Output[humautil.APIResponse[humautil.MessageBody]], error) {
+	log := middleware.LoggerFromContext(ctx, h.logger)
+
+	if err := h.resendService.ResendVerification(ctx, input.Body.Email); err != nil {
+		return nil, humautil.MapErr(err, log)
+	}
+
+	return humautil.OK(humautil.MessageBody{Message: "verification email sent, please check your inbox"}), nil
 }
 
 // Logout handles POST /auth/logout.

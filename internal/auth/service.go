@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/fluentfox/api/internal/common"
+	"github.com/fluentfox/api/internal/services"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/exceptions"
 	"github.com/fluentfox/api/pkg/token"
@@ -20,7 +21,17 @@ type AuthService struct {
 	userRepo     UserRepo
 	argon        Argon2Config
 	tokenService *TokenService
-	logger   *zap.Logger
+	mailService  *services.MailService
+	logger       *zap.Logger
+}
+
+// ResendVerificationService handles the resend-verification flow.
+// It replaces the old pending token with a fresh one and fires the email async.
+type ResendVerificationService struct {
+	userRepo     UserRepo
+	tokenService *TokenService
+	mailService  *services.MailService
+	logger       *zap.Logger
 }
 
 type TokenService struct {
@@ -43,11 +54,18 @@ func NewTokenVerificationService(userRepo UserRepo, log *zap.Logger) *TokenVerif
 	return &TokenVerificationService{userRepo: userRepo, logger: log}
 }
 
-func NewAuthService(userRepo UserRepo, log *zap.Logger) *AuthService {
+func NewAuthService(userRepo UserRepo, mailService *services.MailService, log *zap.Logger) *AuthService {
 	argon := Argon2Config{}
 	cfg := argon.defaultConfig()
 	ts := &TokenService{argon: cfg}
-	return &AuthService{userRepo: userRepo, argon: cfg, tokenService: ts, logger: log}
+	return &AuthService{userRepo: userRepo, argon: cfg, tokenService: ts, mailService: mailService, logger: log}
+}
+
+func NewResendVerificationService(userRepo UserRepo, mailService *services.MailService, log *zap.Logger) *ResendVerificationService {
+	argon := Argon2Config{}
+	cfg := argon.defaultConfig()
+	ts := &TokenService{argon: cfg}
+	return &ResendVerificationService{userRepo: userRepo, tokenService: ts, mailService: mailService, logger: log}
 }
 
 func NewLogin(userRepo UserRepo, maker *token.Maker, log *zap.Logger) *LoginService {
@@ -57,6 +75,7 @@ func NewLogin(userRepo UserRepo, maker *token.Maker, log *zap.Logger) *LoginServ
 }
 
 func (s *AuthService) registerUser(ctx context.Context, req RegisterRequest) error {
+	s.logger.Info("Registering new user", zap.String("email", req.Email))
 	if err := s.validateUserCredential(ctx, &req); err != nil {
 		return err
 	}
@@ -65,16 +84,20 @@ func (s *AuthService) registerUser(ctx context.Context, req RegisterRequest) err
 	if err != nil {
 		return err
 	}
-	s.logger.Info("verification token (use this to verify email)", zap.String("token", hashedData["token"]))
 
 	hashPassword, err := s.argon.hashStringWithSalt(req.Password)
 	if err != nil {
 		return err
 	}
 
-	return s.userRepo.Transaction(ctx, func(tx *gorm.DB) error {
+	if err := s.userRepo.Transaction(ctx, func(tx *gorm.DB) error {
 		return s.createUser(ctx, tx, hashPassword, hashedData["hashed"], req)
-	})
+	}); err != nil {
+		return err
+	}
+
+	s.mailService.SendVerificationEmailAsync(req.Email, req.FirstName, hashedData["token"])
+	return nil
 }
 
 func (s *AuthService) createUser(ctx context.Context, tx *gorm.DB, hashPassword, hashedToken string, req RegisterRequest) error {
@@ -102,22 +125,27 @@ func (s *AuthService) createUser(ctx context.Context, tx *gorm.DB, hashPassword,
 func (s *AuthService) validateUserCredential(ctx context.Context, req *RegisterRequest) error {
 	exist, err := s.userRepo.GetExistingUserForEmail(ctx, req.Email)
 	if err != nil {
+		s.logger.Warn("Error while fetching user with email")
 		return exceptions.Wrap(http.StatusInternalServerError, "INTERNAL_ERROR", "error while fetching email", err)
 	}
 	if exist {
+		s.logger.Error("User with same email already exist email: ",zap.String("email", req.Email))
 		return exceptions.ErrEmailAlreadyInUse
 	}
 
-	if req.UserName != nil {
+	if req.UserName != nil && *req.UserName != ""{
 		exist, err := s.userRepo.GetExistingUserForUsername(ctx, *req.UserName)
+		s.logger.Info("Fetching user with username: ",zap.String("username", *req.UserName))
 		if err != nil {
 			return exceptions.Wrap(http.StatusInternalServerError, "INTERNAL_ERROR", "error while fetching username", err)
 		}
 		if exist {
+			s.logger.Error("User with same username already exist username: ",zap.String("email", *req.UserName))
 			return exceptions.ErrUsernameAlreadyInUse
 		}
 	} else {
 		generated, err := s.getGenerateUsername(ctx, *req)
+		s.logger.Info("Generated new user name username: ", zap.String("username", generated))
 		if err != nil {
 			return errors.New("error while generating username")
 		}
@@ -350,6 +378,39 @@ func (t *LoginService) RefreshToken(ctx context.Context, raw string) (LoginRespo
 
 	// Rotate: issue a brand-new token pair
 	return t.JetTokenAssigner(ctx, userData)
+}
+
+
+func (s *ResendVerificationService) ResendVerification(ctx context.Context, email string) error {
+	user, err := s.userRepo.GetUserForEmail(ctx, email)
+	if err != nil {
+		return exceptions.ErrUserEmailNotFound
+	}
+
+	if user.IsEmailVerified {
+		return exceptions.Wrap(http.StatusConflict, "OPERATION_ALREADY_PERFORMED", "email is already verified", nil)
+	}
+
+	profile, err := s.userRepo.GetUserProfileByUserID(ctx, user.ID)
+	if err != nil {
+		return exceptions.Wrap(http.StatusInternalServerError, "INTERNAL_ERROR", "error fetching user profile", err)
+	}
+
+	hashedData, err := s.tokenService.generateAuthToken()
+	if err != nil {
+		return err
+	}
+
+	expireAt := s.tokenService.authTokenExpireTime()
+	if err := s.userRepo.Transaction(ctx, func(tx *gorm.DB) error {
+		return s.userRepo.ReplaceVerificationToken(ctx, tx, user.ID, hashedData["hashed"], &expireAt)
+	}); err != nil {
+		return err
+	}
+
+	s.mailService.SendVerificationEmailAsync(user.Email, profile.FirstName, hashedData["token"])
+	s.logger.Info("resend verification fired", zap.String("email", email))
+	return nil
 }
 
 func (t *LoginService) Logout(ctx context.Context, raw string) error {

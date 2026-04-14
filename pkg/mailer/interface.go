@@ -5,13 +5,10 @@ package mailer
 import "context"
 
 // Mailer is the contract every email sender must implement.
-// All method arguments are plain Go types — no SDK types cross the boundary.
+// It is a pure transport — callers are responsible for rendering HTML before calling.
 type Mailer interface {
-	// SendVerificationEmail dispatches an account verification email.
-	SendVerificationEmail(ctx context.Context, to, name, verifyURL string) error
-
-	// SendPasswordReset dispatches a password reset link.
-	SendPasswordReset(ctx context.Context, to, name, resetURL string) error
+	// SendHTML sends an arbitrary HTML email. subject and html are caller-rendered.
+	SendHTML(ctx context.Context, to, subject, html string) error
 
 	// SendDailyReminder sends a study reminder to inactive users.
 	SendDailyReminder(ctx context.Context, to, name string, streakDays int) error

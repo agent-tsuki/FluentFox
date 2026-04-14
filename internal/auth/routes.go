@@ -53,4 +53,13 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		Tags:          []string{"Auth"},
 		DefaultStatus: http.StatusOK,
 	}, h.Logout)
+
+	huma.Register(api, huma.Operation{
+		OperationID:   "resend-verification",
+		Method:        http.MethodPost,
+		Path:          "/auth/resend-verification",
+		Summary:       "Resend email verification link",
+		Tags:          []string{"Auth"},
+		DefaultStatus: http.StatusOK,
+	}, h.ResendVerification)
 }

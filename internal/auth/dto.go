@@ -37,3 +37,7 @@ type RefreshTokenRequest struct {
 	RefreshToken string `json:"refresh_token" validate:"required" doc:"Opaque refresh token issued at login"`
 }
 
+type ResendVerificationRequest struct {
+	Email string `json:"email" validate:"required,email" format:"email" doc:"Email address to resend the verification link to"`
+}
+

@@ -18,9 +18,11 @@ import (
 
 	"github.com/fluentfox/api/config"
 	"github.com/fluentfox/api/internal/auth"
+	"github.com/fluentfox/api/internal/services"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/database"
 	"github.com/fluentfox/api/pkg/humautil"
+	"github.com/fluentfox/api/pkg/mailer"
 	"github.com/fluentfox/api/pkg/middleware"
 	"github.com/fluentfox/api/pkg/telemetry"
 	"github.com/fluentfox/api/pkg/token"
@@ -63,6 +65,9 @@ func main() {
 		cfg.JWTAccessExpiryMinutes, cfg.JWTRefreshExpiryDays,
 	)
 
+	smtpMailer := mailer.NewSMTPMailer(cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername, cfg.SMTPPassword, cfg.EmailFromAddress)
+	mailService := services.NewMailService(smtpMailer, cfg.AppURL, log)
+
 	v := validator.New()
 	userRepo := users.NewRepository(db)
 
@@ -94,8 +99,9 @@ func main() {
 	defer log.Sync()
 		// Domain routes — add new domains here
 	authHandler := auth.NewHandler(
-		auth.NewAuthService(userRepo, log),
+		auth.NewAuthService(userRepo, mailService, log),
 		auth.NewTokenVerificationService(userRepo, log),
+		auth.NewResendVerificationService(userRepo, mailService, log),
 		auth.NewLogin(userRepo, tokenMaker, log),
 		log, v,
 	)

@@ -187,6 +187,37 @@ func (r *Repository) RevokeRefreshToken(ctx context.Context, userID uuid.UUID) e
 	return nil
 }
 
+// GetUserProfileByUserID fetches the profile row for a given user.
+func (r *Repository) GetUserProfileByUserID(ctx context.Context, userID uuid.UUID) (UserProfile, error) {
+	var profile UserProfile
+	if err := r.db.WithContext(ctx).Where("user_id = ?", userID).First(&profile).Error; err != nil {
+		return UserProfile{}, fmt.Errorf("error fetching profile for user %s: %w", userID, err)
+	}
+	return profile, nil
+}
+
+// ReplaceVerificationToken deletes any unverified token for the user and
+// inserts a fresh one in the same transaction.  Use this for resend flows.
+func (r *Repository) ReplaceVerificationToken(ctx context.Context, tx *gorm.DB, userID uuid.UUID, hashCode string, expiresAt *time.Time) error {
+	if err := tx.WithContext(ctx).
+		Where("user_id = ? AND verified_at IS NULL", userID).
+		Delete(&UserVerification{}).Error; err != nil {
+		return fmt.Errorf("failed to remove old verification tokens: %w", err)
+	}
+
+	v := UserVerification{
+		UserID:   userID,
+		HashCode: hashCode,
+	}
+	if expiresAt != nil {
+		v.ExpiresAt = *expiresAt
+	}
+	if err := tx.WithContext(ctx).Create(&v).Error; err != nil {
+		return fmt.Errorf("failed to insert new verification token: %w", err)
+	}
+	return nil
+}
+
 func (r *Repository) UpsertRefreshToken(ctx context.Context, userID uuid.UUID, hashToken string, expiresAt time.Time) (RefreshToken, error) {
 	var rf RefreshToken
 
