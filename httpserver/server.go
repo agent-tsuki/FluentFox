@@ -79,16 +79,23 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	api.UseMiddleware(humautil.AuthMiddleware(api, tokenMaker))
 
 	staleReleaser := auth.NewStaleAccountReleaser(userRepo, log)
+	loginService := auth.NewLogin(userRepo, tokenMaker, log)
+	googleOAuth, err := auth.NewGoogleOAuthService(cfg, userRepo, loginService, log)
+	if err != nil {
+		cleanup()
+		return nil, nil, fmt.Errorf("configure Google OAuth: %w", err)
+	}
 	authHandler := auth.NewHandler(
 		auth.NewAuthService(userRepo, mailService, emailChecker, staleReleaser, log),
 		auth.NewTokenVerificationService(userRepo, log),
 		auth.NewResendVerificationService(userRepo, mailService, log),
-		auth.NewLogin(userRepo, tokenMaker, log),
+		loginService,
 		auth.NewChangeEmailService(userRepo, mailService, emailChecker, staleReleaser, log),
 		auth.NewPasswordResetService(userRepo, mailService, cfg.JWTAccessSecret, log),
 		log, validator.New(),
 	)
 	auth.RegisterRoutes(api, authHandler)
+	auth.RegisterGoogleOAuthRoutes(r, googleOAuth, log)
 
 	r.GET("/health", func(c *gin.Context) {
 		if err := sqlDB.Ping(); err != nil {

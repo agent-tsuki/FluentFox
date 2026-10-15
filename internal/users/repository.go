@@ -141,7 +141,7 @@ func (r *Repository) UpdateUserForVerification(ctx context.Context, tx *gorm.DB,
 		Where("id = ?", userID).
 		Updates(map[string]any{
 			"is_email_verified": true,
-			"updated_at": time.Now().UTC(),
+			"updated_at":        time.Now().UTC(),
 		})
 	if result.Error != nil {
 		return fmt.Errorf("error updating user %s: %w", userID, result.Error)
@@ -151,7 +151,6 @@ func (r *Repository) UpdateUserForVerification(ctx context.Context, tx *gorm.DB,
 	}
 	return nil
 }
-
 
 func (r *Repository) GetUserForEmail(ctx context.Context, email string) (User, error) {
 	var userData User
@@ -170,6 +169,61 @@ func (r *Repository) GetUserByID(ctx context.Context, userID uuid.UUID) (User, e
 		return User{}, fmt.Errorf("error fetching user by id %s: %w", userID, err)
 	}
 	return user, nil
+}
+
+// GetOAuthIdentity returns the row identified by the provider's immutable
+// subject, not by email. Callers should use it before deciding whether a user
+// has already authenticated with a provider.
+func (r *Repository) GetOAuthIdentity(ctx context.Context, provider, subject string) (OAuthIdentity, error) {
+	var identity OAuthIdentity
+	if err := r.db.WithContext(ctx).
+		Where("provider = ? AND provider_subject = ?", provider, subject).
+		First(&identity).Error; err != nil {
+		return OAuthIdentity{}, fmt.Errorf("get oauth identity: %w", err)
+	}
+	return identity, nil
+}
+
+func (r *Repository) CreateOAuthIdentity(
+	ctx context.Context,
+	tx *gorm.DB,
+	userID uuid.UUID,
+	provider, subject string,
+	providerEmail *string,
+	emailVerified bool,
+	now time.Time,
+) error {
+	identity := OAuthIdentity{
+		UserID:          userID,
+		Provider:        provider,
+		ProviderSubject: subject,
+		ProviderEmail:   providerEmail,
+		EmailVerified:   emailVerified,
+		LastUsedAt:      now,
+	}
+	if err := tx.WithContext(ctx).Create(&identity).Error; err != nil {
+		return mapUniqueViolation(fmt.Errorf("create oauth identity: %w", err))
+	}
+	return nil
+}
+
+func (r *Repository) TouchOAuthIdentity(ctx context.Context, provider, subject string, providerEmail *string, emailVerified bool, now time.Time) error {
+	result := r.db.WithContext(ctx).
+		Model(&OAuthIdentity{}).
+		Where("provider = ? AND provider_subject = ?", provider, subject).
+		Updates(map[string]any{
+			"provider_email": providerEmail,
+			"email_verified": emailVerified,
+			"last_used_at":   now,
+			"updated_at":     now,
+		})
+	if result.Error != nil {
+		return fmt.Errorf("touch oauth identity: %w", result.Error)
+	}
+	if result.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+	return nil
 }
 
 func (r *Repository) GetRefreshTokenByHash(ctx context.Context, hash string) (RefreshToken, error) {

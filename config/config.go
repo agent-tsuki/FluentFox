@@ -31,6 +31,16 @@ type Config struct {
 	JWTAccessExpiryMinutes int
 	JWTRefreshExpiryDays   int
 
+	// Google OAuth and Redis-backed, one-time OAuth hand-offs. OAuth is
+	// disabled unless all of these values are configured, so an incomplete
+	// rollout cannot prevent the rest of the API from starting.
+	GoogleOAuthClientID           string
+	GoogleOAuthClientSecret       string
+	GoogleOAuthRedirectURL        string
+	UpstashRedisRESTURL           string
+	UpstashRedisRESTToken         string
+	OAuthTransactionEncryptionKey string
+
 	// Email (Gmail SMTP)
 	SMTPHost            string
 	SMTPPort            string
@@ -100,6 +110,13 @@ func Load() *Config {
 		JWTAccessExpiryMinutes: requireInt(v, "JWT_ACCESS_EXPIRY_MINUTES"),
 		JWTRefreshExpiryDays:   requireInt(v, "JWT_REFRESH_EXPIRY_DAYS"),
 
+		GoogleOAuthClientID:           v.GetString("GOOGLE_OAUTH_CLIENT_ID"),
+		GoogleOAuthClientSecret:       v.GetString("GOOGLE_OAUTH_CLIENT_SECRET"),
+		GoogleOAuthRedirectURL:        v.GetString("GOOGLE_OAUTH_REDIRECT_URL"),
+		UpstashRedisRESTURL:           v.GetString("UPSTASH_REDIS_REST_URL"),
+		UpstashRedisRESTToken:         v.GetString("UPSTASH_REDIS_REST_TOKEN"),
+		OAuthTransactionEncryptionKey: v.GetString("OAUTH_TRANSACTION_ENCRYPTION_KEY"),
+
 		SMTPHost:         require(v, "SMTP_HOST"),
 		SMTPPort:         require(v, "SMTP_PORT"),
 		SMTPUsername:     require(v, "SMTP_USERNAME"),
@@ -135,6 +152,24 @@ func Load() *Config {
 	rawOrigins := require(v, "ALLOWED_ORIGINS")
 	cfg.AllowedOrigins = strings.Split(rawOrigins, ",")
 
+	configuredOAuthValues := []string{
+		cfg.GoogleOAuthClientID,
+		cfg.GoogleOAuthClientSecret,
+		cfg.GoogleOAuthRedirectURL,
+		cfg.UpstashRedisRESTURL,
+		cfg.UpstashRedisRESTToken,
+		cfg.OAuthTransactionEncryptionKey,
+	}
+	configuredCount := 0
+	for _, value := range configuredOAuthValues {
+		if value != "" {
+			configuredCount++
+		}
+	}
+	if configuredCount != 0 && configuredCount != len(configuredOAuthValues) {
+		panic("config: Google OAuth requires GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, GOOGLE_OAUTH_REDIRECT_URL, UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN, and OAUTH_TRANSACTION_ENCRYPTION_KEY together")
+	}
+
 	return cfg
 }
 
@@ -152,6 +187,14 @@ func LoadDatabase() *DatabaseConfig {
 func (c *Config) IsDevelopment() bool { return c.AppEnv == "development" }
 func (c *Config) IsProduction() bool  { return c.AppEnv == "production" }
 func (c *Config) IsTest() bool        { return c.AppEnv == "test" }
+
+// GoogleOAuthEnabled is deliberately all-or-nothing.  It lets us deploy the
+// routes before credentials are provisioned while failing closed on use.
+func (c *Config) GoogleOAuthEnabled() bool {
+	return c.GoogleOAuthClientID != "" && c.GoogleOAuthClientSecret != "" &&
+		c.GoogleOAuthRedirectURL != "" && c.UpstashRedisRESTURL != "" &&
+		c.UpstashRedisRESTToken != "" && c.OAuthTransactionEncryptionKey != ""
+}
 
 func require(v *viper.Viper, key string) string {
 	val := v.GetString(key)

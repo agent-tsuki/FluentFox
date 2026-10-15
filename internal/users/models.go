@@ -43,15 +43,15 @@ func (u *User) BeforeCreate(_ *gorm.DB) error {
 }
 
 type UserProfile struct {
-	ID           uuid.UUID  `gorm:"type:uuid;primaryKey"`
-	UserID       uuid.UUID  `gorm:"column:user_id;not null"`
-	FirstName    string     `gorm:"column:first_name;not null"`
-	LastName     *string    `gorm:"column:last_name"`
-	Bio          *string    `gorm:"column:bio"`
-	ProfileImage *string    `gorm:"column:profile_image"`
-	NativeLanguage string   `gorm:"column:native_language;not null"`
-	CountryCode  *string    `gorm:"column:country_code"`
-	TargetLevel  *JLPTLevel `gorm:"column:target_level;type:text;check:target_level IN ('N1','N2','N3','N4','N5')"`
+	ID             uuid.UUID  `gorm:"type:uuid;primaryKey"`
+	UserID         uuid.UUID  `gorm:"column:user_id;not null"`
+	FirstName      string     `gorm:"column:first_name;not null"`
+	LastName       *string    `gorm:"column:last_name"`
+	Bio            *string    `gorm:"column:bio"`
+	ProfileImage   *string    `gorm:"column:profile_image"`
+	NativeLanguage string     `gorm:"column:native_language;not null"`
+	CountryCode    *string    `gorm:"column:country_code"`
+	TargetLevel    *JLPTLevel `gorm:"column:target_level;type:text;check:target_level IN ('N1','N2','N3','N4','N5')"`
 
 	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime"`
 	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
@@ -67,8 +67,8 @@ func (u *UserProfile) BeforeCreate(_ *gorm.DB) error {
 }
 
 type UserSettings struct {
-	ID      uuid.UUID `gorm:"type:uuid;primaryKey"`
-	UserID  uuid.UUID `gorm:"column:user_id;not null"`
+	ID     uuid.UUID `gorm:"type:uuid;primaryKey"`
+	UserID uuid.UUID `gorm:"column:user_id;not null"`
 
 	CurrentTimeZone     *string `gorm:"column:current_time_zone"`
 	CursorTail          bool    `gorm:"column:cursor_tail;default:false"`
@@ -111,13 +111,13 @@ func (u *UserVerification) BeforeCreate(_ *gorm.DB) error {
 }
 
 type RefreshToken struct {
-	ID        uuid.UUID  `gorm:"type:uuid;primaryKey"`
-	UserID    uuid.UUID  `gorm:"column:user_id;not null"`
-	TokenHash string     `gorm:"column:token_hash;not null;index:idx_refresh_tokens_token_hash"`
-	IsRevoked bool       `gorm:"column:is_revoked;default:false"`
-	ExpiresAt time.Time  `gorm:"column:expires_at;not null"`
-	CreatedAt time.Time  `gorm:"column:created_at;autoCreateTime"`
-	UpdatedAt time.Time  `gorm:"column:updated_at;autoUpdateTime"`
+	ID        uuid.UUID `gorm:"type:uuid;primaryKey"`
+	UserID    uuid.UUID `gorm:"column:user_id;not null"`
+	TokenHash string    `gorm:"column:token_hash;not null;index:idx_refresh_tokens_token_hash"`
+	IsRevoked bool      `gorm:"column:is_revoked;default:false"`
+	ExpiresAt time.Time `gorm:"column:expires_at;not null"`
+	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime"`
+	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
 }
 
 func (RefreshToken) TableName() string { return "refresh_tokens" }
@@ -125,6 +125,30 @@ func (RefreshToken) TableName() string { return "refresh_tokens" }
 func (u *RefreshToken) BeforeCreate(_ *gorm.DB) error {
 	if u.ID == uuid.Nil {
 		u.ID = uuid.New()
+	}
+	return nil
+}
+
+// OAuthIdentity is the stable provider-specific identity for a user. Email is
+// deliberately not used as the provider key: Google can change an address,
+// whereas its OIDC subject is immutable for the Google account.
+type OAuthIdentity struct {
+	ID              uuid.UUID `gorm:"type:uuid;primaryKey"`
+	UserID          uuid.UUID `gorm:"column:user_id;not null;uniqueIndex:idx_oauth_identities_user_provider,priority:1"`
+	Provider        string    `gorm:"column:provider;not null;uniqueIndex:idx_oauth_identities_provider_subject,priority:1;uniqueIndex:idx_oauth_identities_user_provider,priority:2"`
+	ProviderSubject string    `gorm:"column:provider_subject;not null;uniqueIndex:idx_oauth_identities_provider_subject,priority:2"`
+	ProviderEmail   *string   `gorm:"column:provider_email"`
+	EmailVerified   bool      `gorm:"column:email_verified;not null;default:false"`
+	LastUsedAt      time.Time `gorm:"column:last_used_at;not null"`
+	CreatedAt       time.Time `gorm:"column:created_at;autoCreateTime"`
+	UpdatedAt       time.Time `gorm:"column:updated_at;autoUpdateTime"`
+}
+
+func (OAuthIdentity) TableName() string { return "oauth_identities" }
+
+func (o *OAuthIdentity) BeforeCreate(_ *gorm.DB) error {
+	if o.ID == uuid.Nil {
+		o.ID = uuid.New()
 	}
 	return nil
 }
