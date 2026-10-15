@@ -85,6 +85,11 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 		cleanup()
 		return nil, nil, fmt.Errorf("configure Google OAuth: %w", err)
 	}
+	xOAuth, err := auth.NewXOAuthService(cfg, userRepo, loginService, log)
+	if err != nil {
+		cleanup()
+		return nil, nil, fmt.Errorf("configure X OAuth: %w", err)
+	}
 	authHandler := auth.NewHandler(
 		auth.NewAuthService(userRepo, mailService, emailChecker, staleReleaser, log),
 		auth.NewTokenVerificationService(userRepo, log),
@@ -96,6 +101,7 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	)
 	auth.RegisterRoutes(api, authHandler)
 	auth.RegisterGoogleOAuthRoutes(r, googleOAuth, tokenMaker, log)
+	auth.RegisterXOAuthRoutes(r, xOAuth, tokenMaker, log)
 
 	r.GET("/health", func(c *gin.Context) {
 		if err := sqlDB.Ping(); err != nil {

@@ -31,12 +31,15 @@ type Config struct {
 	JWTAccessExpiryMinutes int
 	JWTRefreshExpiryDays   int
 
-	// Google OAuth and Redis-backed, one-time OAuth hand-offs. OAuth is
-	// disabled unless all of these values are configured, so an incomplete
-	// rollout cannot prevent the rest of the API from starting.
+	// Social OAuth providers and Redis-backed, one-time hand-offs. A provider
+	// is disabled unless its own credentials and the shared state store are
+	// complete, so an incomplete rollout cannot affect password sign-in.
 	GoogleOAuthClientID           string
 	GoogleOAuthClientSecret       string
 	GoogleOAuthRedirectURL        string
+	XOAuthConsumerKey             string
+	XOAuthConsumerSecret          string
+	XOAuthCallbackURL             string
 	UpstashRedisRESTURL           string
 	UpstashRedisRESTToken         string
 	OAuthTransactionEncryptionKey string
@@ -113,6 +116,9 @@ func Load() *Config {
 		GoogleOAuthClientID:           v.GetString("GOOGLE_OAUTH_CLIENT_ID"),
 		GoogleOAuthClientSecret:       v.GetString("GOOGLE_OAUTH_CLIENT_SECRET"),
 		GoogleOAuthRedirectURL:        v.GetString("GOOGLE_OAUTH_REDIRECT_URL"),
+		XOAuthConsumerKey:             v.GetString("X_OAUTH_CONSUMER_KEY"),
+		XOAuthConsumerSecret:          v.GetString("X_OAUTH_CONSUMER_SECRET"),
+		XOAuthCallbackURL:             v.GetString("X_OAUTH_CALLBACK_URL"),
 		UpstashRedisRESTURL:           v.GetString("UPSTASH_REDIS_REST_URL"),
 		UpstashRedisRESTToken:         v.GetString("UPSTASH_REDIS_REST_TOKEN"),
 		OAuthTransactionEncryptionKey: v.GetString("OAUTH_TRANSACTION_ENCRYPTION_KEY"),
@@ -152,22 +158,27 @@ func Load() *Config {
 	rawOrigins := require(v, "ALLOWED_ORIGINS")
 	cfg.AllowedOrigins = strings.Split(rawOrigins, ",")
 
-	configuredOAuthValues := []string{
-		cfg.GoogleOAuthClientID,
-		cfg.GoogleOAuthClientSecret,
-		cfg.GoogleOAuthRedirectURL,
+	sharedOAuthValues := []string{
 		cfg.UpstashRedisRESTURL,
 		cfg.UpstashRedisRESTToken,
 		cfg.OAuthTransactionEncryptionKey,
 	}
-	configuredCount := 0
-	for _, value := range configuredOAuthValues {
-		if value != "" {
-			configuredCount++
-		}
-	}
-	if configuredCount != 0 && configuredCount != len(configuredOAuthValues) {
-		panic("config: Google OAuth requires GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, GOOGLE_OAUTH_REDIRECT_URL, UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN, and OAUTH_TRANSACTION_ENCRYPTION_KEY together")
+	validateOptionalGroup("OAuth state storage", sharedOAuthValues,
+		"UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN, and OAUTH_TRANSACTION_ENCRYPTION_KEY")
+	validateOptionalGroup("Google OAuth", []string{
+		cfg.GoogleOAuthClientID,
+		cfg.GoogleOAuthClientSecret,
+		cfg.GoogleOAuthRedirectURL,
+	}, "GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, and GOOGLE_OAUTH_REDIRECT_URL")
+	validateOptionalGroup("X OAuth", []string{
+		cfg.XOAuthConsumerKey,
+		cfg.XOAuthConsumerSecret,
+		cfg.XOAuthCallbackURL,
+	}, "X_OAUTH_CONSUMER_KEY, X_OAUTH_CONSUMER_SECRET, and X_OAUTH_CALLBACK_URL")
+
+	if (hasConfiguredValue([]string{cfg.GoogleOAuthClientID, cfg.GoogleOAuthClientSecret, cfg.GoogleOAuthRedirectURL}) ||
+		hasConfiguredValue([]string{cfg.XOAuthConsumerKey, cfg.XOAuthConsumerSecret, cfg.XOAuthCallbackURL})) && !cfg.OAuthStateStoreEnabled() {
+		panic("config: social OAuth requires UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN, and OAUTH_TRANSACTION_ENCRYPTION_KEY")
 	}
 
 	return cfg
@@ -188,12 +199,46 @@ func (c *Config) IsDevelopment() bool { return c.AppEnv == "development" }
 func (c *Config) IsProduction() bool  { return c.AppEnv == "production" }
 func (c *Config) IsTest() bool        { return c.AppEnv == "test" }
 
-// GoogleOAuthEnabled is deliberately all-or-nothing.  It lets us deploy the
+// OAuthStateStoreEnabled reports whether encrypted, cross-instance OAuth state
+// is available for a provider flow.
+func (c *Config) OAuthStateStoreEnabled() bool {
+	return c.UpstashRedisRESTURL != "" && c.UpstashRedisRESTToken != "" &&
+		c.OAuthTransactionEncryptionKey != ""
+}
+
+// GoogleOAuthEnabled is deliberately all-or-nothing. It lets us deploy the
 // routes before credentials are provisioned while failing closed on use.
 func (c *Config) GoogleOAuthEnabled() bool {
 	return c.GoogleOAuthClientID != "" && c.GoogleOAuthClientSecret != "" &&
-		c.GoogleOAuthRedirectURL != "" && c.UpstashRedisRESTURL != "" &&
-		c.UpstashRedisRESTToken != "" && c.OAuthTransactionEncryptionKey != ""
+		c.GoogleOAuthRedirectURL != "" && c.OAuthStateStoreEnabled()
+}
+
+// XOAuthEnabled uses OAuth 1.0a consumer credentials plus the shared,
+// encrypted transaction store used to bind the browser callback safely.
+func (c *Config) XOAuthEnabled() bool {
+	return c.XOAuthConsumerKey != "" && c.XOAuthConsumerSecret != "" &&
+		c.XOAuthCallbackURL != "" && c.OAuthStateStoreEnabled()
+}
+
+func validateOptionalGroup(name string, values []string, required string) {
+	configured := 0
+	for _, value := range values {
+		if value != "" {
+			configured++
+		}
+	}
+	if configured != 0 && configured != len(values) {
+		panic(fmt.Sprintf("config: %s requires %s together", name, required))
+	}
+}
+
+func hasConfiguredValue(values []string) bool {
+	for _, value := range values {
+		if value != "" {
+			return true
+		}
+	}
+	return false
 }
 
 func require(v *viper.Viper, key string) string {
