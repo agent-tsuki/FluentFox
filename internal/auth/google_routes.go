@@ -8,6 +8,8 @@ import (
 	"strings"
 
 	"github.com/fluentfox/api/pkg/exceptions"
+	"github.com/fluentfox/api/pkg/middleware"
+	"github.com/fluentfox/api/pkg/token"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
@@ -17,7 +19,7 @@ import (
 // are browser navigations that must send HTTP redirects rather than JSON. The
 // exchange endpoint remains JSON and is covered by the application's global
 // CORS middleware.
-func RegisterGoogleOAuthRoutes(router gin.IRouter, service *GoogleOAuthService, log *zap.Logger) {
+func RegisterGoogleOAuthRoutes(router gin.IRouter, service *GoogleOAuthService, tokenMaker *token.Maker, log *zap.Logger) {
 	router.GET("/auth/oauth/google/start", func(c *gin.Context) {
 		if service == nil {
 			writeGoogleOAuthError(c, errGoogleOAuthUnavailable, log)
@@ -56,20 +58,34 @@ func RegisterGoogleOAuthRoutes(router gin.IRouter, service *GoogleOAuthService, 
 		// Google reports cancellations and consent failures in its query string.
 		// Send a generic code to our frontend, never the provider's raw message.
 		if c.Query("error") != "" {
+			isLink, err := service.CancelCallback(c.Request.Context(), state)
+			if err != nil {
+				log.Warn("Google OAuth cancellation failed", zap.Error(err))
+				c.Redirect(http.StatusFound, service.frontendErrorURL("oauth_failed"))
+				return
+			}
+			if isLink {
+				c.Redirect(http.StatusFound, service.frontendGoogleLinkURL("oauth_cancelled"))
+				return
+			}
 			c.Redirect(http.StatusFound, service.frontendErrorURL("oauth_cancelled"))
 			return
 		}
-		destination, err := service.CompleteCallback(c.Request.Context(), c.Query("state"), c.Query("code"))
+		result, err := service.CompleteCallback(c.Request.Context(), c.Query("state"), c.Query("code"))
 		if err != nil {
 			code := "oauth_failed"
 			if appErr, ok := exceptions.As(err); ok {
 				code = strings.ToLower(appErr.Code)
 			}
 			log.Warn("Google OAuth callback failed", zap.Error(err))
+			if result.IsLink {
+				c.Redirect(http.StatusFound, service.frontendGoogleLinkURL(code))
+				return
+			}
 			c.Redirect(http.StatusFound, service.frontendErrorURL(code))
 			return
 		}
-		c.Redirect(http.StatusFound, destination)
+		c.Redirect(http.StatusFound, result.Destination)
 	})
 
 	router.POST("/auth/oauth/google/exchange", func(c *gin.Context) {
@@ -90,6 +106,32 @@ func RegisterGoogleOAuthRoutes(router gin.IRouter, service *GoogleOAuthService, 
 		}
 		c.JSON(http.StatusOK, gin.H{"status": "success", "data": response})
 	})
+
+	linkAuth := []gin.HandlerFunc{middleware.RequireAuth(tokenMaker), middleware.RequireEmailVerified()}
+	router.GET("/auth/oauth/google/link/status", append(linkAuth, func(c *gin.Context) {
+		if service == nil {
+			writeGoogleOAuthError(c, errGoogleOAuthUnavailable, log)
+			return
+		}
+		status, err := service.LinkStatus(c.Request.Context(), middleware.ContextUserID(c.Request.Context()))
+		if err != nil {
+			writeGoogleOAuthError(c, err, log)
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"status": "success", "data": status})
+	})...)
+	router.POST("/auth/oauth/google/link/start", append(linkAuth, func(c *gin.Context) {
+		if service == nil {
+			writeGoogleOAuthError(c, errGoogleOAuthUnavailable, log)
+			return
+		}
+		destination, err := service.StartLink(c.Request.Context(), middleware.ContextUserID(c.Request.Context()))
+		if err != nil {
+			writeGoogleOAuthError(c, err, log)
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"status": "success", "data": gin.H{"authorization_url": destination}})
+	})...)
 }
 
 func queryValue(rawURL, key string) string {

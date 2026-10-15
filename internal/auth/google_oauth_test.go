@@ -95,3 +95,30 @@ func TestFrontendCallbackUsesFragment(t *testing.T) {
 		t.Fatalf("callback fragment = %q", parsed.Fragment)
 	}
 }
+
+func TestFrontendGoogleLinkURLStaysOnSettings(t *testing.T) {
+	service := &GoogleOAuthService{frontendURL: "https://www.foxsensei.com"}
+	got := service.frontendGoogleLinkURL("")
+	parsed, err := url.Parse(got)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if parsed.Path != "/profile" {
+		t.Fatalf("link URL path = %q, want /profile", parsed.Path)
+	}
+	if parsed.Query().Get("tab") != "settings" || parsed.Query().Get("google") != "linked" {
+		t.Fatalf("link URL query = %q, want settings and linked", parsed.RawQuery)
+	}
+	if parsed.Fragment != "" {
+		t.Fatalf("link URL fragment = %q, want empty", parsed.Fragment)
+	}
+
+	errorURL := service.frontendGoogleLinkURL("oauth_link_email_mismatch")
+	errorParsed, err := url.Parse(errorURL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if errorParsed.Query().Get("google_error") != "oauth_link_email_mismatch" {
+		t.Fatalf("error URL query = %q, want link error", errorParsed.RawQuery)
+	}
+}

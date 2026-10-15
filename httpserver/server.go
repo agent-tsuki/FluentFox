@@ -95,7 +95,7 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 		log, validator.New(),
 	)
 	auth.RegisterRoutes(api, authHandler)
-	auth.RegisterGoogleOAuthRoutes(r, googleOAuth, log)
+	auth.RegisterGoogleOAuthRoutes(r, googleOAuth, tokenMaker, log)
 
 	r.GET("/health", func(c *gin.Context) {
 		if err := sqlDB.Ping(); err != nil {

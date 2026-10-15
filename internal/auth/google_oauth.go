@@ -23,6 +23,7 @@ import (
 	"github.com/fluentfox/api/config"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/exceptions"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -39,9 +40,11 @@ const (
 )
 
 var (
-	errGoogleOAuthUnavailable = exceptions.New(http.StatusServiceUnavailable, "OAUTH_UNAVAILABLE", "Google sign-in is not configured")
-	errGoogleOAuthFailed      = exceptions.New(http.StatusUnauthorized, "OAUTH_FAILED", "Google sign-in could not be completed")
-	errGoogleAccountLink      = exceptions.New(http.StatusConflict, "OAUTH_ACCOUNT_LINK_REQUIRED", "an account already exists for this email; sign in with your password first")
+	errGoogleOAuthUnavailable  = exceptions.New(http.StatusServiceUnavailable, "OAUTH_UNAVAILABLE", "Google sign-in is not configured")
+	errGoogleOAuthFailed       = exceptions.New(http.StatusUnauthorized, "OAUTH_FAILED", "Google sign-in could not be completed")
+	errGoogleAccountLink       = exceptions.New(http.StatusConflict, "OAUTH_ACCOUNT_LINK_REQUIRED", "an account already exists for this email; sign in with your password first")
+	errGoogleLinkEmailMismatch = exceptions.New(http.StatusConflict, "OAUTH_LINK_EMAIL_MISMATCH", "the Google email must match your FoxSensei account email")
+	errGoogleIdentityLinked    = exceptions.New(http.StatusConflict, "OAUTH_IDENTITY_ALREADY_LINKED", "this Google account is already linked to another FoxSensei account")
 )
 
 // GoogleOAuthService owns Google authorization-code sign-in.  It deliberately
@@ -63,9 +66,22 @@ type GoogleOAuthService struct {
 }
 
 type googleOAuthTransaction struct {
-	ReturnTo     string `json:"return_to"`
-	CodeVerifier string `json:"code_verifier"`
-	Nonce        string `json:"nonce"`
+	ReturnTo     string     `json:"return_to"`
+	CodeVerifier string     `json:"code_verifier"`
+	Nonce        string     `json:"nonce"`
+	LinkUserID   *uuid.UUID `json:"link_user_id,omitempty"`
+}
+
+type googleOAuthCallbackResult struct {
+	Destination string
+	IsLink      bool
+}
+
+// GoogleOAuthLinkStatus is safe to expose to the signed-in account owner. It
+// deliberately reports only the identity linked to that account.
+type GoogleOAuthLinkStatus struct {
+	Connected     bool    `json:"connected"`
+	ProviderEmail *string `json:"provider_email,omitempty"`
 }
 
 type oauthHandoff struct {
@@ -147,6 +163,27 @@ func NewGoogleOAuthService(cfg *config.Config, repo *users.Repository, login *Lo
 // random, server stored, one-use and encrypted; return_to is constrained to an
 // internal frontend route so it cannot become an open redirect.
 func (s *GoogleOAuthService) Start(ctx context.Context, returnTo string) (string, error) {
+	return s.start(ctx, returnTo, nil)
+}
+
+// StartLink begins a Google flow bound to the currently authenticated account.
+// The user ID stays only in the encrypted, short-lived server-side transaction;
+// it is never put in the browser redirect URL.
+func (s *GoogleOAuthService) StartLink(ctx context.Context, userID uuid.UUID) (string, error) {
+	if s == nil {
+		return "", errGoogleOAuthUnavailable
+	}
+	user, err := s.users.GetUserByID(ctx, userID)
+	if err != nil {
+		return "", exceptions.ErrUserNotFound
+	}
+	if err := s.login.ValidateUserDetail(&user); err != nil {
+		return "", err
+	}
+	return s.start(ctx, "/profile?tab=settings", &userID)
+}
+
+func (s *GoogleOAuthService) start(ctx context.Context, returnTo string, linkUserID *uuid.UUID) (string, error) {
 	if s == nil {
 		return "", errGoogleOAuthUnavailable
 	}
@@ -172,6 +209,7 @@ func (s *GoogleOAuthService) Start(ctx context.Context, returnTo string) (string
 		ReturnTo:     returnTo,
 		CodeVerifier: verifier,
 		Nonce:        nonce,
+		LinkUserID:   linkUserID,
 	}
 	if err := s.store.put(ctx, oauthStateKey(state), transaction, googleOAuthStateTTL); err != nil {
 		return "", fmt.Errorf("save oauth state: %w", err)
@@ -194,68 +232,158 @@ func (s *GoogleOAuthService) Start(ctx context.Context, returnTo string) (string
 // CompleteCallback exchanges the provider code, verifies the signed OIDC ID
 // token and issues a one-time frontend hand-off code. It never puts FluentFox
 // access or refresh tokens in a URL.
-func (s *GoogleOAuthService) CompleteCallback(ctx context.Context, state, code string) (string, error) {
+func (s *GoogleOAuthService) CompleteCallback(ctx context.Context, state, code string) (googleOAuthCallbackResult, error) {
 	if s == nil {
-		return "", errGoogleOAuthUnavailable
+		return googleOAuthCallbackResult{}, errGoogleOAuthUnavailable
 	}
 	if state == "" || code == "" {
-		return "", errGoogleOAuthFailed
+		return googleOAuthCallbackResult{}, errGoogleOAuthFailed
 	}
 
 	var transaction googleOAuthTransaction
 	found, err := s.store.take(ctx, oauthStateKey(state), &transaction)
 	if err != nil {
-		return "", fmt.Errorf("consume oauth state: %w", err)
+		return googleOAuthCallbackResult{}, fmt.Errorf("consume oauth state: %w", err)
 	}
 	if !found || transaction.CodeVerifier == "" || transaction.Nonce == "" {
-		return "", errGoogleOAuthFailed
+		return googleOAuthCallbackResult{}, errGoogleOAuthFailed
 	}
+	result := googleOAuthCallbackResult{IsLink: transaction.LinkUserID != nil}
 
 	idTokenRaw, err := s.exchangeGoogleCode(ctx, code, transaction.CodeVerifier)
 	if err != nil {
 		s.logger.Warn("Google OAuth code exchange failed", zap.Error(err))
-		return "", errGoogleOAuthFailed
+		return result, errGoogleOAuthFailed
 	}
 	idToken, err := s.verifier.Verify(ctx, idTokenRaw)
 	if err != nil {
 		s.logger.Warn("Google OAuth ID token verification failed", zap.Error(err))
-		return "", errGoogleOAuthFailed
+		return result, errGoogleOAuthFailed
 	}
 	if idToken.Nonce != transaction.Nonce || idToken.Subject == "" {
 		s.logger.Warn("Google OAuth nonce or subject validation failed")
-		return "", errGoogleOAuthFailed
+		return result, errGoogleOAuthFailed
 	}
 
 	var claims googleIDTokenClaims
 	if err := idToken.Claims(&claims); err != nil {
-		return "", fmt.Errorf("read Google ID token claims: %w", err)
+		return result, fmt.Errorf("read Google ID token claims: %w", err)
 	}
 	if !claims.EmailVerified || strings.TrimSpace(claims.Email) == "" {
-		return "", exceptions.New(http.StatusForbidden, "OAUTH_EMAIL_NOT_VERIFIED", "Google has not verified this email address")
+		return result, exceptions.New(http.StatusForbidden, "OAUTH_EMAIL_NOT_VERIFIED", "Google has not verified this email address")
+	}
+
+	if transaction.LinkUserID != nil {
+		if err := s.linkGoogleIdentity(ctx, *transaction.LinkUserID, idToken.Subject, claims); err != nil {
+			return result, err
+		}
+		result.Destination = s.frontendGoogleLinkURL("")
+		return result, nil
 	}
 
 	user, err := s.findOrCreateUser(ctx, idToken.Subject, claims)
 	if err != nil {
-		return "", err
+		return result, err
 	}
 	if err := s.login.ValidateUserDetail(&user); err != nil {
-		return "", err
+		return result, err
 	}
 	login, err := s.login.JetTokenAssigner(ctx, user)
 	if err != nil {
-		return "", fmt.Errorf("issue OAuth session: %w", err)
+		return result, fmt.Errorf("issue OAuth session: %w", err)
 	}
 
 	handoffCode, err := oauthRandom(32)
 	if err != nil {
-		return "", fmt.Errorf("generate OAuth handoff code: %w", err)
+		return result, fmt.Errorf("generate OAuth handoff code: %w", err)
 	}
 	handoff := oauthHandoff{Login: login, Email: user.Email, ReturnTo: transaction.ReturnTo}
 	if err := s.store.put(ctx, oauthExchangeKey(handoffCode), handoff, googleOAuthExchangeCodeTTL); err != nil {
-		return "", fmt.Errorf("save OAuth handoff: %w", err)
+		return result, fmt.Errorf("save OAuth handoff: %w", err)
 	}
 
-	return s.frontendCallbackURL(url.Values{"code": {handoffCode}, "return_to": {transaction.ReturnTo}}), nil
+	result.Destination = s.frontendCallbackURL(url.Values{"code": {handoffCode}, "return_to": {transaction.ReturnTo}})
+	return result, nil
+}
+
+// CancelCallback consumes the state for a cancelled provider redirect and
+// reports whether that state belonged to account linking. This prevents a
+// cancelled link from leaving a reusable transaction in Redis.
+func (s *GoogleOAuthService) CancelCallback(ctx context.Context, state string) (bool, error) {
+	if s == nil || state == "" {
+		return false, errGoogleOAuthFailed
+	}
+	var transaction googleOAuthTransaction
+	found, err := s.store.take(ctx, oauthStateKey(state), &transaction)
+	if err != nil {
+		return false, fmt.Errorf("consume cancelled oauth state: %w", err)
+	}
+	if !found {
+		return false, errGoogleOAuthFailed
+	}
+	return transaction.LinkUserID != nil, nil
+}
+
+// LinkStatus reports the connection for a user, not for an arbitrary email.
+func (s *GoogleOAuthService) LinkStatus(ctx context.Context, userID uuid.UUID) (GoogleOAuthLinkStatus, error) {
+	if s == nil {
+		return GoogleOAuthLinkStatus{}, errGoogleOAuthUnavailable
+	}
+	identity, err := s.users.GetOAuthIdentityForUser(ctx, userID, googleProvider)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return GoogleOAuthLinkStatus{}, nil
+	}
+	if err != nil {
+		return GoogleOAuthLinkStatus{}, err
+	}
+	return GoogleOAuthLinkStatus{Connected: true, ProviderEmail: identity.ProviderEmail}, nil
+}
+
+// linkGoogleIdentity is only called after both a valid FluentFox session and a
+// Google OIDC proof. Requiring the same verified address makes the user intent
+// explicit and avoids silently joining unrelated accounts.
+func (s *GoogleOAuthService) linkGoogleIdentity(ctx context.Context, userID uuid.UUID, subject string, claims googleIDTokenClaims) error {
+	user, err := s.users.GetUserByID(ctx, userID)
+	if err != nil {
+		return exceptions.ErrUserNotFound
+	}
+	if err := s.login.ValidateUserDetail(&user); err != nil {
+		return err
+	}
+
+	email := normalizeEmail(claims.Email)
+	if email != normalizeEmail(user.Email) {
+		return errGoogleLinkEmailMismatch
+	}
+
+	identity, err := s.users.GetOAuthIdentity(ctx, googleProvider, subject)
+	if err == nil {
+		if identity.UserID != userID {
+			return errGoogleIdentityLinked
+		}
+		return s.users.TouchOAuthIdentity(ctx, googleProvider, subject, &email, true, time.Now().UTC())
+	}
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+
+	err = s.users.Transaction(ctx, func(tx *gorm.DB) error {
+		return s.users.CreateOAuthIdentity(ctx, tx, userID, googleProvider, subject, &email, true, time.Now().UTC())
+	})
+	if err == nil {
+		return nil
+	}
+
+	// A simultaneous callback can win the unique constraint. Treat the same
+	// owner as success, but never move an identity owned by someone else.
+	identity, lookupErr := s.users.GetOAuthIdentity(ctx, googleProvider, subject)
+	if lookupErr == nil {
+		if identity.UserID == userID {
+			return nil
+		}
+		return errGoogleIdentityLinked
+	}
+	return fmt.Errorf("create Google OAuth link: %w", err)
 }
 
 func (s *GoogleOAuthService) Exchange(ctx context.Context, code string) (OAuthExchangeResponse, string, error) {
@@ -443,6 +571,20 @@ func (s *GoogleOAuthService) frontendCallbackURL(fragment url.Values) string {
 
 func (s *GoogleOAuthService) frontendErrorURL(code string) string {
 	return s.frontendCallbackURL(url.Values{"error": {code}})
+}
+
+func (s *GoogleOAuthService) frontendGoogleLinkURL(errorCode string) string {
+	u, _ := url.Parse(s.frontendURL)
+	u.Path = strings.TrimRight(u.Path, "/") + "/profile"
+	query := url.Values{"tab": {"settings"}}
+	if errorCode == "" {
+		query.Set("google", "linked")
+	} else {
+		query.Set("google_error", errorCode)
+	}
+	u.RawQuery = query.Encode()
+	u.Fragment = ""
+	return u.String()
 }
 
 func validOAuthReturnTo(raw string) (string, error) {

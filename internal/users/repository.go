@@ -184,6 +184,18 @@ func (r *Repository) GetOAuthIdentity(ctx context.Context, provider, subject str
 	return identity, nil
 }
 
+// GetOAuthIdentityForUser returns a provider connection owned by one user.
+// A user may have at most one identity for each provider.
+func (r *Repository) GetOAuthIdentityForUser(ctx context.Context, userID uuid.UUID, provider string) (OAuthIdentity, error) {
+	var identity OAuthIdentity
+	if err := r.db.WithContext(ctx).
+		Where("user_id = ? AND provider = ?", userID, provider).
+		First(&identity).Error; err != nil {
+		return OAuthIdentity{}, fmt.Errorf("get oauth identity for user: %w", err)
+	}
+	return identity, nil
+}
+
 func (r *Repository) CreateOAuthIdentity(
 	ctx context.Context,
 	tx *gorm.DB,
