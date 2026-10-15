@@ -29,7 +29,7 @@ const (
 	xRequestTokenEndpoint = "https://api.x.com/oauth/request_token"
 	xAuthorizeEndpoint    = "https://api.x.com/oauth/authenticate"
 	xAccessTokenEndpoint  = "https://api.x.com/oauth/access_token"
-	xVerifyCredentialsURL = "https://api.x.com/1.1/account/verify_credentials.json?skip_status=true"
+	xVerifyCredentialsURL = "https://api.x.com/1.1/account/verify_credentials.json?skip_status=true&include_email=true"
 )
 
 var (
@@ -78,6 +78,9 @@ type XOAuthLinkStatus struct {
 type xVerifyCredentialsResponse struct {
 	IDStr      string `json:"id_str"`
 	ScreenName string `json:"screen_name"`
+	// X only returns an email the user has verified, and only when the app has
+	// the "Request email from users" permission.
+	Email string `json:"email"`
 }
 
 func NewXOAuthService(cfg *config.Config, repo *users.Repository, login *LoginService, log *zap.Logger) (*XOAuthService, error) {
@@ -317,7 +320,7 @@ func (s *XOAuthService) verifyCredentials(ctx context.Context, accessToken, acce
 func (s *XOAuthService) findLinkedUser(ctx context.Context, identity xVerifyCredentialsResponse) (users.User, error) {
 	connected, err := s.users.GetOAuthIdentity(ctx, xProvider, identity.IDStr)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return users.User{}, errXAccountLink
+		return s.findUserByVerifiedEmail(ctx, identity)
 	}
 	if err != nil {
 		return users.User{}, err
@@ -328,6 +331,21 @@ func (s *XOAuthService) findLinkedUser(ctx context.Context, identity xVerifyCred
 	}
 	if err := s.users.TouchOAuthIdentity(ctx, xProvider, identity.IDStr, nil, false, time.Now().UTC()); err != nil {
 		return users.User{}, err
+	}
+	return user, nil
+}
+
+func (s *XOAuthService) findUserByVerifiedEmail(ctx context.Context, identity xVerifyCredentialsResponse) (users.User, error) {
+	email := normalizeEmail(identity.Email)
+	if email == "" {
+		return users.User{}, errXAccountLink
+	}
+	user, found, err := linkOAuthIdentityToEmailOwner(ctx, s.users, s.login, xProvider, identity.IDStr, email)
+	if err != nil {
+		return users.User{}, err
+	}
+	if !found {
+		return users.User{}, errXAccountLink
 	}
 	return user, nil
 }

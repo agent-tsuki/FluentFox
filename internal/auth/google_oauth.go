@@ -101,6 +101,7 @@ type googleIDTokenClaims struct {
 	FamilyName    string `json:"family_name"`
 	Name          string `json:"name"`
 	Locale        string `json:"locale"`
+	HostedDomain  string `json:"hd"`
 }
 
 // OAuthExchangeRequest is sent by the frontend callback page. The code only
@@ -458,10 +459,14 @@ func (s *GoogleOAuthService) findOrCreateUser(ctx context.Context, subject strin
 		return users.User{}, err
 	}
 
-	// Never link a Google subject to an existing account based solely on a
-	// matching email. A future authenticated account-settings flow can perform
-	// explicit linking; silently linking here enables account takeover paths.
-	if _, err := s.users.GetUserForEmail(ctx, email); err == nil {
+	// Join an existing email account only when Google is authoritative for the
+	// address; otherwise the owner must link Google from account settings.
+	if googleEmailIsAuthoritative(email, claims.HostedDomain) {
+		user, found, err := linkOAuthIdentityToEmailOwner(ctx, s.users, s.login, googleProvider, subject, email)
+		if found || err != nil {
+			return user, err
+		}
+	} else if _, err := s.users.GetUserForEmail(ctx, email); err == nil {
 		return users.User{}, errGoogleAccountLink
 	} else if !errors.Is(err, gorm.ErrRecordNotFound) {
 		return users.User{}, fmt.Errorf("check OAuth email owner: %w", err)
@@ -475,17 +480,9 @@ func (s *GoogleOAuthService) findOrCreateUser(ctx context.Context, subject strin
 	lastName := optionalString(claims.FamilyName)
 	nativeLang := googleNativeLanguage(claims.Locale)
 
-	// A social-only account still has a password-hash column today. Store a
-	// cryptographically random Argon2 hash so password sign-in always fails
-	// safely; no user knows or can derive this value.
-	disabledPassword, err := oauthRandom(32)
+	disabledHash, err := disabledPasswordHash()
 	if err != nil {
-		return users.User{}, fmt.Errorf("generate social-only password: %w", err)
-	}
-	argon := (&Argon2Config{}).defaultConfig()
-	disabledHash, err := argon.hashStringWithSalt(disabledPassword)
-	if err != nil {
-		return users.User{}, fmt.Errorf("hash social-only password: %w", err)
+		return users.User{}, err
 	}
 
 	var created users.User

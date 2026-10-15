@@ -122,3 +122,26 @@ func TestFrontendGoogleLinkURLStaysOnSettings(t *testing.T) {
 		t.Fatalf("error URL query = %q, want link error", errorParsed.RawQuery)
 	}
 }
+
+func TestGoogleEmailIsAuthoritative(t *testing.T) {
+	tests := []struct {
+		name         string
+		email        string
+		hostedDomain string
+		want         bool
+	}{
+		{name: "trusts gmail address", email: "fox@gmail.com", want: true},
+		{name: "trusts googlemail address", email: "fox@googlemail.com", want: true},
+		{name: "trusts workspace address matching hd", email: "fox@true-fan.in", hostedDomain: "true-fan.in", want: true},
+		{name: "rejects workspace hd for another domain", email: "fox@other.com", hostedDomain: "true-fan.in", want: false},
+		{name: "rejects non google address without hd", email: "fox@yahoo.com", want: false},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := googleEmailIsAuthoritative(test.email, test.hostedDomain); got != test.want {
+				t.Fatalf("googleEmailIsAuthoritative(%q, %q) = %v, want %v", test.email, test.hostedDomain, got, test.want)
+			}
+		})
+	}
+}

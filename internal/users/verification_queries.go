@@ -231,3 +231,17 @@ func (r *Repository) ConsumePasswordReset(
 	}
 	return true, nil
 }
+
+func (r *Repository) UpdatePasswordHash(ctx context.Context, tx *gorm.DB, userID uuid.UUID, passwordHash string, now time.Time) error {
+	result := tx.WithContext(ctx).
+		Model(&User{}).
+		Where("id = ?", userID).
+		Updates(map[string]any{"password_hash": passwordHash, "updated_at": now})
+	if result.Error != nil {
+		return fmt.Errorf("update password hash: %w", result.Error)
+	}
+	if result.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+	return nil
+}
