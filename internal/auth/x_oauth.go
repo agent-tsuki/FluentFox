@@ -36,6 +36,7 @@ var (
 	errXOAuthUnavailable = exceptions.New(http.StatusServiceUnavailable, "OAUTH_X_UNAVAILABLE", "X sign-in is not configured")
 	errXOAuthFailed      = exceptions.New(http.StatusUnauthorized, "OAUTH_X_FAILED", "X sign-in could not be completed")
 	errXAccountLink      = exceptions.New(http.StatusConflict, "OAUTH_X_ACCOUNT_LINK_REQUIRED", "sign in with your email, then connect X from Security settings")
+	errXEmailMissing     = exceptions.New(http.StatusForbidden, "OAUTH_X_EMAIL_MISSING", "X did not share a verified email for this account")
 	errXIdentityLinked   = exceptions.New(http.StatusConflict, "OAUTH_X_IDENTITY_ALREADY_LINKED", "this X account is already linked to another FoxSensei account")
 )
 
@@ -78,6 +79,7 @@ type XOAuthLinkStatus struct {
 type xVerifyCredentialsResponse struct {
 	IDStr      string `json:"id_str"`
 	ScreenName string `json:"screen_name"`
+	Name       string `json:"name"`
 	// X only returns an email the user has verified, and only when the app has
 	// the "Request email from users" permission.
 	Email string `json:"email"`
@@ -338,16 +340,33 @@ func (s *XOAuthService) findLinkedUser(ctx context.Context, identity xVerifyCred
 func (s *XOAuthService) findUserByVerifiedEmail(ctx context.Context, identity xVerifyCredentialsResponse) (users.User, error) {
 	email := normalizeEmail(identity.Email)
 	if email == "" {
-		return users.User{}, errXAccountLink
+		// Every account needs an email, so without one X can only sign into an
+		// account that linked X from settings.
+		s.logger.Warn("X OAuth returned no verified email")
+		return users.User{}, errXEmailMissing
 	}
 	user, found, err := linkOAuthIdentityToEmailOwner(ctx, s.users, s.login, xProvider, identity.IDStr, email)
+	if found || err != nil {
+		return user, err
+	}
+
+	username, err := oauthUsername(ctx, s.users, "xuser", identity.ScreenName, identity.Name, strings.Split(email, "@")[0])
 	if err != nil {
 		return users.User{}, err
 	}
-	if !found {
-		return users.User{}, errXAccountLink
-	}
-	return user, nil
+	return createOAuthUser(ctx, s.users, &oauthNewUser{
+		Provider:      xProvider,
+		Subject:       identity.IDStr,
+		Email:         email,
+		Username:      username,
+		FirstName:     xFirstName(identity, email),
+		NativeLang:    "en",
+		EmailTakenErr: errXAccountLink,
+	})
+}
+
+func xFirstName(identity xVerifyCredentialsResponse, email string) string {
+	return googleFirstName(identity.Name, identity.ScreenName, email)
 }
 
 func (s *XOAuthService) linkXIdentity(ctx context.Context, userID uuid.UUID, identity xVerifyCredentialsResponse) error {

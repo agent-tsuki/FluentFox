@@ -472,90 +472,20 @@ func (s *GoogleOAuthService) findOrCreateUser(ctx context.Context, subject strin
 		return users.User{}, fmt.Errorf("check OAuth email owner: %w", err)
 	}
 
-	username, err := s.googleUsername(ctx, claims.GivenName, claims.Name, email)
+	username, err := oauthUsername(ctx, s.users, "googleuser", claims.GivenName, claims.Name, strings.Split(email, "@")[0])
 	if err != nil {
 		return users.User{}, err
 	}
-	firstName := googleFirstName(claims.GivenName, claims.Name, email)
-	lastName := optionalString(claims.FamilyName)
-	nativeLang := googleNativeLanguage(claims.Locale)
-
-	disabledHash, err := disabledPasswordHash()
-	if err != nil {
-		return users.User{}, err
-	}
-
-	var created users.User
-	err = s.users.Transaction(ctx, func(tx *gorm.DB) error {
-		userID, err := s.users.CreateUser(ctx, tx, email, username, disabledHash, nil)
-		if err != nil {
-			return err
-		}
-		if err := s.users.CreateProfile(ctx, tx, userID, firstName, lastName, nativeLang); err != nil {
-			return err
-		}
-		if err := s.users.CreateUsersSettings(ctx, tx, userID, nil, nil); err != nil {
-			return err
-		}
-		if err := s.users.UpdateUserForVerification(ctx, tx, userID); err != nil {
-			return err
-		}
-		if err := s.users.CreateOAuthIdentity(ctx, tx, userID, googleProvider, subject, &email, true, time.Now().UTC()); err != nil {
-			return err
-		}
-		created = users.User{
-			ID:              userID,
-			Email:           email,
-			Username:        username,
-			PasswordHash:    disabledHash,
-			IsActive:        true,
-			IsEmailVerified: true,
-		}
-		return nil
+	return createOAuthUser(ctx, s.users, &oauthNewUser{
+		Provider:      googleProvider,
+		Subject:       subject,
+		Email:         email,
+		Username:      username,
+		FirstName:     googleFirstName(claims.GivenName, claims.Name, email),
+		LastName:      optionalString(claims.FamilyName),
+		NativeLang:    googleNativeLanguage(claims.Locale),
+		EmailTakenErr: errGoogleAccountLink,
 	})
-	if err == nil {
-		return created, nil
-	}
-
-	// Concurrent callbacks for the same Google account can race before the
-	// identity exists. If the other transaction won, read its identity and use
-	// that account; never fall back to email based linking.
-	identity, identityErr := s.users.GetOAuthIdentity(ctx, googleProvider, subject)
-	if identityErr == nil {
-		return s.users.GetUserByID(ctx, identity.UserID)
-	}
-	if _, ownerErr := s.users.GetUserForEmail(ctx, email); ownerErr == nil {
-		return users.User{}, errGoogleAccountLink
-	}
-	return users.User{}, fmt.Errorf("create OAuth user: %w", err)
-}
-
-func (s *GoogleOAuthService) googleUsername(ctx context.Context, givenName, name, email string) (string, error) {
-	base := oauthUsernameBase(givenName)
-	if base == "" {
-		base = oauthUsernameBase(name)
-	}
-	if base == "" {
-		base = oauthUsernameBase(strings.Split(email, "@")[0])
-	}
-	if base == "" {
-		base = "googleuser"
-	}
-	for range 8 {
-		raw, err := oauthRandom(5)
-		if err != nil {
-			return "", err
-		}
-		candidate := base + strings.ToLower(raw[:8])
-		exists, err := s.users.GetExistingUserForUsername(ctx, candidate)
-		if err != nil {
-			return "", err
-		}
-		if !exists {
-			return candidate, nil
-		}
-	}
-	return "", errors.New("could not generate a Google OAuth username")
 }
 
 func (s *GoogleOAuthService) frontendCallbackURL(fragment url.Values) string {

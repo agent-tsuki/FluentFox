@@ -103,3 +103,106 @@ func disabledPasswordHash() (string, error) {
 	}
 	return disabledHash, nil
 }
+
+// oauthNewUser is a first-time social sign-in with a provider-verified email.
+type oauthNewUser struct {
+	Provider   string
+	Subject    string
+	Email      string
+	Username   string
+	FirstName  string
+	LastName   *string
+	NativeLang string
+	// Returned when a concurrent signup took the email before this one committed.
+	EmailTakenErr error
+}
+
+func createOAuthUser(ctx context.Context, repo *users.Repository, in *oauthNewUser) (users.User, error) {
+	disabledHash, err := disabledPasswordHash()
+	if err != nil {
+		return users.User{}, err
+	}
+
+	var created users.User
+	err = repo.Transaction(ctx, func(tx *gorm.DB) error {
+		var err error
+		created, err = insertOAuthUser(ctx, tx, repo, in, disabledHash)
+		return err
+	})
+	if err == nil {
+		return created, nil
+	}
+
+	// Concurrent callbacks for the same provider account can race before the
+	// identity exists. If the other transaction won, read its identity and use
+	// that account; never fall back to email based linking.
+	identity, identityErr := repo.GetOAuthIdentity(ctx, in.Provider, in.Subject)
+	if identityErr == nil {
+		user, err := repo.GetUserByID(ctx, identity.UserID)
+		if err != nil {
+			return users.User{}, fmt.Errorf("load raced OAuth user: %w", err)
+		}
+		return user, nil
+	}
+	if _, ownerErr := repo.GetUserForEmail(ctx, in.Email); ownerErr == nil {
+		return users.User{}, in.EmailTakenErr
+	}
+	return users.User{}, fmt.Errorf("create OAuth user: %w", err)
+}
+
+// Five random bytes encode to at least the eight characters used as a suffix.
+const oauthUsernameSuffixBytes = 5
+
+// oauthUsername uses the first candidate that has letters or digits, then adds
+// a random suffix so a public profile name cannot be guessed from the email.
+func oauthUsername(ctx context.Context, repo *users.Repository, fallback string, candidates ...string) (string, error) {
+	base := fallback
+	for _, candidate := range candidates {
+		if cleaned := oauthUsernameBase(candidate); cleaned != "" {
+			base = cleaned
+			break
+		}
+	}
+	for range 8 {
+		raw, err := oauthRandom(oauthUsernameSuffixBytes)
+		if err != nil {
+			return "", err
+		}
+		candidate := base + strings.ToLower(raw[:8])
+		exists, err := repo.GetExistingUserForUsername(ctx, candidate)
+		if err != nil {
+			return "", fmt.Errorf("check OAuth username: %w", err)
+		}
+		if !exists {
+			return candidate, nil
+		}
+	}
+	return "", errors.New("could not generate an OAuth username")
+}
+
+func insertOAuthUser(ctx context.Context, tx *gorm.DB, repo *users.Repository, in *oauthNewUser, disabledHash string) (users.User, error) {
+	userID, err := repo.CreateUser(ctx, tx, in.Email, in.Username, disabledHash, nil)
+	if err != nil {
+		return users.User{}, fmt.Errorf("create OAuth user: %w", err)
+	}
+	if err := repo.CreateProfile(ctx, tx, userID, in.FirstName, in.LastName, in.NativeLang); err != nil {
+		return users.User{}, fmt.Errorf("create OAuth user profile: %w", err)
+	}
+	if err := repo.CreateUsersSettings(ctx, tx, userID, nil, nil); err != nil {
+		return users.User{}, fmt.Errorf("create OAuth user settings: %w", err)
+	}
+	if err := repo.UpdateUserForVerification(ctx, tx, userID); err != nil {
+		return users.User{}, fmt.Errorf("verify OAuth user email: %w", err)
+	}
+	if err := repo.CreateOAuthIdentity(ctx, tx, userID, in.Provider, in.Subject, &in.Email, true, time.Now().UTC()); err != nil {
+		return users.User{}, fmt.Errorf("create OAuth identity: %w", err)
+	}
+	return users.User{
+		ID:              userID,
+		Email:           in.Email,
+		Username:        in.Username,
+		PasswordHash:    disabledHash,
+		IsActive:        true,
+		IsEmailVerified: true,
+	}, nil
+}
