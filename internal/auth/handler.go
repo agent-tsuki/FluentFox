@@ -14,6 +14,7 @@ type Handler struct {
 	verifyService *TokenVerificationService
 	resendService *ResendVerificationService
 	loginService  *LoginService
+	changeEmail   *ChangeEmailService
 	logger        *zap.Logger
 	validate      *validator.Validator
 }
@@ -23,6 +24,7 @@ func NewHandler(
 	verifyService *TokenVerificationService,
 	resendService *ResendVerificationService,
 	loginService *LoginService,
+	changeEmail *ChangeEmailService,
 	log *zap.Logger,
 	v *validator.Validator,
 ) *Handler {
@@ -31,6 +33,7 @@ func NewHandler(
 		verifyService: verifyService,
 		resendService: resendService,
 		loginService:  loginService,
+		changeEmail:   changeEmail,
 		logger:        log,
 		validate:      v,
 	}
@@ -86,15 +89,28 @@ func (h *Handler) Refresh(ctx context.Context, input *humautil.Input[RefreshToke
 	return humautil.OK(resp), nil
 }
 
-// Returns 200 immediately; the email is sent asynchronously.
-func (h *Handler) ResendVerification(ctx context.Context, input *humautil.Input[ResendVerificationRequest]) (*humautil.Output[humautil.APIResponse[humautil.MessageBody]], error) {
+// ResendVerification handles POST /auth/verification/resend.
+func (h *Handler) ResendVerification(ctx context.Context, _ *EmptyInput) (*humautil.Output[humautil.APIResponse[humautil.MessageBody]], error) {
 	log := middleware.LoggerFromContext(ctx, h.logger)
 
-	if err := h.resendService.ResendVerification(ctx, input.Body.Email); err != nil {
+	if err := h.resendService.ResendForUser(ctx, middleware.ContextUserID(ctx)); err != nil {
 		return nil, humautil.MapErr(err, log)
 	}
 
 	return humautil.OK(humautil.MessageBody{Message: "verification email sent, please check your inbox"}), nil
+}
+
+// ChangeEmail handles POST /auth/change-email.
+func (h *Handler) ChangeEmail(
+	ctx context.Context, input *humautil.Input[ChangeEmailRequest],
+) (*humautil.Output[humautil.APIResponse[humautil.MessageBody]], error) {
+	log := middleware.LoggerFromContext(ctx, h.logger)
+
+	if err := h.changeEmail.ChangeEmail(ctx, middleware.ContextUserID(ctx), input.Body); err != nil {
+		return nil, humautil.MapErr(err, log)
+	}
+
+	return humautil.OK(humautil.MessageBody{Message: "email updated, check your new inbox to verify"}), nil
 }
 
 // Logout handles POST /auth/logout.

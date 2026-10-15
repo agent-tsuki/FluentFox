@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/fluentfox/api/internal/common"
 	"github.com/fluentfox/api/pkg/mailer"
 	"go.uber.org/zap"
 )
@@ -40,6 +41,22 @@ func renderVerifyEmail(name, verifyURL string) string {
 		"{{name}}", name,
 		"{{verify_url}}", verifyURL,
 	).Replace(verifyEmailTemplate)
+}
+
+const verifyEmailSubject = "Verify your FoxSensei account"
+
+// Waits for the result so callers can roll back the signup when delivery fails.
+func (s *MailService) SendVerificationEmail(ctx context.Context, to, name, rawToken string) error {
+	ctx, cancel := context.WithTimeout(ctx, common.EMAIL_SEND_TIMEOUT)
+	defer cancel()
+
+	verifyURL := fmt.Sprintf("%s/verify?token=%s", s.appURL, url.QueryEscape(rawToken))
+	if err := s.mailer.SendHTML(ctx, to, verifyEmailSubject, renderVerifyEmail(name, verifyURL)); err != nil {
+		s.logger.Error("failed to send verification email", zap.String("to", to), zap.Error(err))
+		return fmt.Errorf("send verification email: %w", err)
+	}
+	s.logger.Info("verification email sent", zap.String("to", to))
+	return nil
 }
 
 // SendVerificationEmailAsync fires the verification email in a background

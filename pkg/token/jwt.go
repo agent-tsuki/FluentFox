@@ -17,17 +17,22 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
+// Issuer and audience stop a token signed for another service that happens to
+// share the secret from being accepted here.
+const (
+	jwtIssuer   = "fluentfox-api"
+	jwtAudience = "fluentfox-app"
+)
+
 type Maker struct {
 	accessSecret  []byte
-	refreshSecret []byte
 	accessExpiry  time.Duration
 	refreshExpiry time.Duration
 }
 
-func NewMaker(accessSecret, refreshSecret string, accessExpiryMinutes, refreshExpiryDays int) *Maker {
+func NewMaker(accessSecret string, accessExpiryMinutes, refreshExpiryDays int) *Maker {
 	return &Maker{
 		accessSecret:  []byte(accessSecret),
-		refreshSecret: []byte(refreshSecret),
 		accessExpiry:  time.Duration(accessExpiryMinutes) * time.Minute,
 		refreshExpiry: time.Duration(refreshExpiryDays) * 24 * time.Hour,
 	}
@@ -39,6 +44,8 @@ func (m *Maker) GenerateAccessToken(userID uuid.UUID, is_admin bool, emailVerifi
 		IsAdmin:          is_admin,
 		EmailVerified: emailVerified,
 		RegisteredClaims: jwt.RegisteredClaims{
+			Issuer:    jwtIssuer,
+			Audience:  jwt.ClaimStrings{jwtAudience},
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(m.accessExpiry)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			ID:        uuid.NewString(),
@@ -69,7 +76,7 @@ func (m *Maker) ValidateAccessToken(raw string) (*Claims, error) {
 			return nil, fmt.Errorf("token: unexpected signing method: %v", t.Header["alg"])
 		}
 		return m.accessSecret, nil
-	})
+	}, jwt.WithIssuer(jwtIssuer), jwt.WithAudience(jwtAudience), jwt.WithExpirationRequired())
 	if err != nil {
 		if errors.Is(err, jwt.ErrTokenExpired) {
 			return nil, ErrTokenExpired

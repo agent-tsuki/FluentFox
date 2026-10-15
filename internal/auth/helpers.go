@@ -7,13 +7,10 @@ import (
 	"encoding/hex"
 	"fmt"
 	"math/big"
-	"net/http"
-	"strings"
 
 	"golang.org/x/crypto/argon2"
 
 	"github.com/fluentfox/api/internal/common"
-	"github.com/fluentfox/api/pkg/exceptions"
 )
 
 
@@ -134,24 +131,4 @@ func GenerateHashedToken(length int) (string, error) {
 func hashVerificationToken(token string) string {
     h := sha256.Sum256([]byte(token))
     return hex.EncodeToString(h[:])
-}
-
-func GetHashedSalt(token string) (string, error) {
-	// split string '$'
-	splitData := strings.Split(token, "$")
-	
-	if len(splitData) < 5{
-		return "", exceptions.Wrap(http.StatusBadRequest, "BAD REQUEST", "Error while logging", nil)
-	}
-
-	return  splitData[4], nil
-}
-
-func DecodeHashSalt(saltStr string) ([]byte, error) {
-	saltBytes, err := base64.RawStdEncoding.DecodeString(saltStr)
-	if err != nil {
-		// If it's not RawStd, try base64.StdEncoding (with padding)
-		saltBytes, err = base64.StdEncoding.DecodeString(saltStr)
-	}
-	return  saltBytes, nil
 }

@@ -3,6 +3,7 @@ package exceptions
 import (
 	"errors"
 	"net/http"
+	"time"
 )
 
 // AppError is a domain error that carries an HTTP status code and a machine-readable code.
@@ -12,6 +13,9 @@ type AppError struct {
 	Code    string // machine-readable code for clients (e.g. "EMAIL_ALREADY_IN_USE")
 	Message string // human-readable message shown to the client
 	Err     error  // optional wrapped cause — for internal logging only, never sent to client
+
+	// Zero means no Retry-After header is sent.
+	RetryAfter time.Duration
 }
 
 func (e *AppError) Error() string { return e.Message }
@@ -25,6 +29,30 @@ func New(status int, code, message string) *AppError {
 // Wrap creates an AppError that preserves an underlying error for logging.
 func Wrap(status int, code, message string, cause error) *AppError {
 	return &AppError{Status: status, Code: code, Message: message, Err: cause}
+}
+
+// Is makes errors.Is match copies made by WithCause and WithRetryAfter against
+// the sentinel they came from.
+func (e *AppError) Is(target error) bool {
+	t, ok := target.(*AppError)
+	return ok && e.Status == t.Status && e.Code == t.Code && e.Message == t.Message
+}
+
+func WithCause(base *AppError, cause error) *AppError {
+	copied := *base
+	copied.Err = cause
+	return &copied
+}
+
+// Sentinels are shared, so they must never be mutated in place.
+func WithRetryAfter(base *AppError, wait time.Duration) *AppError {
+	copied := *base
+	copied.RetryAfter = wait
+	return &copied
+}
+
+func EmailDomainTypo(suggested string) *AppError {
+	return New(http.StatusUnprocessableEntity, "EMAIL_DOMAIN_TYPO", "did you mean "+suggested+"?")
 }
 
 // As returns the AppError if err (or any error in its chain) is an *AppError.
@@ -47,6 +75,8 @@ var (
 
 	// 403 Forbidden
 	ErrAccountInactive = New(http.StatusForbidden, "ACCOUNT_INACTIVE", "account is inactive")
+	ErrAccountSuspended = New(http.StatusForbidden, "ACCOUNT_SUSPENDED", "your account is suspended, please contact support")
+	ErrAccountDeleted   = New(http.StatusForbidden, "ACCOUNT_DELETED", "this account has been deleted, please contact support")
 	ErrForbidden       = New(http.StatusForbidden, "FORBIDDEN", "you do not have permission to perform this action")
 
 	// 404 Not Found
@@ -63,6 +93,18 @@ var (
 
 	// 410 time expired
 	ErrStatusGone = New(http.StatusGone, "REQUEST_EXPIRED", "request expired")
+)
+
+var (
+	ErrDisposableEmail        = New(http.StatusUnprocessableEntity, "DISPOSABLE_EMAIL", "temporary email addresses are not allowed")
+	ErrInvalidEmailDomain     = New(http.StatusUnprocessableEntity, "INVALID_EMAIL_DOMAIN", "this email domain cannot receive mail")
+	ErrEmailUnchanged         = New(http.StatusUnprocessableEntity, "EMAIL_UNCHANGED", "new email is the same as the current one")
+	ErrEmailAlreadyVerified   = New(http.StatusConflict, "EMAIL_ALREADY_VERIFIED", "email is already verified")
+	ErrEmailNotVerified       = New(http.StatusForbidden, "EMAIL_NOT_VERIFIED", "please verify your email to continue")
+	ErrCurrentPasswordInvalid = New(http.StatusForbidden, "INVALID_CURRENT_PASSWORD", "current password is incorrect")
+	ErrVerificationCooldown   = New(http.StatusTooManyRequests, "VERIFICATION_COOLDOWN", "please wait before requesting another verification email")
+	ErrVerificationDailyLimit = New(http.StatusTooManyRequests, "VERIFICATION_DAILY_LIMIT", "verification email limit reached, please try again later")
+	ErrEmailSendFailed        = New(http.StatusServiceUnavailable, "EMAIL_SEND_FAILED", "we could not send the verification email, please try again")
 
 
 )

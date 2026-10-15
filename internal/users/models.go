@@ -19,7 +19,7 @@ const (
 
 type User struct {
 	ID           uuid.UUID `gorm:"type:uuid;primaryKey"`
-	Username     string    `gorm:"column:username;not null"`
+	Username     string    `gorm:"column:username;uniqueIndex:idx_users_username;not null"`
 	Email        string    `gorm:"column:email;uniqueIndex;not null"`
 	PhoneNo      *string   `gorm:"column:phone_no"`
 	PasswordHash string    `gorm:"column:password_hash;not null"`
@@ -113,7 +113,7 @@ func (u *UserVerification) BeforeCreate(_ *gorm.DB) error {
 type RefreshToken struct {
     ID        uuid.UUID  `gorm:"type:uuid;primaryKey"`
     UserID    uuid.UUID  `gorm:"column:user_id;not null"`
-    TokenHash string     `gorm:"column:token_hash;not null"`
+    TokenHash string     `gorm:"column:token_hash;not null;index:idx_refresh_tokens_token_hash"`
     IsRevoked bool       `gorm:"column:is_revoked;default:false"`
     ExpiresAt time.Time  `gorm:"column:expires_at;not null"`
     CreatedAt time.Time  `gorm:"column:created_at;autoCreateTime"`

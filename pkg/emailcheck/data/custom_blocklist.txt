@@ -1,0 +1,2 @@
+# Extra disposable or abusive domains to reject, one per line.
+# Use this for domains the upstream list misses. Lines starting with # are ignored.

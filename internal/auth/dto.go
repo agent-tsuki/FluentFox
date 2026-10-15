@@ -9,13 +9,13 @@ type RegisterRequest struct {
 	LastName    *string `json:"last_name,omitempty"                                          doc:"Last name"`
 	PhoneNumber *string `json:"phone_number,omitempty"                                       doc:"Phone number"`
 	NativeLang  string  `json:"native_lang"  validate:"required"                             doc:"Native language code (e.g. en, ja)"`
-	Password    string  `json:"password"     validate:"required,min=8"   minLength:"8"       doc:"Password — minimum 8 characters"`
+	Password    string  `json:"password"     validate:"required,min=8,max=128"   minLength:"8" maxLength:"128" doc:"Password — 8 to 128 characters"`
 }
 
 
 type LoginRequest struct {
 	Email    string `json:"email"    validate:"required,email" format:"email" doc:"User's email address"`
-	Password string `json:"password" validate:"required,min=8" minLength:"8"  doc:"Password — minimum 8 characters"`
+	Password string `json:"password" validate:"required,min=8,max=128" minLength:"8" maxLength:"128" doc:"Password — 8 to 128 characters"`
 }
 
 // UserSummary carries the fields a client needs immediately after auth.
@@ -37,7 +37,9 @@ type RefreshTokenRequest struct {
 	RefreshToken string `json:"refresh_token" validate:"required" doc:"Opaque refresh token issued at login"`
 }
 
-type ResendVerificationRequest struct {
-	Email string `json:"email" validate:"required,email" format:"email" doc:"Email address to resend the verification link to"`
+type ChangeEmailRequest struct {
+	NewEmail        string `json:"new_email"        format:"email" doc:"Corrected email address"`
+	CurrentPassword string `json:"current_password" minLength:"8" maxLength:"128" doc:"Current account password"`
 }
 
+type EmptyInput struct{}

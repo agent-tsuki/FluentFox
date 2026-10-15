@@ -2,7 +2,7 @@
 # Run `make help` to see available targets.
 
 .PHONY: help dev dev-down build test test-coverage \
-        migrate seed sync-content lint tidy
+        migrate seed sync-content lint tidy update-disposable-domains
 
 DEV_DB_URL  := postgres://fluentfox:fluentfox_dev@localhost:5435/fluentfox_dev?sslmode=disable
 TEST_DB_URL := postgres://fluentfox:fluentfox_test@localhost:5431/fluentfox_test?sslmode=disable
@@ -59,6 +59,14 @@ seed: ## Run all seed SQL files against the dev database
 
 sync-content: ## Parse MDX files and upsert into the dev database
 	go run ./cmd/sync-content
+
+# Email domain checks
+
+DISPOSABLE_DOMAINS_URL := https://raw.githubusercontent.com/disposable-email-domains/disposable-email-domains/main/disposable_email_blocklist.conf
+
+update-disposable-domains: ## Refresh the embedded disposable-email blocklist (CC0); review the diff, then commit
+	curl -fsSL $(DISPOSABLE_DOMAINS_URL) -o pkg/emailcheck/data/disposable_email_blocklist.conf
+	@wc -l pkg/emailcheck/data/disposable_email_blocklist.conf
 
 # Code quality
 

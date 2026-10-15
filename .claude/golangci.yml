@@ -1,0 +1,86 @@
+# golangci-lint v2 config used by the Claude Code hooks.
+# Kept separate from the repo's .golangci.yml so it never changes your CI.
+# The hooks run it with --new-from-rev=HEAD, so only lines Claude changed are checked.
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  default: standard # errcheck, govet, ineffassign, staticcheck, unused
+  enable:
+    - goconst     # repeated strings should be constants
+    - mnd         # magic numbers should be constants
+    - funlen
+    - gocyclo
+    - gocognit
+    - nestif
+    - dupl
+    - errorlint
+    - wrapcheck
+    - nilerr
+    - revive
+    - gocritic
+    - misspell
+    - godot
+    - lll
+    - forbidigo
+    - bodyclose
+    - noctx
+    - gosec
+    - unparam
+  settings:
+    funlen: { lines: 60, statements: 40 }
+    gocyclo: { min-complexity: 10 }
+    gocognit: { min-complexity: 15 }
+    nestif: { min-complexity: 4 }
+    dupl: { threshold: 120 }
+    goconst: { min-len: 3, min-occurrences: 2 }
+    mnd: { ignored-numbers: ["0", "1", "2"] }
+    lll: { line-length: 160 }
+    godot: { scope: declarations }
+    forbidigo:
+      forbid:
+        - pattern: ^fmt\.Print.*$
+          msg: use the zap logger instead of printing
+    wrapcheck:
+      ignore-sig-regexps:
+        - \.Errorf\(
+        - errors\.New\(
+        - errors\.Join\(
+        - github.com/fluentfox/api/pkg/exceptions
+        - github.com/fluentfox/api/pkg/humautil
+    revive:
+      rules:
+        - name: receiver-naming
+        - name: error-strings
+        - name: error-naming
+        - name: error-return
+        - name: context-as-argument
+        - name: if-return
+        - name: indent-error-flow
+        - name: early-return
+        - name: unused-parameter
+        - name: superfluous-else
+    gocritic:
+      enabled-tags: [diagnostic, performance]
+  exclusions:
+    generated: lax
+    presets: [std-error-handling]
+    rules:
+      - path: _test\.go
+        linters: [mnd, funlen, dupl, goconst, wrapcheck, gocognit, gocyclo, gocritic, errorlint, nestif, lll]
+      - path: (config/|cmd/)
+        linters: [forbidigo]
+
+formatters:
+  enable:
+    - goimports
+  settings:
+    goimports:
+      local-prefixes: [github.com/fluentfox/api]
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0

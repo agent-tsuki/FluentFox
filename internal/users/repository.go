@@ -33,7 +33,7 @@ func (r *Repository) CreateUser(ctx context.Context, tx *gorm.DB, email, usernam
 		PhoneNo:      phoneNo,
 	}
 	if err := tx.WithContext(ctx).Create(&user).Error; err != nil {
-		return uuid.Nil, fmt.Errorf("failed to insert user: %w", err)
+		return uuid.Nil, mapUniqueViolation(fmt.Errorf("failed to insert user: %w", err))
 	}
 	return user.ID, nil
 }
@@ -104,6 +104,7 @@ func (r *Repository) GetVerificationToken(ctx context.Context, token string) (Ve
 		return VerificationModel{}, fmt.Errorf("error fetching token %s: %w", token, err)
 	}
 	return VerificationModel{
+		UserID:     v.UserID,
 		HashCode:   v.HashCode,
 		ExpiresAt:  v.ExpiresAt,
 		VerifiedAt: v.VerifiedAt,
@@ -116,7 +117,10 @@ func (r *Repository) UpdateVerificationToken(ctx context.Context, tx *gorm.DB, v
 	result := tx.WithContext(ctx).
 		Model(&updated).
 		Clauses(clause.Returning{Columns: []clause.Column{{Name: "user_id"}}}).
-		Where("hash_code = ?", hashedToken).
+		// Re-check the token is still usable under the row lock. Change-email
+		// expires old tokens; without this guard an old link could still verify
+		// the account after its email was switched to someone else's address.
+		Where("hash_code = ? AND verified_at IS NULL AND expires_at > ?", hashedToken, verifiedAt).
 		Updates(map[string]any{
 			"verified_at": verifiedAt,
 			"updated_at":  verifiedAt,

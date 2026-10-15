@@ -29,4 +29,12 @@ type UserRepo interface {
 	UpsertRefreshToken(ctx context.Context, userID uuid.UUID, hashToken string, expiresAt time.Time) (users.RefreshToken, error)
 	GetRefreshTokenByHash(ctx context.Context, hash string) (users.RefreshToken, error)
 	RevokeRefreshToken(ctx context.Context, userID uuid.UUID) error
+
+	GetUserForUsername(ctx context.Context, username string) (users.User, error)
+	LockUserForUpdate(ctx context.Context, tx *gorm.DB, userID uuid.UUID) (users.User, error)
+	HasActiveVerification(ctx context.Context, tx *gorm.DB, userID uuid.UUID, now time.Time) (bool, error)
+	DeleteUnverifiedUser(ctx context.Context, tx *gorm.DB, userID uuid.UUID) (bool, error)
+	GetVerificationSendStats(ctx context.Context, tx *gorm.DB, userID uuid.UUID, since time.Time) (users.VerificationSendStats, error)
+	ExpireActiveVerifications(ctx context.Context, tx *gorm.DB, userID uuid.UUID, now time.Time) error
+	UpdateUnverifiedUserEmail(ctx context.Context, tx *gorm.DB, userID uuid.UUID, email string) (bool, error)
 }

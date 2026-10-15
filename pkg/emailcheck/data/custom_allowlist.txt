@@ -1,0 +1,2 @@
+# Domains that must always pass the disposable and typo checks, one per line.
+# Add a domain here when a real user is blocked by mistake.

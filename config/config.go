@@ -8,6 +8,8 @@ import (
 	"strings"
 
 	"github.com/spf13/viper"
+
+	"github.com/fluentfox/api/internal/common"
 )
 
 // Config holds every typed environment variable the application needs.
@@ -17,6 +19,7 @@ type Config struct {
 	AppEnv         string
 	AppURL         string
 	AllowedOrigins []string
+	TrustedProxies []string // empty: trust no proxy, use the direct peer address
 
 	// Database
 	DatabaseURL string
@@ -25,7 +28,6 @@ type Config struct {
 
 	// JWT
 	JWTAccessSecret        string
-	JWTRefreshSecret       string
 	JWTAccessExpiryMinutes int
 	JWTRefreshExpiryDays   int
 
@@ -35,6 +37,7 @@ type Config struct {
 	SMTPUsername     string
 	SMTPPassword     string
 	EmailFromAddress string
+	EmailMXCheckEnabled bool // DNS mail-server check on or off.
 
 	// Storage (Cloudflare R2)
 	R2AccountID  string
@@ -88,7 +91,6 @@ func Load() *Config {
 		DBMinConns:  int32(requireInt(v, "DB_MIN_CONNS")),
 
 		JWTAccessSecret:        require(v, "JWT_ACCESS_SECRET"),
-		JWTRefreshSecret:       require(v, "JWT_REFRESH_SECRET"),
 		JWTAccessExpiryMinutes: requireInt(v, "JWT_ACCESS_EXPIRY_MINUTES"),
 		JWTRefreshExpiryDays:   requireInt(v, "JWT_REFRESH_EXPIRY_DAYS"),
 
@@ -108,6 +110,17 @@ func Load() *Config {
 	}
 	if cfg.LogLevel == "" {
 		cfg.LogLevel = "info"
+	}
+
+	if len(cfg.JWTAccessSecret) < common.JWT_SECRET_MIN_BYTES {
+		panic(fmt.Sprintf("config: JWT_ACCESS_SECRET must be at least %d bytes", common.JWT_SECRET_MIN_BYTES))
+	}
+
+	v.SetDefault("EMAIL_MX_CHECK_ENABLED", true)
+	cfg.EmailMXCheckEnabled = v.GetBool("EMAIL_MX_CHECK_ENABLED")
+
+	if raw := v.GetString("TRUSTED_PROXIES"); raw != "" {
+		cfg.TrustedProxies = strings.Split(raw, ",")
 	}
 
 	rawOrigins := require(v, "ALLOWED_ORIGINS")

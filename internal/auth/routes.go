@@ -4,11 +4,14 @@ import (
 	"net/http"
 
 	"github.com/danielgtaylor/huma/v2"
+
+	"github.com/fluentfox/api/pkg/humautil"
 )
 
 // RegisterRoutes mounts auth endpoints onto the huma API.
 // OpenAPI metadata (summary, tags, responses) is declared here so the
 // auto-generated /openapi.json stays accurate without touching handler logic.
+// Every route needs a valid access token unless it is marked humautil.Public().
 func RegisterRoutes(api huma.API, h *Handler) {
 	huma.Register(api, huma.Operation{
 		OperationID:   "register-user",
@@ -17,6 +20,7 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		Summary:       "Register a new user",
 		Tags:          []string{"Auth"},
 		DefaultStatus: http.StatusCreated,
+		Metadata:      humautil.Public(),
 	}, h.AuthRegister)
 
 	huma.Register(api, huma.Operation{
@@ -25,6 +29,7 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		Path:        "/auth/verify",
 		Summary:     "Verify user email address",
 		Tags:        []string{"Auth"},
+		Metadata:    humautil.Public(),
 	}, h.AuthVerify)
 
 	huma.Register(api, huma.Operation{
@@ -34,8 +39,11 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		Summary:       "Login user",
 		Tags:          []string{"Auth"},
 		DefaultStatus: http.StatusOK,
+		Metadata:      humautil.Public(),
 	}, h.Login)
 
+	// Refresh and logout identify the user by the refresh token in the body,
+	// so they work even when the access token has expired.
 	huma.Register(api, huma.Operation{
 		OperationID:   "refresh-token",
 		Method:        http.MethodPost,
@@ -43,6 +51,7 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		Summary:       "Refresh access token",
 		Tags:          []string{"Auth"},
 		DefaultStatus: http.StatusOK,
+		Metadata:      humautil.Public(),
 	}, h.Refresh)
 
 	huma.Register(api, huma.Operation{
@@ -52,14 +61,28 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		Summary:       "Logout user",
 		Tags:          []string{"Auth"},
 		DefaultStatus: http.StatusOK,
+		Metadata:      humautil.Public(),
 	}, h.Logout)
 
 	huma.Register(api, huma.Operation{
 		OperationID:   "resend-verification",
 		Method:        http.MethodPost,
-		Path:          "/auth/resend-verification",
-		Summary:       "Resend email verification link",
+		Path:          "/auth/verification/resend",
+		Summary:       "Resend the email verification link to the logged-in user",
 		Tags:          []string{"Auth"},
 		DefaultStatus: http.StatusOK,
+		Security:      humautil.BearerSecurity(),
+		Metadata:      humautil.AllowUnverified(),
 	}, h.ResendVerification)
+
+	huma.Register(api, huma.Operation{
+		OperationID:   "change-email",
+		Method:        http.MethodPost,
+		Path:          "/auth/change-email",
+		Summary:       "Change the email of an unverified account",
+		Tags:          []string{"Auth"},
+		DefaultStatus: http.StatusOK,
+		Security:      humautil.BearerSecurity(),
+		Metadata:      humautil.AllowUnverified(),
+	}, h.ChangeEmail)
 }

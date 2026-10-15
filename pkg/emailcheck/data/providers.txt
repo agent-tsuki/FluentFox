@@ -1,0 +1,66 @@
+# Popular mail providers. A domain one or two edits away from one of these is
+# treated as a typo. Providers whose first label is shorter than five letters
+# (aol, gmx, me, msn, live, mail) are never used as typo targets, to avoid
+# flagging real domains such as hive.com, but are still exempt from the check.
+gmail.com
+googlemail.com
+yahoo.com
+yahoo.co.in
+yahoo.co.uk
+ymail.com
+rocketmail.com
+outlook.com
+outlook.in
+hotmail.com
+hotmail.co.uk
+live.com
+msn.com
+icloud.com
+me.com
+mac.com
+aol.com
+protonmail.com
+proton.me
+zoho.com
+zohomail.in
+rediffmail.com
+gmx.com
+gmx.net
+mail.com
+email.com
+yandex.com
+fastmail.com
+tutanota.com
+# Regional variants, listed so they are never mistaken for typos of each other.
+yahoo.co.jp
+yahoo.co.id
+yahoo.com.sg
+yahoo.com.au
+yahoo.com.br
+yahoo.ca
+yahoo.fr
+yahoo.de
+yahoo.es
+yahoo.it
+hotmail.co.jp
+hotmail.fr
+hotmail.de
+hotmail.es
+hotmail.it
+outlook.jp
+outlook.fr
+outlook.de
+outlook.es
+live.jp
+live.co.uk
+# Common Japanese ISP and carrier mail.
+docomo.ne.jp
+ezweb.ne.jp
+au.com
+softbank.ne.jp
+i.softbank.jp
+ybb.ne.jp
+nifty.com
+biglobe.ne.jp
+ocn.ne.jp
+so-net.ne.jp

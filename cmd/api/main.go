@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -18,9 +19,11 @@ import (
 
 	"github.com/fluentfox/api/config"
 	"github.com/fluentfox/api/internal/auth"
+	"github.com/fluentfox/api/internal/common"
 	"github.com/fluentfox/api/internal/services"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/database"
+	"github.com/fluentfox/api/pkg/emailcheck"
 	"github.com/fluentfox/api/pkg/humautil"
 	"github.com/fluentfox/api/pkg/mailer"
 	"github.com/fluentfox/api/pkg/middleware"
@@ -61,7 +64,7 @@ func main() {
 
 	// Infrastructure
 	tokenMaker := token.NewMaker(
-		cfg.JWTAccessSecret, cfg.JWTRefreshSecret,
+		cfg.JWTAccessSecret,
 		cfg.JWTAccessExpiryMinutes, cfg.JWTRefreshExpiryDays,
 	)
 
@@ -71,12 +74,21 @@ func main() {
 	v := validator.New()
 	userRepo := users.NewRepository(db)
 
+	emailChecker, err := emailcheck.New(net.DefaultResolver, common.EMAIL_MX_LOOKUP_TIMEOUT, cfg.EmailMXCheckEnabled)
+	if err != nil {
+		log.Fatal("failed to load email domain lists", zap.Error(err))
+	}
+
 	// Router
 	if !cfg.IsDevelopment() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
 	r := gin.New()
+	// Without this gin trusts X-Forwarded-For from anyone, so ClientIP can be spoofed.
+	if err := r.SetTrustedProxies(cfg.TrustedProxies); err != nil {
+		log.Fatal("invalid TRUSTED_PROXIES", zap.Error(err))
+	}
 	r.Use(gin.Recovery())
 	r.Use(middleware.CORS(cfg.AllowedOrigins))
 	r.Use(middleware.Logger(log))
@@ -91,18 +103,19 @@ func main() {
 	api := humagin.New(r, humaConfig)
 	humautil.InitHumaErrors()
 
-	//sync logs
-	log, err = zap.NewDevelopment()
-	if err != nil {
-		panic(fmt.Sprintf("failed to initialize logger: %v", err))
-	}
-	defer log.Sync()
+	// Auth must be added before any route is registered: huma captures the
+	// middleware chain at registration time.
+	humautil.RegisterBearerScheme(api)
+	api.UseMiddleware(humautil.AuthMiddleware(api, tokenMaker))
+
 		// Domain routes — add new domains here
+	staleReleaser := auth.NewStaleAccountReleaser(userRepo, log)
 	authHandler := auth.NewHandler(
-		auth.NewAuthService(userRepo, mailService, log),
+		auth.NewAuthService(userRepo, mailService, emailChecker, staleReleaser, log),
 		auth.NewTokenVerificationService(userRepo, log),
 		auth.NewResendVerificationService(userRepo, mailService, log),
 		auth.NewLogin(userRepo, tokenMaker, log),
+		auth.NewChangeEmailService(userRepo, mailService, emailChecker, staleReleaser, log),
 		log, v,
 	)
 	auth.RegisterRoutes(api, authHandler)

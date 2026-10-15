@@ -6,6 +6,7 @@ package mailer
 import (
 	"context"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"net"
 	"net/smtp"
@@ -32,7 +33,7 @@ func NewSMTPMailer(host, port, username, password, fromAddr string) *SMTPMailer 
 }
 
 // SendHTML sends a caller-rendered HTML email over Gmail SMTP with STARTTLS.
-func (m *SMTPMailer) SendHTML(_ context.Context, to, subject, html string) error {
+func (m *SMTPMailer) SendHTML(ctx context.Context, to, subject, html string) error {
 	addr := net.JoinHostPort(m.host, m.port)
 
 	// Build the raw MIME message.
@@ -42,9 +43,9 @@ func (m *SMTPMailer) SendHTML(_ context.Context, to, subject, html string) error
 	)
 
 	// Dial plain TCP first — STARTTLS upgrades it.
-	conn, err := net.Dial("tcp", addr)
+	conn, err := dialWithDeadline(ctx, addr)
 	if err != nil {
-		return fmt.Errorf("smtp: dial %s: %w", addr, err)
+		return err
 	}
 
 	client, err := smtp.NewClient(conn, m.host)
@@ -83,7 +84,27 @@ func (m *SMTPMailer) SendHTML(_ context.Context, to, subject, html string) error
 		return fmt.Errorf("smtp: close writer: %w", err)
 	}
 
-	return client.Quit()
+	// The server accepted the message once the writer closed. A failed QUIT
+	// must not report failure, or the caller would roll back a sent email.
+	_ = client.Quit()
+	return nil
+}
+
+// dialWithDeadline connects using ctx and puts ctx's deadline on the socket,
+// because net/smtp ignores ctx after the dial. Without it a stalled server
+// could hold the caller's DB transaction open indefinitely.
+func dialWithDeadline(ctx context.Context, addr string) (net.Conn, error) {
+	var dialer net.Dialer
+	conn, err := dialer.DialContext(ctx, "tcp", addr)
+	if err != nil {
+		return nil, fmt.Errorf("smtp: dial %s: %w", addr, err)
+	}
+	if deadline, ok := ctx.Deadline(); ok {
+		if err := conn.SetDeadline(deadline); err != nil {
+			return nil, errors.Join(fmt.Errorf("smtp: set deadline: %w", err), conn.Close())
+		}
+	}
+	return conn, nil
 }
 
 // SendDailyReminder sends a plain study-reminder email.

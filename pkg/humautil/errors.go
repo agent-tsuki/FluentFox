@@ -1,7 +1,9 @@
 package humautil
 
 import (
+	"math"
 	"net/http"
+	"strconv"
 
 	"github.com/danielgtaylor/huma/v2"
 	"github.com/fluentfox/api/pkg/exceptions"
@@ -14,6 +16,7 @@ import (
 //	{ "status": "failed", "error": { "log_id": "...", "error_code": "...", "message": "..." } }
 type APIError struct {
 	httpStatus int
+	headers    http.Header
 	Status     string    `json:"status"`
 	Err        ErrDetail `json:"error"`
 }
@@ -27,6 +30,9 @@ type ErrDetail struct {
 
 func (e *APIError) GetStatus() int { return e.httpStatus }
 func (e *APIError) Error() string  { return e.Err.Message }
+
+// Implements huma.HeadersError so Retry-After reaches the response.
+func (e *APIError) GetHeaders() http.Header { return e.headers }
 
 func newAPIError(status int, code, message string) *APIError {
 	return &APIError{
@@ -52,7 +58,13 @@ func InitHumaErrors() {
 // AppErrors carry their own status and code; anything else becomes a 500.
 func MapErr(err error, log *zap.Logger) error {
 	if appErr, ok := exceptions.As(err); ok {
-		return newAPIError(appErr.Status, appErr.Code, appErr.Message)
+		apiErr := newAPIError(appErr.Status, appErr.Code, appErr.Message)
+		if appErr.RetryAfter > 0 {
+			// Round up so a client never retries a fraction of a second too early.
+			seconds := int(math.Ceil(appErr.RetryAfter.Seconds()))
+			apiErr.headers = http.Header{"Retry-After": []string{strconv.Itoa(seconds)}}
+		}
+		return apiErr
 	}
 	log.Error("unhandled internal error", zap.Error(err))
 	return newAPIError(http.StatusInternalServerError, "INTERNAL_ERROR", "an unexpected error occurred")
