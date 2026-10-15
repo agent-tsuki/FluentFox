@@ -8,6 +8,16 @@ const USERNAME_SUFFIX_LEN int = 7
 const AUTH_TOKEN_LEN int = 32
 const AUTH_TOKEN_EXPIRE_HOUR int = 6
 
+const (
+	PASSWORD_RESET_CODE_LENGTH        int           = 8
+	PASSWORD_RESET_CODE_EXPIRES_AFTER time.Duration = 10 * time.Minute
+	PASSWORD_RESET_LINK_EXPIRES_AFTER time.Duration = time.Hour
+	PASSWORD_RESET_CODE_COOLDOWN      time.Duration = 60 * time.Second
+	PASSWORD_RESET_SEND_WINDOW        time.Duration = 24 * time.Hour
+	PASSWORD_RESET_DAILY_SEND_LIMIT   int64         = 5
+	PASSWORD_RESET_MAX_CODE_ATTEMPTS  int           = 5
+)
+
 // Together these must stay well under the server's 15s WriteTimeout, because
 // the send runs inside the request.
 const (

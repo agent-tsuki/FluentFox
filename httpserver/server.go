@@ -85,6 +85,7 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 		auth.NewResendVerificationService(userRepo, mailService, log),
 		auth.NewLogin(userRepo, tokenMaker, log),
 		auth.NewChangeEmailService(userRepo, mailService, emailChecker, staleReleaser, log),
+		auth.NewPasswordResetService(userRepo, mailService, cfg.JWTAccessSecret, log),
 		log, validator.New(),
 	)
 	auth.RegisterRoutes(api, authHandler)

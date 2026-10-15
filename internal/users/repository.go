@@ -191,6 +191,17 @@ func (r *Repository) RevokeRefreshToken(ctx context.Context, userID uuid.UUID) e
 	return nil
 }
 
+func (r *Repository) RevokeRefreshTokens(ctx context.Context, tx *gorm.DB, userID uuid.UUID) error {
+	result := tx.WithContext(ctx).
+		Model(&RefreshToken{}).
+		Where("user_id = ?", userID).
+		Update("is_revoked", true)
+	if result.Error != nil {
+		return fmt.Errorf("revoke refresh tokens: %w", result.Error)
+	}
+	return nil
+}
+
 // GetUserProfileByUserID fetches the profile row for a given user.
 func (r *Repository) GetUserProfileByUserID(ctx context.Context, userID uuid.UUID) (UserProfile, error) {
 	var profile UserProfile

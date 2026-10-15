@@ -60,6 +60,20 @@ type fakeUserRepo struct {
 	upsertedCalls int
 	revokeErr     error
 	revokedIDs    []uuid.UUID
+
+	passwordReset        users.PasswordReset
+	passwordResetErr     error
+	storedCodeHash       string
+	storedCodeExpiresAt  time.Time
+	storedSentCount      int64
+	storedCodeAttempts   int
+	storedLinkHash       string
+	storedLinkExpiresAt  time.Time
+	findResetUserID      uuid.UUID
+	findResetErr         error
+	consumeErr           error
+	consumed             bool
+	consumedPasswordHash string
 }
 
 func (f *fakeUserRepo) record(name string) { f.calls = append(f.calls, name) }
@@ -165,6 +179,45 @@ func (f *fakeUserRepo) RevokeRefreshToken(_ context.Context, userID uuid.UUID) e
 	return f.revokeErr
 }
 
+func (f *fakeUserRepo) RevokeRefreshTokens(context.Context, *gorm.DB, uuid.UUID) error {
+	return f.revokeErr
+}
+
+func (f *fakeUserRepo) GetPasswordResetForUpdate(context.Context, *gorm.DB, uuid.UUID) (users.PasswordReset, error) {
+	return f.passwordReset, f.passwordResetErr
+}
+
+func (f *fakeUserRepo) UpsertPasswordResetCode(_ context.Context, _ *gorm.DB, _ uuid.UUID, codeHash string, expiresAt, _ time.Time, _ time.Time, sentCount int64) error {
+	f.record("UpsertPasswordResetCode")
+	f.storedCodeHash = codeHash
+	f.storedCodeExpiresAt = expiresAt
+	f.storedSentCount = sentCount
+	return nil
+}
+
+func (f *fakeUserRepo) RecordPasswordResetCodeAttempt(_ context.Context, _ *gorm.DB, _ uuid.UUID, attempts int, _ time.Time) error {
+	f.record("RecordPasswordResetCodeAttempt")
+	f.storedCodeAttempts = attempts
+	return nil
+}
+
+func (f *fakeUserRepo) SetPasswordResetLink(_ context.Context, _ *gorm.DB, _ uuid.UUID, tokenHash string, expiresAt, _ time.Time) error {
+	f.record("SetPasswordResetLink")
+	f.storedLinkHash = tokenHash
+	f.storedLinkExpiresAt = expiresAt
+	return nil
+}
+
+func (f *fakeUserRepo) FindPasswordResetUserByToken(context.Context, string) (uuid.UUID, error) {
+	return f.findResetUserID, f.findResetErr
+}
+
+func (f *fakeUserRepo) ConsumePasswordReset(_ context.Context, _ *gorm.DB, _ uuid.UUID, _ string, passwordHash string, _ time.Time) (bool, error) {
+	f.record("ConsumePasswordReset")
+	f.consumedPasswordHash = passwordHash
+	return f.consumed, f.consumeErr
+}
+
 type fakeEmailChecker struct {
 	err     error
 	checked []string
@@ -182,6 +235,11 @@ type fakeMailer struct {
 	sent []sentMail
 	// onSend lets a test record call ordering against the repo.
 	onSend func()
+
+	resetCodeErr error
+	resetLinkErr error
+	resetCodes   []sentMail
+	resetLinks   []sentMail
 }
 
 func (f *fakeMailer) SendVerificationEmail(_ context.Context, to, name, rawToken string) error {
@@ -190,6 +248,16 @@ func (f *fakeMailer) SendVerificationEmail(_ context.Context, to, name, rawToken
 	}
 	f.sent = append(f.sent, sentMail{to, name, rawToken})
 	return f.err
+}
+
+func (f *fakeMailer) SendPasswordResetCode(_ context.Context, to, name, code string) error {
+	f.resetCodes = append(f.resetCodes, sentMail{to: to, name: name, token: code})
+	return f.resetCodeErr
+}
+
+func (f *fakeMailer) SendPasswordResetLink(_ context.Context, to, name, rawToken string) error {
+	f.resetLinks = append(f.resetLinks, sentMail{to: to, name: name, token: rawToken})
+	return f.resetLinkErr
 }
 
 func nopLogger() *zap.Logger { return zap.NewNop() }

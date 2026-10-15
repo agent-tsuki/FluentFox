@@ -15,6 +15,7 @@ type Handler struct {
 	resendService *ResendVerificationService
 	loginService  *LoginService
 	changeEmail   *ChangeEmailService
+	passwordReset *PasswordResetService
 	logger        *zap.Logger
 	validate      *validator.Validator
 }
@@ -25,6 +26,7 @@ func NewHandler(
 	resendService *ResendVerificationService,
 	loginService *LoginService,
 	changeEmail *ChangeEmailService,
+	passwordReset *PasswordResetService,
 	log *zap.Logger,
 	v *validator.Validator,
 ) *Handler {
@@ -34,9 +36,31 @@ func NewHandler(
 		resendService: resendService,
 		loginService:  loginService,
 		changeEmail:   changeEmail,
+		passwordReset: passwordReset,
 		logger:        log,
 		validate:      v,
 	}
+}
+
+func (h *Handler) ForgotPassword(ctx context.Context, input *humautil.Input[ForgotPasswordRequest]) (*humautil.Output[humautil.APIResponse[humautil.MessageBody]], error) {
+	if err := h.passwordReset.RequestCode(ctx, input.Body); err != nil {
+		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
+	}
+	return humautil.OK(humautil.MessageBody{Message: "If an account exists for that email, we sent a password reset code."}), nil
+}
+
+func (h *Handler) VerifyPasswordResetCode(ctx context.Context, input *humautil.Input[VerifyPasswordResetCodeRequest]) (*humautil.Output[humautil.APIResponse[humautil.MessageBody]], error) {
+	if err := h.passwordReset.VerifyCode(ctx, input.Body); err != nil {
+		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
+	}
+	return humautil.OK(humautil.MessageBody{Message: "We sent a password reset link to your email."}), nil
+}
+
+func (h *Handler) ResetPassword(ctx context.Context, input *humautil.Input[ResetPasswordRequest]) (*humautil.Output[humautil.APIResponse[humautil.MessageBody]], error) {
+	if err := h.passwordReset.ResetPassword(ctx, input.Body); err != nil {
+		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
+	}
+	return humautil.OK(humautil.MessageBody{Message: "password reset successfully"}), nil
 }
 
 type AuthVerifyInput struct {

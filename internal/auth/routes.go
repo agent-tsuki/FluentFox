@@ -14,6 +14,36 @@ import (
 // Every route needs a valid access token unless it is marked humautil.Public().
 func RegisterRoutes(api huma.API, h *Handler) {
 	huma.Register(api, huma.Operation{
+		OperationID:   "request-password-reset-code",
+		Method:        http.MethodPost,
+		Path:          "/auth/forgot-password",
+		Summary:       "Send a password-reset verification code",
+		Tags:          []string{"Auth"},
+		DefaultStatus: http.StatusOK,
+		Metadata:      humautil.Public(),
+	}, h.ForgotPassword)
+
+	huma.Register(api, huma.Operation{
+		OperationID:   "verify-password-reset-code",
+		Method:        http.MethodPost,
+		Path:          "/auth/forgot-password/verify-code",
+		Summary:       "Verify a password-reset code and send a reset link",
+		Tags:          []string{"Auth"},
+		DefaultStatus: http.StatusOK,
+		Metadata:      humautil.Public(),
+	}, h.VerifyPasswordResetCode)
+
+	huma.Register(api, huma.Operation{
+		OperationID:   "reset-password",
+		Method:        http.MethodPost,
+		Path:          "/auth/reset-password",
+		Summary:       "Reset a password using a one-time email link token",
+		Tags:          []string{"Auth"},
+		DefaultStatus: http.StatusOK,
+		Metadata:      humautil.Public(),
+	}, h.ResetPassword)
+
+	huma.Register(api, huma.Operation{
 		OperationID:   "register-user",
 		Method:        http.MethodPost,
 		Path:          "/auth/register",

@@ -50,6 +50,12 @@ type Config struct {
 	LogLevel string
 }
 
+type DatabaseConfig struct {
+	DatabaseURL string
+	DBMaxConns  int32
+	DBMinConns  int32
+}
+
 // Load reads APP_ENV, loads the matching .env file for dev/test environments,
 // then maps all variables into a Config struct.
 // Panics if any required variable is missing — the app must not start partially configured.
@@ -130,6 +136,17 @@ func Load() *Config {
 	cfg.AllowedOrigins = strings.Split(rawOrigins, ",")
 
 	return cfg
+}
+
+func LoadDatabase() *DatabaseConfig {
+	v := viper.New()
+	v.AutomaticEnv()
+
+	return &DatabaseConfig{
+		DatabaseURL: require(v, "DATABASE_URL"),
+		DBMaxConns:  int32(requireInt(v, "DB_MAX_CONNS")),
+		DBMinConns:  int32(requireInt(v, "DB_MIN_CONNS")),
+	}
 }
 
 func (c *Config) IsDevelopment() bool { return c.AppEnv == "development" }

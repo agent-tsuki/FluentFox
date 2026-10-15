@@ -37,6 +37,20 @@ type RefreshTokenRequest struct {
 	RefreshToken string `json:"refresh_token" validate:"required" doc:"Opaque refresh token issued at login"`
 }
 
+type ForgotPasswordRequest struct {
+	Email string `json:"email" validate:"required,email" format:"email" doc:"Account email address"`
+}
+
+type VerifyPasswordResetCodeRequest struct {
+	Email string `json:"email" validate:"required,email" format:"email" doc:"Account email address"`
+	Code  string `json:"code" validate:"required,len=8,alphanum" minLength:"8" maxLength:"8" doc:"Uppercase password-reset code sent by email"`
+}
+
+type ResetPasswordRequest struct {
+	Token       string `json:"token" validate:"required" doc:"One-time reset token from the email link"`
+	NewPassword string `json:"new_password" validate:"required,min=8,max=128" minLength:"8" maxLength:"128" doc:"New password — 8 to 128 characters"`
+}
+
 type ChangeEmailRequest struct {
 	NewEmail        string `json:"new_email"        format:"email" doc:"Corrected email address"`
 	CurrentPassword string `json:"current_password" minLength:"8" maxLength:"128" doc:"Current account password"`

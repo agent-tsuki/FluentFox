@@ -9,6 +9,7 @@ import (
 	"context"
 	_ "embed"
 	"fmt"
+	"html"
 	"net/url"
 	"strings"
 
@@ -98,6 +99,44 @@ func (s *MailService) SendPasswordResetEmailAsync(to, name, rawToken string) {
 			s.logger.Info("async: password reset email sent", zap.String("to", to))
 		}
 	}()
+}
+
+func (s *MailService) SendPasswordResetCode(ctx context.Context, to, name, code string) error {
+	ctx, cancel := context.WithTimeout(ctx, common.EMAIL_SEND_TIMEOUT)
+	defer cancel()
+
+	if err := s.mailer.SendHTML(ctx, to, "Your FoxSensei password reset code", passwordResetCodeEmail(name, code)); err != nil {
+		s.logger.Error("failed to send password reset code", zap.String("to", to), zap.Error(err))
+		return fmt.Errorf("send password reset code: %w", err)
+	}
+	return nil
+}
+
+func (s *MailService) SendPasswordResetLink(ctx context.Context, to, name, rawToken string) error {
+	ctx, cancel := context.WithTimeout(ctx, common.EMAIL_SEND_TIMEOUT)
+	defer cancel()
+
+	resetURL := fmt.Sprintf("%s/reset-password?token=%s", s.appURL, url.QueryEscape(rawToken))
+	if err := s.mailer.SendHTML(ctx, to, "Reset your FoxSensei password", passwordResetLinkEmail(name, resetURL)); err != nil {
+		s.logger.Error("failed to send password reset link", zap.String("to", to), zap.Error(err))
+		return fmt.Errorf("send password reset link: %w", err)
+	}
+	return nil
+}
+
+func passwordResetCodeEmail(name, code string) string {
+	return fmt.Sprintf(`<h1>Password reset</h1><p>Hi %s,</p><p>Your password reset code is:</p><p style="font-size:24px;font-weight:bold;letter-spacing:4px">%s</p><p>This code expires in 10 minutes. If you did not request it, you can ignore this email.</p>`, html.EscapeString(displayName(name)), html.EscapeString(code))
+}
+
+func passwordResetLinkEmail(name, resetURL string) string {
+	return fmt.Sprintf(`<h1>Reset your password</h1><p>Hi %s,</p><p><a href="%s">Reset your password</a></p><p>This link expires in 1 hour and can only be used once. If you did not request it, you can ignore this email.</p>`, html.EscapeString(displayName(name)), html.EscapeString(resetURL))
+}
+
+func displayName(name string) string {
+	if name == "" {
+		return "there"
+	}
+	return name
 }
 
 // SendDailyReminderAsync fires a study-reminder email in a background goroutine.

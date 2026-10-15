@@ -29,6 +29,7 @@ type UserRepo interface {
 	UpsertRefreshToken(ctx context.Context, userID uuid.UUID, hashToken string, expiresAt time.Time) (users.RefreshToken, error)
 	GetRefreshTokenByHash(ctx context.Context, hash string) (users.RefreshToken, error)
 	RevokeRefreshToken(ctx context.Context, userID uuid.UUID) error
+	RevokeRefreshTokens(ctx context.Context, tx *gorm.DB, userID uuid.UUID) error
 
 	GetUserForUsername(ctx context.Context, username string) (users.User, error)
 	LockUserForUpdate(ctx context.Context, tx *gorm.DB, userID uuid.UUID) (users.User, error)
@@ -37,4 +38,10 @@ type UserRepo interface {
 	GetVerificationSendStats(ctx context.Context, tx *gorm.DB, userID uuid.UUID, since time.Time) (users.VerificationSendStats, error)
 	ExpireActiveVerifications(ctx context.Context, tx *gorm.DB, userID uuid.UUID, now time.Time) error
 	UpdateUnverifiedUserEmail(ctx context.Context, tx *gorm.DB, userID uuid.UUID, email string) (bool, error)
+	GetPasswordResetForUpdate(ctx context.Context, tx *gorm.DB, userID uuid.UUID) (users.PasswordReset, error)
+	UpsertPasswordResetCode(ctx context.Context, tx *gorm.DB, userID uuid.UUID, codeHash string, codeExpiresAt, sentAt, windowStartedAt time.Time, sentCount int64) error
+	RecordPasswordResetCodeAttempt(ctx context.Context, tx *gorm.DB, userID uuid.UUID, attempts int, now time.Time) error
+	SetPasswordResetLink(ctx context.Context, tx *gorm.DB, userID uuid.UUID, tokenHash string, expiresAt, now time.Time) error
+	FindPasswordResetUserByToken(ctx context.Context, tokenHash string) (uuid.UUID, error)
+	ConsumePasswordReset(ctx context.Context, tx *gorm.DB, userID uuid.UUID, tokenHash, passwordHash string, now time.Time) (bool, error)
 }

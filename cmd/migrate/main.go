@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	cfg := config.Load()
+	cfg := config.LoadDatabase()
 
 	log, err := zap.NewDevelopment()
 	if err != nil {
@@ -39,6 +39,7 @@ func main() {
 		&users.UserSettings{},
 		&users.UserVerification{},
 		&users.RefreshToken{},
+		&users.PasswordReset{},
 	); err != nil {
 		log.Fatal("auto-migrate failed", zap.Error(err))
 	}

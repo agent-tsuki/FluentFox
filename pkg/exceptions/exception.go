@@ -106,5 +106,7 @@ var (
 	ErrVerificationDailyLimit = New(http.StatusTooManyRequests, "VERIFICATION_DAILY_LIMIT", "verification email limit reached, please try again later")
 	ErrEmailSendFailed        = New(http.StatusServiceUnavailable, "EMAIL_SEND_FAILED", "we could not send the verification email, please try again")
 
-
+	ErrPasswordResetEmailSendFailed = New(http.StatusServiceUnavailable, "PASSWORD_RESET_EMAIL_SEND_FAILED", "we could not send the password reset email, please try again")
+	ErrPasswordResetCodeInvalid     = New(http.StatusBadRequest, "PASSWORD_RESET_CODE_INVALID", "the password reset code is invalid or expired")
+	ErrPasswordResetTokenInvalid    = New(http.StatusBadRequest, "PASSWORD_RESET_TOKEN_INVALID", "the password reset link is invalid or expired")
 )

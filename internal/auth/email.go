@@ -20,6 +20,11 @@ type VerificationMailer interface {
 	SendVerificationEmail(ctx context.Context, to, name, rawToken string) error
 }
 
+type PasswordResetMailer interface {
+	SendPasswordResetCode(ctx context.Context, to, name, code string) error
+	SendPasswordResetLink(ctx context.Context, to, name, rawToken string) error
+}
+
 func normalizeEmail(email string) string {
 	return strings.ToLower(strings.TrimSpace(email))
 }
