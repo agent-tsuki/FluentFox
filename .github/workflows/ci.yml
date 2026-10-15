@@ -39,10 +39,31 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      # The schema comes from GORM AutoMigrate (cmd/migrate), not SQL files.
+      # cmd/migrate loads the full app config, so every required key needs a
+      # value; all of these are CI-only placeholders, not real secrets.
       - name: Run migrations
-        run: |
-          go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
-          migrate -path db/migrations -database "$DATABASE_URL" up
+        env:
+          APP_ENV: production
+          PORT: "8080"
+          APP_URL: http://localhost:3000
+          ALLOWED_ORIGINS: http://localhost:3000
+          DB_MAX_CONNS: "5"
+          DB_MIN_CONNS: "1"
+          JWT_ACCESS_SECRET: ci-placeholder-not-a-real-secret-0123456789
+          JWT_ACCESS_EXPIRY_MINUTES: "15"
+          JWT_REFRESH_EXPIRY_DAYS: "7"
+          SMTP_HOST: localhost
+          SMTP_PORT: "587"
+          SMTP_USERNAME: ci@example.com
+          SMTP_APP_PASSWORD: ci-placeholder
+          EMAIL_FROM_ADDRESS: ci@example.com
+          R2_ACCOUNT_ID: ci-placeholder
+          R2_ACCESS_KEY: ci-placeholder
+          R2_SECRET_KEY: ci-placeholder
+          R2_BUCKET_NAME: ci-placeholder
+          R2_PUBLIC_URL: http://localhost
+        run: go run ./cmd/migrate
 
       - name: Run tests
         run: go test -v -race -coverprofile=coverage.out ./...
