@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 
 	"github.com/fluentfox/api/config"
 	"github.com/fluentfox/api/internal/users"
@@ -31,6 +32,10 @@ func main() {
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 
+	if err := dedupeRefreshTokens(db); err != nil {
+		log.Fatal("refresh token dedupe failed", zap.Error(err))
+	}
+
 	log.Info("running auto-migrate")
 
 	if err := db.AutoMigrate(
@@ -46,4 +51,18 @@ func main() {
 	}
 
 	log.Info("auto-migrate complete")
+}
+
+// The unique index on refresh_tokens.user_id cannot be created while older
+// races left several rows for one user. Keep each user's newest row; the
+// removed duplicates only sign those sessions out.
+func dedupeRefreshTokens(db *gorm.DB) error {
+	if !db.Migrator().HasTable(&users.RefreshToken{}) {
+		return nil
+	}
+	return db.Exec(`
+		DELETE FROM refresh_tokens older
+		USING refresh_tokens newer
+		WHERE older.user_id = newer.user_id
+		  AND (older.updated_at, older.id) < (newer.updated_at, newer.id)`).Error
 }

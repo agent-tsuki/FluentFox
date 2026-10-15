@@ -50,6 +50,9 @@ type fakeUserRepo struct {
 
 	createdEmail    string
 	createdUsername string
+	// createUserErrs is consumed one per CreateUser call, to simulate a clash then success.
+	createUserErrs   []error
+	createdUsernames []string
 
 	lookedUpEmail string
 
@@ -80,7 +83,11 @@ func (f *fakeUserRepo) record(name string) { f.calls = append(f.calls, name) }
 
 func (f *fakeUserRepo) Transaction(_ context.Context, fn func(*gorm.DB) error) error {
 	f.record("Transaction")
-	return fn(nil)
+	if err := fn(nil); err != nil {
+		return err
+	}
+	f.record("Commit")
+	return nil
 }
 
 func (f *fakeUserRepo) GetUserForEmail(_ context.Context, email string) (users.User, error) {
@@ -132,6 +139,11 @@ func (f *fakeUserRepo) GetVerificationSendStats(context.Context, *gorm.DB, uuid.
 	return f.stats, f.statsErr
 }
 
+func (f *fakeUserRepo) DeleteUnsentVerification(context.Context, *gorm.DB, uuid.UUID, string) error {
+	f.record("DeleteUnsentVerification")
+	return nil
+}
+
 func (f *fakeUserRepo) ExpireActiveVerifications(context.Context, *gorm.DB, uuid.UUID, time.Time) error {
 	f.record("ExpireActiveVerifications")
 	return f.expireErr
@@ -151,6 +163,14 @@ func (f *fakeUserRepo) UpdateUnverifiedUserEmail(_ context.Context, _ *gorm.DB, 
 func (f *fakeUserRepo) CreateUser(_ context.Context, _ *gorm.DB, email, username, _ string, _ *string) (uuid.UUID, error) {
 	f.record("CreateUser")
 	f.createdEmail, f.createdUsername = email, username
+	f.createdUsernames = append(f.createdUsernames, username)
+	if len(f.createUserErrs) > 0 {
+		err := f.createUserErrs[0]
+		f.createUserErrs = f.createUserErrs[1:]
+		if err != nil {
+			return uuid.Nil, err
+		}
+	}
 	return uuid.New(), nil
 }
 

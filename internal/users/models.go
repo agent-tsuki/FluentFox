@@ -112,7 +112,7 @@ func (u *UserVerification) BeforeCreate(_ *gorm.DB) error {
 
 type RefreshToken struct {
 	ID        uuid.UUID `gorm:"type:uuid;primaryKey"`
-	UserID    uuid.UUID `gorm:"column:user_id;not null"`
+	UserID    uuid.UUID `gorm:"column:user_id;not null;uniqueIndex:idx_refresh_tokens_user_id"`
 	TokenHash string    `gorm:"column:token_hash;not null;index:idx_refresh_tokens_token_hash"`
 	IsRevoked bool      `gorm:"column:is_revoked;default:false"`
 	ExpiresAt time.Time `gorm:"column:expires_at;not null"`

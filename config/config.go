@@ -44,7 +44,8 @@ type Config struct {
 	UpstashRedisRESTToken         string
 	OAuthTransactionEncryptionKey string
 
-	// Email (Gmail SMTP)
+	// Email: Resend when ResendAPIKey is set, otherwise Gmail SMTP.
+	ResendAPIKey        string
 	SMTPHost            string
 	SMTPPort            string
 	SMTPUsername        string
@@ -128,6 +129,7 @@ func Load() *Config {
 		SMTPUsername:     require(v, "SMTP_USERNAME"),
 		SMTPPassword:     require(v, "SMTP_APP_PASSWORD"),
 		EmailFromAddress: require(v, "EMAIL_FROM_ADDRESS"),
+		ResendAPIKey:     v.GetString("RESEND_API_KEY"),
 
 		R2AccountID:  v.GetString("R2_ACCOUNT_ID"),
 		R2AccessKey:  v.GetString("R2_ACCESS_KEY"),

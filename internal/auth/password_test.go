@@ -76,6 +76,15 @@ func TestDummyPasswordHash_decodes(t *testing.T) {
 	}
 }
 
+func TestDummyPasswordHashMatchesDefaultConfig(t *testing.T) {
+	argon := Argon2Config{}
+	cfg := argon.defaultConfig()
+	want := cfg.hashedString("", make([]byte, cfg.SaltLength))
+	if dummyPasswordHash != want {
+		t.Fatalf("dummyPasswordHash is stale; set it to %q", want)
+	}
+}
+
 func TestAcquireArgonSlot(t *testing.T) {
 	t.Run("returns context.Canceled without blocking when all slots are taken", func(t *testing.T) {
 		filled := 0

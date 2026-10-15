@@ -125,6 +125,30 @@ See `.env.example` for all required variables with descriptions.
 - `APP_ENV=development` loads `.env.development`
 - `APP_ENV=test` loads `.env.test`
 - `APP_ENV=production` reads from the real environment (Railway injects these)
+- `RESEND_API_KEY` (optional) sends email through the Resend HTTP API, which is
+  faster than SMTP. `EMAIL_FROM_ADDRESS` must then be on a domain verified in
+  Resend. When it is empty, email goes through the `SMTP_*` settings, which are
+  still required either way.
+- `DATABASE_URL` may end with `default_query_exec_mode=simple_protocol`
+  (e.g. `...?sslmode=require&default_query_exec_mode=simple_protocol`). pgx
+  then skips preparing each new query on a fresh connection, saving one round
+  trip per query on serverless cold starts, and it works through Neon's
+  `-pooler` (PgBouncer) host. pgx still escapes every parameter. Try it on a
+  preview deployment first.
+
+## Migrations
+
+`refresh_tokens.user_id` has a unique index that the login upsert relies on.
+Run the migration against a database **before** deploying code that includes
+it: the migration first removes duplicate refresh-token rows (keeping each
+user's newest), then creates the index. Deploying first makes every login fail
+until the migration runs.
+
+- Development: `make migrate`
+- Production: runs automatically on every push to `main`, in
+  `.github/workflows/deploy-vercel.yml`, before `vercel deploy`. It reads the
+  `PROD_DATABASE_URL` repository secret (Neon direct, non-pooler URL). A failed
+  migration stops the deploy.
 
 ## Deployment
 

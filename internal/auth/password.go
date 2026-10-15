@@ -21,11 +21,11 @@ var argonSlots = make(chan struct{}, common.ARGON2_MAX_CONCURRENT_HASHES)
 
 // Unknown emails are checked against this hash so they take as long as real
 // ones; otherwise response time would reveal which emails have accounts.
-var dummyPasswordHash = func() string {
-	argon := Argon2Config{}
-	cfg := argon.defaultConfig()
-	return cfg.hashedString("", make([]byte, cfg.SaltLength))
-}()
+// Precomputed ("" with a zero salt and defaultConfig) so a cold start skips a
+// 64 MB argon2 run; TestDummyPasswordHashMatchesDefaultConfig keeps it in sync.
+//
+//nolint:gosec // hash of the empty password, not a credential
+const dummyPasswordHash = "$argon2id$v=19$m=65536,t=3,p=4$AAAAAAAAAAAAAAAAAAAAAA$CKRr+j2Vu+nU04ztbTeIuhOFzYqZE6/eNvW6ayzoJNI"
 
 type argonParams struct {
 	memory      uint32

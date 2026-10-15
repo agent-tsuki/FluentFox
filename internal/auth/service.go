@@ -25,7 +25,12 @@ type AuthService struct {
 	mailService  VerificationMailer
 	checker      EmailChecker
 	releaser     *StaleAccountReleaser
+	sessions     SessionIssuer
 	logger       *zap.Logger
+}
+
+type SessionIssuer interface {
+	JetTokenAssigner(ctx context.Context, userData users.User) (LoginResponse, error)
 }
 
 type ResendVerificationService struct {
@@ -54,14 +59,15 @@ func NewTokenVerificationService(userRepo UserRepo, log *zap.Logger) *TokenVerif
 }
 
 func NewAuthService(
-	userRepo UserRepo, mailService VerificationMailer, checker EmailChecker, releaser *StaleAccountReleaser, log *zap.Logger,
+	userRepo UserRepo, mailService VerificationMailer, checker EmailChecker, releaser *StaleAccountReleaser,
+	sessions SessionIssuer, log *zap.Logger,
 ) *AuthService {
 	argon := Argon2Config{}
 	cfg := argon.defaultConfig()
 	ts := &TokenService{argon: cfg}
 	return &AuthService{
 		userRepo: userRepo, argon: cfg, tokenService: ts, mailService: mailService,
-		checker: checker, releaser: releaser, logger: log,
+		checker: checker, releaser: releaser, sessions: sessions, logger: log,
 	}
 }
 
@@ -78,76 +84,143 @@ type staleHolder struct {
 	conflict *exceptions.AppError
 }
 
-func (s *AuthService) registerUser(ctx context.Context, req RegisterRequest) error {
+// Signing the user in here saves the client a second request and a second
+// argon2 hash on /auth/login.
+func (s *AuthService) registerUser(ctx context.Context, req *RegisterRequest) (LoginResponse, error) {
 	req.Email = normalizeEmail(req.Email)
 	s.logger.Info("Registering new user", zap.String("email", req.Email))
-	if err := mapEmailCheckErr(s.checker.Check(ctx, req.Email), s.logger); err != nil {
-		return err
-	}
+	generatedName := req.UserName == nil || *req.UserName == ""
 
-	holders, err := s.validateUserCredential(ctx, &req)
+	holders, err := s.checkEmailAndCredentials(ctx, req)
 	if err != nil {
-		return err
+		return LoginResponse{}, err
 	}
 
 	hashedData, err := s.tokenService.generateAuthToken()
 	if err != nil {
-		return err
+		return LoginResponse{}, err
 	}
 
 	release, err := acquireArgonSlot(ctx)
 	if err != nil {
-		return err
+		return LoginResponse{}, err
 	}
 	hashPassword, err := s.argon.hashStringWithSalt(req.Password)
 	release()
 	if err != nil {
-		return err
+		return LoginResponse{}, err
 	}
 
-	// Freeing stale holders, creating the account and sending the email commit
-	// together. If the email cannot be sent nothing is saved, so the user can
-	// simply sign up again instead of hitting "email already in use".
-	err = s.userRepo.Transaction(ctx, func(tx *gorm.DB) error {
+	user, err := s.createAccount(ctx, holders, hashPassword, hashedData["hashed"], req, generatedName)
+	if err != nil {
+		return LoginResponse{}, fmt.Errorf("register user: %w", err)
+	}
+
+	s.sendVerificationEmail(ctx, user.ID, req.Email, req.FirstName, hashedData)
+
+	resp, err := s.sessions.JetTokenAssigner(ctx, user)
+	if err != nil {
+		return LoginResponse{}, fmt.Errorf("register user: %w", err)
+	}
+	return resp, nil
+}
+
+// The DNS check and the DB lookups are independent, so they run side by side.
+// The email check result wins so a bad address is reported before a conflict.
+func (s *AuthService) checkEmailAndCredentials(ctx context.Context, req *RegisterRequest) ([]staleHolder, error) {
+	email := req.Email
+	checkDone := make(chan error, 1)
+	go func() { checkDone <- mapEmailCheckErr(s.checker.Check(ctx, email), s.logger) }()
+
+	holders, err := s.validateUserCredential(ctx, req)
+	if checkErr := <-checkDone; checkErr != nil {
+		return nil, checkErr
+	}
+	return holders, err
+}
+
+// A generated username is not checked up front; the unique index catches the
+// rare clash and the whole transaction is retried with a new name.
+func (s *AuthService) createAccount(
+	ctx context.Context, holders []staleHolder, hashPassword, hashedToken string, req *RegisterRequest, generatedName bool,
+) (users.User, error) {
+	for attempt := 1; ; attempt++ {
+		userID, err := s.commitAccount(ctx, holders, hashPassword, hashedToken, req)
+		if err == nil {
+			return users.User{ID: userID, Username: *req.UserName, IsActive: true}, nil
+		}
+		if !generatedName || attempt >= common.USERNAME_RETRY || !errors.Is(err, exceptions.ErrUsernameAlreadyInUse) {
+			return users.User{}, err
+		}
+		username, err := s.generateUsername(req.FirstName, req.LastName)
+		if err != nil {
+			return users.User{}, fmt.Errorf("generate username: %w", err)
+		}
+		req.UserName = &username
+	}
+}
+
+// Freeing stale holders and creating the account commit together. The email
+// is sent after commit so a slow mail server never holds the row locks.
+func (s *AuthService) commitAccount(
+	ctx context.Context, holders []staleHolder, hashPassword, hashedToken string, req *RegisterRequest,
+) (uuid.UUID, error) {
+	var userID uuid.UUID
+	err := s.userRepo.Transaction(ctx, func(tx *gorm.DB) error {
 		for _, holder := range holders {
 			if err := s.releaser.Release(ctx, tx, holder.id, holder.conflict); err != nil {
 				return err
 			}
 		}
-		if err := s.createUser(ctx, tx, hashPassword, hashedData["hashed"], req); err != nil {
-			return err
-		}
-		if err := s.mailService.SendVerificationEmail(ctx, req.Email, req.FirstName, hashedData["token"]); err != nil {
-			return exceptions.WithCause(exceptions.ErrEmailSendFailed, err)
-		}
-		return nil
+		var err error
+		userID, err = s.createUser(ctx, tx, hashPassword, hashedToken, req)
+		return err
 	})
 	if err != nil {
-		return fmt.Errorf("register user: %w", err)
+		return uuid.Nil, fmt.Errorf("create account: %w", err)
 	}
-	return nil
+	return userID, nil
 }
 
-func (s *AuthService) createUser(ctx context.Context, tx *gorm.DB, hashPassword, hashedToken string, req RegisterRequest) error {
+// The account is already saved, so a failed send does not fail the signup; the
+// user can resend from the verify-email screen. The unsent token is deleted so
+// the account stays releasable and the first resend is not held back by the
+// cooldown for an email that never went out.
+func (s *AuthService) sendVerificationEmail(ctx context.Context, userID uuid.UUID, email, name string, tokens map[string]string) {
+	sendErr := s.mailService.SendVerificationEmail(ctx, email, name, tokens["token"])
+	if sendErr == nil {
+		return
+	}
+	s.logger.Error("signup verification email not sent", zap.Stringer("user_id", userID), zap.Error(sendErr))
+
+	err := s.userRepo.Transaction(ctx, func(tx *gorm.DB) error {
+		return s.userRepo.DeleteUnsentVerification(ctx, tx, userID, tokens["hashed"])
+	})
+	if err != nil {
+		s.logger.Error("delete unsent signup verification token", zap.Stringer("user_id", userID), zap.Error(err))
+	}
+}
+
+func (s *AuthService) createUser(ctx context.Context, tx *gorm.DB, hashPassword, hashedToken string, req *RegisterRequest) (uuid.UUID, error) {
 	userID, err := s.userRepo.CreateUser(ctx, tx, req.Email, *req.UserName, hashPassword, req.PhoneNumber)
 	if err != nil {
-		return err
+		return uuid.Nil, fmt.Errorf("insert user: %w", err)
 	}
 
 	if err := s.userRepo.CreateProfile(ctx, tx, userID, req.FirstName, req.LastName, req.NativeLang); err != nil {
-		return err
+		return uuid.Nil, fmt.Errorf("insert profile: %w", err)
 	}
 
 	if err := s.userRepo.CreateUsersSettings(ctx, tx, userID, nil, nil); err != nil {
-		return err
+		return uuid.Nil, fmt.Errorf("insert settings: %w", err)
 	}
 
 	tokenExpireAt := s.tokenService.authTokenExpireTime()
 	if err := s.userRepo.CreateUserVerification(ctx, tx, userID, hashedToken, &tokenExpireAt); err != nil {
-		return err
+		return uuid.Nil, fmt.Errorf("insert verification: %w", err)
 	}
 
-	return nil
+	return userID, nil
 }
 
 // Unverified owners are only candidates; whether they are really stale is
@@ -187,7 +260,7 @@ func (s *AuthService) resolveUsername(ctx context.Context, req *RegisterRequest,
 		return s.findUsernameHolder(ctx, *req.UserName, emailHolderID)
 	}
 
-	generated, err := s.getGenerateUsername(ctx, *req)
+	generated, err := s.generateUsername(req.FirstName, req.LastName)
 	s.logger.Info("Generated new user name username: ", zap.String("username", generated))
 	if err != nil {
 		return nil, errors.New("error while generating username")
@@ -212,23 +285,6 @@ func (s *AuthService) findUsernameHolder(ctx context.Context, username string, e
 	default:
 		return &staleHolder{id: nameHolder.ID, conflict: exceptions.ErrUsernameAlreadyInUse}, nil
 	}
-}
-
-func (s *AuthService) getGenerateUsername(ctx context.Context, req RegisterRequest) (string, error) {
-	for i := 0; i < common.USERNAME_RETRY; i++ {
-		username, err := s.generateUsername(req.FirstName, req.LastName)
-		if err != nil {
-			continue
-		}
-		exist, err := s.userRepo.GetExistingUserForUsername(ctx, username)
-		if err != nil {
-			continue
-		}
-		if !exist {
-			return username, nil
-		}
-	}
-	return "", errors.New("username not generated, try again")
 }
 
 func (s *AuthService) generateUsername(firstName string, lastName *string) (string, error) {

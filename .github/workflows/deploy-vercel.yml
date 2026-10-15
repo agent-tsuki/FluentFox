@@ -24,6 +24,22 @@ jobs:
       - name: Check out the pushed commit
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      # Schema changes must land before the code that relies on them (e.g. the
+      # refresh-token upsert needs its unique index), so a failed migration
+      # stops the deploy. Use Neon's direct, non-pooler URL for DDL.
+      - name: Migrate production database
+        run: go run ./cmd/migrate
+        env:
+          DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
+          DB_MAX_CONNS: "2"
+          DB_MIN_CONNS: "0"
+
       - name: Install Vercel CLI
         run: npm install --global "vercel@${VERCEL_CLI_VERSION}"
 

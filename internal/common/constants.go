@@ -22,7 +22,7 @@ const (
 // the send runs inside the request.
 const (
 	EMAIL_SEND_TIMEOUT      time.Duration = 8 * time.Second
-	EMAIL_MX_LOOKUP_TIMEOUT time.Duration = 3 * time.Second
+	EMAIL_MX_LOOKUP_TIMEOUT time.Duration = 1 * time.Second
 )
 
 // The signup email counts toward the daily limit.

@@ -30,21 +30,24 @@ func TestAuthService_registerUser(t *testing.T) {
 	username := "bob"
 	holderID := uuid.New()
 	boom := errors.New("smtp down")
+	nameClash := exceptions.WithCause(exceptions.ErrUsernameAlreadyInUse, errors.New("duplicate key"))
 
 	tests := []struct {
-		name          string
-		repo          *fakeUserRepo
-		checkerErr    error
-		mailErr       error
-		wantCode      string
-		wantErr       *exceptions.AppError
-		wantCreated   bool
-		wantDeleted   bool
-		wantMailCount int
-		wantCause     error
+		name              string
+		repo              *fakeUserRepo
+		noUsername        bool
+		checkerErr        error
+		mailErr           error
+		wantCode          string
+		wantErr           *exceptions.AppError
+		wantCreated       bool
+		wantCreateCalls   int
+		wantDeleted       bool
+		wantMailCount     int
+		wantUnsentDeleted bool
 	}{
 		{
-			name:          "creates the account and sends mail on the happy path",
+			name:          "creates the account, mails after commit and returns a session",
 			repo:          &fakeUserRepo{},
 			wantCreated:   true,
 			wantMailCount: 1,
@@ -54,6 +57,14 @@ func TestAuthService_registerUser(t *testing.T) {
 			repo:       &fakeUserRepo{},
 			checkerErr: &emailcheck.TypoError{Suggested: "bob@gmail.com"},
 			wantCode:   "EMAIL_DOMAIN_TYPO",
+		},
+		{
+			name: "returns the email check error before an email conflict",
+			repo: &fakeUserRepo{byEmail: map[string]users.User{
+				"bob@gmail.com": {ID: holderID, IsEmailVerified: true},
+			}},
+			checkerErr: emailcheck.ErrDisposable,
+			wantErr:    exceptions.ErrDisposableEmail,
 		},
 		{
 			name: "returns ErrEmailAlreadyInUse when a verified user holds the email",
@@ -101,27 +112,54 @@ func TestAuthService_registerUser(t *testing.T) {
 			wantMailCount: 1,
 		},
 		{
-			name:          "returns EMAIL_SEND_FAILED when mail fails",
-			repo:          &fakeUserRepo{},
-			mailErr:       boom,
-			wantErr:       exceptions.ErrEmailSendFailed,
-			wantCreated:   true,
-			wantMailCount: 1,
-			wantCause:     boom,
+			name:              "still succeeds with a session when mail fails after commit, deleting the unsent token",
+			repo:              &fakeUserRepo{},
+			mailErr:           boom,
+			wantCreated:       true,
+			wantMailCount:     1,
+			wantUnsentDeleted: true,
+		},
+		{
+			name:            "retries with a new generated username when the unique index clashes",
+			repo:            &fakeUserRepo{createUserErrs: []error{nameClash}},
+			noUsername:      true,
+			wantCreated:     true,
+			wantCreateCalls: 2,
+			wantMailCount:   1,
+		},
+		{
+			name:            "returns ErrUsernameAlreadyInUse after the generated username retry limit",
+			repo:            &fakeUserRepo{createUserErrs: []error{nameClash, nameClash, nameClash}},
+			noUsername:      true,
+			wantErr:         exceptions.ErrUsernameAlreadyInUse,
+			wantCreated:     true,
+			wantCreateCalls: 3,
+		},
+		{
+			name:            "does not retry a clash on a username the user chose",
+			repo:            &fakeUserRepo{createUserErrs: []error{nameClash}},
+			wantErr:         exceptions.ErrUsernameAlreadyInUse,
+			wantCreated:     true,
+			wantCreateCalls: 1,
 		},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			checker := &fakeEmailChecker{err: tc.checkerErr}
 			mailer := &fakeMailer{err: tc.mailErr}
+			mailer.onSend = func() { tc.repo.record("mail") }
 			releaser := NewStaleAccountReleaser(tc.repo, nopLogger())
-			svc := NewAuthService(tc.repo, mailer, checker, releaser, nopLogger())
+			sessions := NewLogin(tc.repo, newTestMaker(), nopLogger())
+			svc := NewAuthService(tc.repo, mailer, checker, releaser, sessions, nopLogger())
 			req := RegisterRequest{
 				Email: "  Bob@GMAIL.com ", UserName: &username, FirstName: "Bob",
 				NativeLang: "en", Password: "password123",
 			}
+			if tc.noUsername {
+				req.UserName = nil
+			}
 
-			err := svc.registerUser(context.Background(), req)
+			resp, err := svc.registerUser(context.Background(), &req)
 
 			if !reflect.DeepEqual(checker.checked, []string{"bob@gmail.com"}) {
 				t.Errorf("checker saw %v, want normalized email", checker.checked)
@@ -131,14 +169,8 @@ func TestAuthService_registerUser(t *testing.T) {
 				assertAppCode(t, err, tc.wantCode)
 			case tc.wantErr != nil:
 				assertAppCode(t, err, tc.wantErr.Code)
-				if !errors.Is(err, tc.wantErr) && tc.wantCause == nil {
-					t.Errorf("err = %v, want %v", err, tc.wantErr)
-				}
 			case err != nil:
 				t.Fatalf("unexpected error: %v", err)
-			}
-			if tc.wantCause != nil && !errors.Is(err, tc.wantCause) {
-				t.Errorf("cause lost: %v", err)
 			}
 
 			created := slices.Contains(tc.repo.calls, "CreateUser")
@@ -148,14 +180,42 @@ func TestAuthService_registerUser(t *testing.T) {
 			if created && tc.repo.createdEmail != "bob@gmail.com" {
 				t.Errorf("created email = %q, want normalized", tc.repo.createdEmail)
 			}
+			if tc.wantCreateCalls > 0 && len(tc.repo.createdUsernames) != tc.wantCreateCalls {
+				t.Errorf("CreateUser calls = %d, want %d", len(tc.repo.createdUsernames), tc.wantCreateCalls)
+			}
+			if names := tc.repo.createdUsernames; tc.noUsername && len(names) > 1 && names[0] == names[1] {
+				t.Errorf("retry reused username %q", names[0])
+			}
 			if deleted := slices.Contains(tc.repo.calls, "DeleteUnverifiedUser"); deleted != tc.wantDeleted {
 				t.Errorf("DeleteUnverifiedUser called = %v, want %v", deleted, tc.wantDeleted)
+			}
+			if removed := slices.Contains(tc.repo.calls, "DeleteUnsentVerification"); removed != tc.wantUnsentDeleted {
+				t.Errorf("DeleteUnsentVerification called = %v, want %v", removed, tc.wantUnsentDeleted)
 			}
 			if len(mailer.sent) != tc.wantMailCount {
 				t.Fatalf("mails = %d, want %d", len(mailer.sent), tc.wantMailCount)
 			}
-			if tc.wantMailCount > 0 && mailer.sent[0].to != "bob@gmail.com" {
-				t.Errorf("mail sent to %q", mailer.sent[0].to)
+			if tc.wantMailCount > 0 {
+				if mailer.sent[0].to != "bob@gmail.com" {
+					t.Errorf("mail sent to %q", mailer.sent[0].to)
+				}
+				if slices.Index(tc.repo.calls, "mail") < slices.Index(tc.repo.calls, "Commit") {
+					t.Errorf("mail sent before commit: calls = %v", tc.repo.calls)
+				}
+			}
+
+			if err != nil {
+				if tc.repo.upsertedCalls != 0 {
+					t.Error("session must not be issued on failure")
+				}
+				return
+			}
+			if resp.AccessToken == "" || resp.RefreshToken == "" || tc.repo.upsertedCalls != 1 {
+				t.Errorf("want access and stored refresh token, got %+v (upserts %d)", resp, tc.repo.upsertedCalls)
+			}
+			wantUser := UserSummary{UserID: resp.User.UserID, Username: tc.repo.createdUsername, IsActive: true}
+			if resp.User != wantUser || resp.User.UserID == uuid.Nil {
+				t.Errorf("user = %+v, want %+v", resp.User, wantUser)
 			}
 		})
 	}

@@ -6,6 +6,8 @@ package mailer
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"time"
 
 	"github.com/resend/resend-go/v2"
 )
@@ -18,9 +20,11 @@ type ResendMailer struct {
 
 // NewResendMailer constructs a ResendMailer.
 // apiKey and fromAddress come from Config — never from env directly.
-func NewResendMailer(apiKey, fromAddress string) *ResendMailer {
+// resend.NewClient uses http.DefaultClient, which never times out, so a hung
+// API call could outlive the request; the timeout caps it even without a ctx deadline.
+func NewResendMailer(apiKey, fromAddress string, timeout time.Duration) *ResendMailer {
 	return &ResendMailer{
-		client:   resend.NewClient(apiKey),
+		client:   resend.NewCustomClient(&http.Client{Timeout: timeout}, apiKey),
 		fromAddr: fromAddress,
 	}
 }
@@ -33,7 +37,7 @@ func (m *ResendMailer) SendHTML(ctx context.Context, to, subject, html string) e
 		Subject: subject,
 		Html:    html,
 	}
-	_, err := m.client.Emails.Send(params)
+	_, err := m.client.Emails.SendWithContext(ctx, params)
 	if err != nil {
 		return fmt.Errorf("mailer: send email to %s: %w", to, err)
 	}
@@ -49,7 +53,7 @@ func (m *ResendMailer) SendDailyReminder(ctx context.Context, to, name string, s
 		Html:    reminderEmailHTML(name, streakDays),
 	}
 
-	_, err := m.client.Emails.Send(params)
+	_, err := m.client.Emails.SendWithContext(ctx, params)
 	if err != nil {
 		return fmt.Errorf("mailer: send daily reminder to %s: %w", to, err)
 	}

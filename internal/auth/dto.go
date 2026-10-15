@@ -33,6 +33,12 @@ type LoginResponse struct {
 	User         UserSummary `json:"user"          doc:"Authenticated user summary"`
 }
 
+// Embedding keeps the session fields flat in JSON, the same shape as /auth/login.
+type RegisterResponse struct {
+	Message string `json:"message" doc:"Human-readable response message"`
+	LoginResponse
+}
+
 type RefreshTokenRequest struct {
 	RefreshToken string `json:"refresh_token" validate:"required" doc:"Opaque refresh token issued at login"`
 }

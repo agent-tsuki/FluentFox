@@ -37,6 +37,7 @@ type UserRepo interface {
 	DeleteUnverifiedUser(ctx context.Context, tx *gorm.DB, userID uuid.UUID) (bool, error)
 	GetVerificationSendStats(ctx context.Context, tx *gorm.DB, userID uuid.UUID, since time.Time) (users.VerificationSendStats, error)
 	ExpireActiveVerifications(ctx context.Context, tx *gorm.DB, userID uuid.UUID, now time.Time) error
+	DeleteUnsentVerification(ctx context.Context, tx *gorm.DB, userID uuid.UUID, hashCode string) error
 	UpdateUnverifiedUserEmail(ctx context.Context, tx *gorm.DB, userID uuid.UUID, email string) (bool, error)
 	GetPasswordResetForUpdate(ctx context.Context, tx *gorm.DB, userID uuid.UUID) (users.PasswordReset, error)
 	UpsertPasswordResetCode(ctx context.Context, tx *gorm.DB, userID uuid.UUID, codeHash string, codeExpiresAt, sentAt, windowStartedAt time.Time, sentCount int64) error

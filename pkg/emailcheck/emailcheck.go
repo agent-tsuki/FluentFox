@@ -32,6 +32,7 @@ type Checker struct {
 	providers  []string
 	providerOf domainSet
 	resolver   MXResolver
+	mxCache    *mxCache
 	mxTimeout  time.Duration
 	mxEnabled  bool
 }
@@ -53,6 +54,7 @@ func New(resolver MXResolver, mxTimeout time.Duration, mxEnabled bool) (*Checker
 		providers:  providers,
 		providerOf: newDomainSet(providerList),
 		resolver:   resolver,
+		mxCache:    newMXCache(),
 		mxTimeout:  mxTimeout,
 		mxEnabled:  mxEnabled,
 	}, nil

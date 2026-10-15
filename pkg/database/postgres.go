@@ -13,8 +13,13 @@ import (
 // NewDB creates a *gorm.DB connected to PostgreSQL using the provided DSN.
 // Connection pool limits are configured from the caller.
 func NewDB(dsn string, maxConns, minConns int32) (*gorm.DB, error) {
+	// Skip GORM's per-write BEGIN/COMMIT (two extra round trips to Neon); single
+	// statements are atomic and repo.Transaction is unaffected. PrepareStmt stays
+	// off for the Neon pooler, and the Ping below replaces GORM's own ping.
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
+		Logger:                 logger.Default.LogMode(logger.Silent),
+		SkipDefaultTransaction: true,
+		DisableAutomaticPing:   true,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("database: open: %w", err)

@@ -299,17 +299,22 @@ func (r *Repository) ReplaceVerificationToken(ctx context.Context, tx *gorm.DB, 
 	return nil
 }
 
+// One statement against idx_refresh_tokens_user_id, so a login costs a single
+// round trip and two concurrent first logins cannot create duplicate rows.
 func (r *Repository) UpsertRefreshToken(ctx context.Context, userID uuid.UUID, hashToken string, expiresAt time.Time) (RefreshToken, error) {
-	var rf RefreshToken
+	rf := RefreshToken{UserID: userID, TokenHash: hashToken, ExpiresAt: expiresAt}
 
 	result := r.db.WithContext(ctx).
-		Where(RefreshToken{UserID: userID}).
-		Assign(map[string]any{
-			"token_hash": hashToken,
-			"expires_at": expiresAt,
-			"is_revoked": false,
+		Clauses(clause.OnConflict{
+			Columns: []clause.Column{{Name: "user_id"}},
+			DoUpdates: clause.Assignments(map[string]any{
+				"token_hash": hashToken,
+				"expires_at": expiresAt,
+				"is_revoked": false,
+				"updated_at": time.Now().UTC(),
+			}),
 		}).
-		FirstOrCreate(&rf)
+		Create(&rf)
 
 	if result.Error != nil {
 		return RefreshToken{}, fmt.Errorf("upsert refresh token: %w", result.Error)

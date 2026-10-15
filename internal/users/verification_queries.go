@@ -105,6 +105,18 @@ func (r *Repository) ExpireActiveVerifications(ctx context.Context, tx *gorm.DB,
 	return nil
 }
 
+// A token whose email never left is removed rather than expired, so it does
+// not count toward the resend cooldown or the daily send limit.
+func (r *Repository) DeleteUnsentVerification(ctx context.Context, tx *gorm.DB, userID uuid.UUID, hashCode string) error {
+	err := tx.WithContext(ctx).
+		Where("user_id = ? AND hash_code = ? AND verified_at IS NULL", userID, hashCode).
+		Delete(&UserVerification{}).Error
+	if err != nil {
+		return fmt.Errorf("error deleting unsent verification for user %s: %w", userID, err)
+	}
+	return nil
+}
+
 func (r *Repository) UpdateUnverifiedUserEmail(ctx context.Context, tx *gorm.DB, userID uuid.UUID, email string) (bool, error) {
 	result := tx.WithContext(ctx).
 		Model(&User{}).

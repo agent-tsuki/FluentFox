@@ -47,8 +47,12 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 		cfg.JWTAccessSecret,
 		cfg.JWTAccessExpiryMinutes, cfg.JWTRefreshExpiryDays,
 	)
-	smtpMailer := mailer.NewSMTPMailer(cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername, cfg.SMTPPassword, cfg.EmailFromAddress)
-	mailService := services.NewMailService(smtpMailer, cfg.AppURL, log)
+	var mailTransport mailer.Mailer = mailer.NewSMTPMailer(cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername, cfg.SMTPPassword, cfg.EmailFromAddress)
+	if cfg.ResendAPIKey != "" {
+		// One HTTPS call instead of an SMTP dial, STARTTLS and auth handshake per email.
+		mailTransport = mailer.NewResendMailer(cfg.ResendAPIKey, cfg.EmailFromAddress, common.EMAIL_SEND_TIMEOUT)
+	}
+	mailService := services.NewMailService(mailTransport, cfg.AppURL, log)
 	userRepo := users.NewRepository(db)
 
 	emailChecker, err := emailcheck.New(net.DefaultResolver, common.EMAIL_MX_LOOKUP_TIMEOUT, cfg.EmailMXCheckEnabled)
@@ -91,7 +95,7 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 		return nil, nil, fmt.Errorf("configure X OAuth: %w", err)
 	}
 	authHandler := auth.NewHandler(
-		auth.NewAuthService(userRepo, mailService, emailChecker, staleReleaser, log),
+		auth.NewAuthService(userRepo, mailService, emailChecker, staleReleaser, loginService, log),
 		auth.NewTokenVerificationService(userRepo, log),
 		auth.NewResendVerificationService(userRepo, mailService, log),
 		loginService,

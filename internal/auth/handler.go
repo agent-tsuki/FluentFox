@@ -68,14 +68,18 @@ type AuthVerifyInput struct {
 }
 
 // AuthRegister handles POST /auth/register.
-func (h *Handler) AuthRegister(ctx context.Context, input *humautil.Input[RegisterRequest]) (*humautil.Output[humautil.APIResponse[humautil.MessageBody]], error) {
+func (h *Handler) AuthRegister(ctx context.Context, input *humautil.Input[RegisterRequest]) (*humautil.Output[humautil.APIResponse[RegisterResponse]], error) {
 	log := middleware.LoggerFromContext(ctx, h.logger)
 
-	if err := h.authService.registerUser(ctx, input.Body); err != nil {
+	session, err := h.authService.registerUser(ctx, &input.Body)
+	if err != nil {
 		return nil, humautil.MapErr(err, log)
 	}
 
-	return humautil.OK(humautil.MessageBody{Message: "registration successful, check your email to verify"}), nil
+	return humautil.OK(RegisterResponse{
+		Message:       "registration successful, check your email to verify",
+		LoginResponse: session,
+	}), nil
 }
 
 // AuthVerify handles POST /auth/verify?token=<token>.
