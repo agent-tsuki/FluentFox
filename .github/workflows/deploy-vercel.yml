@@ -1,0 +1,33 @@
+name: Deploy API to Vercel
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fluentfox-api-production
+  cancel-in-progress: false
+
+env:
+  VERCEL_ORG_ID: team_YocPFYq6yBXGCWcHc1dYrdM9
+  VERCEL_PROJECT_ID: prj_ehnxx7bxMaAXGS1Bg0zUlfn2CGoG
+  VERCEL_CLI_VERSION: 64.0.2
+
+jobs:
+  deploy:
+    name: Deploy production API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the pushed commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Install Vercel CLI
+        run: npm install --global "vercel@${VERCEL_CLI_VERSION}"
+
+      - name: Deploy to production
+        run: vercel deploy --prod --yes --scope premashivam00113-1947s-projects
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
