@@ -3,33 +3,17 @@ package main
 import (
 	"context"
 	"fmt"
-	"net"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
-	"github.com/danielgtaylor/huma/v2"
-	"github.com/danielgtaylor/huma/v2/adapters/humagin"
-	"github.com/gin-gonic/gin"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"go.uber.org/zap"
 
 	"github.com/fluentfox/api/config"
-	"github.com/fluentfox/api/internal/auth"
-	"github.com/fluentfox/api/internal/common"
-	"github.com/fluentfox/api/internal/services"
-	"github.com/fluentfox/api/internal/users"
-	"github.com/fluentfox/api/pkg/database"
-	"github.com/fluentfox/api/pkg/emailcheck"
-	"github.com/fluentfox/api/pkg/humautil"
-	"github.com/fluentfox/api/pkg/mailer"
-	"github.com/fluentfox/api/pkg/middleware"
+	"github.com/fluentfox/api/httpserver"
 	"github.com/fluentfox/api/pkg/telemetry"
-	"github.com/fluentfox/api/pkg/token"
-	"github.com/fluentfox/api/pkg/validator"
 )
 
 func main() {
@@ -56,90 +40,16 @@ func main() {
 	}
 	defer cleanupTelemetry()
 
-	// Database
-	db, err := database.NewDB(cfg.DatabaseURL, cfg.DBMaxConns, cfg.DBMinConns)
+	handler, cleanup, err := httpserver.NewHandler(cfg, log)
 	if err != nil {
-		log.Fatal("failed to connect to database", zap.Error(err))
+		log.Fatal("failed to build HTTP handler", zap.Error(err))
 	}
-
-	// Infrastructure
-	tokenMaker := token.NewMaker(
-		cfg.JWTAccessSecret,
-		cfg.JWTAccessExpiryMinutes, cfg.JWTRefreshExpiryDays,
-	)
-
-	smtpMailer := mailer.NewSMTPMailer(cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername, cfg.SMTPPassword, cfg.EmailFromAddress)
-	mailService := services.NewMailService(smtpMailer, cfg.AppURL, log)
-
-	v := validator.New()
-	userRepo := users.NewRepository(db)
-
-	emailChecker, err := emailcheck.New(net.DefaultResolver, common.EMAIL_MX_LOOKUP_TIMEOUT, cfg.EmailMXCheckEnabled)
-	if err != nil {
-		log.Fatal("failed to load email domain lists", zap.Error(err))
-	}
-
-	// Router
-	if !cfg.IsDevelopment() {
-		gin.SetMode(gin.ReleaseMode)
-	}
-
-	r := gin.New()
-	// Without this gin trusts X-Forwarded-For from anyone, so ClientIP can be spoofed.
-	if err := r.SetTrustedProxies(cfg.TrustedProxies); err != nil {
-		log.Fatal("invalid TRUSTED_PROXIES", zap.Error(err))
-	}
-	r.Use(gin.Recovery())
-	r.Use(middleware.CORS(cfg.AllowedOrigins))
-	r.Use(middleware.Logger(log))
-	r.Use(otelgin.Middleware("fluentfox-api"))
-
-	// Huma wraps the Gin router to provide automatic OpenAPI 3.1 spec + docs UI.
-	// Plain Gin routes (health, metrics) registered on r still work alongside it.
-	// Build config without the SchemaLinkTransformer so responses never include
-	// a `$schema` field.
-	humaConfig := huma.DefaultConfig("FluentFox API", "1.0.0")
-	humaConfig.CreateHooks = nil // removes the $schema link transformer
-	api := humagin.New(r, humaConfig)
-	humautil.InitHumaErrors()
-
-	// Auth must be added before any route is registered: huma captures the
-	// middleware chain at registration time.
-	humautil.RegisterBearerScheme(api)
-	api.UseMiddleware(humautil.AuthMiddleware(api, tokenMaker))
-
-		// Domain routes — add new domains here
-	staleReleaser := auth.NewStaleAccountReleaser(userRepo, log)
-	authHandler := auth.NewHandler(
-		auth.NewAuthService(userRepo, mailService, emailChecker, staleReleaser, log),
-		auth.NewTokenVerificationService(userRepo, log),
-		auth.NewResendVerificationService(userRepo, mailService, log),
-		auth.NewLogin(userRepo, tokenMaker, log),
-		auth.NewChangeEmailService(userRepo, mailService, emailChecker, staleReleaser, log),
-		log, v,
-	)
-	auth.RegisterRoutes(api, authHandler)
-
-	// Health check
-	r.GET("/health", func(c *gin.Context) {
-		sqlDB, err := db.DB()
-		if err != nil || sqlDB.Ping() != nil {
-			c.JSON(http.StatusServiceUnavailable, gin.H{
-				"status": "error",
-				"error":  "database unreachable",
-			})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"status": "ok", "env": cfg.AppEnv})
-	})
-
-	// Prometheus metrics — scraped by Prometheus / Grafana
-	r.GET("/metrics", gin.WrapH(promhttp.Handler()))
+	defer cleanup()
 
 	// Server
 	srv := &http.Server{
 		Addr:         ":" + cfg.Port,
-		Handler:      r,
+		Handler:      handler,
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 		IdleTimeout:  60 * time.Second,

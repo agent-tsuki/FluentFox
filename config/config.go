@@ -32,11 +32,11 @@ type Config struct {
 	JWTRefreshExpiryDays   int
 
 	// Email (Gmail SMTP)
-	SMTPHost         string
-	SMTPPort         string
-	SMTPUsername     string
-	SMTPPassword     string
-	EmailFromAddress string
+	SMTPHost            string
+	SMTPPort            string
+	SMTPUsername        string
+	SMTPPassword        string
+	EmailFromAddress    string
 	EmailMXCheckEnabled bool // DNS mail-server check on or off.
 
 	// Storage (Cloudflare R2)
@@ -82,7 +82,7 @@ func Load() *Config {
 	}
 
 	cfg := &Config{
-		Port:   require(v, "PORT"),
+		Port:   v.GetString("PORT"),
 		AppEnv: appEnv,
 		AppURL: require(v, "APP_URL"),
 
@@ -100,16 +100,19 @@ func Load() *Config {
 		SMTPPassword:     require(v, "SMTP_APP_PASSWORD"),
 		EmailFromAddress: require(v, "EMAIL_FROM_ADDRESS"),
 
-		R2AccountID:  require(v, "R2_ACCOUNT_ID"),
-		R2AccessKey:  require(v, "R2_ACCESS_KEY"),
-		R2SecretKey:  require(v, "R2_SECRET_KEY"),
-		R2BucketName: require(v, "R2_BUCKET_NAME"),
-		R2PublicURL:  require(v, "R2_PUBLIC_URL"),
+		R2AccountID:  v.GetString("R2_ACCOUNT_ID"),
+		R2AccessKey:  v.GetString("R2_ACCESS_KEY"),
+		R2SecretKey:  v.GetString("R2_SECRET_KEY"),
+		R2BucketName: v.GetString("R2_BUCKET_NAME"),
+		R2PublicURL:  v.GetString("R2_PUBLIC_URL"),
 
 		LogLevel: v.GetString("LOG_LEVEL"),
 	}
 	if cfg.LogLevel == "" {
 		cfg.LogLevel = "info"
+	}
+	if cfg.Port == "" {
+		cfg.Port = "8080"
 	}
 
 	if len(cfg.JWTAccessSecret) < common.JWT_SECRET_MIN_BYTES {
