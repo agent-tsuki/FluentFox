@@ -110,3 +110,36 @@ var (
 	ErrPasswordResetCodeInvalid     = New(http.StatusBadRequest, "PASSWORD_RESET_CODE_INVALID", "the password reset code is invalid or expired")
 	ErrPasswordResetTokenInvalid    = New(http.StatusBadRequest, "PASSWORD_RESET_TOKEN_INVALID", "the password reset link is invalid or expired")
 )
+
+var (
+	ErrKanaScriptNotFound = New(http.StatusNotFound, "KANA_SCRIPT_NOT_FOUND", "kana script not found")
+	ErrKanjiLevelNotFound = New(http.StatusNotFound, "KANJI_LEVEL_NOT_FOUND", "kanji level not found")
+	ErrKanjiNotFound      = New(http.StatusNotFound, "KANJI_NOT_FOUND", "kanji not found")
+)
+
+var (
+	ErrLearningTrackInvalid    = New(http.StatusUnprocessableEntity, "LEARNING_TRACK_INVALID", "track must be hiragana, katakana or kanji_n5")
+	ErrLearningSettingsInvalid = New(http.StatusUnprocessableEntity, "LEARNING_SETTINGS_INVALID", "a learning setting is out of range")
+	ErrStudySessionNotFound    = New(http.StatusNotFound, "STUDY_SESSION_NOT_FOUND", "study session not found")
+	ErrStudySessionCompleted   = New(http.StatusConflict, "STUDY_SESSION_COMPLETED", "this study session is already completed")
+	ErrSRSCardNotFound         = New(http.StatusNotFound, "CARD_NOT_FOUND", "card not found")
+	ErrQuestionTypeMismatch    = New(http.StatusUnprocessableEntity, "QUESTION_TYPE_MISMATCH", "question type does not fit the card")
+)
+
+var (
+	ErrUnitNotFound            = New(http.StatusNotFound, "UNIT_NOT_FOUND", "unit not found")
+	ErrUnitAmbiguous           = New(http.StatusUnprocessableEntity, "UNIT_AMBIGUOUS", "several tracks have this unit, pass track to choose one")
+	ErrUnitProgressStepInvalid = New(http.StatusUnprocessableEntity, "UNIT_STEP_INVALID", "step must be watched, traced, written or practised")
+	ErrPracticeModeInvalid     = New(http.StatusUnprocessableEntity, "PRACTICE_MODE_INVALID", "mode must be weak, unit, lookalike, speed or match")
+	ErrPracticeUnitRequired    = New(http.StatusUnprocessableEntity, "PRACTICE_UNIT_REQUIRED", "unit practice needs a unit")
+	ErrPracticePairInvalid     = New(http.StatusUnprocessableEntity, "PRACTICE_PAIR_INVALID", "pair must be two characters of the track, such as ぬ:め")
+	ErrTestKindInvalid         = New(http.StatusUnprocessableEntity, "TEST_KIND_INVALID", "kind must be unit_quiz, skip or final")
+	ErrTestScopeInvalid        = New(http.StatusUnprocessableEntity, "TEST_SCOPE_INVALID", "scope must be a unit slug, a group or all")
+	ErrKanjiNoteTooLong        = New(http.StatusUnprocessableEntity, "KANJI_NOTE_TOO_LONG", "a note is at most 1000 characters")
+)
+
+var (
+	ErrProgressDateInvalid   = New(http.StatusUnprocessableEntity, "PROGRESS_DATE_INVALID", "from and to must be YYYY-MM-DD dates at most 366 days apart")
+	ErrProgressItemNotFound  = New(http.StatusNotFound, "PROGRESS_ITEM_NOT_FOUND", "item not found")
+	ErrProgressItemAmbiguous = New(http.StatusUnprocessableEntity, "PROGRESS_ITEM_AMBIGUOUS", "several tracks have this item, pass track to choose one")
+)

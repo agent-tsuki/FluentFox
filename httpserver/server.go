@@ -16,6 +16,9 @@ import (
 	"github.com/fluentfox/api/config"
 	"github.com/fluentfox/api/internal/auth"
 	"github.com/fluentfox/api/internal/common"
+	"github.com/fluentfox/api/internal/content"
+	"github.com/fluentfox/api/internal/learn"
+	"github.com/fluentfox/api/internal/progress"
 	"github.com/fluentfox/api/internal/services"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/database"
@@ -106,6 +109,45 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	auth.RegisterRoutes(api, authHandler)
 	auth.RegisterGoogleOAuthRoutes(r, googleOAuth, tokenMaker, log)
 	auth.RegisterXOAuthRoutes(r, xOAuth, tokenMaker, log)
+
+	contentRepo := content.NewRepository(db)
+	content.RegisterRoutes(api, content.NewHandler(
+		content.NewKanaContentService(contentRepo, cfg.StrokesBaseURL, log),
+		content.NewKanjiContentService(contentRepo, cfg.StrokesBaseURL, log),
+		log,
+	))
+
+	learnRepo := learn.NewRepository(db)
+	learnCatalog := learn.NewCatalog(contentRepo)
+	learnQuestions := learn.NewQuestionBuilder(nil)
+	learn.RegisterRoutes(api, learn.NewHandler(
+		learn.NewLearningSettingsService(learnRepo, log),
+		learn.NewSummaryService(learnRepo, learnCatalog, log),
+		learn.NewStartLessonService(learnRepo, learnCatalog, learnQuestions, log),
+		learn.NewStartReviewService(learnRepo, learnCatalog, learnQuestions, log),
+		learn.NewStartPracticeService(learnRepo, learnCatalog, learnQuestions, nil, log),
+		learn.NewStartTestService(learnRepo, learnCatalog, learnQuestions, nil, log),
+		learn.NewSubmitAnswersService(learnRepo, learnCatalog, log),
+		learn.NewCompleteSessionService(learnRepo, learn.NewTestScoreService(learnRepo, learnCatalog, nil, log), log),
+		log,
+	))
+	learn.RegisterPathRoutes(api, learn.NewPathHandler(
+		learn.NewUnitProgressService(learnRepo, learnCatalog, log),
+		learn.NewKanjiNoteService(learnRepo, log),
+		learn.NewTestHistoryService(learnRepo, log),
+		log,
+	))
+	progress.RegisterRoutes(api, progress.NewHandler(
+		progress.NewOverviewService(learnRepo, learnCatalog, log),
+		progress.NewForecastService(learnRepo, log),
+		progress.NewCalendarService(learnRepo, log),
+		progress.NewWeakItemsService(learnRepo, learnCatalog, log),
+		progress.NewWeakGroupsService(learnRepo, learnCatalog, log),
+		progress.NewConfusionService(learnRepo, learnCatalog, log),
+		progress.NewItemHistoryService(learnRepo, learnCatalog, contentRepo, log),
+		progress.NewDashboardService(learnRepo, learnCatalog, log),
+		log,
+	))
 
 	r.GET("/health", func(c *gin.Context) {
 		if err := sqlDB.Ping(); err != nil {

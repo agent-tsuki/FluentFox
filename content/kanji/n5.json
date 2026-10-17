@@ -1,0 +1,6884 @@
+{
+  "level": "N5",
+  "groups": [
+    {
+      "slug": "numbers",
+      "title": "Numbers",
+      "summary": "Count from one to a thousand.",
+      "position": 1
+    },
+    {
+      "slug": "nature",
+      "title": "Days & nature",
+      "summary": "The days of the week, the land and the sky.",
+      "position": 2
+    },
+    {
+      "slug": "people",
+      "title": "People & places",
+      "summary": "Family, sizes and directions.",
+      "position": 3
+    },
+    {
+      "slug": "time",
+      "title": "Time & money",
+      "summary": "Years, hours, prices and questions.",
+      "position": 4
+    },
+    {
+      "slug": "life",
+      "title": "Daily life",
+      "summary": "Going places, school, talking and reading.",
+      "position": 5
+    }
+  ],
+  "units": [
+    {
+      "slug": "u01",
+      "group": "numbers",
+      "title": "Numbers 1–6",
+      "summary": "Lines and boxes that count from one to six.",
+      "position": 1
+    },
+    {
+      "slug": "u02",
+      "group": "numbers",
+      "title": "Numbers 7–1,000",
+      "summary": "Seven to ten, then hundreds and thousands.",
+      "position": 2
+    },
+    {
+      "slug": "u03",
+      "group": "nature",
+      "title": "Days of the week",
+      "summary": "Sun, moon and the five elements that name the days.",
+      "position": 3
+    },
+    {
+      "slug": "u04",
+      "group": "nature",
+      "title": "Land & sky",
+      "summary": "Earth, mountains, rivers, sky, air and rain.",
+      "position": 4
+    },
+    {
+      "slug": "u05",
+      "group": "people",
+      "title": "Family",
+      "summary": "People, children, women, men and parents.",
+      "position": 5
+    },
+    {
+      "slug": "u06",
+      "group": "people",
+      "title": "Size & position",
+      "summary": "Big, small, middle, up, down, right and left.",
+      "position": 6
+    },
+    {
+      "slug": "u07",
+      "group": "people",
+      "title": "Compass",
+      "summary": "North, south, east, west and outside.",
+      "position": 7
+    },
+    {
+      "slug": "u08",
+      "group": "time",
+      "title": "Telling time",
+      "summary": "Years, hours, noon, before and after.",
+      "position": 8
+    },
+    {
+      "slug": "u09",
+      "group": "time",
+      "title": "Money & questions",
+      "summary": "Now, every, half, what, ten thousand and yen.",
+      "position": 9
+    },
+    {
+      "slug": "u10",
+      "group": "life",
+      "title": "Coming & going",
+      "summary": "Go, come, exit, enter, rest and car.",
+      "position": 10
+    },
+    {
+      "slug": "u11",
+      "group": "life",
+      "title": "At school",
+      "summary": "Study, school, teacher, friends and names.",
+      "position": 11
+    },
+    {
+      "slug": "u12",
+      "group": "life",
+      "title": "See, hear, speak",
+      "summary": "Look, listen, talk, language, read and write.",
+      "position": 12
+    },
+    {
+      "slug": "u13",
+      "group": "life",
+      "title": "Around Japan",
+      "summary": "Country, book, long, tall, white, electric and eat.",
+      "position": 13
+    }
+  ],
+  "parts": [
+    {
+      "char": "一",
+      "name": "one"
+    },
+    {
+      "char": "二",
+      "name": "two"
+    },
+    {
+      "char": "囗",
+      "name": "enclosure"
+    },
+    {
+      "char": "儿",
+      "name": "legs"
+    },
+    {
+      "char": "亠",
+      "name": "lid"
+    },
+    {
+      "char": "八",
+      "name": "eight"
+    },
+    {
+      "char": "乙",
+      "name": "second"
+    },
+    {
+      "char": "丿",
+      "name": "slash"
+    },
+    {
+      "char": "十",
+      "name": "ten"
+    },
+    {
+      "char": "白",
+      "name": "white"
+    },
+    {
+      "char": "日",
+      "name": "sun"
+    },
+    {
+      "char": "月",
+      "name": "moon / flesh"
+    },
+    {
+      "char": "火",
+      "name": "fire"
+    },
+    {
+      "char": "水",
+      "name": "water"
+    },
+    {
+      "char": "木",
+      "name": "tree"
+    },
+    {
+      "char": "金",
+      "name": "gold"
+    },
+    {
+      "char": "土",
+      "name": "earth"
+    },
+    {
+      "char": "山",
+      "name": "mountain"
+    },
+    {
+      "char": "川",
+      "name": "river"
+    },
+    {
+      "char": "大",
+      "name": "big"
+    },
+    {
+      "char": "气",
+      "name": "steam"
+    },
+    {
+      "char": "乂",
+      "name": "mow"
+    },
+    {
+      "char": "雨",
+      "name": "rain"
+    },
+    {
+      "char": "人",
+      "name": "person"
+    },
+    {
+      "char": "子",
+      "name": "child"
+    },
+    {
+      "char": "女",
+      "name": "woman"
+    },
+    {
+      "char": "田",
+      "name": "rice field"
+    },
+    {
+      "char": "力",
+      "name": "power"
+    },
+    {
+      "char": "父",
+      "name": "father"
+    },
+    {
+      "char": "毋",
+      "name": "do not"
+    },
+    {
+      "char": "小",
+      "name": "small"
+    },
+    {
+      "char": "口",
+      "name": "mouth"
+    },
+    {
+      "char": "丨",
+      "name": "line"
+    },
+    {
+      "char": "卜",
+      "name": "divination"
+    },
+    {
+      "char": "工",
+      "name": "craft"
+    },
+    {
+      "char": "西",
+      "name": "west"
+    },
+    {
+      "char": "冂",
+      "name": "frame"
+    },
+    {
+      "char": "干",
+      "name": "dry"
+    },
+    {
+      "char": "匕",
+      "name": "spoon"
+    },
+    {
+      "char": "夕",
+      "name": "evening"
+    },
+    {
+      "char": "寺",
+      "name": "temple"
+    },
+    {
+      "char": "門",
+      "name": "gate"
+    },
+    {
+      "char": "刂",
+      "name": "knife"
+    },
+    {
+      "char": "彳",
+      "name": "step"
+    },
+    {
+      "char": "幺",
+      "name": "thread"
+    },
+    {
+      "char": "夂",
+      "name": "winter"
+    },
+    {
+      "char": "𠂉",
+      "name": "gun"
+    },
+    {
+      "char": "丶",
+      "name": "dot"
+    },
+    {
+      "char": "亻",
+      "name": "person"
+    },
+    {
+      "char": "可",
+      "name": "can"
+    },
+    {
+      "char": "米",
+      "name": "rice"
+    },
+    {
+      "char": "凵",
+      "name": "open box"
+    },
+    {
+      "char": "入",
+      "name": "enter"
+    },
+    {
+      "char": "車",
+      "name": "vehicle"
+    },
+    {
+      "char": "⺍",
+      "name": "small"
+    },
+    {
+      "char": "冖",
+      "name": "cover"
+    },
+    {
+      "char": "交",
+      "name": "mingle"
+    },
+    {
+      "char": "生",
+      "name": "life"
+    },
+    {
+      "char": "又",
+      "name": "again"
+    },
+    {
+      "char": "目",
+      "name": "eye"
+    },
+    {
+      "char": "耳",
+      "name": "ear"
+    },
+    {
+      "char": "言",
+      "name": "words"
+    },
+    {
+      "char": "舌",
+      "name": "tongue"
+    },
+    {
+      "char": "吾",
+      "name": "I"
+    },
+    {
+      "char": "売",
+      "name": "sell"
+    },
+    {
+      "char": "聿",
+      "name": "brush"
+    },
+    {
+      "char": "玉",
+      "name": "jewel"
+    },
+    {
+      "char": "長",
+      "name": "long"
+    },
+    {
+      "char": "冋",
+      "name": "desert"
+    },
+    {
+      "char": "食",
+      "name": "food"
+    }
+  ],
+  "entries": [
+    {
+      "char": "一",
+      "unit": "u01",
+      "position": 1,
+      "meanings": [
+        "one",
+        "one radical (no.1)"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "イチ",
+        "イツ"
+      ],
+      "kun": [
+        {
+          "kana": "ひと",
+          "okurigana": null,
+          "affix": "prefix"
+        },
+        {
+          "kana": "ひと",
+          "okurigana": "つ",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "イチ"
+      },
+      "reading_tip": "Counting uses イチ; \"one thing\" is ひとつ and \"one person\" is ひとり.",
+      "mnemonic": {
+        "text": "One finger laid flat: a single line means one.",
+        "draft": true
+      },
+      "strokes": 1,
+      "grade": 1,
+      "freq": 2,
+      "parts": [
+        "一"
+      ],
+      "vocab": [
+        {
+          "word": "一",
+          "reading": "いち",
+          "meaning": "one",
+          "is_key": true
+        },
+        {
+          "word": "一つ",
+          "reading": "ひとつ",
+          "meaning": "one",
+          "is_key": false
+        },
+        {
+          "word": "一時",
+          "reading": "いちじ",
+          "meaning": "one o'clock",
+          "is_key": false
+        },
+        {
+          "word": "一人",
+          "reading": "ひとり",
+          "meaning": "one person",
+          "is_key": false
+        },
+        {
+          "word": "一生",
+          "reading": "いっしょう",
+          "meaning": "whole life; a lifetime",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "二",
+      "unit": "u01",
+      "position": 2,
+      "meanings": [
+        "two",
+        "two radical (no. 7)"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ニ",
+        "ジ"
+      ],
+      "kun": [
+        {
+          "kana": "ふた",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "ふた",
+          "okurigana": "つ",
+          "affix": null
+        },
+        {
+          "kana": "ふたたび",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ニ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Two fingers laid flat, the bottom one a little longer: two.",
+        "draft": true
+      },
+      "strokes": 2,
+      "grade": 1,
+      "freq": 9,
+      "parts": [
+        "二"
+      ],
+      "vocab": [
+        {
+          "word": "二",
+          "reading": "に",
+          "meaning": "two",
+          "is_key": true
+        },
+        {
+          "word": "二人",
+          "reading": "ふたり",
+          "meaning": "two persons; two people",
+          "is_key": false
+        },
+        {
+          "word": "二つ",
+          "reading": "ふたつ",
+          "meaning": "two",
+          "is_key": false
+        },
+        {
+          "word": "十二",
+          "reading": "じゅうに",
+          "meaning": "twelve; 12",
+          "is_key": false
+        },
+        {
+          "word": "二月",
+          "reading": "にがつ",
+          "meaning": "February",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "三",
+          "note": "三 three has three lines"
+        }
+      ]
+    },
+    {
+      "char": "三",
+      "unit": "u01",
+      "position": 3,
+      "meanings": [
+        "three"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "サン",
+        "ゾウ"
+      ],
+      "kun": [
+        {
+          "kana": "み",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "み",
+          "okurigana": "つ",
+          "affix": null
+        },
+        {
+          "kana": "みっ",
+          "okurigana": "つ",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "サン"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Three lines stacked like three fingers held sideways: three.",
+        "draft": true
+      },
+      "strokes": 3,
+      "grade": 1,
+      "freq": 14,
+      "parts": [
+        "一"
+      ],
+      "vocab": [
+        {
+          "word": "三",
+          "reading": "さん",
+          "meaning": "three",
+          "is_key": true
+        },
+        {
+          "word": "三つ",
+          "reading": "みっつ",
+          "meaning": "three",
+          "is_key": false
+        },
+        {
+          "word": "三月",
+          "reading": "さんがつ",
+          "meaning": "March",
+          "is_key": false
+        },
+        {
+          "word": "三人",
+          "reading": "さんにん",
+          "meaning": "three people",
+          "is_key": false
+        },
+        {
+          "word": "十三",
+          "reading": "じゅうさん",
+          "meaning": "thirteen; 13",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "二",
+          "note": "二 two has two lines"
+        }
+      ]
+    },
+    {
+      "char": "四",
+      "unit": "u01",
+      "position": 4,
+      "meanings": [
+        "four"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "シ"
+      ],
+      "kun": [
+        {
+          "kana": "よ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "よ",
+          "okurigana": "つ",
+          "affix": null
+        },
+        {
+          "kana": "よっ",
+          "okurigana": "つ",
+          "affix": null
+        },
+        {
+          "kana": "よん",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "よん"
+      },
+      "reading_tip": "Say よん in most numbers (四十 よんじゅう); し appears in 四月 しがつ.",
+      "mnemonic": {
+        "text": "A box with legs inside: four walls holding a pair of legs. Think of a four-poster bed.",
+        "draft": true
+      },
+      "strokes": 5,
+      "grade": 1,
+      "freq": 47,
+      "parts": [
+        "囗",
+        "儿"
+      ],
+      "vocab": [
+        {
+          "word": "四十",
+          "reading": "よんじゅう",
+          "meaning": "forty; 40",
+          "is_key": true
+        },
+        {
+          "word": "四",
+          "reading": "し",
+          "meaning": "four",
+          "is_key": false
+        },
+        {
+          "word": "四つ",
+          "reading": "よっつ",
+          "meaning": "four",
+          "is_key": false
+        },
+        {
+          "word": "四月",
+          "reading": "しがつ",
+          "meaning": "April",
+          "is_key": false
+        },
+        {
+          "word": "十四",
+          "reading": "じゅうし",
+          "meaning": "14; fourteen",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "西",
+          "note": "西 west has a lid sticking out"
+        }
+      ]
+    },
+    {
+      "char": "五",
+      "unit": "u01",
+      "position": 5,
+      "meanings": [
+        "five"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ゴ"
+      ],
+      "kun": [
+        {
+          "kana": "いつ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "いつ",
+          "okurigana": "つ",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ゴ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Two lines with a zigzag between them, like a crooked 5 lying on a shelf: five.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 1,
+      "freq": 31,
+      "parts": [
+        "二"
+      ],
+      "vocab": [
+        {
+          "word": "五",
+          "reading": "ご",
+          "meaning": "five",
+          "is_key": true
+        },
+        {
+          "word": "五つ",
+          "reading": "いつつ",
+          "meaning": "five",
+          "is_key": false
+        },
+        {
+          "word": "五月",
+          "reading": "ごがつ",
+          "meaning": "May",
+          "is_key": false
+        },
+        {
+          "word": "十五",
+          "reading": "じゅうご",
+          "meaning": "15; fifteen",
+          "is_key": false
+        },
+        {
+          "word": "五十",
+          "reading": "ごじゅう",
+          "meaning": "fifty; 50",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "六",
+      "unit": "u01",
+      "position": 6,
+      "meanings": [
+        "six"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ロク",
+        "リク"
+      ],
+      "kun": [
+        {
+          "kana": "む",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "む",
+          "okurigana": "つ",
+          "affix": null
+        },
+        {
+          "kana": "むっ",
+          "okurigana": "つ",
+          "affix": null
+        },
+        {
+          "kana": "むい",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ロク"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A little hat on top and two legs below: six is a person in a hat doing the splits.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 1,
+      "freq": 93,
+      "parts": [
+        "亠",
+        "八"
+      ],
+      "vocab": [
+        {
+          "word": "六",
+          "reading": "ろく",
+          "meaning": "six",
+          "is_key": true
+        },
+        {
+          "word": "六月",
+          "reading": "ろくがつ",
+          "meaning": "June",
+          "is_key": false
+        },
+        {
+          "word": "六十",
+          "reading": "ろくじゅう",
+          "meaning": "sixty; 60",
+          "is_key": false
+        },
+        {
+          "word": "十六",
+          "reading": "じゅうろく",
+          "meaning": "16; sixteen",
+          "is_key": false
+        },
+        {
+          "word": "六日",
+          "reading": "むいか",
+          "meaning": "sixth day of the month",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "七",
+      "unit": "u02",
+      "position": 7,
+      "meanings": [
+        "seven"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "シチ"
+      ],
+      "kun": [
+        {
+          "kana": "なな",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "なな",
+          "okurigana": "つ",
+          "affix": null
+        },
+        {
+          "kana": "なの",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "シチ"
+      },
+      "reading_tip": "Both しち and なな are used; なな is clearer on the phone.",
+      "mnemonic": {
+        "text": "An upside-down 7 with a line through it: seven.",
+        "draft": true
+      },
+      "strokes": 2,
+      "grade": 1,
+      "freq": 115,
+      "parts": [
+        "一",
+        "乙"
+      ],
+      "vocab": [
+        {
+          "word": "七",
+          "reading": "しち",
+          "meaning": "seven",
+          "is_key": true
+        },
+        {
+          "word": "七つ",
+          "reading": "ななつ",
+          "meaning": "seven",
+          "is_key": false
+        },
+        {
+          "word": "七月",
+          "reading": "しちがつ",
+          "meaning": "July",
+          "is_key": false
+        },
+        {
+          "word": "十七",
+          "reading": "じゅうしち",
+          "meaning": "17; seventeen",
+          "is_key": false
+        },
+        {
+          "word": "七十",
+          "reading": "しちじゅう",
+          "meaning": "seventy; 70",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "八",
+      "unit": "u02",
+      "position": 8,
+      "meanings": [
+        "eight",
+        "eight radical (no. 12)"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ハチ"
+      ],
+      "kun": [
+        {
+          "kana": "や",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "や",
+          "okurigana": "つ",
+          "affix": null
+        },
+        {
+          "kana": "やっ",
+          "okurigana": "つ",
+          "affix": null
+        },
+        {
+          "kana": "よう",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ハチ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Two strokes spreading apart like the bottom of a skirt or a mountain path: eight.",
+        "draft": true
+      },
+      "strokes": 2,
+      "grade": 1,
+      "freq": 92,
+      "parts": [
+        "八"
+      ],
+      "vocab": [
+        {
+          "word": "八",
+          "reading": "はち",
+          "meaning": "eight",
+          "is_key": true
+        },
+        {
+          "word": "十八",
+          "reading": "じゅうはち",
+          "meaning": "18; eighteen",
+          "is_key": false
+        },
+        {
+          "word": "八月",
+          "reading": "はちがつ",
+          "meaning": "August",
+          "is_key": false
+        },
+        {
+          "word": "八十",
+          "reading": "はちじゅう",
+          "meaning": "eighty; 80",
+          "is_key": false
+        },
+        {
+          "word": "八本",
+          "reading": "はちほん",
+          "meaning": "eight",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "人",
+          "note": "人 person: the strokes join at the top"
+        }
+      ]
+    },
+    {
+      "char": "九",
+      "unit": "u02",
+      "position": 9,
+      "meanings": [
+        "nine"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "キュウ",
+        "ク"
+      ],
+      "kun": [
+        {
+          "kana": "ここの",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "ここの",
+          "okurigana": "つ",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "キュウ"
+      },
+      "reading_tip": "キュウ in most numbers; ク in 九月 くがつ.",
+      "mnemonic": {
+        "text": "An arm reaching out with a hooked elbow: nine looks like a strong arm flexing.",
+        "draft": true
+      },
+      "strokes": 2,
+      "grade": 1,
+      "freq": 55,
+      "parts": [
+        "丿",
+        "乙"
+      ],
+      "vocab": [
+        {
+          "word": "九",
+          "reading": "きゅう",
+          "meaning": "nine",
+          "is_key": true
+        },
+        {
+          "word": "九月",
+          "reading": "くがつ",
+          "meaning": "September",
+          "is_key": false
+        },
+        {
+          "word": "十九",
+          "reading": "じゅうきゅう",
+          "meaning": "19; nineteen",
+          "is_key": false
+        },
+        {
+          "word": "九十",
+          "reading": "きゅうじゅう",
+          "meaning": "ninety; 90",
+          "is_key": false
+        },
+        {
+          "word": "九つ",
+          "reading": "ここのつ",
+          "meaning": "nine",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "十",
+      "unit": "u02",
+      "position": 10,
+      "meanings": [
+        "ten"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ジュウ",
+        "ジッ",
+        "ジュッ"
+      ],
+      "kun": [
+        {
+          "kana": "とお",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "と",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "そ",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ジュウ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A cross: count to ten on your fingers and cross them.",
+        "draft": true
+      },
+      "strokes": 2,
+      "grade": 1,
+      "freq": 8,
+      "parts": [
+        "十"
+      ],
+      "vocab": [
+        {
+          "word": "十",
+          "reading": "じゅう",
+          "meaning": "ten",
+          "is_key": true
+        },
+        {
+          "word": "十一",
+          "reading": "じゅういち",
+          "meaning": "eleven; 11",
+          "is_key": false
+        },
+        {
+          "word": "十九",
+          "reading": "じゅうきゅう",
+          "meaning": "19; nineteen",
+          "is_key": false
+        },
+        {
+          "word": "十月",
+          "reading": "じゅうがつ",
+          "meaning": "October",
+          "is_key": false
+        },
+        {
+          "word": "十五",
+          "reading": "じゅうご",
+          "meaning": "15; fifteen",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "百",
+      "unit": "u02",
+      "position": 11,
+      "meanings": [
+        "hundred"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ヒャク",
+        "ビャク"
+      ],
+      "kun": [
+        {
+          "kana": "もも",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ヒャク"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "One (一) on top of white (白): one white sheet holds a hundred grains of rice.",
+        "draft": true
+      },
+      "strokes": 6,
+      "grade": 1,
+      "freq": 163,
+      "parts": [
+        "一",
+        "白"
+      ],
+      "vocab": [
+        {
+          "word": "百",
+          "reading": "ひゃく",
+          "meaning": "100; hundred",
+          "is_key": true
+        },
+        {
+          "word": "二百",
+          "reading": "にひゃく",
+          "meaning": "200; two hundred",
+          "is_key": false
+        },
+        {
+          "word": "三百",
+          "reading": "さんびゃく",
+          "meaning": "300; three hundred",
+          "is_key": false
+        },
+        {
+          "word": "百万",
+          "reading": "ひゃくまん",
+          "meaning": "1,000,000; one million",
+          "is_key": false
+        },
+        {
+          "word": "四百",
+          "reading": "よんひゃく",
+          "meaning": "400; four hundred",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "白",
+          "note": "白 has no top line"
+        }
+      ]
+    },
+    {
+      "char": "千",
+      "unit": "u02",
+      "position": 12,
+      "meanings": [
+        "thousand"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "セン"
+      ],
+      "kun": [
+        {
+          "kana": "ち",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "セン"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Ten (十) with a slash on top: a thousand is ten with a stroke of extra effort.",
+        "draft": true
+      },
+      "strokes": 3,
+      "grade": 1,
+      "freq": 195,
+      "parts": [
+        "丿",
+        "十"
+      ],
+      "vocab": [
+        {
+          "word": "千",
+          "reading": "せん",
+          "meaning": "1,000; thousand",
+          "is_key": true
+        },
+        {
+          "word": "三千",
+          "reading": "さんぜん",
+          "meaning": "3000; three thousand",
+          "is_key": false
+        },
+        {
+          "word": "四千",
+          "reading": "よんせん",
+          "meaning": "four thousand; 4,000",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "午",
+          "note": "午 noon has a flat top line"
+        },
+        {
+          "char": "十",
+          "note": "十 ten has no slash"
+        }
+      ]
+    },
+    {
+      "char": "日",
+      "unit": "u03",
+      "position": 13,
+      "meanings": [
+        "day",
+        "sun",
+        "Japan",
+        "counter for days"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ニチ",
+        "ジツ"
+      ],
+      "kun": [
+        {
+          "kana": "ひ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "び",
+          "okurigana": null,
+          "affix": "suffix"
+        },
+        {
+          "kana": "か",
+          "okurigana": null,
+          "affix": "suffix"
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ニチ"
+      },
+      "reading_tip": "Alone it is ひ (day) or び in 日曜日; in compounds it is usually ニチ.",
+      "mnemonic": {
+        "text": "A window with one bar: you see the sun through it every day.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 1,
+      "freq": 1,
+      "parts": [
+        "日"
+      ],
+      "vocab": [
+        {
+          "word": "毎日",
+          "reading": "まいにち",
+          "meaning": "every day",
+          "is_key": true
+        },
+        {
+          "word": "日",
+          "reading": "ひ",
+          "meaning": "day; days",
+          "is_key": false
+        },
+        {
+          "word": "来日",
+          "reading": "らいにち",
+          "meaning": "arrival in Japan; coming to Japan",
+          "is_key": false
+        },
+        {
+          "word": "日中",
+          "reading": "にっちゅう",
+          "meaning": "daytime; during the day",
+          "is_key": false
+        },
+        {
+          "word": "休日",
+          "reading": "きゅうじつ",
+          "meaning": "holiday; day off",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "目",
+          "note": "目 eye has two inner lines"
+        },
+        {
+          "char": "白",
+          "note": "白 white has a tick on top"
+        }
+      ]
+    },
+    {
+      "char": "月",
+      "unit": "u03",
+      "position": 14,
+      "meanings": [
+        "moon",
+        "month"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ゲツ",
+        "ガツ"
+      ],
+      "kun": [
+        {
+          "kana": "つき",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ゲツ"
+      },
+      "reading_tip": "Months of the year use ガツ (一月 いちがつ); \"this month\" uses ゲツ; the moon itself is つき.",
+      "mnemonic": {
+        "text": "A crescent moon leaning to the side with two clouds across it.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 1,
+      "freq": 23,
+      "parts": [
+        "月"
+      ],
+      "vocab": [
+        {
+          "word": "今月",
+          "reading": "こんげつ",
+          "meaning": "this month",
+          "is_key": true
+        },
+        {
+          "word": "先月",
+          "reading": "せんげつ",
+          "meaning": "last month",
+          "is_key": false
+        },
+        {
+          "word": "来月",
+          "reading": "らいげつ",
+          "meaning": "next month",
+          "is_key": false
+        },
+        {
+          "word": "毎月",
+          "reading": "まいつき",
+          "meaning": "every month; each month",
+          "is_key": false
+        },
+        {
+          "word": "一月",
+          "reading": "いちがつ",
+          "meaning": "January",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "火",
+      "unit": "u03",
+      "position": 15,
+      "meanings": [
+        "fire"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "カ"
+      ],
+      "kun": [
+        {
+          "kana": "ひ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "び",
+          "okurigana": null,
+          "affix": "suffix"
+        },
+        {
+          "kana": "ほ",
+          "okurigana": null,
+          "affix": "prefix"
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "カ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A person (人) with sparks flying out on both sides: fire.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 1,
+      "freq": 574,
+      "parts": [
+        "火"
+      ],
+      "vocab": [
+        {
+          "word": "火山",
+          "reading": "かざん",
+          "meaning": "volcano",
+          "is_key": true
+        },
+        {
+          "word": "火",
+          "reading": "ひ",
+          "meaning": "fire; flame",
+          "is_key": false
+        },
+        {
+          "word": "出火",
+          "reading": "しゅっか",
+          "meaning": "outbreak of fire",
+          "is_key": false
+        },
+        {
+          "word": "大火",
+          "reading": "たいか",
+          "meaning": "large fire",
+          "is_key": false
+        },
+        {
+          "word": "中火",
+          "reading": "ちゅうび",
+          "meaning": "medium flame; medium heat",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "水",
+      "unit": "u03",
+      "position": 16,
+      "meanings": [
+        "water"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "スイ"
+      ],
+      "kun": [
+        {
+          "kana": "みず",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "みず",
+          "okurigana": null,
+          "affix": "prefix"
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "みず"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A central stream with splashes flicking off left and right: water.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 1,
+      "freq": 223,
+      "parts": [
+        "水"
+      ],
+      "vocab": [
+        {
+          "word": "水",
+          "reading": "みず",
+          "meaning": "water",
+          "is_key": true
+        },
+        {
+          "word": "水中",
+          "reading": "すいちゅう",
+          "meaning": "underwater",
+          "is_key": false
+        },
+        {
+          "word": "下水",
+          "reading": "げすい",
+          "meaning": "drainage; ditch",
+          "is_key": false
+        },
+        {
+          "word": "水上",
+          "reading": "すいじょう",
+          "meaning": "aquatic; on the water",
+          "is_key": false
+        },
+        {
+          "word": "雨水",
+          "reading": "あまみず",
+          "meaning": "rain water",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "氷",
+          "note": "氷 ice (N3) adds a dot"
+        }
+      ]
+    },
+    {
+      "char": "木",
+      "unit": "u03",
+      "position": 17,
+      "meanings": [
+        "tree",
+        "wood"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ボク",
+        "モク"
+      ],
+      "kun": [
+        {
+          "kana": "き",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "こ",
+          "okurigana": null,
+          "affix": "prefix"
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "き"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A trunk with one branch across and two roots spreading below: a tree.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 1,
+      "freq": 317,
+      "parts": [
+        "木"
+      ],
+      "vocab": [
+        {
+          "word": "木",
+          "reading": "き",
+          "meaning": "tree; shrub",
+          "is_key": true
+        },
+        {
+          "word": "土木",
+          "reading": "どぼく",
+          "meaning": "engineering works; civil engineering",
+          "is_key": false
+        },
+        {
+          "word": "大木",
+          "reading": "たいぼく",
+          "meaning": "large tree",
+          "is_key": false
+        },
+        {
+          "word": "名木",
+          "reading": "めいぼく",
+          "meaning": "old tree of historical interest",
+          "is_key": false
+        },
+        {
+          "word": "一木",
+          "reading": "いちぼく",
+          "meaning": "one tree",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "本",
+          "note": "本 book adds a line at the root"
+        },
+        {
+          "char": "休",
+          "note": "休 rest adds a person"
+        }
+      ]
+    },
+    {
+      "char": "金",
+      "unit": "u03",
+      "position": 18,
+      "meanings": [
+        "gold"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "キン",
+        "コン",
+        "ゴン"
+      ],
+      "kun": [
+        {
+          "kana": "かね",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "かな",
+          "okurigana": null,
+          "affix": "prefix"
+        },
+        {
+          "kana": "がね",
+          "okurigana": null,
+          "affix": "suffix"
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "キン"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A roof over a mine shaft, with two gold nuggets glinting in the earth.",
+        "draft": true
+      },
+      "strokes": 8,
+      "grade": 1,
+      "freq": 53,
+      "parts": [
+        "金"
+      ],
+      "vocab": [
+        {
+          "word": "金",
+          "reading": "きん",
+          "meaning": "gold; golden",
+          "is_key": true
+        },
+        {
+          "word": "お金",
+          "reading": "おかね",
+          "meaning": "money",
+          "is_key": false
+        },
+        {
+          "word": "大金",
+          "reading": "たいきん",
+          "meaning": "large amount of money; great cost",
+          "is_key": false
+        },
+        {
+          "word": "年金",
+          "reading": "ねんきん",
+          "meaning": "annuity; pension",
+          "is_key": false
+        },
+        {
+          "word": "入金",
+          "reading": "にゅうきん",
+          "meaning": "deposit; payment",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "土",
+      "unit": "u04",
+      "position": 19,
+      "meanings": [
+        "earth",
+        "soil",
+        "ground",
+        "Turkey"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ド",
+        "ト"
+      ],
+      "kun": [
+        {
+          "kana": "つち",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ド"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A small cross planted on a long line of ground: soil.",
+        "draft": true
+      },
+      "strokes": 3,
+      "grade": 1,
+      "freq": 307,
+      "parts": [
+        "土"
+      ],
+      "vocab": [
+        {
+          "word": "国土",
+          "reading": "こくど",
+          "meaning": "country; territory",
+          "is_key": true
+        },
+        {
+          "word": "土",
+          "reading": "つち",
+          "meaning": "earth; soil",
+          "is_key": false
+        },
+        {
+          "word": "土木",
+          "reading": "どぼく",
+          "meaning": "engineering works; civil engineering",
+          "is_key": false
+        },
+        {
+          "word": "本土",
+          "reading": "ほんど",
+          "meaning": "mainland; the country proper",
+          "is_key": false
+        },
+        {
+          "word": "出土",
+          "reading": "しゅつど",
+          "meaning": "archeological excavation",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "士",
+          "note": "士 samurai has a longer top line"
+        }
+      ]
+    },
+    {
+      "char": "山",
+      "unit": "u04",
+      "position": 20,
+      "meanings": [
+        "mountain"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "サン",
+        "セン"
+      ],
+      "kun": [
+        {
+          "kana": "やま",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "やま"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Three peaks, the middle one tallest: a mountain.",
+        "draft": true
+      },
+      "strokes": 3,
+      "grade": 1,
+      "freq": 131,
+      "parts": [
+        "山"
+      ],
+      "vocab": [
+        {
+          "word": "山",
+          "reading": "やま",
+          "meaning": "mountain; hill",
+          "is_key": true
+        },
+        {
+          "word": "火山",
+          "reading": "かざん",
+          "meaning": "volcano",
+          "is_key": false
+        },
+        {
+          "word": "小山",
+          "reading": "こやま",
+          "meaning": "hill; knoll",
+          "is_key": false
+        },
+        {
+          "word": "高山",
+          "reading": "こうざん",
+          "meaning": "high mountain",
+          "is_key": false
+        },
+        {
+          "word": "山間",
+          "reading": "さんかん",
+          "meaning": "among the mountains",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "川",
+      "unit": "u04",
+      "position": 21,
+      "meanings": [
+        "river",
+        "stream",
+        "river or three-stroke river radical (no. 47)"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "セン"
+      ],
+      "kun": [
+        {
+          "kana": "かわ",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "かわ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Three lines of water running side by side: a river.",
+        "draft": true
+      },
+      "strokes": 3,
+      "grade": 1,
+      "freq": 181,
+      "parts": [
+        "川"
+      ],
+      "vocab": [
+        {
+          "word": "川",
+          "reading": "かわ",
+          "meaning": "river; stream",
+          "is_key": true
+        },
+        {
+          "word": "小川",
+          "reading": "おがわ",
+          "meaning": "stream; brook",
+          "is_key": false
+        },
+        {
+          "word": "川上",
+          "reading": "かわかみ",
+          "meaning": "upper reaches of a river; upstream",
+          "is_key": false
+        },
+        {
+          "word": "川下",
+          "reading": "かわしも",
+          "meaning": "downstream",
+          "is_key": false
+        },
+        {
+          "word": "天の川",
+          "reading": "あまのがわ",
+          "meaning": "Milky Way",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "天",
+      "unit": "u04",
+      "position": 22,
+      "meanings": [
+        "sky",
+        "heavens",
+        "imperial"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "テン"
+      ],
+      "kun": [
+        {
+          "kana": "あまつ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "あめ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "あま",
+          "okurigana": null,
+          "affix": "prefix"
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "テン"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A person standing with arms out (大) under one line: the sky above everyone.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 1,
+      "freq": 512,
+      "parts": [
+        "一",
+        "大"
+      ],
+      "vocab": [
+        {
+          "word": "天",
+          "reading": "てん",
+          "meaning": "sky",
+          "is_key": true
+        },
+        {
+          "word": "天気",
+          "reading": "てんき",
+          "meaning": "weather; the elements",
+          "is_key": false
+        },
+        {
+          "word": "天国",
+          "reading": "てんごく",
+          "meaning": "paradise; heaven",
+          "is_key": false
+        },
+        {
+          "word": "天下",
+          "reading": "てんか",
+          "meaning": "the whole world",
+          "is_key": false
+        },
+        {
+          "word": "雨天",
+          "reading": "うてん",
+          "meaning": "rainy weather",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "大",
+          "note": "大 big has no top line"
+        }
+      ]
+    },
+    {
+      "char": "気",
+      "unit": "u04",
+      "position": 23,
+      "meanings": [
+        "spirit",
+        "mind",
+        "air",
+        "atmosphere",
+        "mood"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "キ",
+        "ケ"
+      ],
+      "kun": [
+        {
+          "kana": "き",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "キ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Steam rising in wavy lines over a pot, with an X of energy inside: spirit and air.",
+        "draft": true
+      },
+      "strokes": 6,
+      "grade": 1,
+      "freq": 113,
+      "parts": [
+        "气",
+        "乂"
+      ],
+      "vocab": [
+        {
+          "word": "気",
+          "reading": "き",
+          "meaning": "spirit; mind",
+          "is_key": true
+        },
+        {
+          "word": "人気",
+          "reading": "にんき",
+          "meaning": "popularity; public favor",
+          "is_key": false
+        },
+        {
+          "word": "電気",
+          "reading": "でんき",
+          "meaning": "electricity",
+          "is_key": false
+        },
+        {
+          "word": "大気",
+          "reading": "たいき",
+          "meaning": "atmosphere; air",
+          "is_key": false
+        },
+        {
+          "word": "天気",
+          "reading": "てんき",
+          "meaning": "weather; the elements",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "汽",
+          "note": "汽 steam (N3) adds water"
+        }
+      ]
+    },
+    {
+      "char": "雨",
+      "unit": "u04",
+      "position": 24,
+      "meanings": [
+        "rain"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ウ"
+      ],
+      "kun": [
+        {
+          "kana": "あめ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "あま",
+          "okurigana": null,
+          "affix": "prefix"
+        },
+        {
+          "kana": "さめ",
+          "okurigana": null,
+          "affix": "suffix"
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "あめ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A window or sky frame with raindrops falling inside: rain.",
+        "draft": true
+      },
+      "strokes": 8,
+      "grade": 1,
+      "freq": 950,
+      "parts": [
+        "雨"
+      ],
+      "vocab": [
+        {
+          "word": "雨",
+          "reading": "あめ",
+          "meaning": "rain",
+          "is_key": true
+        },
+        {
+          "word": "大雨",
+          "reading": "おおあめ",
+          "meaning": "heavy rain",
+          "is_key": false
+        },
+        {
+          "word": "小雨",
+          "reading": "こさめ",
+          "meaning": "light rain; drizzle",
+          "is_key": false
+        },
+        {
+          "word": "雨天",
+          "reading": "うてん",
+          "meaning": "rainy weather",
+          "is_key": false
+        },
+        {
+          "word": "雨水",
+          "reading": "あまみず",
+          "meaning": "rain water",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "人",
+      "unit": "u05",
+      "position": 25,
+      "meanings": [
+        "person"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ジン",
+        "ニン"
+      ],
+      "kun": [
+        {
+          "kana": "ひと",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "り",
+          "okurigana": null,
+          "affix": "suffix"
+        },
+        {
+          "kana": "と",
+          "okurigana": null,
+          "affix": "suffix"
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ジン"
+      },
+      "reading_tip": "Nationalities use ジン (日本人); counting people uses ニン (三人); alone it is ひと.",
+      "mnemonic": {
+        "text": "Two legs walking: a person.",
+        "draft": true
+      },
+      "strokes": 2,
+      "grade": 1,
+      "freq": 5,
+      "parts": [
+        "人"
+      ],
+      "vocab": [
+        {
+          "word": "外国人",
+          "reading": "がいこくじん",
+          "meaning": "foreigner; foreign citizen",
+          "is_key": true
+        },
+        {
+          "word": "人間",
+          "reading": "にんげん",
+          "meaning": "human being; human",
+          "is_key": false
+        },
+        {
+          "word": "人気",
+          "reading": "にんき",
+          "meaning": "popularity; public favor",
+          "is_key": false
+        },
+        {
+          "word": "二人",
+          "reading": "ふたり",
+          "meaning": "two persons; two people",
+          "is_key": false
+        },
+        {
+          "word": "人生",
+          "reading": "じんせい",
+          "meaning": "life",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "入",
+          "note": "入 enter: the right stroke starts higher"
+        },
+        {
+          "char": "八",
+          "note": "八 eight: the strokes do not touch"
+        }
+      ]
+    },
+    {
+      "char": "子",
+      "unit": "u05",
+      "position": 26,
+      "meanings": [
+        "child",
+        "sign of the rat",
+        "11PM-1AM",
+        "first sign of Chinese zodiac"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "シ",
+        "ス",
+        "ツ"
+      ],
+      "kun": [
+        {
+          "kana": "こ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "こ",
+          "okurigana": null,
+          "affix": "suffix"
+        },
+        {
+          "kana": "ね",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "こ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A baby wrapped up with arms reaching out: child.",
+        "draft": true
+      },
+      "strokes": 3,
+      "grade": 1,
+      "freq": 72,
+      "parts": [
+        "子"
+      ],
+      "vocab": [
+        {
+          "word": "子",
+          "reading": "こ",
+          "meaning": "child",
+          "is_key": true
+        },
+        {
+          "word": "女子",
+          "reading": "じょし",
+          "meaning": "woman; girl",
+          "is_key": false
+        },
+        {
+          "word": "男子",
+          "reading": "だんし",
+          "meaning": "youth; young man",
+          "is_key": false
+        },
+        {
+          "word": "電子",
+          "reading": "でんし",
+          "meaning": "electron",
+          "is_key": false
+        },
+        {
+          "word": "女の子",
+          "reading": "おんなのこ",
+          "meaning": "girl; daughter",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "字",
+          "note": "字 character adds a roof"
+        },
+        {
+          "char": "学",
+          "note": "学 study adds sparks and a cover"
+        }
+      ]
+    },
+    {
+      "char": "女",
+      "unit": "u05",
+      "position": 27,
+      "meanings": [
+        "woman",
+        "female"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ジョ",
+        "ニョ",
+        "ニョウ"
+      ],
+      "kun": [
+        {
+          "kana": "おんな",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "め",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "おんな"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A woman kneeling with crossed legs and arms gracefully folded.",
+        "draft": true
+      },
+      "strokes": 3,
+      "grade": 1,
+      "freq": 151,
+      "parts": [
+        "女"
+      ],
+      "vocab": [
+        {
+          "word": "女",
+          "reading": "おんな",
+          "meaning": "female; woman",
+          "is_key": true
+        },
+        {
+          "word": "女子",
+          "reading": "じょし",
+          "meaning": "woman; girl",
+          "is_key": false
+        },
+        {
+          "word": "男女",
+          "reading": "だんじょ",
+          "meaning": "men and women; man and woman",
+          "is_key": false
+        },
+        {
+          "word": "長女",
+          "reading": "ちょうじょ",
+          "meaning": "eldest daughter; first-born daughter",
+          "is_key": false
+        },
+        {
+          "word": "女の子",
+          "reading": "おんなのこ",
+          "meaning": "girl; daughter",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "男",
+      "unit": "u05",
+      "position": 28,
+      "meanings": [
+        "man",
+        "male"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ダン",
+        "ナン"
+      ],
+      "kun": [
+        {
+          "kana": "おとこ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "お",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "おとこ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A rice field (田) above power (力): the man works in the field.",
+        "draft": true
+      },
+      "strokes": 7,
+      "grade": 1,
+      "freq": 240,
+      "parts": [
+        "田",
+        "力"
+      ],
+      "vocab": [
+        {
+          "word": "男",
+          "reading": "おとこ",
+          "meaning": "man; male",
+          "is_key": true
+        },
+        {
+          "word": "男子",
+          "reading": "だんし",
+          "meaning": "youth; young man",
+          "is_key": false
+        },
+        {
+          "word": "長男",
+          "reading": "ちょうなん",
+          "meaning": "eldest son; first-born son",
+          "is_key": false
+        },
+        {
+          "word": "男女",
+          "reading": "だんじょ",
+          "meaning": "men and women; man and woman",
+          "is_key": false
+        },
+        {
+          "word": "男の子",
+          "reading": "おとこのこ",
+          "meaning": "boy; son",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "田",
+          "note": "田 field on its own"
+        }
+      ]
+    },
+    {
+      "char": "父",
+      "unit": "u05",
+      "position": 29,
+      "meanings": [
+        "father"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "フ"
+      ],
+      "kun": [
+        {
+          "kana": "ちち",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "ちち"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Two crossed tools under a pair of marks: father with his tools crossed, ready to work.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 2,
+      "freq": 646,
+      "parts": [
+        "父"
+      ],
+      "vocab": [
+        {
+          "word": "父",
+          "reading": "ちち",
+          "meaning": "father",
+          "is_key": true
+        },
+        {
+          "word": "父母",
+          "reading": "ふぼ",
+          "meaning": "father and mother; parents",
+          "is_key": false
+        },
+        {
+          "word": "父の日",
+          "reading": "ちちのひ",
+          "meaning": "Father's Day",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "母",
+      "unit": "u05",
+      "position": 30,
+      "meanings": [
+        "mother"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ボ"
+      ],
+      "kun": [
+        {
+          "kana": "はは",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "も",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "はは"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A woman shape with two dots for a mother nursing her baby.",
+        "draft": true
+      },
+      "strokes": 5,
+      "grade": 2,
+      "freq": 570,
+      "parts": [
+        "毋"
+      ],
+      "vocab": [
+        {
+          "word": "母",
+          "reading": "はは",
+          "meaning": "mother",
+          "is_key": true
+        },
+        {
+          "word": "父母",
+          "reading": "ふぼ",
+          "meaning": "father and mother; parents",
+          "is_key": false
+        },
+        {
+          "word": "母子",
+          "reading": "ぼし",
+          "meaning": "mother and child",
+          "is_key": false
+        },
+        {
+          "word": "母国",
+          "reading": "ぼこく",
+          "meaning": "one's home country; one's homeland",
+          "is_key": false
+        },
+        {
+          "word": "母校",
+          "reading": "ぼこう",
+          "meaning": "alma mater",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "毎",
+          "note": "毎 every adds a hat"
+        }
+      ]
+    },
+    {
+      "char": "大",
+      "unit": "u06",
+      "position": 31,
+      "meanings": [
+        "big",
+        "large"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ダイ",
+        "タイ"
+      ],
+      "kun": [
+        {
+          "kana": "おお",
+          "okurigana": null,
+          "affix": "prefix"
+        },
+        {
+          "kana": "おお",
+          "okurigana": "きい",
+          "affix": null
+        },
+        {
+          "kana": "おお",
+          "okurigana": "いに",
+          "affix": "suffix"
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ダイ"
+      },
+      "reading_tip": "ダイ in 大学; タイ in 大会; おお- in words like 大きい.",
+      "mnemonic": {
+        "text": "A person (人) stretching their arms wide: big!",
+        "draft": true
+      },
+      "strokes": 3,
+      "grade": 1,
+      "freq": 7,
+      "parts": [
+        "大"
+      ],
+      "vocab": [
+        {
+          "word": "大",
+          "reading": "だい",
+          "meaning": "large; big",
+          "is_key": true
+        },
+        {
+          "word": "大学",
+          "reading": "だいがく",
+          "meaning": "university; college",
+          "is_key": false
+        },
+        {
+          "word": "大国",
+          "reading": "たいこく",
+          "meaning": "large country; major nation",
+          "is_key": false
+        },
+        {
+          "word": "大半",
+          "reading": "たいはん",
+          "meaning": "majority; more than half",
+          "is_key": false
+        },
+        {
+          "word": "大気",
+          "reading": "たいき",
+          "meaning": "atmosphere; air",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "天",
+          "note": "天 sky adds a line on top"
+        },
+        {
+          "char": "犬",
+          "note": "犬 dog adds a dot"
+        }
+      ]
+    },
+    {
+      "char": "小",
+      "unit": "u06",
+      "position": 32,
+      "meanings": [
+        "small",
+        "little"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ショウ"
+      ],
+      "kun": [
+        {
+          "kana": "ちい",
+          "okurigana": "さい",
+          "affix": null
+        },
+        {
+          "kana": "こ",
+          "okurigana": null,
+          "affix": "prefix"
+        },
+        {
+          "kana": "お",
+          "okurigana": null,
+          "affix": "prefix"
+        },
+        {
+          "kana": "さ",
+          "okurigana": null,
+          "affix": "prefix"
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "ちい"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A small hook with a dot on each side: tiny bits scattering, small.",
+        "draft": true
+      },
+      "strokes": 3,
+      "grade": 1,
+      "freq": 114,
+      "parts": [
+        "小"
+      ],
+      "vocab": [
+        {
+          "word": "小さい",
+          "reading": "ちいさい",
+          "meaning": "small; little",
+          "is_key": true
+        },
+        {
+          "word": "小学校",
+          "reading": "しょうがっこう",
+          "meaning": "primary school; elementary school",
+          "is_key": false
+        },
+        {
+          "word": "小学生",
+          "reading": "しょうがくせい",
+          "meaning": "elementary school student",
+          "is_key": false
+        },
+        {
+          "word": "小川",
+          "reading": "おがわ",
+          "meaning": "stream; brook",
+          "is_key": false
+        },
+        {
+          "word": "大小",
+          "reading": "だいしょう",
+          "meaning": "size",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "中",
+      "unit": "u06",
+      "position": 33,
+      "meanings": [
+        "middle",
+        "in",
+        "inside",
+        "mean",
+        "center"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "チュウ"
+      ],
+      "kun": [
+        {
+          "kana": "なか",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "うち",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "あた",
+          "okurigana": "る",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "なか"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A line straight through the middle of a box: middle, inside.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 1,
+      "freq": 11,
+      "parts": [
+        "口",
+        "丨"
+      ],
+      "vocab": [
+        {
+          "word": "中",
+          "reading": "なか",
+          "meaning": "inside; interior",
+          "is_key": true
+        },
+        {
+          "word": "中間",
+          "reading": "ちゅうかん",
+          "meaning": "middle; midway",
+          "is_key": false
+        },
+        {
+          "word": "中学",
+          "reading": "ちゅうがく",
+          "meaning": "junior high school; middle school",
+          "is_key": false
+        },
+        {
+          "word": "中学生",
+          "reading": "ちゅうがくせい",
+          "meaning": "junior high school student",
+          "is_key": false
+        },
+        {
+          "word": "日中",
+          "reading": "にっちゅう",
+          "meaning": "daytime; during the day",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "上",
+      "unit": "u06",
+      "position": 34,
+      "meanings": [
+        "above",
+        "up"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ジョウ",
+        "ショウ",
+        "シャン"
+      ],
+      "kun": [
+        {
+          "kana": "うえ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "うえ",
+          "okurigana": null,
+          "affix": "suffix"
+        },
+        {
+          "kana": "うわ",
+          "okurigana": null,
+          "affix": "prefix"
+        },
+        {
+          "kana": "かみ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "あ",
+          "okurigana": "げる",
+          "affix": null
+        },
+        {
+          "kana": "あ",
+          "okurigana": "げる",
+          "affix": "suffix"
+        },
+        {
+          "kana": "あ",
+          "okurigana": "がる",
+          "affix": null
+        },
+        {
+          "kana": "あ",
+          "okurigana": "がる",
+          "affix": "suffix"
+        },
+        {
+          "kana": "あ",
+          "okurigana": "がり",
+          "affix": null
+        },
+        {
+          "kana": "あ",
+          "okurigana": "がり",
+          "affix": "suffix"
+        },
+        {
+          "kana": "のぼ",
+          "okurigana": "る",
+          "affix": null
+        },
+        {
+          "kana": "のぼ",
+          "okurigana": "り",
+          "affix": null
+        },
+        {
+          "kana": "のぼ",
+          "okurigana": "せる",
+          "affix": null
+        },
+        {
+          "kana": "のぼ",
+          "okurigana": "す",
+          "affix": null
+        },
+        {
+          "kana": "たてまつ",
+          "okurigana": "る",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "うえ"
+      },
+      "reading_tip": "うえ \"above\"; あ(がる) \"go up\"; ジョウ in compounds like 上手.",
+      "mnemonic": {
+        "text": "A line pointing up from the ground: above, up.",
+        "draft": true
+      },
+      "strokes": 3,
+      "grade": 1,
+      "freq": 35,
+      "parts": [
+        "卜",
+        "一"
+      ],
+      "vocab": [
+        {
+          "word": "上",
+          "reading": "うえ",
+          "meaning": "above; up",
+          "is_key": true
+        },
+        {
+          "word": "上下",
+          "reading": "じょうげ",
+          "meaning": "top and bottom; high and low",
+          "is_key": false
+        },
+        {
+          "word": "上がり",
+          "reading": "あがり",
+          "meaning": "rise; increase",
+          "is_key": false
+        },
+        {
+          "word": "上り",
+          "reading": "のぼり",
+          "meaning": "ascent; climbing",
+          "is_key": false
+        },
+        {
+          "word": "上がる",
+          "reading": "あがる",
+          "meaning": "to rise; to go up",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "下",
+          "note": "下 down points the other way"
+        }
+      ]
+    },
+    {
+      "char": "下",
+      "unit": "u06",
+      "position": 35,
+      "meanings": [
+        "below",
+        "down",
+        "descend",
+        "give",
+        "low",
+        "inferior"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "カ",
+        "ゲ"
+      ],
+      "kun": [
+        {
+          "kana": "した",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "しも",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "もと",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "さ",
+          "okurigana": "げる",
+          "affix": null
+        },
+        {
+          "kana": "さ",
+          "okurigana": "がる",
+          "affix": null
+        },
+        {
+          "kana": "くだ",
+          "okurigana": "る",
+          "affix": null
+        },
+        {
+          "kana": "くだ",
+          "okurigana": "り",
+          "affix": null
+        },
+        {
+          "kana": "くだ",
+          "okurigana": "す",
+          "affix": null
+        },
+        {
+          "kana": "くだ",
+          "okurigana": "す",
+          "affix": "suffix"
+        },
+        {
+          "kana": "くだ",
+          "okurigana": "さる",
+          "affix": null
+        },
+        {
+          "kana": "お",
+          "okurigana": "ろす",
+          "affix": null
+        },
+        {
+          "kana": "お",
+          "okurigana": "りる",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "した"
+      },
+      "reading_tip": "した \"below\"; さ(げる)/くだ(る) for lowering or going down; カ/ゲ in compounds.",
+      "mnemonic": {
+        "text": "A line hanging down from the ceiling: below, down.",
+        "draft": true
+      },
+      "strokes": 3,
+      "grade": 1,
+      "freq": 97,
+      "parts": [
+        "一",
+        "卜"
+      ],
+      "vocab": [
+        {
+          "word": "下",
+          "reading": "した",
+          "meaning": "below; down",
+          "is_key": true
+        },
+        {
+          "word": "下車",
+          "reading": "げしゃ",
+          "meaning": "alighting; getting off",
+          "is_key": false
+        },
+        {
+          "word": "上下",
+          "reading": "じょうげ",
+          "meaning": "top and bottom; high and low",
+          "is_key": false
+        },
+        {
+          "word": "下げる",
+          "reading": "さげる",
+          "meaning": "to hang; to suspend",
+          "is_key": false
+        },
+        {
+          "word": "下り",
+          "reading": "くだり",
+          "meaning": "down-train",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "上",
+          "note": "上 up points the other way"
+        }
+      ]
+    },
+    {
+      "char": "右",
+      "unit": "u06",
+      "position": 36,
+      "meanings": [
+        "right"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ウ",
+        "ユウ"
+      ],
+      "kun": [
+        {
+          "kana": "みぎ",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "みぎ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A hand reaching over a mouth (口): you eat with your right hand.",
+        "draft": true
+      },
+      "strokes": 5,
+      "grade": 1,
+      "freq": 602,
+      "parts": [
+        "口"
+      ],
+      "vocab": [
+        {
+          "word": "右",
+          "reading": "みぎ",
+          "meaning": "right; right-hand side",
+          "is_key": true
+        },
+        {
+          "word": "左右",
+          "reading": "さゆう",
+          "meaning": "left and right; right and left",
+          "is_key": false
+        },
+        {
+          "word": "右左",
+          "reading": "みぎひだり",
+          "meaning": "right and left",
+          "is_key": false
+        },
+        {
+          "word": "右下",
+          "reading": "みぎした",
+          "meaning": "lower right",
+          "is_key": false
+        },
+        {
+          "word": "右上",
+          "reading": "みぎうえ",
+          "meaning": "upper right",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "石",
+          "note": "石 stone (N3)"
+        },
+        {
+          "char": "左",
+          "note": "左 left has 工 instead of 口"
+        }
+      ]
+    },
+    {
+      "char": "左",
+      "unit": "u06",
+      "position": 37,
+      "meanings": [
+        "left"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "サ",
+        "シャ"
+      ],
+      "kun": [
+        {
+          "kana": "ひだり",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "ひだり"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A hand holding a carpenter's square (工): the left hand holds the tool.",
+        "draft": true
+      },
+      "strokes": 5,
+      "grade": 1,
+      "freq": 630,
+      "parts": [
+        "工"
+      ],
+      "vocab": [
+        {
+          "word": "左",
+          "reading": "ひだり",
+          "meaning": "left; left hand side",
+          "is_key": true
+        },
+        {
+          "word": "左右",
+          "reading": "さゆう",
+          "meaning": "left and right; right and left",
+          "is_key": false
+        },
+        {
+          "word": "右左",
+          "reading": "みぎひだり",
+          "meaning": "right and left",
+          "is_key": false
+        },
+        {
+          "word": "左上",
+          "reading": "ひだりうえ",
+          "meaning": "upper left",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "右",
+          "note": "右 right has 口 instead of 工"
+        }
+      ]
+    },
+    {
+      "char": "東",
+      "unit": "u07",
+      "position": 38,
+      "meanings": [
+        "east"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "トウ"
+      ],
+      "kun": [
+        {
+          "kana": "ひがし",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "ひがし"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "The sun (日) rising behind a tree (木): east, where the sun comes up.",
+        "draft": true
+      },
+      "strokes": 8,
+      "grade": 2,
+      "freq": 37,
+      "parts": [
+        "木",
+        "日"
+      ],
+      "vocab": [
+        {
+          "word": "東",
+          "reading": "ひがし",
+          "meaning": "east",
+          "is_key": true
+        },
+        {
+          "word": "東西",
+          "reading": "とうざい",
+          "meaning": "east and west",
+          "is_key": false
+        },
+        {
+          "word": "北東",
+          "reading": "ほくとう",
+          "meaning": "northeast",
+          "is_key": false
+        },
+        {
+          "word": "南東",
+          "reading": "なんとう",
+          "meaning": "southeast",
+          "is_key": false
+        },
+        {
+          "word": "中東",
+          "reading": "ちゅうとう",
+          "meaning": "Middle East",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "車",
+          "note": "車 car has no slanting legs"
+        }
+      ]
+    },
+    {
+      "char": "西",
+      "unit": "u07",
+      "position": 39,
+      "meanings": [
+        "west",
+        "Spain"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "セイ",
+        "サイ",
+        "ス"
+      ],
+      "kun": [
+        {
+          "kana": "にし",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "セイ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A bird settling into its nest at sunset: west.",
+        "draft": true
+      },
+      "strokes": 6,
+      "grade": 2,
+      "freq": 259,
+      "parts": [
+        "西"
+      ],
+      "vocab": [
+        {
+          "word": "南西",
+          "reading": "なんせい",
+          "meaning": "southwest",
+          "is_key": true
+        },
+        {
+          "word": "西",
+          "reading": "にし",
+          "meaning": "west",
+          "is_key": false
+        },
+        {
+          "word": "東西",
+          "reading": "とうざい",
+          "meaning": "east and west",
+          "is_key": false
+        },
+        {
+          "word": "北西",
+          "reading": "ほくせい",
+          "meaning": "northwest",
+          "is_key": false
+        },
+        {
+          "word": "北北西",
+          "reading": "ほくほくせい",
+          "meaning": "north-northwest",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "四",
+          "note": "四 four has legs inside a box"
+        }
+      ]
+    },
+    {
+      "char": "南",
+      "unit": "u07",
+      "position": 40,
+      "meanings": [
+        "south"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ナン",
+        "ナ"
+      ],
+      "kun": [
+        {
+          "kana": "みなみ",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "みなみ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A tent with a cross on top and a warm fire below: south, where it is warm.",
+        "draft": true
+      },
+      "strokes": 9,
+      "grade": 2,
+      "freq": 341,
+      "parts": [
+        "十",
+        "冂",
+        "干"
+      ],
+      "vocab": [
+        {
+          "word": "南",
+          "reading": "みなみ",
+          "meaning": "south",
+          "is_key": true
+        },
+        {
+          "word": "南北",
+          "reading": "なんぼく",
+          "meaning": "north and south; north to south",
+          "is_key": false
+        },
+        {
+          "word": "南西",
+          "reading": "なんせい",
+          "meaning": "southwest",
+          "is_key": false
+        },
+        {
+          "word": "南東",
+          "reading": "なんとう",
+          "meaning": "southeast",
+          "is_key": false
+        },
+        {
+          "word": "東南",
+          "reading": "とうなん",
+          "meaning": "south-east",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "北",
+      "unit": "u07",
+      "position": 41,
+      "meanings": [
+        "north"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ホク"
+      ],
+      "kun": [
+        {
+          "kana": "きた",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "きた"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Two people sitting back to back, turning away from the cold north wind.",
+        "draft": true
+      },
+      "strokes": 5,
+      "grade": 2,
+      "freq": 153,
+      "parts": [
+        "匕"
+      ],
+      "vocab": [
+        {
+          "word": "北",
+          "reading": "きた",
+          "meaning": "north",
+          "is_key": true
+        },
+        {
+          "word": "南北",
+          "reading": "なんぼく",
+          "meaning": "north and south; north to south",
+          "is_key": false
+        },
+        {
+          "word": "北東",
+          "reading": "ほくとう",
+          "meaning": "northeast",
+          "is_key": false
+        },
+        {
+          "word": "北西",
+          "reading": "ほくせい",
+          "meaning": "northwest",
+          "is_key": false
+        },
+        {
+          "word": "東北",
+          "reading": "とうほく",
+          "meaning": "north-east",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "外",
+      "unit": "u07",
+      "position": 42,
+      "meanings": [
+        "outside"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ガイ",
+        "ゲ"
+      ],
+      "kun": [
+        {
+          "kana": "そと",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "ほか",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "はず",
+          "okurigana": "す",
+          "affix": null
+        },
+        {
+          "kana": "はず",
+          "okurigana": "れる",
+          "affix": null
+        },
+        {
+          "kana": "と",
+          "okurigana": null,
+          "affix": "prefix"
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "そと"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Evening (夕) plus a fortune-telling stick (卜): going outside at night to read the stars.",
+        "draft": true
+      },
+      "strokes": 5,
+      "grade": 2,
+      "freq": 81,
+      "parts": [
+        "夕",
+        "卜"
+      ],
+      "vocab": [
+        {
+          "word": "外",
+          "reading": "そと",
+          "meaning": "outside; exterior",
+          "is_key": true
+        },
+        {
+          "word": "外国",
+          "reading": "がいこく",
+          "meaning": "foreign country",
+          "is_key": false
+        },
+        {
+          "word": "外国人",
+          "reading": "がいこくじん",
+          "meaning": "foreigner; foreign citizen",
+          "is_key": false
+        },
+        {
+          "word": "国外",
+          "reading": "こくがい",
+          "meaning": "outside the country; abroad",
+          "is_key": false
+        },
+        {
+          "word": "外国語",
+          "reading": "がいこくご",
+          "meaning": "foreign language",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "夕",
+          "note": "夕 evening on its own"
+        }
+      ]
+    },
+    {
+      "char": "年",
+      "unit": "u08",
+      "position": 43,
+      "meanings": [
+        "year",
+        "counter for years"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ネン"
+      ],
+      "kun": [
+        {
+          "kana": "とし",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ネン"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A person carrying a big bundle of rice: a year's harvest.",
+        "draft": true
+      },
+      "strokes": 6,
+      "grade": 1,
+      "freq": 6,
+      "parts": [
+        "丿",
+        "干"
+      ],
+      "vocab": [
+        {
+          "word": "前年",
+          "reading": "ぜんねん",
+          "meaning": "the preceding year; the previous year",
+          "is_key": true
+        },
+        {
+          "word": "年間",
+          "reading": "ねんかん",
+          "meaning": "a year",
+          "is_key": false
+        },
+        {
+          "word": "来年",
+          "reading": "らいねん",
+          "meaning": "next year",
+          "is_key": false
+        },
+        {
+          "word": "年",
+          "reading": "とし",
+          "meaning": "year",
+          "is_key": false
+        },
+        {
+          "word": "毎年",
+          "reading": "まいとし",
+          "meaning": "every year; yearly",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "時",
+      "unit": "u08",
+      "position": 44,
+      "meanings": [
+        "time",
+        "hour"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ジ"
+      ],
+      "kun": [
+        {
+          "kana": "とき",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "どき",
+          "okurigana": null,
+          "affix": "suffix"
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ジ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "The sun (日) beside a temple (寺): the temple bell tells the time.",
+        "draft": true
+      },
+      "strokes": 10,
+      "grade": 2,
+      "freq": 16,
+      "parts": [
+        "日",
+        "寺"
+      ],
+      "vocab": [
+        {
+          "word": "時間",
+          "reading": "じかん",
+          "meaning": "time",
+          "is_key": true
+        },
+        {
+          "word": "一時",
+          "reading": "いちじ",
+          "meaning": "one o'clock",
+          "is_key": false
+        },
+        {
+          "word": "時",
+          "reading": "とき",
+          "meaning": "time; hour",
+          "is_key": false
+        },
+        {
+          "word": "日時",
+          "reading": "にちじ",
+          "meaning": "date and time",
+          "is_key": false
+        },
+        {
+          "word": "三時",
+          "reading": "さんじ",
+          "meaning": "3 o'clock",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "間",
+      "unit": "u08",
+      "position": 45,
+      "meanings": [
+        "between",
+        "interval",
+        "space"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "カン",
+        "ケン"
+      ],
+      "kun": [
+        {
+          "kana": "あいだ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "ま",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "あい",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "カン"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "The sun (日) shining through a gate (門): the space between the doors.",
+        "draft": true
+      },
+      "strokes": 12,
+      "grade": 2,
+      "freq": 33,
+      "parts": [
+        "門",
+        "日"
+      ],
+      "vocab": [
+        {
+          "word": "時間",
+          "reading": "じかん",
+          "meaning": "time",
+          "is_key": true
+        },
+        {
+          "word": "人間",
+          "reading": "にんげん",
+          "meaning": "human being; human",
+          "is_key": false
+        },
+        {
+          "word": "年間",
+          "reading": "ねんかん",
+          "meaning": "a year",
+          "is_key": false
+        },
+        {
+          "word": "中間",
+          "reading": "ちゅうかん",
+          "meaning": "middle; midway",
+          "is_key": false
+        },
+        {
+          "word": "間",
+          "reading": "あいだ",
+          "meaning": "space; gap",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "聞",
+          "note": "聞 hear has an ear (耳)"
+        },
+        {
+          "char": "問",
+          "note": "問 question has a mouth (口)"
+        }
+      ]
+    },
+    {
+      "char": "午",
+      "unit": "u08",
+      "position": 46,
+      "meanings": [
+        "noon",
+        "sign of the horse",
+        "11AM-1PM",
+        "seventh sign of Chinese zodiac"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ゴ"
+      ],
+      "kun": [
+        {
+          "kana": "うま",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ゴ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A cow (牛) without its horn sticking up: noon, when even the cow rests.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 2,
+      "freq": 154,
+      "parts": [
+        "丿",
+        "干"
+      ],
+      "vocab": [
+        {
+          "word": "午後",
+          "reading": "ごご",
+          "meaning": "afternoon; p.m.",
+          "is_key": true
+        },
+        {
+          "word": "午前",
+          "reading": "ごぜん",
+          "meaning": "morning; a.m.",
+          "is_key": false
+        },
+        {
+          "word": "午前中",
+          "reading": "ごぜんちゅう",
+          "meaning": "in the morning; during the morning",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "牛",
+          "note": "牛 cow pokes through the top"
+        },
+        {
+          "char": "千",
+          "note": "千 thousand has a slash, not a line"
+        }
+      ]
+    },
+    {
+      "char": "前",
+      "unit": "u08",
+      "position": 47,
+      "meanings": [
+        "before",
+        "in front"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ゼン"
+      ],
+      "kun": [
+        {
+          "kana": "まえ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "まえ",
+          "okurigana": null,
+          "affix": "suffix"
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "まえ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Horns on top, flesh (月) and a knife (刂): the butcher works in front of you.",
+        "draft": true
+      },
+      "strokes": 9,
+      "grade": 2,
+      "freq": 27,
+      "parts": [
+        "八",
+        "月",
+        "刂"
+      ],
+      "vocab": [
+        {
+          "word": "前",
+          "reading": "まえ",
+          "meaning": "in front; before",
+          "is_key": true
+        },
+        {
+          "word": "午前",
+          "reading": "ごぜん",
+          "meaning": "morning; a.m.",
+          "is_key": false
+        },
+        {
+          "word": "前年",
+          "reading": "ぜんねん",
+          "meaning": "the preceding year; the previous year",
+          "is_key": false
+        },
+        {
+          "word": "名前",
+          "reading": "なまえ",
+          "meaning": "name",
+          "is_key": false
+        },
+        {
+          "word": "前半",
+          "reading": "ぜんはん",
+          "meaning": "first half",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "後",
+      "unit": "u08",
+      "position": 48,
+      "meanings": [
+        "after",
+        "behind",
+        "back",
+        "later"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ゴ",
+        "コウ"
+      ],
+      "kun": [
+        {
+          "kana": "のち",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "うし",
+          "okurigana": "ろ",
+          "affix": null
+        },
+        {
+          "kana": "うしろ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "あと",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "おく",
+          "okurigana": "れる",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ゴ"
+      },
+      "reading_tip": "ゴ in 午後; うし(ろ) \"behind\"; あと \"after\".",
+      "mnemonic": {
+        "text": "Small steps (彳) and a thread with a slow foot: walking behind, after.",
+        "draft": true
+      },
+      "strokes": 9,
+      "grade": 2,
+      "freq": 26,
+      "parts": [
+        "彳",
+        "幺",
+        "夂"
+      ],
+      "vocab": [
+        {
+          "word": "午後",
+          "reading": "ごご",
+          "meaning": "afternoon; p.m.",
+          "is_key": true
+        },
+        {
+          "word": "後",
+          "reading": "あと",
+          "meaning": "behind; rear",
+          "is_key": false
+        },
+        {
+          "word": "今後",
+          "reading": "こんご",
+          "meaning": "from now on; hereafter",
+          "is_key": false
+        },
+        {
+          "word": "後半",
+          "reading": "こうはん",
+          "meaning": "second half; latter half",
+          "is_key": false
+        },
+        {
+          "word": "後ろ",
+          "reading": "うしろ",
+          "meaning": "back; behind",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "今",
+      "unit": "u09",
+      "position": 49,
+      "meanings": [
+        "now"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "コン",
+        "キン"
+      ],
+      "kun": [
+        {
+          "kana": "いま",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "いま"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A roof over a single line: right now, under this roof.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 2,
+      "freq": 49,
+      "parts": [
+        "人",
+        "一"
+      ],
+      "vocab": [
+        {
+          "word": "今",
+          "reading": "いま",
+          "meaning": "now; the present time",
+          "is_key": true
+        },
+        {
+          "word": "今月",
+          "reading": "こんげつ",
+          "meaning": "this month",
+          "is_key": false
+        },
+        {
+          "word": "今後",
+          "reading": "こんご",
+          "meaning": "from now on; hereafter",
+          "is_key": false
+        },
+        {
+          "word": "今まで",
+          "reading": "いままで",
+          "meaning": "until now; so far",
+          "is_key": false
+        },
+        {
+          "word": "今や",
+          "reading": "いまや",
+          "meaning": "now; now at last",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "会",
+          "note": "会 meet adds 云 below"
+        }
+      ]
+    },
+    {
+      "char": "毎",
+      "unit": "u09",
+      "position": 50,
+      "meanings": [
+        "every"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "マイ"
+      ],
+      "kun": [
+        {
+          "kana": "ごと",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "ごと",
+          "okurigana": "に",
+          "affix": "suffix"
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "マイ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A person wearing a hat over mother (母): every mother, every day.",
+        "draft": true
+      },
+      "strokes": 6,
+      "grade": 2,
+      "freq": 436,
+      "parts": [
+        "𠂉",
+        "毋"
+      ],
+      "vocab": [
+        {
+          "word": "毎日",
+          "reading": "まいにち",
+          "meaning": "every day",
+          "is_key": true
+        },
+        {
+          "word": "毎年",
+          "reading": "まいとし",
+          "meaning": "every year; yearly",
+          "is_key": false
+        },
+        {
+          "word": "毎月",
+          "reading": "まいつき",
+          "meaning": "every month; each month",
+          "is_key": false
+        },
+        {
+          "word": "毎時",
+          "reading": "まいじ",
+          "meaning": "every hour; hourly",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "母",
+          "note": "母 mother has no hat"
+        }
+      ]
+    },
+    {
+      "char": "半",
+      "unit": "u09",
+      "position": 51,
+      "meanings": [
+        "half",
+        "middle",
+        "odd number",
+        "semi-",
+        "part-"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ハン"
+      ],
+      "kun": [
+        {
+          "kana": "なか",
+          "okurigana": "ば",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ハン"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Two horns on top and a cross cut in half: half.",
+        "draft": true
+      },
+      "strokes": 5,
+      "grade": 2,
+      "freq": 224,
+      "parts": [
+        "丶",
+        "二",
+        "十"
+      ],
+      "vocab": [
+        {
+          "word": "後半",
+          "reading": "こうはん",
+          "meaning": "second half; latter half",
+          "is_key": true
+        },
+        {
+          "word": "前半",
+          "reading": "ぜんはん",
+          "meaning": "first half",
+          "is_key": false
+        },
+        {
+          "word": "半",
+          "reading": "はん",
+          "meaning": "half; semi-",
+          "is_key": false
+        },
+        {
+          "word": "大半",
+          "reading": "たいはん",
+          "meaning": "majority; more than half",
+          "is_key": false
+        },
+        {
+          "word": "半年",
+          "reading": "はんとし",
+          "meaning": "half a year; six months",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "何",
+      "unit": "u09",
+      "position": 52,
+      "meanings": [
+        "what"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "カ"
+      ],
+      "kun": [
+        {
+          "kana": "なに",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "なん",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "なに",
+          "okurigana": null,
+          "affix": "prefix"
+        },
+        {
+          "kana": "なん",
+          "okurigana": null,
+          "affix": "prefix"
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "なに"
+      },
+      "reading_tip": "なに before most sounds; なん before d, n and t sounds and counters (何時 なんじ).",
+      "mnemonic": {
+        "text": "A person (亻) next to \"can\" (可): what can a person do?",
+        "draft": true
+      },
+      "strokes": 7,
+      "grade": 2,
+      "freq": 340,
+      "parts": [
+        "亻",
+        "可"
+      ],
+      "vocab": [
+        {
+          "word": "何",
+          "reading": "なに",
+          "meaning": "what",
+          "is_key": true
+        },
+        {
+          "word": "何か",
+          "reading": "なにか",
+          "meaning": "something; some",
+          "is_key": false
+        },
+        {
+          "word": "何とか",
+          "reading": "なんとか",
+          "meaning": "something; something or other",
+          "is_key": false
+        },
+        {
+          "word": "何より",
+          "reading": "なにより",
+          "meaning": "above anything else; above all",
+          "is_key": false
+        },
+        {
+          "word": "何でも",
+          "reading": "なんでも",
+          "meaning": "any; anything",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "可",
+          "note": "可 can has no person"
+        }
+      ]
+    },
+    {
+      "char": "万",
+      "unit": "u09",
+      "position": 53,
+      "meanings": [
+        "ten thousand",
+        "10,000"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "マン",
+        "バン"
+      ],
+      "kun": [
+        {
+          "kana": "よろず",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "マン"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "One (一) over a hook like a pen flourish: ten thousand.",
+        "draft": true
+      },
+      "strokes": 3,
+      "grade": 2,
+      "freq": 375,
+      "parts": [
+        "一"
+      ],
+      "vocab": [
+        {
+          "word": "十万",
+          "reading": "じゅうまん",
+          "meaning": "100,000; hundred thousand",
+          "is_key": true
+        },
+        {
+          "word": "百万",
+          "reading": "ひゃくまん",
+          "meaning": "1,000,000; one million",
+          "is_key": false
+        },
+        {
+          "word": "万一",
+          "reading": "まんいち",
+          "meaning": "emergency; the worst",
+          "is_key": false
+        },
+        {
+          "word": "万人",
+          "reading": "ばんにん",
+          "meaning": "all people; everybody",
+          "is_key": false
+        },
+        {
+          "word": "万国",
+          "reading": "ばんこく",
+          "meaning": "all countries; the whole world",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "方",
+          "note": "方 direction has a dot on top"
+        },
+        {
+          "char": "力",
+          "note": "力 power has no top line"
+        }
+      ]
+    },
+    {
+      "char": "円",
+      "unit": "u09",
+      "position": 54,
+      "meanings": [
+        "yen",
+        "circle",
+        "round"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "エン"
+      ],
+      "kun": [
+        {
+          "kana": "まる",
+          "okurigana": "い",
+          "affix": null
+        },
+        {
+          "kana": "まる",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "まど",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "まど",
+          "okurigana": "か",
+          "affix": null
+        },
+        {
+          "kana": "まろ",
+          "okurigana": "やか",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "エン"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A round window frame: a circle, and the round yen coin.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 1,
+      "freq": 69,
+      "parts": [
+        "冂"
+      ],
+      "vocab": [
+        {
+          "word": "円",
+          "reading": "えん",
+          "meaning": "yen",
+          "is_key": true
+        },
+        {
+          "word": "円高",
+          "reading": "えんだか",
+          "meaning": "appreciation of the yen; strong yen",
+          "is_key": false
+        },
+        {
+          "word": "一円",
+          "reading": "いちえん",
+          "meaning": "one yen",
+          "is_key": false
+        },
+        {
+          "word": "半円",
+          "reading": "はんえん",
+          "meaning": "semicircle",
+          "is_key": false
+        },
+        {
+          "word": "円い",
+          "reading": "まるい",
+          "meaning": "round; circular",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "行",
+      "unit": "u10",
+      "position": 55,
+      "meanings": [
+        "go",
+        "going",
+        "journey",
+        "carry out",
+        "conduct",
+        "act",
+        "line",
+        "row",
+        "bank"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "コウ",
+        "ギョウ",
+        "アン"
+      ],
+      "kun": [
+        {
+          "kana": "い",
+          "okurigana": "く",
+          "affix": null
+        },
+        {
+          "kana": "ゆ",
+          "okurigana": "く",
+          "affix": null
+        },
+        {
+          "kana": "ゆ",
+          "okurigana": "き",
+          "affix": "suffix"
+        },
+        {
+          "kana": "ゆき",
+          "okurigana": null,
+          "affix": "suffix"
+        },
+        {
+          "kana": "い",
+          "okurigana": "き",
+          "affix": "suffix"
+        },
+        {
+          "kana": "いき",
+          "okurigana": null,
+          "affix": "suffix"
+        },
+        {
+          "kana": "おこな",
+          "okurigana": "う",
+          "affix": null
+        },
+        {
+          "kana": "おこ",
+          "okurigana": "なう",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "い"
+      },
+      "reading_tip": "い(く) \"go\" is the one to learn first; ギョウ is \"a line of text\", コウ appears in 銀行.",
+      "mnemonic": {
+        "text": "A crossroads split in two (彳 + 亍): go along the road.",
+        "draft": true
+      },
+      "strokes": 6,
+      "grade": 2,
+      "freq": 20,
+      "parts": [
+        "彳"
+      ],
+      "vocab": [
+        {
+          "word": "行く",
+          "reading": "いく",
+          "meaning": "to go; to move",
+          "is_key": true
+        },
+        {
+          "word": "行う",
+          "reading": "おこなう",
+          "meaning": "to perform; to do",
+          "is_key": false
+        },
+        {
+          "word": "先行",
+          "reading": "せんこう",
+          "meaning": "going ahead; going first",
+          "is_key": false
+        },
+        {
+          "word": "先行き",
+          "reading": "さきゆき",
+          "meaning": "the future; future prospects",
+          "is_key": false
+        },
+        {
+          "word": "行い",
+          "reading": "おこない",
+          "meaning": "deed; act",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "来",
+      "unit": "u10",
+      "position": 56,
+      "meanings": [
+        "come",
+        "due",
+        "next",
+        "cause",
+        "become"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ライ",
+        "タイ"
+      ],
+      "kun": [
+        {
+          "kana": "く",
+          "okurigana": "る",
+          "affix": null
+        },
+        {
+          "kana": "きた",
+          "okurigana": "る",
+          "affix": null
+        },
+        {
+          "kana": "きた",
+          "okurigana": "す",
+          "affix": null
+        },
+        {
+          "kana": "き",
+          "okurigana": "たす",
+          "affix": null
+        },
+        {
+          "kana": "き",
+          "okurigana": "たる",
+          "affix": null
+        },
+        {
+          "kana": "き",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "こ",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ライ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A tree (木) with rice grains blowing in: next year's rice is coming.",
+        "draft": true
+      },
+      "strokes": 7,
+      "grade": 2,
+      "freq": 102,
+      "parts": [
+        "米"
+      ],
+      "vocab": [
+        {
+          "word": "来年",
+          "reading": "らいねん",
+          "meaning": "next year",
+          "is_key": true
+        },
+        {
+          "word": "本来",
+          "reading": "ほんらい",
+          "meaning": "originally; primarily",
+          "is_key": false
+        },
+        {
+          "word": "来月",
+          "reading": "らいげつ",
+          "meaning": "next month",
+          "is_key": false
+        },
+        {
+          "word": "来日",
+          "reading": "らいにち",
+          "meaning": "arrival in Japan; coming to Japan",
+          "is_key": false
+        },
+        {
+          "word": "出来る",
+          "reading": "できる",
+          "meaning": "to be able to do; to be up to the task",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "出",
+      "unit": "u10",
+      "position": 57,
+      "meanings": [
+        "exit",
+        "leave",
+        "go out",
+        "come out",
+        "put out",
+        "protrude"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "シュツ",
+        "スイ"
+      ],
+      "kun": [
+        {
+          "kana": "で",
+          "okurigana": "る",
+          "affix": null
+        },
+        {
+          "kana": "で",
+          "okurigana": null,
+          "affix": "suffix"
+        },
+        {
+          "kana": "だ",
+          "okurigana": "す",
+          "affix": null
+        },
+        {
+          "kana": "だ",
+          "okurigana": "す",
+          "affix": "suffix"
+        },
+        {
+          "kana": "い",
+          "okurigana": "でる",
+          "affix": null
+        },
+        {
+          "kana": "い",
+          "okurigana": "だす",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "で"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Two mountains (山) stacked: climb out over the peaks.",
+        "draft": true
+      },
+      "strokes": 5,
+      "grade": 1,
+      "freq": 13,
+      "parts": [
+        "山",
+        "凵"
+      ],
+      "vocab": [
+        {
+          "word": "出る",
+          "reading": "でる",
+          "meaning": "to leave; to exit",
+          "is_key": true
+        },
+        {
+          "word": "出す",
+          "reading": "だす",
+          "meaning": "to take out; to get out",
+          "is_key": false
+        },
+        {
+          "word": "見出し",
+          "reading": "みだし",
+          "meaning": "heading; headline",
+          "is_key": false
+        },
+        {
+          "word": "外出",
+          "reading": "がいしゅつ",
+          "meaning": "going out; outing",
+          "is_key": false
+        },
+        {
+          "word": "出国",
+          "reading": "しゅっこく",
+          "meaning": "departure from a country",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "入",
+      "unit": "u10",
+      "position": 58,
+      "meanings": [
+        "enter",
+        "insert"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ニュウ",
+        "ジュ"
+      ],
+      "kun": [
+        {
+          "kana": "い",
+          "okurigana": "る",
+          "affix": null
+        },
+        {
+          "kana": "い",
+          "okurigana": "る",
+          "affix": "suffix"
+        },
+        {
+          "kana": "い",
+          "okurigana": "り",
+          "affix": "suffix"
+        },
+        {
+          "kana": "い",
+          "okurigana": "れる",
+          "affix": null
+        },
+        {
+          "kana": "い",
+          "okurigana": "れ",
+          "affix": "suffix"
+        },
+        {
+          "kana": "はい",
+          "okurigana": "る",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "はい"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A person (人) leaning forward to enter through a doorway.",
+        "draft": true
+      },
+      "strokes": 2,
+      "grade": 1,
+      "freq": 56,
+      "parts": [
+        "入"
+      ],
+      "vocab": [
+        {
+          "word": "入る",
+          "reading": "はいる",
+          "meaning": "to enter; to go into",
+          "is_key": true
+        },
+        {
+          "word": "入学",
+          "reading": "にゅうがく",
+          "meaning": "entry to school or university",
+          "is_key": false
+        },
+        {
+          "word": "入国",
+          "reading": "にゅうこく",
+          "meaning": "entry into a country",
+          "is_key": false
+        },
+        {
+          "word": "出入り",
+          "reading": "でいり",
+          "meaning": "going in and out; entering and exiting",
+          "is_key": false
+        },
+        {
+          "word": "入り",
+          "reading": "いり",
+          "meaning": "entering",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "人",
+          "note": "人 person: the left stroke starts higher"
+        }
+      ]
+    },
+    {
+      "char": "休",
+      "unit": "u10",
+      "position": 59,
+      "meanings": [
+        "rest",
+        "day off",
+        "retire",
+        "sleep"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "キュウ"
+      ],
+      "kun": [
+        {
+          "kana": "やす",
+          "okurigana": "む",
+          "affix": null
+        },
+        {
+          "kana": "やす",
+          "okurigana": "まる",
+          "affix": null
+        },
+        {
+          "kana": "やす",
+          "okurigana": "める",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "やす"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A person (亻) leaning against a tree (木): rest.",
+        "draft": true
+      },
+      "strokes": 6,
+      "grade": 1,
+      "freq": 642,
+      "parts": [
+        "亻",
+        "木"
+      ],
+      "vocab": [
+        {
+          "word": "休み",
+          "reading": "やすみ",
+          "meaning": "rest; recess",
+          "is_key": true
+        },
+        {
+          "word": "休日",
+          "reading": "きゅうじつ",
+          "meaning": "holiday; day off",
+          "is_key": false
+        },
+        {
+          "word": "休む",
+          "reading": "やすむ",
+          "meaning": "to be absent; to take a day off",
+          "is_key": false
+        },
+        {
+          "word": "休校",
+          "reading": "きゅうこう",
+          "meaning": "closure of school",
+          "is_key": false
+        },
+        {
+          "word": "休まる",
+          "reading": "やすまる",
+          "meaning": "to be rested; to feel at ease",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "体",
+          "note": "体 body has 本, not 木"
+        }
+      ]
+    },
+    {
+      "char": "車",
+      "unit": "u10",
+      "position": 60,
+      "meanings": [
+        "car"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "シャ"
+      ],
+      "kun": [
+        {
+          "kana": "くるま",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "くるま"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A cart seen from above: wheel, axle and body. Car.",
+        "draft": true
+      },
+      "strokes": 7,
+      "grade": 1,
+      "freq": 333,
+      "parts": [
+        "車"
+      ],
+      "vocab": [
+        {
+          "word": "車",
+          "reading": "くるま",
+          "meaning": "car; automobile",
+          "is_key": true
+        },
+        {
+          "word": "下車",
+          "reading": "げしゃ",
+          "meaning": "alighting; getting off",
+          "is_key": false
+        },
+        {
+          "word": "電車",
+          "reading": "でんしゃ",
+          "meaning": "train; electric train",
+          "is_key": false
+        },
+        {
+          "word": "外車",
+          "reading": "がいしゃ",
+          "meaning": "foreign-made car; imported car",
+          "is_key": false
+        },
+        {
+          "word": "車中",
+          "reading": "しゃちゅう",
+          "meaning": "in a train; on a train",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "東",
+          "note": "東 east has slanting legs"
+        }
+      ]
+    },
+    {
+      "char": "学",
+      "unit": "u11",
+      "position": 61,
+      "meanings": [
+        "study",
+        "learning",
+        "science"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ガク"
+      ],
+      "kun": [
+        {
+          "kana": "まな",
+          "okurigana": "ぶ",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ガク"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A child (子) under a roof with sparks of ideas above: study.",
+        "draft": true
+      },
+      "strokes": 8,
+      "grade": 1,
+      "freq": 63,
+      "parts": [
+        "⺍",
+        "冖",
+        "子"
+      ],
+      "vocab": [
+        {
+          "word": "学",
+          "reading": "がく",
+          "meaning": "learning; scholarship",
+          "is_key": true
+        },
+        {
+          "word": "学校",
+          "reading": "がっこう",
+          "meaning": "school",
+          "is_key": false
+        },
+        {
+          "word": "学生",
+          "reading": "がくせい",
+          "meaning": "student",
+          "is_key": false
+        },
+        {
+          "word": "大学",
+          "reading": "だいがく",
+          "meaning": "university; college",
+          "is_key": false
+        },
+        {
+          "word": "中学",
+          "reading": "ちゅうがく",
+          "meaning": "junior high school; middle school",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "字",
+          "note": "字 character has a plain roof"
+        }
+      ]
+    },
+    {
+      "char": "校",
+      "unit": "u11",
+      "position": 62,
+      "meanings": [
+        "school",
+        "exam",
+        "printing",
+        "proof",
+        "correction"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "コウ",
+        "キョウ"
+      ],
+      "kun": [],
+      "key_reading": {
+        "type": "on",
+        "kana": "コウ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A tree (木) beside people mixing (交): school under the trees.",
+        "draft": true
+      },
+      "strokes": 10,
+      "grade": 1,
+      "freq": 294,
+      "parts": [
+        "木",
+        "交"
+      ],
+      "vocab": [
+        {
+          "word": "学校",
+          "reading": "がっこう",
+          "meaning": "school",
+          "is_key": true
+        },
+        {
+          "word": "高校",
+          "reading": "こうこう",
+          "meaning": "senior high school; high school",
+          "is_key": false
+        },
+        {
+          "word": "校長",
+          "reading": "こうちょう",
+          "meaning": "principal; headmaster",
+          "is_key": false
+        },
+        {
+          "word": "高校生",
+          "reading": "こうこうせい",
+          "meaning": "senior high school student",
+          "is_key": false
+        },
+        {
+          "word": "小学校",
+          "reading": "しょうがっこう",
+          "meaning": "primary school; elementary school",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "先",
+      "unit": "u11",
+      "position": 63,
+      "meanings": [
+        "ahead",
+        "before",
+        "previous",
+        "future",
+        "precedence"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "セン"
+      ],
+      "kun": [
+        {
+          "kana": "さき",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "ま",
+          "okurigana": "ず",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "セン"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A person with legs (儿) walking out in front: ahead, previous.",
+        "draft": true
+      },
+      "strokes": 6,
+      "grade": 1,
+      "freq": 173,
+      "parts": [
+        "儿"
+      ],
+      "vocab": [
+        {
+          "word": "先月",
+          "reading": "せんげつ",
+          "meaning": "last month",
+          "is_key": true
+        },
+        {
+          "word": "先生",
+          "reading": "せんせい",
+          "meaning": "teacher; instructor",
+          "is_key": false
+        },
+        {
+          "word": "先に",
+          "reading": "さきに",
+          "meaning": "previously; before",
+          "is_key": false
+        },
+        {
+          "word": "先日",
+          "reading": "せんじつ",
+          "meaning": "the other day; a few days ago",
+          "is_key": false
+        },
+        {
+          "word": "先行",
+          "reading": "せんこう",
+          "meaning": "going ahead; going first",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "生",
+          "note": "生 life has no legs"
+        }
+      ]
+    },
+    {
+      "char": "生",
+      "unit": "u11",
+      "position": 64,
+      "meanings": [
+        "life",
+        "genuine",
+        "birth"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "セイ",
+        "ショウ"
+      ],
+      "kun": [
+        {
+          "kana": "い",
+          "okurigana": "きる",
+          "affix": null
+        },
+        {
+          "kana": "い",
+          "okurigana": "かす",
+          "affix": null
+        },
+        {
+          "kana": "い",
+          "okurigana": "ける",
+          "affix": null
+        },
+        {
+          "kana": "う",
+          "okurigana": "まれる",
+          "affix": null
+        },
+        {
+          "kana": "うま",
+          "okurigana": "れる",
+          "affix": null
+        },
+        {
+          "kana": "う",
+          "okurigana": "まれ",
+          "affix": null
+        },
+        {
+          "kana": "うまれ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "う",
+          "okurigana": "む",
+          "affix": null
+        },
+        {
+          "kana": "お",
+          "okurigana": "う",
+          "affix": null
+        },
+        {
+          "kana": "は",
+          "okurigana": "える",
+          "affix": null
+        },
+        {
+          "kana": "は",
+          "okurigana": "やす",
+          "affix": null
+        },
+        {
+          "kana": "き",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "なま",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "なま",
+          "okurigana": null,
+          "affix": "prefix"
+        },
+        {
+          "kana": "な",
+          "okurigana": "る",
+          "affix": null
+        },
+        {
+          "kana": "な",
+          "okurigana": "す",
+          "affix": null
+        },
+        {
+          "kana": "む",
+          "okurigana": "す",
+          "affix": null
+        },
+        {
+          "kana": "う",
+          "okurigana": null,
+          "affix": "suffix"
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "セイ"
+      },
+      "reading_tip": "This kanji has many readings: セイ in 学生, う(まれる) \"be born\", い(きる) \"live\", なま \"raw\".",
+      "mnemonic": {
+        "text": "A plant sprouting from the earth: life, to be born.",
+        "draft": true
+      },
+      "strokes": 5,
+      "grade": 1,
+      "freq": 29,
+      "parts": [
+        "生"
+      ],
+      "vocab": [
+        {
+          "word": "学生",
+          "reading": "がくせい",
+          "meaning": "student",
+          "is_key": true
+        },
+        {
+          "word": "人生",
+          "reading": "じんせい",
+          "meaning": "life",
+          "is_key": false
+        },
+        {
+          "word": "先生",
+          "reading": "せんせい",
+          "meaning": "teacher; instructor",
+          "is_key": false
+        },
+        {
+          "word": "高校生",
+          "reading": "こうこうせい",
+          "meaning": "senior high school student",
+          "is_key": false
+        },
+        {
+          "word": "中学生",
+          "reading": "ちゅうがくせい",
+          "meaning": "junior high school student",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "先",
+          "note": "先 ahead ends with legs (儿)"
+        }
+      ]
+    },
+    {
+      "char": "友",
+      "unit": "u11",
+      "position": 65,
+      "meanings": [
+        "friend"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ユウ"
+      ],
+      "kun": [
+        {
+          "kana": "とも",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "とも"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Two hands reaching across to each other: friend.",
+        "draft": true
+      },
+      "strokes": 4,
+      "grade": 2,
+      "freq": 622,
+      "parts": [
+        "又"
+      ],
+      "vocab": [
+        {
+          "word": "友",
+          "reading": "とも",
+          "meaning": "friend; companion",
+          "is_key": true
+        },
+        {
+          "word": "友人",
+          "reading": "ゆうじん",
+          "meaning": "friend",
+          "is_key": false
+        },
+        {
+          "word": "学友",
+          "reading": "がくゆう",
+          "meaning": "school friend",
+          "is_key": false
+        },
+        {
+          "word": "校友",
+          "reading": "こうゆう",
+          "meaning": "schoolmate; alumnus",
+          "is_key": false
+        },
+        {
+          "word": "友だち",
+          "reading": "ともだち",
+          "meaning": "friend; companion",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "名",
+      "unit": "u11",
+      "position": 66,
+      "meanings": [
+        "name",
+        "noted",
+        "distinguished",
+        "reputation"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "メイ",
+        "ミョウ"
+      ],
+      "kun": [
+        {
+          "kana": "な",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "な",
+          "okurigana": null,
+          "affix": "suffix"
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "な"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Evening (夕) and a mouth (口): in the dark you call out your name.",
+        "draft": true
+      },
+      "strokes": 6,
+      "grade": 1,
+      "freq": 177,
+      "parts": [
+        "夕",
+        "口"
+      ],
+      "vocab": [
+        {
+          "word": "名",
+          "reading": "な",
+          "meaning": "name; given name",
+          "is_key": true
+        },
+        {
+          "word": "名前",
+          "reading": "なまえ",
+          "meaning": "name",
+          "is_key": false
+        },
+        {
+          "word": "本名",
+          "reading": "ほんみょう",
+          "meaning": "real name",
+          "is_key": false
+        },
+        {
+          "word": "名人",
+          "reading": "めいじん",
+          "meaning": "master; expert",
+          "is_key": false
+        },
+        {
+          "word": "国名",
+          "reading": "こくめい",
+          "meaning": "country name",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "各",
+          "note": "各 each (N3)"
+        }
+      ]
+    },
+    {
+      "char": "見",
+      "unit": "u12",
+      "position": 67,
+      "meanings": [
+        "see",
+        "hopes",
+        "chances",
+        "idea",
+        "opinion",
+        "look at",
+        "visible"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ケン"
+      ],
+      "kun": [
+        {
+          "kana": "み",
+          "okurigana": "る",
+          "affix": null
+        },
+        {
+          "kana": "み",
+          "okurigana": "える",
+          "affix": null
+        },
+        {
+          "kana": "み",
+          "okurigana": "せる",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "み"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "An eye (目) on legs (儿): going to see.",
+        "draft": true
+      },
+      "strokes": 7,
+      "grade": 1,
+      "freq": 22,
+      "parts": [
+        "目",
+        "儿"
+      ],
+      "vocab": [
+        {
+          "word": "見る",
+          "reading": "みる",
+          "meaning": "to see; to look",
+          "is_key": true
+        },
+        {
+          "word": "見学",
+          "reading": "けんがく",
+          "meaning": "inspection; study by observation",
+          "is_key": false
+        },
+        {
+          "word": "見出し",
+          "reading": "みだし",
+          "meaning": "heading; headline",
+          "is_key": false
+        },
+        {
+          "word": "見つかる",
+          "reading": "みつかる",
+          "meaning": "to be found; to be discovered",
+          "is_key": false
+        },
+        {
+          "word": "外見",
+          "reading": "がいけん",
+          "meaning": "outward appearance",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "貝",
+          "note": "貝 shell has short legs"
+        }
+      ]
+    },
+    {
+      "char": "聞",
+      "unit": "u12",
+      "position": 68,
+      "meanings": [
+        "hear",
+        "ask",
+        "listen"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ブン",
+        "モン"
+      ],
+      "kun": [
+        {
+          "kana": "き",
+          "okurigana": "く",
+          "affix": null
+        },
+        {
+          "kana": "き",
+          "okurigana": "こえる",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "き"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "An ear (耳) at a gate (門): listening at the door.",
+        "draft": true
+      },
+      "strokes": 14,
+      "grade": 2,
+      "freq": 319,
+      "parts": [
+        "門",
+        "耳"
+      ],
+      "vocab": [
+        {
+          "word": "聞く",
+          "reading": "きく",
+          "meaning": "to hear",
+          "is_key": true
+        },
+        {
+          "word": "聞こえる",
+          "reading": "きこえる",
+          "meaning": "to be heard; to be audible",
+          "is_key": false
+        },
+        {
+          "word": "聞き入る",
+          "reading": "ききいる",
+          "meaning": "to listen attentively to; to be lost in",
+          "is_key": false
+        },
+        {
+          "word": "聞こえ",
+          "reading": "きこえ",
+          "meaning": "being able to hear something",
+          "is_key": false
+        },
+        {
+          "word": "聞き出す",
+          "reading": "ききだす",
+          "meaning": "to get information out of a person",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "間",
+          "note": "間 space has the sun (日)"
+        },
+        {
+          "char": "問",
+          "note": "問 question has a mouth (口)"
+        }
+      ]
+    },
+    {
+      "char": "話",
+      "unit": "u12",
+      "position": 69,
+      "meanings": [
+        "talk",
+        "tale"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ワ"
+      ],
+      "kun": [
+        {
+          "kana": "はな",
+          "okurigana": "す",
+          "affix": null
+        },
+        {
+          "kana": "はなし",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "はな"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Words (言) and a tongue (舌): talking.",
+        "draft": true
+      },
+      "strokes": 13,
+      "grade": 2,
+      "freq": 134,
+      "parts": [
+        "言",
+        "舌"
+      ],
+      "vocab": [
+        {
+          "word": "話す",
+          "reading": "はなす",
+          "meaning": "to talk; to speak",
+          "is_key": true
+        },
+        {
+          "word": "話",
+          "reading": "はなし",
+          "meaning": "talk; speech",
+          "is_key": false
+        },
+        {
+          "word": "電話",
+          "reading": "でんわ",
+          "meaning": "telephone call; phone call",
+          "is_key": false
+        },
+        {
+          "word": "話し中",
+          "reading": "はなしちゅう",
+          "meaning": "busy",
+          "is_key": false
+        },
+        {
+          "word": "長話",
+          "reading": "ながばなし",
+          "meaning": "long talk",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "語",
+          "note": "語 language has 吾 on the right"
+        },
+        {
+          "char": "読",
+          "note": "読 read has 売 on the right"
+        }
+      ]
+    },
+    {
+      "char": "語",
+      "unit": "u12",
+      "position": 70,
+      "meanings": [
+        "language",
+        "word",
+        "speech"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ゴ"
+      ],
+      "kun": [
+        {
+          "kana": "かた",
+          "okurigana": "る",
+          "affix": null
+        },
+        {
+          "kana": "かた",
+          "okurigana": "らう",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ゴ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Words (言) and \"I\" (吾): the words I speak, a language.",
+        "draft": true
+      },
+      "strokes": 14,
+      "grade": 2,
+      "freq": 301,
+      "parts": [
+        "言",
+        "吾"
+      ],
+      "vocab": [
+        {
+          "word": "語",
+          "reading": "ご",
+          "meaning": "language",
+          "is_key": true
+        },
+        {
+          "word": "国語",
+          "reading": "こくご",
+          "meaning": "national language",
+          "is_key": false
+        },
+        {
+          "word": "語る",
+          "reading": "かたる",
+          "meaning": "to talk about; to speak of",
+          "is_key": false
+        },
+        {
+          "word": "外国語",
+          "reading": "がいこくご",
+          "meaning": "foreign language",
+          "is_key": false
+        },
+        {
+          "word": "語学",
+          "reading": "ごがく",
+          "meaning": "study of foreign languages",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "話",
+          "note": "話 talk has 舌 on the right"
+        }
+      ]
+    },
+    {
+      "char": "読",
+      "unit": "u12",
+      "position": 71,
+      "meanings": [
+        "read"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ドク",
+        "トク",
+        "トウ"
+      ],
+      "kun": [
+        {
+          "kana": "よ",
+          "okurigana": "む",
+          "affix": null
+        },
+        {
+          "kana": "よ",
+          "okurigana": "み",
+          "affix": "suffix"
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "よ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Words (言) and sell (売): a seller reading out the words.",
+        "draft": true
+      },
+      "strokes": 14,
+      "grade": 2,
+      "freq": 618,
+      "parts": [
+        "言",
+        "売"
+      ],
+      "vocab": [
+        {
+          "word": "読む",
+          "reading": "よむ",
+          "meaning": "to read",
+          "is_key": true
+        },
+        {
+          "word": "読書",
+          "reading": "どくしょ",
+          "meaning": "reading",
+          "is_key": false
+        },
+        {
+          "word": "読み書き",
+          "reading": "よみかき",
+          "meaning": "reading and writing",
+          "is_key": false
+        },
+        {
+          "word": "一読",
+          "reading": "いちどく",
+          "meaning": "perusal; one reading",
+          "is_key": false
+        },
+        {
+          "word": "本読み",
+          "reading": "ほんよみ",
+          "meaning": "script reading; scenario reading",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "話",
+          "note": "話 talk has 舌 on the right"
+        }
+      ]
+    },
+    {
+      "char": "書",
+      "unit": "u12",
+      "position": 72,
+      "meanings": [
+        "write"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ショ"
+      ],
+      "kun": [
+        {
+          "kana": "か",
+          "okurigana": "く",
+          "affix": null
+        },
+        {
+          "kana": "が",
+          "okurigana": "き",
+          "affix": "suffix"
+        },
+        {
+          "kana": "がき",
+          "okurigana": null,
+          "affix": "suffix"
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "か"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A hand holding a brush (聿) over the sun (日): writing all day.",
+        "draft": true
+      },
+      "strokes": 10,
+      "grade": 2,
+      "freq": 169,
+      "parts": [
+        "聿",
+        "日"
+      ],
+      "vocab": [
+        {
+          "word": "書く",
+          "reading": "かく",
+          "meaning": "to write; to compose",
+          "is_key": true
+        },
+        {
+          "word": "読書",
+          "reading": "どくしょ",
+          "meaning": "reading",
+          "is_key": false
+        },
+        {
+          "word": "読み書き",
+          "reading": "よみかき",
+          "meaning": "reading and writing",
+          "is_key": false
+        },
+        {
+          "word": "書名",
+          "reading": "しょめい",
+          "meaning": "book title",
+          "is_key": false
+        },
+        {
+          "word": "下書き",
+          "reading": "したがき",
+          "meaning": "draft; rough copy",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "国",
+      "unit": "u13",
+      "position": 73,
+      "meanings": [
+        "country"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "コク"
+      ],
+      "kun": [
+        {
+          "kana": "くに",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "くに"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A jewel (玉) inside borders (囗): a country's treasure.",
+        "draft": true
+      },
+      "strokes": 8,
+      "grade": 2,
+      "freq": 3,
+      "parts": [
+        "囗",
+        "玉"
+      ],
+      "vocab": [
+        {
+          "word": "国",
+          "reading": "くに",
+          "meaning": "country; state",
+          "is_key": true
+        },
+        {
+          "word": "外国",
+          "reading": "がいこく",
+          "meaning": "foreign country",
+          "is_key": false
+        },
+        {
+          "word": "外国人",
+          "reading": "がいこくじん",
+          "meaning": "foreigner; foreign citizen",
+          "is_key": false
+        },
+        {
+          "word": "大国",
+          "reading": "たいこく",
+          "meaning": "large country; major nation",
+          "is_key": false
+        },
+        {
+          "word": "国外",
+          "reading": "こくがい",
+          "meaning": "outside the country; abroad",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "本",
+      "unit": "u13",
+      "position": 74,
+      "meanings": [
+        "book",
+        "present",
+        "main",
+        "origin",
+        "true",
+        "real",
+        "counter for long cylindrical things"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ホン"
+      ],
+      "kun": [
+        {
+          "kana": "もと",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "on",
+        "kana": "ホン"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A tree (木) with a line at the root: the origin, and books made from trees.",
+        "draft": true
+      },
+      "strokes": 5,
+      "grade": 1,
+      "freq": 10,
+      "parts": [
+        "木"
+      ],
+      "vocab": [
+        {
+          "word": "本",
+          "reading": "ほん",
+          "meaning": "book; volume",
+          "is_key": true
+        },
+        {
+          "word": "本人",
+          "reading": "ほんにん",
+          "meaning": "the person in question",
+          "is_key": false
+        },
+        {
+          "word": "本来",
+          "reading": "ほんらい",
+          "meaning": "originally; primarily",
+          "is_key": false
+        },
+        {
+          "word": "本名",
+          "reading": "ほんみょう",
+          "meaning": "real name",
+          "is_key": false
+        },
+        {
+          "word": "本国",
+          "reading": "ほんごく",
+          "meaning": "home country; one's own country",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "木",
+          "note": "木 tree has no root line"
+        }
+      ]
+    },
+    {
+      "char": "長",
+      "unit": "u13",
+      "position": 75,
+      "meanings": [
+        "long",
+        "leader",
+        "superior",
+        "senior"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "チョウ"
+      ],
+      "kun": [
+        {
+          "kana": "なが",
+          "okurigana": "い",
+          "affix": null
+        },
+        {
+          "kana": "おさ",
+          "okurigana": null,
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "なが"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Long flowing hair: long.",
+        "draft": true
+      },
+      "strokes": 8,
+      "grade": 2,
+      "freq": 12,
+      "parts": [
+        "長"
+      ],
+      "vocab": [
+        {
+          "word": "長い",
+          "reading": "ながい",
+          "meaning": "long",
+          "is_key": true
+        },
+        {
+          "word": "長男",
+          "reading": "ちょうなん",
+          "meaning": "eldest son; first-born son",
+          "is_key": false
+        },
+        {
+          "word": "校長",
+          "reading": "こうちょう",
+          "meaning": "principal; headmaster",
+          "is_key": false
+        },
+        {
+          "word": "長女",
+          "reading": "ちょうじょ",
+          "meaning": "eldest daughter; first-born daughter",
+          "is_key": false
+        },
+        {
+          "word": "長年",
+          "reading": "ながねん",
+          "meaning": "long time; many years",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "高",
+      "unit": "u13",
+      "position": 76,
+      "meanings": [
+        "tall",
+        "high",
+        "expensive"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "コウ"
+      ],
+      "kun": [
+        {
+          "kana": "たか",
+          "okurigana": "い",
+          "affix": null
+        },
+        {
+          "kana": "たか",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "だか",
+          "okurigana": null,
+          "affix": "suffix"
+        },
+        {
+          "kana": "たか",
+          "okurigana": "まる",
+          "affix": null
+        },
+        {
+          "kana": "たか",
+          "okurigana": "める",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "たか"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A tall tower with a roof, a window and a door: tall, expensive.",
+        "draft": true
+      },
+      "strokes": 10,
+      "grade": 2,
+      "freq": 65,
+      "parts": [
+        "亠",
+        "口",
+        "冋"
+      ],
+      "vocab": [
+        {
+          "word": "高い",
+          "reading": "たかい",
+          "meaning": "high; tall",
+          "is_key": true
+        },
+        {
+          "word": "高校",
+          "reading": "こうこう",
+          "meaning": "senior high school; high school",
+          "is_key": false
+        },
+        {
+          "word": "円高",
+          "reading": "えんだか",
+          "meaning": "appreciation of the yen; strong yen",
+          "is_key": false
+        },
+        {
+          "word": "高校生",
+          "reading": "こうこうせい",
+          "meaning": "senior high school student",
+          "is_key": false
+        },
+        {
+          "word": "高まる",
+          "reading": "たかまる",
+          "meaning": "to rise; to swell",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "白",
+      "unit": "u13",
+      "position": 77,
+      "meanings": [
+        "white"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ハク",
+        "ビャク"
+      ],
+      "kun": [
+        {
+          "kana": "しろ",
+          "okurigana": null,
+          "affix": null
+        },
+        {
+          "kana": "しら",
+          "okurigana": null,
+          "affix": "prefix"
+        },
+        {
+          "kana": "しろ",
+          "okurigana": "い",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "しろ"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "The sun (日) with a ray shining on top: white light.",
+        "draft": true
+      },
+      "strokes": 5,
+      "grade": 1,
+      "freq": 483,
+      "parts": [
+        "日"
+      ],
+      "vocab": [
+        {
+          "word": "白",
+          "reading": "しろ",
+          "meaning": "white",
+          "is_key": true
+        },
+        {
+          "word": "白い",
+          "reading": "しろい",
+          "meaning": "white",
+          "is_key": false
+        },
+        {
+          "word": "空白",
+          "reading": "くうはく",
+          "meaning": "blank space",
+          "is_key": false
+        },
+        {
+          "word": "白紙",
+          "reading": "はくし",
+          "meaning": "white paper; flyleaf",
+          "is_key": false
+        },
+        {
+          "word": "明白",
+          "reading": "めいはく",
+          "meaning": "obvious; clear",
+          "is_key": false
+        }
+      ],
+      "look_alikes": [
+        {
+          "char": "日",
+          "note": "日 sun has no tick on top"
+        },
+        {
+          "char": "百",
+          "note": "百 adds a line on top"
+        }
+      ]
+    },
+    {
+      "char": "電",
+      "unit": "u13",
+      "position": 78,
+      "meanings": [
+        "electricity"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "デン"
+      ],
+      "kun": [],
+      "key_reading": {
+        "type": "on",
+        "kana": "デン"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "Rain (雨) above a field with a lightning tail: electricity.",
+        "draft": true
+      },
+      "strokes": 13,
+      "grade": 2,
+      "freq": 268,
+      "parts": [
+        "雨",
+        "日"
+      ],
+      "vocab": [
+        {
+          "word": "電話",
+          "reading": "でんわ",
+          "meaning": "telephone call; phone call",
+          "is_key": true
+        },
+        {
+          "word": "電気",
+          "reading": "でんき",
+          "meaning": "electricity",
+          "is_key": false
+        },
+        {
+          "word": "電子",
+          "reading": "でんし",
+          "meaning": "electron",
+          "is_key": false
+        },
+        {
+          "word": "電車",
+          "reading": "でんしゃ",
+          "meaning": "train; electric train",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    },
+    {
+      "char": "食",
+      "unit": "u13",
+      "position": 79,
+      "meanings": [
+        "eat",
+        "food"
+      ],
+      "synonyms": [],
+      "onyomi": [
+        "ショク",
+        "ジキ"
+      ],
+      "kun": [
+        {
+          "kana": "く",
+          "okurigana": "う",
+          "affix": null
+        },
+        {
+          "kana": "く",
+          "okurigana": "らう",
+          "affix": null
+        },
+        {
+          "kana": "た",
+          "okurigana": "べる",
+          "affix": null
+        },
+        {
+          "kana": "は",
+          "okurigana": "む",
+          "affix": null
+        }
+      ],
+      "key_reading": {
+        "type": "kun",
+        "kana": "た"
+      },
+      "reading_tip": null,
+      "mnemonic": {
+        "text": "A roof (人) over good food: eat.",
+        "draft": true
+      },
+      "strokes": 9,
+      "grade": 2,
+      "freq": 328,
+      "parts": [
+        "食"
+      ],
+      "vocab": [
+        {
+          "word": "食べる",
+          "reading": "たべる",
+          "meaning": "to eat",
+          "is_key": true
+        },
+        {
+          "word": "外食",
+          "reading": "がいしょく",
+          "meaning": "eating out; dining out",
+          "is_key": false
+        },
+        {
+          "word": "日食",
+          "reading": "にっしょく",
+          "meaning": "solar eclipse",
+          "is_key": false
+        },
+        {
+          "word": "食パン",
+          "reading": "しょくパン",
+          "meaning": "bread; bread in a rectangular shape",
+          "is_key": false
+        },
+        {
+          "word": "食後",
+          "reading": "しょくご",
+          "meaning": "after a meal",
+          "is_key": false
+        }
+      ],
+      "look_alikes": []
+    }
+  ]
+}
