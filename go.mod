@@ -1,6 +1,6 @@
 module github.com/fluentfox/api
 
-go 1.25.0
+go 1.26
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.30.1
@@ -14,6 +14,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.8.0
+	github.com/open-spaced-repetition/go-fsrs/v4 v4.0.0
 	github.com/prometheus/client_golang v1.23.2
 	github.com/resend/resend-go/v2 v2.8.0
 	github.com/spf13/viper v1.21.0

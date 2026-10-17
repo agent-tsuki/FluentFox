@@ -1,6 +1,10 @@
 package common
 
-import "time"
+import (
+	"time"
+
+	"github.com/fluentfox/api/pkg/srs"
+)
 
 const USERNAME_RETRY int = 3
 const CHARSET string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -47,3 +51,76 @@ const (
 
 // HS256 can be brute-forced offline from any issued token if the secret is short.
 const JWT_SECRET_MIN_BYTES int = 32
+
+// Answer grading thresholds (docs/learning-plan.md section 5). Answer times
+// are compared in log space because they are right-skewed.
+const (
+	MIN_PLAUSIBLE_ANSWER time.Duration = 250 * time.Millisecond
+	MAX_ACTIVE_ANSWER    time.Duration = 30 * time.Second
+	BASELINE_WINDOW      int           = 50
+	BASELINE_COLD_START  float64       = 20
+	SLOW_Z               float64       = 1.5
+	FAST_Z               float64       = -1.0
+	LEECH_LAPSES         int           = 8
+	SAFETY_NET_DUE       time.Duration = 24 * time.Hour
+	// MAD × 1.4826 estimates the standard deviation of a normal distribution.
+	MAD_TO_SIGMA float64 = 1.4826
+	// Spread used while the user has few answers, and a floor so a run of
+	// identical times cannot make every small difference look extreme.
+	DEFAULT_LOG_MAD float64 = 0.3
+	MIN_LOG_MAD     float64 = 0.1
+	// Used until the user has typed answers of their own.
+	DEFAULT_TYPING_PER_CHAR  time.Duration = 300 * time.Millisecond
+	FREE_AUDIO_REPLAYS       int           = 1
+	BUILD_TILES_AGAIN        int           = 2
+	STROKE_ERROR_RATIO_AGAIN float64       = 0.25
+)
+
+// English meaning answers: up to MEANING_TYPO_SHORT letters allow no edits,
+// up to MEANING_TYPO_MEDIUM allow one, longer ones allow two.
+const (
+	MEANING_TYPO_SHORT        int = 4
+	MEANING_TYPO_MEDIUM       int = 7
+	MEANING_TYPO_MEDIUM_EDITS int = 1
+	MEANING_TYPO_LONG_EDITS   int = 2
+)
+
+// UsualTime is the default time to answer before typing; typed answers add
+// typing time per character and build questions add UsualTimePerTile.
+type QuestionTypeRule struct {
+	UpdatesSchedule  bool
+	MaxRating        srs.Rating
+	UsualTime        time.Duration
+	UsualTimePerTile time.Duration
+	Typed            bool
+}
+
+// Default "usual time" per question type, before the user has a baseline.
+const (
+	USUAL_KANA_MCQ           time.Duration = 2 * time.Second
+	USUAL_KANA_TYPED         time.Duration = 1500 * time.Millisecond
+	USUAL_LISTEN_AFTER_AUDIO time.Duration = 2 * time.Second
+	USUAL_BUILD_PER_TILE     time.Duration = time.Second
+	USUAL_LOOKALIKE          time.Duration = 3 * time.Second
+	USUAL_KANJI_MCQ          time.Duration = 3 * time.Second
+	USUAL_MEANING_TYPED      time.Duration = 2 * time.Second
+	USUAL_READING_TYPED      time.Duration = 2500 * time.Millisecond
+)
+
+var QUESTION_TYPE_RULES = map[QuestionType]QuestionTypeRule{
+	QuestionKanaMCQRomaji:     {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANA_MCQ},
+	QuestionKanaMCQKana:       {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANA_MCQ},
+	QuestionKanaTyped:         {UpdatesSchedule: true, MaxRating: srs.RatingEasy, UsualTime: USUAL_KANA_TYPED, Typed: true},
+	QuestionKanaListen:        {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LISTEN_AFTER_AUDIO},
+	QuestionKanaBuild:         {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTimePerTile: USUAL_BUILD_PER_TILE},
+	QuestionKanaLookalike:     {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LOOKALIKE},
+	QuestionKanaSpeed:         {},
+	QuestionKanaMatch:         {},
+	QuestionKanaTrace:         {},
+	QuestionKanjiMeaningMCQ:   {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANJI_MCQ},
+	QuestionKanjiMeaningTyped: {UpdatesSchedule: true, MaxRating: srs.RatingEasy, UsualTime: USUAL_MEANING_TYPED, Typed: true},
+	QuestionKanjiReadingMCQ:   {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANJI_MCQ},
+	QuestionKanjiReadingTyped: {UpdatesSchedule: true, MaxRating: srs.RatingEasy, UsualTime: USUAL_READING_TYPED, Typed: true},
+	QuestionKanjiListen:       {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LISTEN_AFTER_AUDIO},
+	QuestionKanjiLookalike:    {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LOOKALIKE},
+}
