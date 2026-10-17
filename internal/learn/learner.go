@@ -29,8 +29,13 @@ func dayWindowAt(now time.Time, timeZone string, startHour int) dayWindow {
 	if err != nil || timeZone == "" {
 		loc = time.UTC
 	}
-	shifted := now.In(loc).Add(-time.Duration(startHour) * time.Hour)
-	y, m, d := shifted.Date()
+	// Compare wall-clock hours, not elapsed time: on a 23- or 25-hour
+	// daylight-saving day, subtracting hours lands in the wrong study day.
+	local := now.In(loc)
+	y, m, d := local.Date()
+	if local.Hour() < startHour {
+		y, m, d = time.Date(y, m, d-1, 0, 0, 0, 0, loc).Date()
+	}
 	start := time.Date(y, m, d, startHour, 0, 0, 0, loc)
 	return dayWindow{
 		Start:     start,

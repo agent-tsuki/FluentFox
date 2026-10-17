@@ -14,6 +14,10 @@ func TestDayWindowAt(t *testing.T) {
 	if err != nil {
 		t.Fatalf("load zone: %v", err)
 	}
+	newYork, err := time.LoadLocation("America/New_York")
+	if err != nil {
+		t.Fatalf("load zone: %v", err)
+	}
 	tests := []struct {
 		name      string
 		now       time.Time
@@ -33,6 +37,10 @@ func TestDayWindowAt(t *testing.T) {
 		{
 			name: "the user's time zone sets the local date", now: time.Date(2026, 3, 10, 20, 0, 0, 0, time.UTC),
 			tz: "Asia/Tokyo", startHour: 4, wantStart: time.Date(2026, 3, 11, 4, 0, 0, 0, tokyo), wantDate: "2026-03-11",
+		},
+		{
+			name: "the hour after the start on a daylight-saving day belongs to that day", now: time.Date(2026, 3, 8, 8, 30, 0, 0, time.UTC),
+			tz: "America/New_York", startHour: 4, wantStart: time.Date(2026, 3, 8, 4, 0, 0, 0, newYork), wantDate: "2026-03-08",
 		},
 		{
 			name: "an unknown time zone falls back to UTC", now: time.Date(2026, 3, 10, 10, 0, 0, 0, time.UTC),

@@ -19,8 +19,8 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 | 4 | frontend: answer timer + queue, lesson / Review all / result screens, how-grading page, leech hint, `ts-fsrs` removed, guest prompts, Vitest (75 tests) | done (FluentFoxUI up to `7142efb`); not yet clicked through against a live backend |
 | 5 | backend: practice, tests (unit/skip/final), safety net, unit progress, kanji notes | done, tested (FluentFox `dd1cdc9`…`eefc0b4`); end-to-end checked on Postgres |
 | 5 | frontend: practice / tests / path state / notes on the API, local progress record removed | done (FluentFoxUI up to `b71c0a5`, 130 tests); not yet clicked through against a live backend |
-| 6 | progress APIs (overview, forecast, calendar, weakness, confusions, items, dashboard) | **not started** |
-| 6 | frontend progress pages, dashboard, settings page | **not started** |
+| 6 | backend: progress APIs (overview, forecast, calendar, weak, weak-groups, confusions, items, dashboard) + `GET /learn/tests/history` | done, tested (FluentFox `382ce85`…`66d6ee3`); end-to-end checked on Postgres (Asia/Tokyo user) |
+| 6 | frontend progress pages, dashboard, settings page | in progress |
 
 ## Next steps (in order)
 
@@ -58,6 +58,8 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 ## Known gaps and follow-ups
 
 Backend:
+- `/progress/weak` ranks per card, so a kanji can appear twice (meaning and reading).
+- Dashboard `skillBalance`: grammar, vocabulary and speaking are always 0; `studyLog.xp` is null.
 - Practice and test answers count toward `max_reviews_per_day`; consider excluding them.
 - No Docker integration tests committed for the learn SQL (checked by hand on Postgres).
 - On/kun mix-up rule ("wrong reading, then fixed → Hard") never fires: the request does not
