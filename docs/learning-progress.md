@@ -11,7 +11,7 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 |---|---|---|
 | 1 | goose, `000001_users` baseline, `cmd/migrate` switch, Makefile | done (000001 schema identical to AutoMigrate; up/down/up verified on Postgres 16) |
 | 1 | migrations `000002`–`000008` (all tables from the plan) | done |
-| 2 | backend content: `content/*.json`, `cmd/sync-content`, `internal/content`, `/content/*` | in progress |
+| 2 | backend content: `content/*.json`, `cmd/sync-content`, `internal/content`, `/content/*` | done, with tests; sync verified twice against the real migrations (236 kana, 79 kanji, 386 vocab, 230 kun readings, 174 kana look-alikes) |
 | 2 | frontend content services on `/content/*` | done (FluentFoxUI `b333f6d`; falls back to bundled JSON until the backend serves content) |
 | 2 | upload stroke JSON to R2, set `strokes_base_url` | not started |
 | 3 | `pkg/srs` (go-fsrs v4 wrapper), `internal/learn/grading.go`, learning enums + constants | done, with tests (`pkg/srs`, `internal/learn` pass) |
@@ -43,6 +43,33 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 - Callers of `Grade` must: feed `MatchMeaning` (typo matching another kanji) into `Correct`,
   and limit history to the last `BASELINE_WINDOW` answers.
 - New constants in `internal/common/constants.go` use the file's UPPER_SNAKE style.
+
+Content (phase 2) follow-ups:
+- Add `UNIQUE(kanji_id, position)` to `kanji_kun_reading` and `kanji_vocab` (new migration).
+  Sync currently matches on (kanji_id, position) without it, and never deletes rows, so a
+  shortened list leaves old rows behind.
+- Kana group titles/summaries are hard-coded in `internal/content/kana_groups.go`; a
+  `kana_group` table would be cleaner.
+- 20 N5 look-alikes point to kanji outside N5 (目, 田, 犬, 石 ...) and are skipped with a
+  warning. 11 will link once N4 is synced and N5 re-synced.
+- `kanji_look_alike` has no position column; order comes from `created_at`.
+- The kana API returns groups/units/kana, not the frontend `KanaSection` chart grid. The
+  frontend must build the grid (or the backend adds it). Frontend currently expects
+  `sections: KanaSection[]` and falls back to bundled data.
+- Stroke JSON not uploaded to R2 yet; `STROKES_BASE_URL` must be set per environment.
+- Re-generate content with `node scripts/content/convert-frontend.mjs [uiPath]`, then
+  `make sync-content`. `cmd/sync-content` uses `config.Load()`, so it needs the full API env.
+- `internal/kanji/model.go` (old, unused) maps to the same table name `kanji`.
+
+## Next steps (in order)
+
+1. Decide Go 1.26 vs own FSRS; update Dockerfiles if 1.26.
+2. Migration `000009`: unique (kanji_id, position) on kun readings and vocab.
+3. Agree the kana API shape with the frontend (`sections` grid or frontend builds it).
+4. Phase 4 backend: learning settings, question builder, lessons, reviews, answers, complete.
+5. Phase 4 frontend: wire `useAnswerTimer` + answer queue into lesson/review/result screens,
+   remove `ts-fsrs` and the localStorage progress services.
+6. Phase 5, then phase 6, as in the plan.
 
 Frontend (FluentFoxUI) follow-ups:
 - Align TS types in `src/types/learn.ts`, `progress.ts`, `content.ts` with the backend DTOs once
