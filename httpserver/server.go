@@ -16,6 +16,7 @@ import (
 	"github.com/fluentfox/api/config"
 	"github.com/fluentfox/api/internal/auth"
 	"github.com/fluentfox/api/internal/common"
+	"github.com/fluentfox/api/internal/content"
 	"github.com/fluentfox/api/internal/services"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/database"
@@ -106,6 +107,13 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	auth.RegisterRoutes(api, authHandler)
 	auth.RegisterGoogleOAuthRoutes(r, googleOAuth, tokenMaker, log)
 	auth.RegisterXOAuthRoutes(r, xOAuth, tokenMaker, log)
+
+	contentRepo := content.NewRepository(db)
+	content.RegisterRoutes(api, content.NewHandler(
+		content.NewKanaContentService(contentRepo, cfg.StrokesBaseURL, log),
+		content.NewKanjiContentService(contentRepo, cfg.StrokesBaseURL, log),
+		log,
+	))
 
 	r.GET("/health", func(c *gin.Context) {
 		if err := sqlDB.Ping(); err != nil {

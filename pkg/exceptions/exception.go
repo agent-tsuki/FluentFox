@@ -110,3 +110,9 @@ var (
 	ErrPasswordResetCodeInvalid     = New(http.StatusBadRequest, "PASSWORD_RESET_CODE_INVALID", "the password reset code is invalid or expired")
 	ErrPasswordResetTokenInvalid    = New(http.StatusBadRequest, "PASSWORD_RESET_TOKEN_INVALID", "the password reset link is invalid or expired")
 )
+
+var (
+	ErrKanaScriptNotFound = New(http.StatusNotFound, "KANA_SCRIPT_NOT_FOUND", "kana script not found")
+	ErrKanjiLevelNotFound = New(http.StatusNotFound, "KANJI_LEVEL_NOT_FOUND", "kanji level not found")
+	ErrKanjiNotFound      = New(http.StatusNotFound, "KANJI_NOT_FOUND", "kanji not found")
+)

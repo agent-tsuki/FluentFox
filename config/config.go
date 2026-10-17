@@ -60,6 +60,9 @@ type Config struct {
 	R2BucketName string
 	R2PublicURL  string
 
+	// Public base URL of the kana and kanji stroke JSON files; sent to clients as-is.
+	StrokesBaseURL string
+
 	// Logging
 	LogLevel string
 }
@@ -136,6 +139,8 @@ func Load() *Config {
 		R2SecretKey:  v.GetString("R2_SECRET_KEY"),
 		R2BucketName: v.GetString("R2_BUCKET_NAME"),
 		R2PublicURL:  v.GetString("R2_PUBLIC_URL"),
+
+		StrokesBaseURL: v.GetString("STROKES_BASE_URL"),
 
 		LogLevel: v.GetString("LOG_LEVEL"),
 	}

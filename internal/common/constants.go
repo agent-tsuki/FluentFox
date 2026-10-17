@@ -124,3 +124,9 @@ var QUESTION_TYPE_RULES = map[QuestionType]QuestionTypeRule{
 	QuestionKanjiListen:       {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LISTEN_AFTER_AUDIO},
 	QuestionKanjiLookalike:    {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LOOKALIKE},
 }
+
+// Only N5 kanji content ships in v1; other levels answer 404 until they are synced.
+var KANJI_CONTENT_LEVELS = []JLPTLevel{JLPTLevelN5}
+
+// The kana chart (frontend KanaType) calls the combo group's kana "compound".
+const KANA_CHART_TYPE_COMPOUND string = "compound"

@@ -1,0 +1,1901 @@
+{
+  "script": "katakana",
+  "groups": [
+    {
+      "slug": "basic",
+      "title": "Basic 46",
+      "summary": "The core katakana, ア to ン.",
+      "position": 1
+    },
+    {
+      "slug": "dakuten",
+      "title": "Dakuten & handakuten",
+      "summary": "Voiced sounds: カ → ガ, ハ → パ.",
+      "position": 2
+    },
+    {
+      "slug": "combo",
+      "title": "Combinations",
+      "summary": "Small ャュョ combinations.",
+      "position": 3
+    },
+    {
+      "slug": "foreign",
+      "title": "Foreign sounds",
+      "summary": "ー, small ッ and the extra sounds used in loanwords.",
+      "position": 4
+    }
+  ],
+  "units": [
+    {
+      "slug": "a",
+      "group": "basic",
+      "title": "ア row",
+      "summary": "The five vowels, now in sharp, straight strokes.",
+      "position": 1,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "ka",
+      "group": "basic",
+      "title": "カ row",
+      "summary": "K + vowel — カ and キ look a lot like か and き.",
+      "position": 2,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "sa",
+      "group": "basic",
+      "title": "サ row",
+      "summary": "S sounds, and the first look-alike trap: シ vs ツ.",
+      "position": 3,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "ta",
+      "group": "basic",
+      "title": "タ row",
+      "summary": "T sounds with chi and tsu — watch タ vs ク.",
+      "position": 4,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "na",
+      "group": "basic",
+      "title": "ナ row",
+      "summary": "N sounds: simple shapes, few strokes.",
+      "position": 5,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "ha",
+      "group": "basic",
+      "title": "ハ row",
+      "summary": "H sounds, plus fu — ヘ is the same as へ.",
+      "position": 6,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "ma",
+      "group": "basic",
+      "title": "マ row",
+      "summary": "M sounds: ma, mi, mu, me, mo.",
+      "position": 7,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "ya",
+      "group": "basic",
+      "title": "ヤ row",
+      "summary": "Only three: ya, yu, yo.",
+      "position": 8,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "ra",
+      "group": "basic",
+      "title": "ラ row",
+      "summary": "The Japanese r — リ is almost り.",
+      "position": 9,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "wa",
+      "group": "basic",
+      "title": "ワ · ヲ · ン",
+      "summary": "The last three — and ン vs ソ.",
+      "position": 10,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "dakuten",
+      "group": "dakuten",
+      "title": "Dakuten & handakuten",
+      "summary": "Two dots or a circle change the sound: カ → ガ, ハ → パ.",
+      "position": 11,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "combo-1",
+      "group": "combo",
+      "title": "Combinations I",
+      "summary": "Small ャュョ: キャ, シャ, チャ, ニャ, ヒャ, ミャ, リャ.",
+      "position": 12,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "combo-2",
+      "group": "combo",
+      "title": "Combinations II",
+      "summary": "Voiced combinations: ギャ, ジャ, ビャ, ピャ.",
+      "position": 13,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "marks",
+      "group": "foreign",
+      "title": "Long vowels & small ッ",
+      "summary": "ー stretches a vowel (コーヒー); small ッ adds a tiny pause (ベッド).",
+      "position": 14,
+      "youtube_id": null,
+      "video_credit": null
+    },
+    {
+      "slug": "foreign",
+      "group": "foreign",
+      "title": "Foreign sounds",
+      "summary": "Small vowels make new sounds for loanwords: ファ, ティ, ヴァ, シェ.",
+      "position": 15,
+      "youtube_id": null,
+      "video_credit": null
+    }
+  ],
+  "kana": [
+    {
+      "slug": "a",
+      "character": "ア",
+      "romaji": "a",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "a",
+      "position": 1,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "ma",
+          "note": "ア: the tail is long and falls away to the lower left. マ: the tail is a short tick that turns back in."
+        }
+      ]
+    },
+    {
+      "slug": "i",
+      "character": "イ",
+      "romaji": "i",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "a",
+      "position": 2,
+      "stroke_count": 2,
+      "look_alikes": []
+    },
+    {
+      "slug": "u",
+      "character": "ウ",
+      "romaji": "u",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "a",
+      "position": 3,
+      "stroke_count": 3,
+      "look_alikes": [
+        {
+          "slug": "wa",
+          "note": "フ is the bare hook; ワ adds a left post; ウ adds a post and a dot on top; ヲ adds a bar through the middle."
+        },
+        {
+          "slug": "fu",
+          "note": "フ is the bare hook; ワ adds a left post; ウ adds a post and a dot on top; ヲ adds a bar through the middle."
+        },
+        {
+          "slug": "wo",
+          "note": "フ is the bare hook; ワ adds a left post; ウ adds a post and a dot on top; ヲ adds a bar through the middle."
+        }
+      ]
+    },
+    {
+      "slug": "e",
+      "character": "エ",
+      "romaji": "e",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "a",
+      "position": 4,
+      "stroke_count": 3,
+      "look_alikes": [
+        {
+          "slug": "yu",
+          "note": "エ’s post stands in the middle; ユ’s post is on the right and the box opens left."
+        }
+      ]
+    },
+    {
+      "slug": "o",
+      "character": "オ",
+      "romaji": "o",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "a",
+      "position": 5,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "ka",
+      "character": "カ",
+      "romaji": "ka",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ka",
+      "position": 6,
+      "stroke_count": 2,
+      "look_alikes": []
+    },
+    {
+      "slug": "ki",
+      "character": "キ",
+      "romaji": "ki",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ka",
+      "position": 7,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "ku",
+      "character": "ク",
+      "romaji": "ku",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ka",
+      "position": 8,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "ke",
+          "note": "ク: one hooked roof. タ: ク plus a dash inside. ケ: a straight bar with a separate leg dropping from it."
+        },
+        {
+          "slug": "ta",
+          "note": "ク: one hooked roof. タ: ク plus a dash inside. ケ: a straight bar with a separate leg dropping from it."
+        }
+      ]
+    },
+    {
+      "slug": "ke",
+      "character": "ケ",
+      "romaji": "ke",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ka",
+      "position": 9,
+      "stroke_count": 3,
+      "look_alikes": [
+        {
+          "slug": "ku",
+          "note": "ク: one hooked roof. タ: ク plus a dash inside. ケ: a straight bar with a separate leg dropping from it."
+        },
+        {
+          "slug": "ta",
+          "note": "ク: one hooked roof. タ: ク plus a dash inside. ケ: a straight bar with a separate leg dropping from it."
+        }
+      ]
+    },
+    {
+      "slug": "ko",
+      "character": "コ",
+      "romaji": "ko",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ka",
+      "position": 10,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "yu",
+          "note": "コ opens to the left with equal bars; ユ’s bottom bar runs past the side, like a stand."
+        },
+        {
+          "slug": "ro",
+          "note": "ロ is a closed box (three strokes); コ is open on the left (two strokes)."
+        }
+      ]
+    },
+    {
+      "slug": "sa",
+      "character": "サ",
+      "romaji": "sa",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "sa",
+      "position": 11,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "shi",
+      "character": "シ",
+      "romaji": "shi",
+      "alt_romaji": [
+        "si"
+      ],
+      "group": "basic",
+      "unit": "sa",
+      "position": 12,
+      "stroke_count": 3,
+      "look_alikes": [
+        {
+          "slug": "tsu",
+          "note": "シ: dots on the left, the long stroke sweeps UP. ツ: dots on top, the long stroke falls DOWN."
+        },
+        {
+          "slug": "so",
+          "note": "Rising strokes (シ ン) are written bottom-up; falling ones (ツ ソ) top-down."
+        },
+        {
+          "slug": "n",
+          "note": "Rising strokes (シ ン) are written bottom-up; falling ones (ツ ソ) top-down."
+        }
+      ]
+    },
+    {
+      "slug": "su",
+      "character": "ス",
+      "romaji": "su",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "sa",
+      "position": 13,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "nu",
+          "note": "ヌ: a slash cuts across the hook. ス: the second stroke only kicks out to the lower right."
+        }
+      ]
+    },
+    {
+      "slug": "se",
+      "character": "セ",
+      "romaji": "se",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "sa",
+      "position": 14,
+      "stroke_count": 2,
+      "look_alikes": []
+    },
+    {
+      "slug": "so",
+      "character": "ソ",
+      "romaji": "so",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "sa",
+      "position": 15,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "n",
+          "note": "ソ: the long stroke falls from the top. ン: the dot sits on the left and the long stroke rises from the bottom."
+        },
+        {
+          "slug": "shi",
+          "note": "Rising strokes (シ ン) are written bottom-up; falling ones (ツ ソ) top-down."
+        },
+        {
+          "slug": "tsu",
+          "note": "Rising strokes (シ ン) are written bottom-up; falling ones (ツ ソ) top-down."
+        }
+      ]
+    },
+    {
+      "slug": "ta",
+      "character": "タ",
+      "romaji": "ta",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ta",
+      "position": 16,
+      "stroke_count": 3,
+      "look_alikes": [
+        {
+          "slug": "ku",
+          "note": "ク: one hooked roof. タ: ク plus a dash inside. ケ: a straight bar with a separate leg dropping from it."
+        },
+        {
+          "slug": "ke",
+          "note": "ク: one hooked roof. タ: ク plus a dash inside. ケ: a straight bar with a separate leg dropping from it."
+        }
+      ]
+    },
+    {
+      "slug": "chi",
+      "character": "チ",
+      "romaji": "chi",
+      "alt_romaji": [
+        "ti"
+      ],
+      "group": "basic",
+      "unit": "ta",
+      "position": 17,
+      "stroke_count": 3,
+      "look_alikes": [
+        {
+          "slug": "te",
+          "note": "チ starts with a slanted slash and the post pierces the bar; テ has two flat bars and the stroke hangs below."
+        }
+      ]
+    },
+    {
+      "slug": "tsu",
+      "character": "ツ",
+      "romaji": "tsu",
+      "alt_romaji": [
+        "tu"
+      ],
+      "group": "basic",
+      "unit": "ta",
+      "position": 18,
+      "stroke_count": 3,
+      "look_alikes": [
+        {
+          "slug": "shi",
+          "note": "シ: dots on the left, the long stroke sweeps UP. ツ: dots on top, the long stroke falls DOWN."
+        },
+        {
+          "slug": "so",
+          "note": "Rising strokes (シ ン) are written bottom-up; falling ones (ツ ソ) top-down."
+        },
+        {
+          "slug": "n",
+          "note": "Rising strokes (シ ン) are written bottom-up; falling ones (ツ ソ) top-down."
+        },
+        {
+          "slug": "sokuon"
+        }
+      ]
+    },
+    {
+      "slug": "te",
+      "character": "テ",
+      "romaji": "te",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ta",
+      "position": 19,
+      "stroke_count": 3,
+      "look_alikes": [
+        {
+          "slug": "chi",
+          "note": "チ starts with a slanted slash and the post pierces the bar; テ has two flat bars and the stroke hangs below."
+        }
+      ]
+    },
+    {
+      "slug": "to",
+      "character": "ト",
+      "romaji": "to",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ta",
+      "position": 20,
+      "stroke_count": 2,
+      "look_alikes": []
+    },
+    {
+      "slug": "na",
+      "character": "ナ",
+      "romaji": "na",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "na",
+      "position": 21,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "me",
+          "note": "ナ has a flat horizontal bar; メ has no horizontal, only two crossing slants."
+        }
+      ]
+    },
+    {
+      "slug": "ni",
+      "character": "ニ",
+      "romaji": "ni",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "na",
+      "position": 22,
+      "stroke_count": 2,
+      "look_alikes": []
+    },
+    {
+      "slug": "nu",
+      "character": "ヌ",
+      "romaji": "nu",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "na",
+      "position": 23,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "su",
+          "note": "ヌ: a slash cuts across the hook. ス: the second stroke only kicks out to the lower right."
+        }
+      ]
+    },
+    {
+      "slug": "ne",
+      "character": "ネ",
+      "romaji": "ne",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "na",
+      "position": 24,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "no",
+      "character": "ノ",
+      "romaji": "no",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "na",
+      "position": 25,
+      "stroke_count": 1,
+      "look_alikes": [
+        {
+          "slug": "me",
+          "note": "ノ is a single falling stroke; メ crosses it with a second short stroke."
+        }
+      ]
+    },
+    {
+      "slug": "ha",
+      "character": "ハ",
+      "romaji": "ha",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ha",
+      "position": 26,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "ru",
+          "note": "ハ: two separate strokes spreading apart. ル: the right stroke bends and flicks up at the end."
+        }
+      ]
+    },
+    {
+      "slug": "hi",
+      "character": "ヒ",
+      "romaji": "hi",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ha",
+      "position": 27,
+      "stroke_count": 2,
+      "look_alikes": []
+    },
+    {
+      "slug": "fu",
+      "character": "フ",
+      "romaji": "fu",
+      "alt_romaji": [
+        "hu"
+      ],
+      "group": "basic",
+      "unit": "ha",
+      "position": 28,
+      "stroke_count": 1,
+      "look_alikes": [
+        {
+          "slug": "u",
+          "note": "フ is the bare hook; ワ adds a left post; ウ adds a post and a dot on top; ヲ adds a bar through the middle."
+        },
+        {
+          "slug": "wa",
+          "note": "フ is the bare hook; ワ adds a left post; ウ adds a post and a dot on top; ヲ adds a bar through the middle."
+        },
+        {
+          "slug": "wo",
+          "note": "フ is the bare hook; ワ adds a left post; ウ adds a post and a dot on top; ヲ adds a bar through the middle."
+        },
+        {
+          "slug": "ra",
+          "note": "ラ is フ with a short separate bar floating above it."
+        }
+      ]
+    },
+    {
+      "slug": "he",
+      "character": "ヘ",
+      "romaji": "he",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ha",
+      "position": 29,
+      "stroke_count": 1,
+      "look_alikes": []
+    },
+    {
+      "slug": "ho",
+      "character": "ホ",
+      "romaji": "ho",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ha",
+      "position": 30,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "ma",
+      "character": "マ",
+      "romaji": "ma",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ma",
+      "position": 31,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "a",
+          "note": "ア: the tail is long and falls away to the lower left. マ: the tail is a short tick that turns back in."
+        }
+      ]
+    },
+    {
+      "slug": "mi",
+      "character": "ミ",
+      "romaji": "mi",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ma",
+      "position": 32,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "mu",
+      "character": "ム",
+      "romaji": "mu",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ma",
+      "position": 33,
+      "stroke_count": 2,
+      "look_alikes": []
+    },
+    {
+      "slug": "me",
+      "character": "メ",
+      "romaji": "me",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ma",
+      "position": 34,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "no",
+          "note": "ノ is a single falling stroke; メ crosses it with a second short stroke."
+        },
+        {
+          "slug": "na",
+          "note": "ナ has a flat horizontal bar; メ has no horizontal, only two crossing slants."
+        }
+      ]
+    },
+    {
+      "slug": "mo",
+      "character": "モ",
+      "romaji": "mo",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ma",
+      "position": 35,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "ya",
+      "character": "ヤ",
+      "romaji": "ya",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ya",
+      "position": 36,
+      "stroke_count": 2,
+      "look_alikes": []
+    },
+    {
+      "slug": "yu",
+      "character": "ユ",
+      "romaji": "yu",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ya",
+      "position": 37,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "ko",
+          "note": "コ opens to the left with equal bars; ユ’s bottom bar runs past the side, like a stand."
+        },
+        {
+          "slug": "e",
+          "note": "エ’s post stands in the middle; ユ’s post is on the right and the box opens left."
+        }
+      ]
+    },
+    {
+      "slug": "yo",
+      "character": "ヨ",
+      "romaji": "yo",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ya",
+      "position": 38,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "ra",
+      "character": "ラ",
+      "romaji": "ra",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ra",
+      "position": 39,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "fu",
+          "note": "ラ is フ with a short separate bar floating above it."
+        }
+      ]
+    },
+    {
+      "slug": "ri",
+      "character": "リ",
+      "romaji": "ri",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ra",
+      "position": 40,
+      "stroke_count": 2,
+      "look_alikes": []
+    },
+    {
+      "slug": "ru",
+      "character": "ル",
+      "romaji": "ru",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ra",
+      "position": 41,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "ha",
+          "note": "ハ: two separate strokes spreading apart. ル: the right stroke bends and flicks up at the end."
+        }
+      ]
+    },
+    {
+      "slug": "re",
+      "character": "レ",
+      "romaji": "re",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ra",
+      "position": 42,
+      "stroke_count": 1,
+      "look_alikes": []
+    },
+    {
+      "slug": "ro",
+      "character": "ロ",
+      "romaji": "ro",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "ra",
+      "position": 43,
+      "stroke_count": 3,
+      "look_alikes": [
+        {
+          "slug": "ko",
+          "note": "ロ is a closed box (three strokes); コ is open on the left (two strokes)."
+        }
+      ]
+    },
+    {
+      "slug": "wa",
+      "character": "ワ",
+      "romaji": "wa",
+      "alt_romaji": [],
+      "group": "basic",
+      "unit": "wa",
+      "position": 44,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "u",
+          "note": "フ is the bare hook; ワ adds a left post; ウ adds a post and a dot on top; ヲ adds a bar through the middle."
+        },
+        {
+          "slug": "fu",
+          "note": "フ is the bare hook; ワ adds a left post; ウ adds a post and a dot on top; ヲ adds a bar through the middle."
+        },
+        {
+          "slug": "wo",
+          "note": "フ is the bare hook; ワ adds a left post; ウ adds a post and a dot on top; ヲ adds a bar through the middle."
+        }
+      ]
+    },
+    {
+      "slug": "wo",
+      "character": "ヲ",
+      "romaji": "wo",
+      "alt_romaji": [
+        "o"
+      ],
+      "group": "basic",
+      "unit": "wa",
+      "position": 45,
+      "stroke_count": 3,
+      "look_alikes": [
+        {
+          "slug": "u",
+          "note": "フ is the bare hook; ワ adds a left post; ウ adds a post and a dot on top; ヲ adds a bar through the middle."
+        },
+        {
+          "slug": "wa",
+          "note": "フ is the bare hook; ワ adds a left post; ウ adds a post and a dot on top; ヲ adds a bar through the middle."
+        },
+        {
+          "slug": "fu",
+          "note": "フ is the bare hook; ワ adds a left post; ウ adds a post and a dot on top; ヲ adds a bar through the middle."
+        }
+      ]
+    },
+    {
+      "slug": "n",
+      "character": "ン",
+      "romaji": "n",
+      "alt_romaji": [
+        "nn"
+      ],
+      "group": "basic",
+      "unit": "wa",
+      "position": 46,
+      "stroke_count": 2,
+      "look_alikes": [
+        {
+          "slug": "so",
+          "note": "ソ: the long stroke falls from the top. ン: the dot sits on the left and the long stroke rises from the bottom."
+        },
+        {
+          "slug": "shi",
+          "note": "Rising strokes (シ ン) are written bottom-up; falling ones (ツ ソ) top-down."
+        },
+        {
+          "slug": "tsu",
+          "note": "Rising strokes (シ ン) are written bottom-up; falling ones (ツ ソ) top-down."
+        }
+      ]
+    },
+    {
+      "slug": "ga",
+      "character": "ガ",
+      "romaji": "ga",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 47,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "gi",
+      "character": "ギ",
+      "romaji": "gi",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 48,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "gu",
+      "character": "グ",
+      "romaji": "gu",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 49,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "ge",
+      "character": "ゲ",
+      "romaji": "ge",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 50,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "go",
+      "character": "ゴ",
+      "romaji": "go",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 51,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "za",
+      "character": "ザ",
+      "romaji": "za",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 52,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "ji",
+      "character": "ジ",
+      "romaji": "ji",
+      "alt_romaji": [
+        "zi"
+      ],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 53,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "zu",
+      "character": "ズ",
+      "romaji": "zu",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 54,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "ze",
+      "character": "ゼ",
+      "romaji": "ze",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 55,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "zo",
+      "character": "ゾ",
+      "romaji": "zo",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 56,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "da",
+      "character": "ダ",
+      "romaji": "da",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 57,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "dji",
+      "character": "ヂ",
+      "romaji": "dji",
+      "alt_romaji": [
+        "di",
+        "ji"
+      ],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 58,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "dzu",
+      "character": "ヅ",
+      "romaji": "dzu",
+      "alt_romaji": [
+        "du",
+        "zu"
+      ],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 59,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "de",
+      "character": "デ",
+      "romaji": "de",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 60,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "do",
+      "character": "ド",
+      "romaji": "do",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 61,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "ba",
+      "character": "バ",
+      "romaji": "ba",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 62,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "bi",
+      "character": "ビ",
+      "romaji": "bi",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 63,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "bu",
+      "character": "ブ",
+      "romaji": "bu",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 64,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "be",
+      "character": "ベ",
+      "romaji": "be",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 65,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "bo",
+      "character": "ボ",
+      "romaji": "bo",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 66,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "pa",
+      "character": "パ",
+      "romaji": "pa",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 67,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "pi",
+      "character": "ピ",
+      "romaji": "pi",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 68,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "pu",
+      "character": "プ",
+      "romaji": "pu",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 69,
+      "stroke_count": 2,
+      "look_alikes": []
+    },
+    {
+      "slug": "pe",
+      "character": "ペ",
+      "romaji": "pe",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 70,
+      "stroke_count": 2,
+      "look_alikes": []
+    },
+    {
+      "slug": "po",
+      "character": "ポ",
+      "romaji": "po",
+      "alt_romaji": [],
+      "group": "dakuten",
+      "unit": "dakuten",
+      "position": 71,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "kya",
+      "character": "キャ",
+      "romaji": "kya",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 72,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "kyu",
+      "character": "キュ",
+      "romaji": "kyu",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 73,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "kyo",
+      "character": "キョ",
+      "romaji": "kyo",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 74,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "sha",
+      "character": "シャ",
+      "romaji": "sha",
+      "alt_romaji": [
+        "sya"
+      ],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 75,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "shu",
+      "character": "シュ",
+      "romaji": "shu",
+      "alt_romaji": [
+        "syu"
+      ],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 76,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "sho",
+      "character": "ショ",
+      "romaji": "sho",
+      "alt_romaji": [
+        "syo"
+      ],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 77,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "cha",
+      "character": "チャ",
+      "romaji": "cha",
+      "alt_romaji": [
+        "tya",
+        "cya"
+      ],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 78,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "chu",
+      "character": "チュ",
+      "romaji": "chu",
+      "alt_romaji": [
+        "tyu",
+        "cyu"
+      ],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 79,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "cho",
+      "character": "チョ",
+      "romaji": "cho",
+      "alt_romaji": [
+        "tyo",
+        "cyo"
+      ],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 80,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "nya",
+      "character": "ニャ",
+      "romaji": "nya",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 81,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "nyu",
+      "character": "ニュ",
+      "romaji": "nyu",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 82,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "nyo",
+      "character": "ニョ",
+      "romaji": "nyo",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 83,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "hya",
+      "character": "ヒャ",
+      "romaji": "hya",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 84,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "hyu",
+      "character": "ヒュ",
+      "romaji": "hyu",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 85,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "hyo",
+      "character": "ヒョ",
+      "romaji": "hyo",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 86,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "mya",
+      "character": "ミャ",
+      "romaji": "mya",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 87,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "myu",
+      "character": "ミュ",
+      "romaji": "myu",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 88,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "myo",
+      "character": "ミョ",
+      "romaji": "myo",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 89,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "rya",
+      "character": "リャ",
+      "romaji": "rya",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 90,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "ryu",
+      "character": "リュ",
+      "romaji": "ryu",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 91,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "ryo",
+      "character": "リョ",
+      "romaji": "ryo",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-1",
+      "position": 92,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "gya",
+      "character": "ギャ",
+      "romaji": "gya",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-2",
+      "position": 93,
+      "stroke_count": 7,
+      "look_alikes": []
+    },
+    {
+      "slug": "gyu",
+      "character": "ギュ",
+      "romaji": "gyu",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-2",
+      "position": 94,
+      "stroke_count": 7,
+      "look_alikes": []
+    },
+    {
+      "slug": "gyo",
+      "character": "ギョ",
+      "romaji": "gyo",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-2",
+      "position": 95,
+      "stroke_count": 8,
+      "look_alikes": []
+    },
+    {
+      "slug": "jya",
+      "character": "ジャ",
+      "romaji": "jya",
+      "alt_romaji": [
+        "ja",
+        "zya"
+      ],
+      "group": "combo",
+      "unit": "combo-2",
+      "position": 96,
+      "stroke_count": 7,
+      "look_alikes": []
+    },
+    {
+      "slug": "jyu",
+      "character": "ジュ",
+      "romaji": "jyu",
+      "alt_romaji": [
+        "ju",
+        "zyu"
+      ],
+      "group": "combo",
+      "unit": "combo-2",
+      "position": 97,
+      "stroke_count": 7,
+      "look_alikes": []
+    },
+    {
+      "slug": "jyo",
+      "character": "ジョ",
+      "romaji": "jyo",
+      "alt_romaji": [
+        "jo",
+        "zyo"
+      ],
+      "group": "combo",
+      "unit": "combo-2",
+      "position": 98,
+      "stroke_count": 8,
+      "look_alikes": []
+    },
+    {
+      "slug": "bya",
+      "character": "ビャ",
+      "romaji": "bya",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-2",
+      "position": 99,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "byu",
+      "character": "ビュ",
+      "romaji": "byu",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-2",
+      "position": 100,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "byo",
+      "character": "ビョ",
+      "romaji": "byo",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-2",
+      "position": 101,
+      "stroke_count": 7,
+      "look_alikes": []
+    },
+    {
+      "slug": "pya",
+      "character": "ピャ",
+      "romaji": "pya",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-2",
+      "position": 102,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "pyu",
+      "character": "ピュ",
+      "romaji": "pyu",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-2",
+      "position": 103,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "pyo",
+      "character": "ピョ",
+      "romaji": "pyo",
+      "alt_romaji": [],
+      "group": "combo",
+      "unit": "combo-2",
+      "position": 104,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "long",
+      "character": "ー",
+      "romaji": "-",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "marks",
+      "position": 105,
+      "stroke_count": 1,
+      "look_alikes": []
+    },
+    {
+      "slug": "sokuon",
+      "character": "ッ",
+      "romaji": "(pause)",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "marks",
+      "position": 106,
+      "stroke_count": 3,
+      "look_alikes": [
+        {
+          "slug": "tsu"
+        },
+        {
+          "slug": "shi"
+        }
+      ]
+    },
+    {
+      "slug": "vu",
+      "character": "ヴ",
+      "romaji": "vu",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 107,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "ye",
+      "character": "イェ",
+      "romaji": "ye",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 108,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "fa",
+      "character": "ファ",
+      "romaji": "fa",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 109,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "fi",
+      "character": "フィ",
+      "romaji": "fi",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 110,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "fe",
+      "character": "フェ",
+      "romaji": "fe",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 111,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "fo",
+      "character": "フォ",
+      "romaji": "fo",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 112,
+      "stroke_count": 4,
+      "look_alikes": []
+    },
+    {
+      "slug": "va",
+      "character": "ヴァ",
+      "romaji": "va",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 113,
+      "stroke_count": 7,
+      "look_alikes": []
+    },
+    {
+      "slug": "vi",
+      "character": "ヴィ",
+      "romaji": "vi",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 114,
+      "stroke_count": 7,
+      "look_alikes": []
+    },
+    {
+      "slug": "ve",
+      "character": "ヴェ",
+      "romaji": "ve",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 115,
+      "stroke_count": 8,
+      "look_alikes": []
+    },
+    {
+      "slug": "vo",
+      "character": "ヴォ",
+      "romaji": "vo",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 116,
+      "stroke_count": 8,
+      "look_alikes": []
+    },
+    {
+      "slug": "wi",
+      "character": "ウィ",
+      "romaji": "wi",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 117,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "we",
+      "character": "ウェ",
+      "romaji": "we",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 118,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "who",
+      "character": "ウォ",
+      "romaji": "who",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 119,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "fyu",
+      "character": "フュ",
+      "romaji": "fyu",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 120,
+      "stroke_count": 3,
+      "look_alikes": []
+    },
+    {
+      "slug": "ti",
+      "character": "ティ",
+      "romaji": "ti",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 121,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "di",
+      "character": "ディ",
+      "romaji": "di",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 122,
+      "stroke_count": 7,
+      "look_alikes": []
+    },
+    {
+      "slug": "tu",
+      "character": "トゥ",
+      "romaji": "tu",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 123,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "du",
+      "character": "ドゥ",
+      "romaji": "du",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 124,
+      "stroke_count": 7,
+      "look_alikes": []
+    },
+    {
+      "slug": "tyu",
+      "character": "テュ",
+      "romaji": "tyu",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 125,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "dyu",
+      "character": "デュ",
+      "romaji": "dyu",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 126,
+      "stroke_count": 7,
+      "look_alikes": []
+    },
+    {
+      "slug": "she",
+      "character": "シェ",
+      "romaji": "she",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 127,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "je",
+      "character": "ジェ",
+      "romaji": "je",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 128,
+      "stroke_count": 8,
+      "look_alikes": []
+    },
+    {
+      "slug": "che",
+      "character": "チェ",
+      "romaji": "che",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 129,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "tsa",
+      "character": "ツァ",
+      "romaji": "tsa",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 130,
+      "stroke_count": 5,
+      "look_alikes": []
+    },
+    {
+      "slug": "tse",
+      "character": "ツェ",
+      "romaji": "tse",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 131,
+      "stroke_count": 6,
+      "look_alikes": []
+    },
+    {
+      "slug": "tso",
+      "character": "ツォ",
+      "romaji": "tso",
+      "alt_romaji": [],
+      "group": "foreign",
+      "unit": "foreign",
+      "position": 132,
+      "stroke_count": 6,
+      "look_alikes": []
+    }
+  ]
+}

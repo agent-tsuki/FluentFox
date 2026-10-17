@@ -162,3 +162,37 @@ const (
 	GradeLabelShaky  GradeLabel = "shaky"
 	GradeLabelMissed GradeLabel = "missed"
 )
+
+// KanaScript maps to the kana_script PostgreSQL enum.
+type KanaScript string
+
+const (
+	KanaScriptHiragana KanaScript = "hiragana"
+	KanaScriptKatakana KanaScript = "katakana"
+)
+
+// KanaGroup maps to the kana_group PostgreSQL enum.
+type KanaGroup string
+
+const (
+	KanaGroupBasic   KanaGroup = "basic"
+	KanaGroupDakuten KanaGroup = "dakuten"
+	KanaGroupCombo   KanaGroup = "combo"
+	KanaGroupForeign KanaGroup = "foreign"
+)
+
+// ReadingType maps to the reading_type PostgreSQL enum.
+type ReadingType string
+
+const (
+	ReadingTypeOn  ReadingType = "on"
+	ReadingTypeKun ReadingType = "kun"
+)
+
+// KunAffix maps to the kun_affix PostgreSQL enum.
+type KunAffix string
+
+const (
+	KunAffixPrefix KunAffix = "prefix"
+	KunAffixSuffix KunAffix = "suffix"
+)

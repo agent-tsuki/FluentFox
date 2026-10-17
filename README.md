@@ -129,6 +129,9 @@ See `.env.example` for all required variables with descriptions.
   faster than SMTP. `EMAIL_FROM_ADDRESS` must then be on a domain verified in
   Resend. When it is empty, email goes through the `SMTP_*` settings, which are
   still required either way.
+- `STROKES_BASE_URL` (optional) is the public base URL of the kana and kanji
+  stroke JSON files in R2. The `/content/*` endpoints return it as
+  `strokes_base_url`; it is empty when unset.
 - `DATABASE_URL` may end with `default_query_exec_mode=simple_protocol`
   (e.g. `...?sslmode=require&default_query_exec_mode=simple_protocol`). pgx
   then skips preparing each new query on a fresh connection, saving one round
