@@ -14,6 +14,7 @@ type Handler struct {
 	summary  *SummaryService
 	lessons  *StartLessonService
 	reviews  *StartReviewService
+	practice *StartPracticeService
 	answers  *SubmitAnswersService
 	complete *CompleteSessionService
 	logger   *zap.Logger
@@ -24,12 +25,13 @@ func NewHandler(
 	summary *SummaryService,
 	lessons *StartLessonService,
 	reviews *StartReviewService,
+	practice *StartPracticeService,
 	answers *SubmitAnswersService,
 	complete *CompleteSessionService,
 	log *zap.Logger,
 ) *Handler {
 	return &Handler{
-		settings: settings, summary: summary, lessons: lessons, reviews: reviews,
+		settings: settings, summary: summary, lessons: lessons, reviews: reviews, practice: practice,
 		answers: answers, complete: complete, logger: log,
 	}
 }
@@ -77,6 +79,17 @@ func (h *Handler) StartLesson(ctx context.Context, input *humautil.Input[StartLe
 // StartReview handles POST /learn/reviews.
 func (h *Handler) StartReview(ctx context.Context, input *humautil.Input[StartReviewRequest]) (*humautil.Output[humautil.APIResponse[SessionStart]], error) {
 	resp, err := h.reviews.Start(ctx, middleware.ContextUserID(ctx), &input.Body)
+	if err != nil {
+		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
+	}
+	return humautil.OK(resp), nil
+}
+
+// StartPractice handles POST /learn/practice.
+func (h *Handler) StartPractice(
+	ctx context.Context, input *humautil.Input[StartPracticeRequest],
+) (*humautil.Output[humautil.APIResponse[SessionStart]], error) {
+	resp, err := h.practice.Start(ctx, middleware.ContextUserID(ctx), &input.Body)
 	if err != nil {
 		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
 	}

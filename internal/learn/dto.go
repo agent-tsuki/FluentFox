@@ -187,4 +187,76 @@ type SessionResult struct {
 	ActiveMs     int64               `json:"active_ms"`
 	Counts       GradeCounts         `json:"counts" doc:"Cards per label, from each card's first graded answer"`
 	Cards        []SessionCardResult `json:"cards"`
+	Test         *TestScore          `json:"test,omitempty" doc:"Tests only: the score"`
+}
+
+type StartPracticeRequest struct {
+	Track string `json:"track"          enum:"hiragana,katakana,kanji_n5"`
+	Mode  string `json:"mode"           enum:"weak,unit,lookalike,speed,match"`
+	Unit  string `json:"unit,omitempty" maxLength:"64" doc:"Unit slug, required for mode unit"`
+	Pair  string `json:"pair,omitempty" maxLength:"16" doc:"Mode lookalike: two characters such as ぬ:め; the user's mix-ups and look-alikes when omitted"`
+}
+
+type StartTestRequest struct {
+	Kind  string `json:"kind"            enum:"unit_quiz,skip,final"`
+	Track string `json:"track"           enum:"hiragana,katakana,kanji_n5"`
+	Scope string `json:"scope,omitempty" maxLength:"64" doc:"unit_quiz: unit slug; skip: group (kana group key or kanji group slug) or all; final: ignored"`
+}
+
+type TestScore struct {
+	Kind     string  `json:"kind"      doc:"unit_quiz, skip or final"`
+	Score    int     `json:"score"     doc:"Questions right on the first answer"`
+	Total    int     `json:"total"     doc:"Questions in the test, answered or not"`
+	Passed   bool    `json:"passed"`
+	PassMark float64 `json:"pass_mark" doc:"Share of questions needed to pass, 0 to 1"`
+}
+
+type UnitProgressInput struct {
+	Type  string `path:"type"   enum:"kana,kanji"`
+	ID    string `path:"id"     maxLength:"64" doc:"Unit slug (such as ka or u01) or unit id"`
+	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5" doc:"Needed when the slug exists in more than one track"`
+	Body  UnitProgressRequest
+}
+
+type UnitProgressRequest struct {
+	Step string `json:"step" enum:"watched,traced,written,practised"`
+}
+
+type UnitProgressListInput struct {
+	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5" doc:"Limit to one track; all tracks when omitted"`
+}
+
+type UnitProgressData struct {
+	UnitType    string     `json:"unit_type"`
+	UnitID      uuid.UUID  `json:"unit_id"`
+	UnitSlug    string     `json:"unit_slug"`
+	Track       string     `json:"track"`
+	WatchedAt   *time.Time `json:"watched_at"`
+	TracedAt    *time.Time `json:"traced_at"`
+	WrittenAt   *time.Time `json:"written_at"`
+	PractisedAt *time.Time `json:"practised_at"`
+	QuizBestPct *int       `json:"quiz_best_pct"`
+	CompletedAt *time.Time `json:"completed_at"`
+}
+
+type UnitProgressList struct {
+	Units []UnitProgressData `json:"units" doc:"Every unit of the track(s) in path order; steps not done are null"`
+}
+
+type KanjiCharInput struct {
+	Char string `path:"char" maxLength:"8" doc:"The kanji"`
+}
+
+type KanjiNoteInput struct {
+	Char string `path:"char" maxLength:"8" doc:"The kanji"`
+	Body KanjiNoteRequest
+}
+
+type KanjiNoteRequest struct {
+	Text string `json:"text" maxLength:"1000" doc:"Empty text deletes the note"`
+}
+
+type KanjiNoteResponse struct {
+	Text      string     `json:"text"`
+	UpdatedAt *time.Time `json:"updated_at"`
 }

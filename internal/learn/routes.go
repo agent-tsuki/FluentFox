@@ -65,6 +65,16 @@ func registerSessionRoutes(api huma.API, h *Handler) {
 	}, h.StartReview)
 
 	huma.Register(api, huma.Operation{
+		OperationID:   "start-practice",
+		Method:        http.MethodPost,
+		Path:          "/learn/practice",
+		Summary:       "Start a practice session; answers never change the schedule, but a miss brings the card back sooner",
+		Tags:          []string{"Learn"},
+		DefaultStatus: http.StatusCreated,
+		Security:      humautil.BearerSecurity(),
+	}, h.StartPractice)
+
+	huma.Register(api, huma.Operation{
 		OperationID:   "submit-session-answers",
 		Method:        http.MethodPost,
 		Path:          "/learn/sessions/{id}/answers",

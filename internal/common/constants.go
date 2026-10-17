@@ -299,3 +299,22 @@ var LEARNING_TRACK_UNIT_TYPE = map[LearningTrack]UnitType{
 	LearningTrackKatakana: UnitTypeKana,
 	LearningTrackKanjiN5:  UnitTypeKanji,
 }
+
+// Speed and match practice ask kana with these analytics-only types; kanji
+// get ordinary multiple choice.
+var PRACTICE_QUICK_KANA_TYPES = map[PracticeMode]QuestionType{
+	PracticeModeSpeed: QuestionKanaSpeed,
+	PracticeModeMatch: QuestionKanaMatch,
+}
+
+// The facet and question type a look-alike drill uses per item type; kanji
+// look-alikes are told apart by meaning.
+var LOOKALIKE_FACETS = map[SRSItemType]CardFacet{
+	SRSItemKana:  CardFacetRecognition,
+	SRSItemKanji: CardFacetMeaning,
+}
+
+var LOOKALIKE_QUESTION_TYPES = map[SRSItemType]QuestionType{
+	SRSItemKana:  QuestionKanaLookalike,
+	SRSItemKanji: QuestionKanjiLookalike,
+}
