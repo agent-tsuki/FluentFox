@@ -137,3 +137,9 @@ var (
 	ErrTestScopeInvalid        = New(http.StatusUnprocessableEntity, "TEST_SCOPE_INVALID", "scope must be a unit slug, a group or all")
 	ErrKanjiNoteTooLong        = New(http.StatusUnprocessableEntity, "KANJI_NOTE_TOO_LONG", "a note is at most 1000 characters")
 )
+
+var (
+	ErrProgressDateInvalid   = New(http.StatusUnprocessableEntity, "PROGRESS_DATE_INVALID", "from and to must be YYYY-MM-DD dates at most 366 days apart")
+	ErrProgressItemNotFound  = New(http.StatusNotFound, "PROGRESS_ITEM_NOT_FOUND", "item not found")
+	ErrProgressItemAmbiguous = New(http.StatusUnprocessableEntity, "PROGRESS_ITEM_AMBIGUOUS", "several tracks have this item, pass track to choose one")
+)

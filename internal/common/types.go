@@ -218,3 +218,35 @@ const (
 	UnitStepWritten   UnitProgressStep = "written"
 	UnitStepPractised UnitProgressStep = "practised"
 )
+
+// MasteryLevel is how well an item is known, from its cards' stability; it
+// is not stored.
+type MasteryLevel string
+
+const (
+	MasteryNew      MasteryLevel = "new"
+	MasteryLearning MasteryLevel = "learning"
+	MasteryFamiliar MasteryLevel = "familiar"
+	MasteryStrong   MasteryLevel = "strong"
+	MasteryMastered MasteryLevel = "mastered"
+)
+
+// Skill groups question types for the dashboard skill balance; it is not
+// stored.
+type Skill string
+
+const (
+	SkillKanaReading  Skill = "kana_reading"
+	SkillKanjiMeaning Skill = "kanji_meaning"
+	SkillKanjiReading Skill = "kanji_reading"
+	SkillListening    Skill = "listening"
+)
+
+// WeakGroupKind says whether a weak group is a unit or a whole kana group
+// such as dakuten.
+type WeakGroupKind string
+
+const (
+	WeakGroupUnit     WeakGroupKind = "unit"
+	WeakGroupKanaKind WeakGroupKind = "kana_group"
+)

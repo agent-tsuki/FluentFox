@@ -33,3 +33,7 @@ func NewSchedulerFor(s *LearningSettings) (*srs.Scheduler, error) {
 func (c *SRSCard) SRS() srs.Card {
 	return toSRSCard(c)
 }
+
+func NewPool(track common.LearningTrack, units []Unit, items []Item) *Pool {
+	return newPool(track, units, items)
+}

@@ -23,3 +23,11 @@ var kanaGroupTexts = map[common.KanaScript]map[common.KanaGroup]kanaGroupText{
 		common.KanaGroupForeign: {Title: "Foreign sounds", Summary: "ー, small ッ and the extra sounds used in loanwords."},
 	},
 }
+
+// KanaGroupTitle falls back to the group key, as the kana content does.
+func KanaGroupTitle(script common.KanaScript, group common.KanaGroup) string {
+	if text, ok := kanaGroupTexts[script][group]; ok {
+		return text.Title
+	}
+	return string(group)
+}

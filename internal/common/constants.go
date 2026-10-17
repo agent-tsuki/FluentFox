@@ -318,3 +318,74 @@ var LOOKALIKE_QUESTION_TYPES = map[SRSItemType]QuestionType{
 	SRSItemKana:  QuestionKanaLookalike,
 	SRSItemKanji: QuestionKanjiLookalike,
 }
+
+// Mastery levels (docs/learning-plan.md section 7.4), lowest first. A card
+// in a learning step is Learning whatever its stability.
+var MASTERY_LEVELS = []MasteryLevel{MasteryNew, MasteryLearning, MasteryFamiliar, MasteryStrong, MasteryMastered}
+
+const (
+	FAMILIAR_MIN_STABILITY_DAYS float64 = 1
+	STRONG_MIN_STABILITY_DAYS   float64 = 7
+	MASTERED_MIN_STABILITY_DAYS float64 = 21
+)
+
+// Progress views (docs/learning-plan.md section 7.4).
+const (
+	RETENTION_WINDOW         time.Duration = 30 * 24 * time.Hour
+	FORECAST_DEFAULT_DAYS    int           = 14
+	CALENDAR_DEFAULT_DAYS    int           = 365
+	CALENDAR_MAX_DAYS        int           = 366
+	WEAK_ITEMS_DEFAULT_LIMIT int           = 20
+	CONFUSIONS_DEFAULT_LIMIT int           = 10
+	ITEM_HISTORY_ANSWERS     int           = 20
+	// One decimal place for percentages.
+	PERCENT_ROUNDING float64 = 10
+)
+
+// Weakness score: WEAK_RECALL_WEIGHT and WEAK_LAPSE_WEIGHT above, plus how
+// slow the user is on the card and how often it is mixed up with another.
+const (
+	WEAK_TIME_WEIGHT      float64 = 0.2
+	WEAK_CONFUSION_WEIGHT float64 = 0.1
+	// Cards with fewer reviews say too little to rank.
+	WEAK_MIN_REPS int = 2
+	// Answer time this many times the user's usual reads as slow.
+	WEAK_SLOW_RATIO float64 = 1.5
+	// Recall chance shown as a reason only below this.
+	WEAK_LOW_RECALL         float64 = 0.8
+	WEAK_GROUP_MIN_REVIEWS  int     = 10
+	WEAK_GROUP_LAPSE_FACTOR float64 = 1.5
+)
+
+// Kana groups checked as a whole besides their units; the basic group is
+// covered by its rows.
+var WEAK_KANA_GROUPS = []KanaGroup{KanaGroupDakuten, KanaGroupCombo, KanaGroupForeign}
+
+var QUESTION_TYPE_SKILL = map[QuestionType]Skill{
+	QuestionKanaMCQRomaji:     SkillKanaReading,
+	QuestionKanaMCQKana:       SkillKanaReading,
+	QuestionKanaTyped:         SkillKanaReading,
+	QuestionKanaBuild:         SkillKanaReading,
+	QuestionKanaLookalike:     SkillKanaReading,
+	QuestionKanaSpeed:         SkillKanaReading,
+	QuestionKanaMatch:         SkillKanaReading,
+	QuestionKanjiMeaningMCQ:   SkillKanjiMeaning,
+	QuestionKanjiMeaningTyped: SkillKanjiMeaning,
+	QuestionKanjiLookalike:    SkillKanjiMeaning,
+	QuestionKanjiReadingMCQ:   SkillKanjiReading,
+	QuestionKanjiReadingTyped: SkillKanjiReading,
+	QuestionKanaListen:        SkillListening,
+	QuestionKanjiListen:       SkillListening,
+}
+
+// Dashboard (frontend DashboardData). v1 teaches N5, so that is the target
+// level until the user picks one.
+const (
+	DASHBOARD_STUDY_LOG_SIZE int       = 10
+	DASHBOARD_WEEK_DAYS      int       = 7
+	DEFAULT_TARGET_LEVEL     JLPTLevel = JLPTLevelN5
+	MILESTONE_FIRST_KANJI    int       = 20
+	MILESTONE_SHORT_STREAK   int       = 7
+	MILESTONE_LONG_STREAK    int       = 30
+	STUDY_LOG_DATE_LAYOUT    string    = "Jan 2, 2006"
+)

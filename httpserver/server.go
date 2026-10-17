@@ -18,6 +18,7 @@ import (
 	"github.com/fluentfox/api/internal/common"
 	"github.com/fluentfox/api/internal/content"
 	"github.com/fluentfox/api/internal/learn"
+	"github.com/fluentfox/api/internal/progress"
 	"github.com/fluentfox/api/internal/services"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/database"
@@ -134,6 +135,17 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 		learn.NewUnitProgressService(learnRepo, learnCatalog, log),
 		learn.NewKanjiNoteService(learnRepo, log),
 		learn.NewTestHistoryService(learnRepo, log),
+		log,
+	))
+	progress.RegisterRoutes(api, progress.NewHandler(
+		progress.NewOverviewService(learnRepo, learnCatalog, log),
+		progress.NewForecastService(learnRepo, log),
+		progress.NewCalendarService(learnRepo, log),
+		progress.NewWeakItemsService(learnRepo, learnCatalog, log),
+		progress.NewWeakGroupsService(learnRepo, learnCatalog, log),
+		progress.NewConfusionService(learnRepo, learnCatalog, log),
+		progress.NewItemHistoryService(learnRepo, learnCatalog, contentRepo, log),
+		progress.NewDashboardService(learnRepo, learnCatalog, log),
 		log,
 	))
 
