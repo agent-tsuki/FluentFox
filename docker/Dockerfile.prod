@@ -8,7 +8,7 @@
 #   4. runtime image copy    — every code change
 
 # Stage 1: deps
-FROM golang:1.23-alpine AS deps
+FROM golang:1.26-alpine AS deps
 
 WORKDIR /build
 

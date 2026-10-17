@@ -3,7 +3,7 @@
 # Source is mounted as a volume; air handles hot reload + rebuild.
 
 # Separate deps layer so go mod download is only re-run when go.mod/go.sum change.
-FROM golang:1.25-alpine AS deps
+FROM golang:1.26-alpine AS deps
 
 WORKDIR /app
 
