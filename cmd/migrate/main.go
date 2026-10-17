@@ -1,18 +1,26 @@
 // Package main — cmd/migrate/main.go
-// Runs GORM AutoMigrate to create/update database tables from model definitions.
-// Run via: make migrate
+// Applies the goose SQL migrations embedded from migrations/.
+// Run via: make migrate (up), make migrate-status, make migrate-down.
+// Any goose command works as the first argument, e.g. `go run ./cmd/migrate down-to 0`.
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 
+	"github.com/pressly/goose/v3"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 
 	"github.com/fluentfox/api/config"
-	"github.com/fluentfox/api/internal/users"
+	"github.com/fluentfox/api/migrations"
 	"github.com/fluentfox/api/pkg/database"
+)
+
+const (
+	defaultCommand = "up"
+	// The SQL files sit at the root of the embedded FS.
+	migrationsDir = "."
 )
 
 func main() {
@@ -23,46 +31,40 @@ func main() {
 		fmt.Fprintf(os.Stderr, "failed to create logger: %v\n", err)
 		os.Exit(1)
 	}
-	defer log.Sync() //nolint:errcheck
+	// No deferred Sync: the development logger writes to stderr unbuffered and
+	// Fatal syncs before it exits.
 
-	db, err := database.NewDB(cfg.DatabaseURL, cfg.DBMaxConns, cfg.DBMinConns)
-	if err != nil {
-		log.Fatal("database connection failed", zap.Error(err))
-	}
-	sqlDB, _ := db.DB()
-	defer sqlDB.Close()
-
-	if err := dedupeRefreshTokens(db); err != nil {
-		log.Fatal("refresh token dedupe failed", zap.Error(err))
+	command := defaultCommand
+	var args []string
+	if len(os.Args) > 1 {
+		command, args = os.Args[1], os.Args[2:]
 	}
 
-	log.Info("running auto-migrate")
-
-	if err := db.AutoMigrate(
-		&users.User{},
-		&users.UserProfile{},
-		&users.UserSettings{},
-		&users.UserVerification{},
-		&users.RefreshToken{},
-		&users.PasswordReset{},
-		&users.OAuthIdentity{},
-	); err != nil {
-		log.Fatal("auto-migrate failed", zap.Error(err))
+	if err := run(context.Background(), cfg, command, args); err != nil {
+		log.Fatal("migration failed", zap.String("command", command), zap.Error(err))
 	}
 
-	log.Info("auto-migrate complete")
+	log.Info("migration complete", zap.String("command", command))
 }
 
-// The unique index on refresh_tokens.user_id cannot be created while older
-// races left several rows for one user. Keep each user's newest row; the
-// removed duplicates only sign those sessions out.
-func dedupeRefreshTokens(db *gorm.DB) error {
-	if !db.Migrator().HasTable(&users.RefreshToken{}) {
-		return nil
+func run(ctx context.Context, cfg *config.DatabaseConfig, command string, args []string) error {
+	db, err := database.NewDB(cfg.DatabaseURL, cfg.DBMaxConns, cfg.DBMinConns)
+	if err != nil {
+		return fmt.Errorf("connect: %w", err)
 	}
-	return db.Exec(`
-		DELETE FROM refresh_tokens older
-		USING refresh_tokens newer
-		WHERE older.user_id = newer.user_id
-		  AND (older.updated_at, older.id) < (newer.updated_at, newer.id)`).Error
+	sqlDB, err := db.DB()
+	if err != nil {
+		return fmt.Errorf("get sql.DB: %w", err)
+	}
+	defer sqlDB.Close()
+
+	goose.SetBaseFS(migrations.FS)
+	if err := goose.SetDialect(string(goose.DialectPostgres)); err != nil {
+		return fmt.Errorf("set dialect: %w", err)
+	}
+
+	if err := goose.RunContext(ctx, command, sqlDB, migrationsDir, args...); err != nil {
+		return fmt.Errorf("goose %s: %w", command, err)
+	}
+	return nil
 }

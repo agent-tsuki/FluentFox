@@ -39,7 +39,7 @@ jobs:
           go-version-file: go.mod
           cache: true
 
-      # The schema comes from GORM AutoMigrate (cmd/migrate), not SQL files.
+      # The schema comes from the goose SQL files in migrations/ (cmd/migrate).
       # cmd/migrate loads the full app config, so every required key needs a
       # value; all of these are CI-only placeholders, not real secrets.
       - name: Run migrations
