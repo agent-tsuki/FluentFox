@@ -116,3 +116,16 @@ var (
 	ErrKanjiLevelNotFound = New(http.StatusNotFound, "KANJI_LEVEL_NOT_FOUND", "kanji level not found")
 	ErrKanjiNotFound      = New(http.StatusNotFound, "KANJI_NOT_FOUND", "kanji not found")
 )
+
+var (
+	ErrLearningTrackInvalid    = New(http.StatusUnprocessableEntity, "LEARNING_TRACK_INVALID", "track must be hiragana, katakana or kanji_n5")
+	ErrLearningSettingsInvalid = New(http.StatusUnprocessableEntity, "LEARNING_SETTINGS_INVALID", "a learning setting is out of range")
+	ErrStudySessionNotFound    = New(http.StatusNotFound, "STUDY_SESSION_NOT_FOUND", "study session not found")
+	ErrStudySessionCompleted   = New(http.StatusConflict, "STUDY_SESSION_COMPLETED", "this study session is already completed")
+	ErrSRSCardNotFound         = New(http.StatusNotFound, "CARD_NOT_FOUND", "card not found")
+	ErrQuestionTypeMismatch    = New(http.StatusUnprocessableEntity, "QUESTION_TYPE_MISMATCH", "question type does not fit the card")
+	ErrDailyNewLimitReached    = New(http.StatusConflict, "DAILY_NEW_LIMIT_REACHED", "you have learned all new items for today")
+	ErrTrackComplete           = New(http.StatusConflict, "TRACK_COMPLETE", "every item of this track has been introduced")
+	ErrDailyReviewLimitReached = New(http.StatusConflict, "DAILY_REVIEW_LIMIT_REACHED", "you have reached today's review limit")
+	ErrNothingDue              = New(http.StatusConflict, "NOTHING_DUE", "no reviews are due right now")
+)

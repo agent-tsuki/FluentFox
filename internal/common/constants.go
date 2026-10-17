@@ -3,6 +3,8 @@ package common
 import (
 	"time"
 
+	"github.com/google/uuid"
+
 	"github.com/fluentfox/api/pkg/srs"
 )
 
@@ -130,3 +132,89 @@ var KANJI_CONTENT_LEVELS = []JLPTLevel{JLPTLevelN5}
 
 // The kana chart (frontend KanaType) calls the combo group's kana "compound".
 const KANA_CHART_TYPE_COMPOUND string = "compound"
+
+// Learning sessions (docs/learning-plan.md sections 4.2 and 7).
+const (
+	// Review cards this stable may be asked as typed questions.
+	TYPED_MIN_STABILITY_DAYS float64 = 3
+	// One question in this many is a listening or look-alike question.
+	VARIETY_QUESTION_ONE_IN int = 4
+	MCQ_DISTRACTORS         int = 3
+	MAX_ANSWERS_PER_BATCH   int = 50
+	// A day also counts toward the streak when everything due was cleared
+	// with at least this many answers.
+	GOAL_CLEARED_MIN_ANSWERS int = 5
+)
+
+// IntRange is an inclusive range; the learning settings ranges match the
+// CHECK constraints in migrations/000006_learning_settings.sql.
+type IntRange struct {
+	Min int
+	Max int
+}
+
+type FloatRange struct {
+	Min float64
+	Max float64
+}
+
+var (
+	DESIRED_RETENTION_RANGE   = FloatRange{Min: 0.70, Max: 0.97}
+	NEW_KANA_PER_DAY_RANGE    = IntRange{Min: 0, Max: 100}
+	NEW_KANJI_PER_DAY_RANGE   = IntRange{Min: 0, Max: 50}
+	MAX_REVIEWS_PER_DAY_RANGE = IntRange{Min: 10, Max: 1000}
+	SESSION_SIZE_RANGE        = IntRange{Min: 5, Max: 100}
+	LESSON_SIZE_RANGE         = IntRange{Min: 1, Max: 20}
+	DAILY_GOAL_ANSWERS_RANGE  = IntRange{Min: 5, Max: 200}
+	DAY_STARTS_AT_HOUR_RANGE  = IntRange{Min: 0, Max: 23}
+)
+
+// desired_retention is numeric(3,2).
+const DESIRED_RETENTION_DECIMALS int = 2
+
+// Path order of the tracks: the next unit is looked for in this order.
+var LEARNING_TRACKS = []LearningTrack{LearningTrackHiragana, LearningTrackKatakana, LearningTrackKanjiN5}
+
+var LEARNING_TRACK_ITEM_TYPE = map[LearningTrack]SRSItemType{
+	LearningTrackHiragana: SRSItemKana,
+	LearningTrackKatakana: SRSItemKana,
+	LearningTrackKanjiN5:  SRSItemKanji,
+}
+
+var LEARNING_TRACK_KANA_SCRIPT = map[LearningTrack]KanaScript{
+	LearningTrackHiragana: KanaScriptHiragana,
+	LearningTrackKatakana: KanaScriptKatakana,
+}
+
+var LEARNING_TRACK_KANJI_LEVEL = map[LearningTrack]JLPTLevel{
+	LearningTrackKanjiN5: JLPTLevelN5,
+}
+
+// The first facet of an item is its primary one: creating that card counts
+// the item as newly learned.
+var SRS_ITEM_FACETS = map[SRSItemType][]CardFacet{
+	SRSItemKana:  {CardFacetRecognition},
+	SRSItemKanji: {CardFacetMeaning, CardFacetReading},
+}
+
+var QUESTION_TYPE_FACET = map[QuestionType]CardFacet{
+	QuestionKanaMCQRomaji:     CardFacetRecognition,
+	QuestionKanaMCQKana:       CardFacetRecognition,
+	QuestionKanaTyped:         CardFacetRecognition,
+	QuestionKanaListen:        CardFacetRecognition,
+	QuestionKanaBuild:         CardFacetRecognition,
+	QuestionKanaLookalike:     CardFacetRecognition,
+	QuestionKanaSpeed:         CardFacetRecognition,
+	QuestionKanaMatch:         CardFacetRecognition,
+	QuestionKanaTrace:         CardFacetRecognition,
+	QuestionKanjiMeaningMCQ:   CardFacetMeaning,
+	QuestionKanjiMeaningTyped: CardFacetMeaning,
+	QuestionKanjiLookalike:    CardFacetMeaning,
+	QuestionKanjiReadingMCQ:   CardFacetReading,
+	QuestionKanjiReadingTyped: CardFacetReading,
+	QuestionKanjiListen:       CardFacetReading,
+}
+
+// Card ids are derived from (user, item, facet) so a lesson can hand out the
+// id of a card that is only created when its first answer arrives.
+var SRS_CARD_ID_NAMESPACE = uuid.MustParse("6f0c7a52-3d1e-4b8a-9c57-2a64e1f0b9d3")
