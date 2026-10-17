@@ -18,7 +18,7 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 | 4 | backend: settings, summary, question builder, lessons, reviews, answers, complete | done, tested (FluentFox `4745719`…`5ad7450`); end-to-end checked on Postgres incl. concurrent duplicate batches |
 | 4 | frontend: answer timer + queue, lesson / Review all / result screens, how-grading page, leech hint, `ts-fsrs` removed, guest prompts, Vitest (75 tests) | done (FluentFoxUI up to `7142efb`); not yet clicked through against a live backend |
 | 5 | backend: practice, tests (unit/skip/final), safety net, unit progress, kanji notes | done, tested (FluentFox `dd1cdc9`…`eefc0b4`); end-to-end checked on Postgres |
-| 5 | frontend: practice / tests / path state / notes on the API | in progress |
+| 5 | frontend: practice / tests / path state / notes on the API, local progress record removed | done (FluentFoxUI up to `b71c0a5`, 130 tests); not yet clicked through against a live backend |
 | 6 | progress APIs (overview, forecast, calendar, weakness, confusions, items, dashboard) | **not started** |
 | 6 | frontend progress pages, dashboard, settings page | **not started** |
 
@@ -26,10 +26,8 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 
 1. Run backend + frontend together and click through a lesson, a review and the result
    screen (nothing has been tested in a browser yet).
-2. Phase 5 frontend (in progress): practice modes, unit quizzes, skip/final tests, notes and path state on
-   the API; remove the remaining localStorage progress record.
-3. Phase 6 backend progress APIs, then the frontend progress pages, dashboard and settings.
-4. Upload stroke JSON to R2.
+2. Phase 6 backend progress APIs, then the frontend progress pages, dashboard and settings.
+3. Upload stroke JSON to R2.
 
 ## Decisions taken during implementation
 
@@ -76,8 +74,16 @@ Backend:
 - README still mentions golang-migrate / `migration-up` in older sections.
 
 Frontend:
-- Practice modes, unit quizzes, tests, notes and path state still use the local progress
-  record, which no longer schedules; local mastery colours stop advancing until phase 5/6.
+- Until phase 6: kana mastery colours and kanji stages show "New"; kanji "Your progress"
+  section removed.
+- Tested-out units, skip/final best scores, certificate name and Print step have no API yet;
+  stored per user in localStorage (`ff-path-v2:<user>:<course>`), so not synced across
+  devices. Needs a backend endpoint for test history / skips.
+- Answers not saved: kana outside the session's cards (whole-chart speed round), kanji
+  flashcards (self-graded), kanji writing.
+- Kana tests build their own options from the server's item list; ー and ッ are asked via
+  loanwords and sent as `kana_mcq_kana`.
+- N4 practice/quizzes/tests show "coming soon" (API serves N5 only).
 - Old localStorage progress is left in storage (not imported, not wiped).
 - `KanjiQuizRunner` keeps its own typed input instead of `TypedAnswerInput`.
 - PDF generation still reads bundled kana stroke files.
