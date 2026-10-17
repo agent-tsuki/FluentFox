@@ -118,9 +118,12 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 
 	learnRepo := learn.NewRepository(db)
 	learnCatalog := learn.NewCatalog(contentRepo)
+	learnQuestions := learn.NewQuestionBuilder(nil)
 	learn.RegisterRoutes(api, learn.NewHandler(
 		learn.NewLearningSettingsService(learnRepo, log),
 		learn.NewSummaryService(learnRepo, learnCatalog, log),
+		learn.NewStartLessonService(learnRepo, learnCatalog, learnQuestions, log),
+		learn.NewStartReviewService(learnRepo, learnCatalog, learnQuestions, log),
 		log,
 	))
 

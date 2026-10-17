@@ -100,13 +100,7 @@ func cardID(userID uuid.UUID, itemType common.SRSItemType, itemID uuid.UUID, fac
 // pendingItems lists the items of a pool, in path order, that still miss a
 // card for at least one facet.
 func pendingItems(pool *Pool, keys []CardKey) []*Item {
-	have := make(map[uuid.UUID]map[common.CardFacet]bool, len(keys))
-	for _, k := range keys {
-		if have[k.ItemID] == nil {
-			have[k.ItemID] = map[common.CardFacet]bool{}
-		}
-		have[k.ItemID][k.Facet] = true
-	}
+	have := facetsByItem(keys)
 	var out []*Item
 	for i := range pool.Items {
 		item := &pool.Items[i]
@@ -125,4 +119,15 @@ func missingFacets(item *Item, have map[common.CardFacet]bool) []common.CardFace
 		}
 	}
 	return out
+}
+
+func facetsByItem(keys []CardKey) map[uuid.UUID]map[common.CardFacet]bool {
+	have := make(map[uuid.UUID]map[common.CardFacet]bool, len(keys))
+	for _, k := range keys {
+		if have[k.ItemID] == nil {
+			have[k.ItemID] = map[common.CardFacet]bool{}
+		}
+		have[k.ItemID][k.Facet] = true
+	}
+	return have
 }

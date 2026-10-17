@@ -36,4 +36,24 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		Tags:        []string{"Learn"},
 		Security:    humautil.BearerSecurity(),
 	}, h.GetSummary)
+
+	huma.Register(api, huma.Operation{
+		OperationID:   "start-lesson",
+		Method:        http.MethodPost,
+		Path:          "/learn/lessons",
+		Summary:       "Start a lesson: new items in path order and their check quiz",
+		Tags:          []string{"Learn"},
+		DefaultStatus: http.StatusCreated,
+		Security:      humautil.BearerSecurity(),
+	}, h.StartLesson)
+
+	huma.Register(api, huma.Operation{
+		OperationID:   "start-review",
+		Method:        http.MethodPost,
+		Path:          "/learn/reviews",
+		Summary:       "Start a review session with the cards due now",
+		Tags:          []string{"Learn"},
+		DefaultStatus: http.StatusCreated,
+		Security:      humautil.BearerSecurity(),
+	}, h.StartReview)
 }

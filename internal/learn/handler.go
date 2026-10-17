@@ -12,11 +12,19 @@ import (
 type Handler struct {
 	settings *LearningSettingsService
 	summary  *SummaryService
+	lessons  *StartLessonService
+	reviews  *StartReviewService
 	logger   *zap.Logger
 }
 
-func NewHandler(settings *LearningSettingsService, summary *SummaryService, log *zap.Logger) *Handler {
-	return &Handler{settings: settings, summary: summary, logger: log}
+func NewHandler(
+	settings *LearningSettingsService,
+	summary *SummaryService,
+	lessons *StartLessonService,
+	reviews *StartReviewService,
+	log *zap.Logger,
+) *Handler {
+	return &Handler{settings: settings, summary: summary, lessons: lessons, reviews: reviews, logger: log}
 }
 
 type EmptyInput struct{}
@@ -44,6 +52,24 @@ func (h *Handler) UpdateSettings(
 // GetSummary handles GET /learn/summary.
 func (h *Handler) GetSummary(ctx context.Context, input *SummaryInput) (*humautil.Output[humautil.APIResponse[LearnSummary]], error) {
 	resp, err := h.summary.Get(ctx, middleware.ContextUserID(ctx), input.Track)
+	if err != nil {
+		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
+	}
+	return humautil.OK(resp), nil
+}
+
+// StartLesson handles POST /learn/lessons.
+func (h *Handler) StartLesson(ctx context.Context, input *humautil.Input[StartLessonRequest]) (*humautil.Output[humautil.APIResponse[SessionStart]], error) {
+	resp, err := h.lessons.Start(ctx, middleware.ContextUserID(ctx), &input.Body)
+	if err != nil {
+		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
+	}
+	return humautil.OK(resp), nil
+}
+
+// StartReview handles POST /learn/reviews.
+func (h *Handler) StartReview(ctx context.Context, input *humautil.Input[StartReviewRequest]) (*humautil.Output[humautil.APIResponse[SessionStart]], error) {
+	resp, err := h.reviews.Start(ctx, middleware.ContextUserID(ctx), &input.Body)
 	if err != nil {
 		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
 	}
