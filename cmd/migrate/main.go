@@ -1,5 +1,6 @@
 // Package main — cmd/migrate/main.go
-// Applies the goose SQL migrations embedded from migrations/.
+// Applies the goose SQL migrations embedded from migrations/, then (on "up")
+// loads the course content embedded from content/.
 // Run via: make migrate (up), make migrate-status, make migrate-down.
 // Any goose command works as the first argument, e.g. `go run ./cmd/migrate down-to 0`.
 package main
@@ -40,14 +41,14 @@ func main() {
 		command, args = os.Args[1], os.Args[2:]
 	}
 
-	if err := run(context.Background(), cfg, command, args); err != nil {
+	if err := run(context.Background(), cfg, log, command, args); err != nil {
 		log.Fatal("migration failed", zap.String("command", command), zap.Error(err))
 	}
 
 	log.Info("migration complete", zap.String("command", command))
 }
 
-func run(ctx context.Context, cfg *config.DatabaseConfig, command string, args []string) error {
+func run(ctx context.Context, cfg *config.DatabaseConfig, log *zap.Logger, command string, args []string) error {
 	db, err := database.NewDB(cfg.DatabaseURL, cfg.DBMaxConns, cfg.DBMinConns)
 	if err != nil {
 		return fmt.Errorf("connect: %w", err)
@@ -65,6 +66,12 @@ func run(ctx context.Context, cfg *config.DatabaseConfig, command string, args [
 
 	if err := goose.RunContext(ctx, command, sqlDB, migrationsDir, args...); err != nil {
 		return fmt.Errorf("goose %s: %w", command, err)
+	}
+	if command != defaultCommand {
+		return nil
+	}
+	if err := syncContent(ctx, db, log); err != nil {
+		return fmt.Errorf("sync content: %w", err)
 	}
 	return nil
 }

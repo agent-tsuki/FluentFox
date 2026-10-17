@@ -33,8 +33,8 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
     -ldflags="-s -w" \
     -trimpath \
-    -o /out/sync-content \
-    ./cmd/sync-content
+    -o /out/migrate \
+    ./cmd/migrate
 
 # Stage 3: runtime
 FROM alpine:3.21 AS runtime
@@ -49,13 +49,8 @@ WORKDIR /app
 
 # Binaries
 COPY --from=builder /out/server        ./server
-COPY --from=builder /out/sync-content  ./sync-content
-
-# Migrations run on startup when RUN_MIGRATIONS=true
-COPY --from=builder /build/db/migrations ./db/migrations
-
-# Static content for sync-content binary
-COPY --from=builder /build/content ./content
+# migrate applies the embedded SQL migrations and loads the embedded content.
+COPY --from=builder /out/migrate       ./migrate
 
 USER appuser
 

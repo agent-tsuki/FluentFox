@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"slices"
+	"sync"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -82,16 +84,47 @@ type ContentReader interface {
 	ListKanjiLookAlikes(ctx context.Context, kanjiIDs []uuid.UUID) ([]content.KanjiLookAlikeRow, error)
 }
 
-// Catalog loads track content for the learning services.
+// Catalog loads track content for the learning services. Pools are read-only
+// once built, so one cached pool is shared by every request.
 type Catalog struct {
 	content ContentReader
+	now     func() time.Time
+	mu      sync.Mutex
+	cached  map[common.LearningTrack]cachedPool
+}
+
+type cachedPool struct {
+	pool     *Pool
+	loadedAt time.Time
 }
 
 func NewCatalog(reader ContentReader) *Catalog {
-	return &Catalog{content: reader}
+	return &Catalog{content: reader, now: time.Now, cached: make(map[common.LearningTrack]cachedPool)}
 }
 
 func (c *Catalog) Load(ctx context.Context, track common.LearningTrack) (*Pool, error) {
+	now := c.now()
+	c.mu.Lock()
+	hit, ok := c.cached[track]
+	c.mu.Unlock()
+	if ok && now.Sub(hit.loadedAt) < common.CONTENT_CACHE_TTL {
+		return hit.pool, nil
+	}
+
+	pool, err := c.loadFresh(ctx, track)
+	if err != nil {
+		return nil, err
+	}
+	// An empty pool is not kept, so content synced after start shows up at once.
+	if len(pool.Items) > 0 {
+		c.mu.Lock()
+		c.cached[track] = cachedPool{pool: pool, loadedAt: now}
+		c.mu.Unlock()
+	}
+	return pool, nil
+}
+
+func (c *Catalog) loadFresh(ctx context.Context, track common.LearningTrack) (*Pool, error) {
 	if script, ok := common.LEARNING_TRACK_KANA_SCRIPT[track]; ok {
 		return c.loadKana(ctx, track, script)
 	}
