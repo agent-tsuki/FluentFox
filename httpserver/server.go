@@ -130,6 +130,11 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 		learn.NewCompleteSessionService(learnRepo, learn.NewTestScoreService(learnRepo, learnCatalog, nil, log), log),
 		log,
 	))
+	learn.RegisterPathRoutes(api, learn.NewPathHandler(
+		learn.NewUnitProgressService(learnRepo, learnCatalog, log),
+		learn.NewKanjiNoteService(learnRepo, log),
+		log,
+	))
 
 	r.GET("/health", func(c *gin.Context) {
 		if err := sqlDB.Ping(); err != nil {
