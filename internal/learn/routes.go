@@ -56,4 +56,14 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		DefaultStatus: http.StatusCreated,
 		Security:      humautil.BearerSecurity(),
 	}, h.StartReview)
+
+	huma.Register(api, huma.Operation{
+		OperationID:   "submit-session-answers",
+		Method:        http.MethodPost,
+		Path:          "/learn/sessions/{id}/answers",
+		Summary:       "Submit 1 to 50 answers; a resent answer returns its stored result",
+		Tags:          []string{"Learn"},
+		DefaultStatus: http.StatusOK,
+		Security:      humautil.BearerSecurity(),
+	}, h.SubmitAnswers)
 }

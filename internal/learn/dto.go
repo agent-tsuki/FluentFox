@@ -126,21 +126,21 @@ type SubmitAnswersRequest struct {
 type AnswerRequestItem struct {
 	ClientEventID  uuid.UUID `json:"client_event_id"          doc:"Client-made id; a resend with the same id returns the stored result"`
 	CardID         uuid.UUID `json:"card_id"`
-	QuestionType   string    `json:"question_type"`
+	QuestionType   string    `json:"question_type"            doc:"One of the question_type values; checked against the card facet"`
 	ShownAt        time.Time `json:"shown_at"`
-	DurationMs     int       `json:"duration_ms"              minimum:"0"`
-	IdleMs         int       `json:"idle_ms"                  minimum:"0"`
-	FirstInputMs   *int      `json:"first_input_ms"           minimum:"0" required:"false"`
+	DurationMs     int       `json:"duration_ms"              minimum:"0" maximum:"86400000"`
+	IdleMs         int       `json:"idle_ms"                  minimum:"0" maximum:"86400000"`
+	FirstInputMs   *int      `json:"first_input_ms"           minimum:"0" maximum:"86400000" required:"false"`
 	AnswerText     *string   `json:"answer_text,omitempty"    maxLength:"64"`
 	ChosenOption   *string   `json:"chosen_option,omitempty"  maxLength:"64"`
 	Options        []string  `json:"options,omitempty"        maxItems:"12"`
-	Attempts       int       `json:"attempts"                 minimum:"1"`
-	HintsUsed      int       `json:"hints_used"               minimum:"0"`
+	Attempts       int       `json:"attempts"                 minimum:"1" maximum:"100"`
+	HintsUsed      int       `json:"hints_used"               minimum:"0" maximum:"100"`
 	AnswerRevealed bool      `json:"answer_revealed"`
-	AudioReplays   int       `json:"audio_replays"            minimum:"0"`
-	AudioMs        *int      `json:"audio_ms,omitempty"       minimum:"0"`
-	StrokeErrors   *int      `json:"stroke_errors,omitempty"  minimum:"0"`
-	StrokeCount    *int      `json:"stroke_count,omitempty"   minimum:"0"`
+	AudioReplays   int       `json:"audio_replays"            minimum:"0" maximum:"100"`
+	AudioMs        *int      `json:"audio_ms,omitempty"       minimum:"0" maximum:"86400000"`
+	StrokeErrors   *int      `json:"stroke_errors,omitempty"  minimum:"0" maximum:"1000"`
+	StrokeCount    *int      `json:"stroke_count,omitempty"   minimum:"0" maximum:"1000"`
 	GuideLevel     *string   `json:"guide_level,omitempty"    enum:"full,faded,none"`
 }
 

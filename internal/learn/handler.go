@@ -14,6 +14,7 @@ type Handler struct {
 	summary  *SummaryService
 	lessons  *StartLessonService
 	reviews  *StartReviewService
+	answers  *SubmitAnswersService
 	logger   *zap.Logger
 }
 
@@ -22,9 +23,10 @@ func NewHandler(
 	summary *SummaryService,
 	lessons *StartLessonService,
 	reviews *StartReviewService,
+	answers *SubmitAnswersService,
 	log *zap.Logger,
 ) *Handler {
-	return &Handler{settings: settings, summary: summary, lessons: lessons, reviews: reviews, logger: log}
+	return &Handler{settings: settings, summary: summary, lessons: lessons, reviews: reviews, answers: answers, logger: log}
 }
 
 type EmptyInput struct{}
@@ -70,6 +72,15 @@ func (h *Handler) StartLesson(ctx context.Context, input *humautil.Input[StartLe
 // StartReview handles POST /learn/reviews.
 func (h *Handler) StartReview(ctx context.Context, input *humautil.Input[StartReviewRequest]) (*humautil.Output[humautil.APIResponse[SessionStart]], error) {
 	resp, err := h.reviews.Start(ctx, middleware.ContextUserID(ctx), &input.Body)
+	if err != nil {
+		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
+	}
+	return humautil.OK(resp), nil
+}
+
+// SubmitAnswers handles POST /learn/sessions/{id}/answers.
+func (h *Handler) SubmitAnswers(ctx context.Context, input *SubmitAnswersInput) (*humautil.Output[humautil.APIResponse[SubmitAnswersResponse]], error) {
+	resp, err := h.answers.Submit(ctx, middleware.ContextUserID(ctx), input.ID, &input.Body)
 	if err != nil {
 		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
 	}
