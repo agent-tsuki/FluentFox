@@ -338,6 +338,8 @@ const (
 	WEAK_ITEMS_DEFAULT_LIMIT int           = 20
 	CONFUSIONS_DEFAULT_LIMIT int           = 10
 	ITEM_HISTORY_ANSWERS     int           = 20
+	// Far enough into a study day to be inside it whatever its length.
+	STUDY_DAY_MIDPOINT time.Duration = 12 * time.Hour
 	// One decimal place for percentages.
 	PERCENT_ROUNDING float64 = 10
 )

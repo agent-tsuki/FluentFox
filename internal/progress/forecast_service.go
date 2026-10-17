@@ -55,15 +55,16 @@ func (s *ForecastService) Get(ctx context.Context, userID uuid.UUID, days int) (
 	return out, nil
 }
 
-// forecastWindows lists the study days from today on. Each day starts where
-// the one before ended, so a day that is 23 or 25 hours long across a
-// daylight saving change is still one day.
+// forecastWindows lists the study days from today on. The next day is
+// looked up from the middle of it rather than from its start, because the
+// day window steps back the start hour in elapsed time, which lands in the
+// day before when a daylight saving change makes a day 23 hours long.
 func forecastWindows(clock *studyClock, days int) []learn.StudyDay {
 	out := make([]learn.StudyDay, 0, days)
 	day := clock.Today
 	for range days {
 		out = append(out, day)
-		day = clock.dayOf(day.End)
+		day = clock.dayOf(day.End.Add(common.STUDY_DAY_MIDPOINT))
 	}
 	return out
 }
