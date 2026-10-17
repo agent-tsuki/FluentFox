@@ -115,7 +115,7 @@ func TestCompleteSessionService(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			repo := newFakeRepo()
 			id := tc.setup(repo)
-			svc := NewCompleteSessionService(repo, zap.NewNop())
+			svc := NewCompleteSessionService(repo, NewTestScoreService(repo, NewCatalog(&fakeContent{}), nil, zap.NewNop()), zap.NewNop())
 			svc.now = func() time.Time { return testNow }
 			got, err := svc.Complete(context.Background(), testUserID, id)
 			if !errors.Is(err, tc.wantErr) {

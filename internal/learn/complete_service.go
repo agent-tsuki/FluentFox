@@ -17,12 +17,13 @@ import (
 
 type CompleteSessionService struct {
 	repo   CompleteRepo
+	tests  *TestScoreService
 	now    func() time.Time
 	logger *zap.Logger
 }
 
-func NewCompleteSessionService(repo CompleteRepo, log *zap.Logger) *CompleteSessionService {
-	return &CompleteSessionService{repo: repo, now: time.Now, logger: log}
+func NewCompleteSessionService(repo CompleteRepo, tests *TestScoreService, log *zap.Logger) *CompleteSessionService {
+	return &CompleteSessionService{repo: repo, tests: tests, now: time.Now, logger: log}
 }
 
 // Complete closes the session and returns its result screen. Completing a
@@ -30,9 +31,13 @@ func NewCompleteSessionService(repo CompleteRepo, log *zap.Logger) *CompleteSess
 func (s *CompleteSessionService) Complete(ctx context.Context, userID, sessionID uuid.UUID) (SessionResult, error) {
 	var session StudySession
 	var logs []ReviewLog
+	var test *TestScore
 	err := s.repo.Transaction(ctx, func(tx *gorm.DB) error {
 		var txErr error
-		session, logs, txErr = s.close(ctx, tx, userID, sessionID)
+		if session, logs, txErr = s.close(ctx, tx, userID, sessionID); txErr != nil {
+			return txErr
+		}
+		test, txErr = s.tests.Result(ctx, tx, &session, logs)
 		return txErr
 	})
 	if err != nil {
@@ -49,6 +54,7 @@ func (s *CompleteSessionService) Complete(ctx context.Context, userID, sessionID
 		ActiveMs:     session.ActiveMs,
 		Counts:       countLabels(cards),
 		Cards:        cards,
+		Test:         test,
 	}, nil
 }
 

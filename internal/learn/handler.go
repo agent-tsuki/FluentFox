@@ -15,6 +15,7 @@ type Handler struct {
 	lessons  *StartLessonService
 	reviews  *StartReviewService
 	practice *StartPracticeService
+	tests    *StartTestService
 	answers  *SubmitAnswersService
 	complete *CompleteSessionService
 	logger   *zap.Logger
@@ -26,13 +27,14 @@ func NewHandler(
 	lessons *StartLessonService,
 	reviews *StartReviewService,
 	practice *StartPracticeService,
+	tests *StartTestService,
 	answers *SubmitAnswersService,
 	complete *CompleteSessionService,
 	log *zap.Logger,
 ) *Handler {
 	return &Handler{
 		settings: settings, summary: summary, lessons: lessons, reviews: reviews, practice: practice,
-		answers: answers, complete: complete, logger: log,
+		tests: tests, answers: answers, complete: complete, logger: log,
 	}
 }
 
@@ -90,6 +92,15 @@ func (h *Handler) StartPractice(
 	ctx context.Context, input *humautil.Input[StartPracticeRequest],
 ) (*humautil.Output[humautil.APIResponse[SessionStart]], error) {
 	resp, err := h.practice.Start(ctx, middleware.ContextUserID(ctx), &input.Body)
+	if err != nil {
+		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
+	}
+	return humautil.OK(resp), nil
+}
+
+// StartTest handles POST /learn/tests.
+func (h *Handler) StartTest(ctx context.Context, input *humautil.Input[StartTestRequest]) (*humautil.Output[humautil.APIResponse[SessionStart]], error) {
+	resp, err := h.tests.Start(ctx, middleware.ContextUserID(ctx), &input.Body)
 	if err != nil {
 		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
 	}

@@ -50,6 +50,11 @@ type fakeRepo struct {
 	updatedSettings  *LearningSettings
 	createdCards     []SRSCard
 	completedSession *StudySession
+
+	testResults  []TestResult
+	unitQuizzes  []UnitProgress
+	unitProgress map[uuid.UUID]*UnitProgress
+	notes        map[uuid.UUID]*KanjiNote
 }
 
 func newFakeRepo() *fakeRepo {
@@ -60,6 +65,8 @@ func newFakeRepo() *fakeRepo {
 		activity:        map[string]*DailyActivity{},
 		samples:         map[common.QuestionType][]BaselineSample{},
 		introducedToday: map[common.SRSItemType]int{},
+		unitProgress:    map[uuid.UUID]*UnitProgress{},
+		notes:           map[uuid.UUID]*KanjiNote{},
 	}
 }
 
@@ -308,6 +315,97 @@ func (f *fakeRepo) CompleteSession(_ context.Context, _ *gorm.DB, s *StudySessio
 	f.completedSession = &copied
 	f.sessions[s.ID] = &copied
 	return nil
+}
+
+func (f *fakeRepo) ListTrackCards(_ context.Context, _ uuid.UUID, track common.LearningTrack) ([]SRSCard, error) {
+	pool := loadTestPool(track)
+	var out []SRSCard
+	for _, c := range f.cards {
+		if _, ok := pool.Item(c.ItemID); ok {
+			out = append(out, *c)
+		}
+	}
+	slices.SortFunc(out, func(a, b SRSCard) int { return slices.Compare(a.ID[:], b.ID[:]) })
+	return out, f.err
+}
+
+func (f *fakeRepo) FindTestResult(_ context.Context, _ *gorm.DB, sessionID uuid.UUID) (*TestResult, error) {
+	for i := range f.testResults {
+		if f.testResults[i].SessionID == sessionID {
+			return &f.testResults[i], nil
+		}
+	}
+	return nil, nil
+}
+
+func (f *fakeRepo) InsertTestResult(_ context.Context, _ *gorm.DB, res *TestResult) error {
+	f.testResults = append(f.testResults, *res)
+	return nil
+}
+
+func (f *fakeRepo) RecordUnitQuiz(_ context.Context, _ *gorm.DB, p *UnitProgress) error {
+	f.unitQuizzes = append(f.unitQuizzes, *p)
+	return nil
+}
+
+// Like the SQL upsert, only cards still in the new state are replaced.
+func (f *fakeRepo) UpsertKnownCards(_ context.Context, _ *gorm.DB, cards []SRSCard) error {
+	for _, c := range cards {
+		if old, ok := f.cards[c.ID]; ok && old.State != srs.StateNew {
+			continue
+		}
+		copied := c
+		f.cards[c.ID] = &copied
+	}
+	return nil
+}
+
+func (f *fakeRepo) MarkUnitStep(_ context.Context, p *UnitProgress, step common.UnitProgressStep, at time.Time) (UnitProgress, error) {
+	row, ok := f.unitProgress[p.UnitID]
+	if !ok {
+		row = &UnitProgress{UserID: p.UserID, UnitType: p.UnitType, UnitID: p.UnitID}
+		f.unitProgress[p.UnitID] = row
+	}
+	cols := map[common.UnitProgressStep]**time.Time{
+		common.UnitStepWatched: &row.WatchedAt, common.UnitStepTraced: &row.TracedAt,
+		common.UnitStepWritten: &row.WrittenAt, common.UnitStepPractised: &row.PractisedAt,
+	}
+	if *cols[step] == nil {
+		*cols[step] = &at
+	}
+	return *row, f.err
+}
+
+func (f *fakeRepo) ListUnitProgress(context.Context, uuid.UUID) ([]UnitProgress, error) {
+	var out []UnitProgress
+	for _, p := range f.unitProgress {
+		out = append(out, *p)
+	}
+	return out, f.err
+}
+
+func (f *fakeRepo) FindKanjiID(_ context.Context, char string) (uuid.UUID, error) {
+	for id, c := range testChars {
+		if c == char && slices.Contains([]uuid.UUID{kanjiOne, kanjiTwo, kanjiMiddle, kanjiHalf, kanjiDay}, id) {
+			return id, nil
+		}
+	}
+	return uuid.Nil, gorm.ErrRecordNotFound
+}
+
+func (f *fakeRepo) GetKanjiNote(_ context.Context, _, kanjiID uuid.UUID) (*KanjiNote, error) {
+	return f.notes[kanjiID], f.err
+}
+
+func (f *fakeRepo) SaveKanjiNote(_ context.Context, n *KanjiNote) error {
+	copied := *n
+	f.notes[n.KanjiID] = &copied
+	return f.err
+}
+
+func (f *fakeRepo) DeleteKanjiNote(_ context.Context, _, kanjiID uuid.UUID) error {
+	delete(f.notes, kanjiID)
+	return f.err
 }
 
 // Test content: two hiragana units, one katakana unit and two kanji units.
