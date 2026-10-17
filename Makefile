@@ -2,7 +2,7 @@
 # Run `make help` to see available targets.
 
 .PHONY: help dev dev-down build test test-coverage \
-        migrate migrate-status migrate-down seed sync-content lint tidy update-disposable-domains
+        migrate migrate-status migrate-down seed lint tidy update-disposable-domains
 
 DEV_DB_URL  := postgres://fluentfox:fluentfox_dev@localhost:5435/fluentfox_dev?sslmode=disable
 TEST_DB_URL := postgres://fluentfox:fluentfox_test@localhost:5431/fluentfox_test?sslmode=disable
@@ -62,9 +62,6 @@ seed: ## Run all seed SQL files against the dev database
 	  psql "$(DEV_DB_URL)" -f $$f; \
 	done
 	@echo "✓ Seeding complete"
-
-sync-content: ## Parse MDX files and upsert into the dev database
-	go run ./cmd/sync-content
 
 # Email domain checks
 

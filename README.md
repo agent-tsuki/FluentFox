@@ -42,8 +42,7 @@ make migration-up
 # 5. Seed the database with characters, kanji, and XP config
 make seed
 
-# 6. (Optional) Sync MDX content into the database
-make sync-content
+# 6. Course content (kana, kanji) is loaded by `make migrate` from content/
 
 # 7. Hit the health check
 curl http://localhost:8080/health
@@ -62,7 +61,6 @@ make migration-up     # Apply pending migrations
 make migration-downdown   # Roll back one migration
 make migration-new name=add_something  # Create new migration pair
 make seed           # Run seed SQL files
-make sync-content   # Parse MDX and upsert to DB
 make build          # Build production Docker image
 ```
 
@@ -71,7 +69,6 @@ make build          # Build production Docker image
 ```
 cmd/
   api/              HTTP server entry point
-  sync-content/     MDX → PostgreSQL content sync CLI
 
 internal/
   auth/             JWT auth, registration, password reset

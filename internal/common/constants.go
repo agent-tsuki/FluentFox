@@ -391,3 +391,7 @@ const (
 	MILESTONE_LONG_STREAK    int       = 30
 	STUDY_LOG_DATE_LAYOUT    string    = "Jan 2, 2006"
 )
+
+// Course content only changes on deploy, so the learning services keep each
+// loaded track in memory instead of re-reading every content table per request.
+const CONTENT_CACHE_TTL time.Duration = 10 * time.Minute

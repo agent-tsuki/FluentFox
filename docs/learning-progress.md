@@ -11,7 +11,7 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 |---|---|---|
 | 1 | goose, `000001_users` baseline, `cmd/migrate` switch, Makefile | done (000001 identical to AutoMigrate; up/down/up verified on Postgres 16) |
 | 1 | migrations `000002`–`000009` | done |
-| 2 | backend content: `content/*.json`, `cmd/sync-content`, `internal/content`, `/content/*` | done, tested; sync verified twice on real migrations |
+| 2 | backend content: `content/*.json`, `internal/content`, content loaded by `cmd/migrate`, `/content/*` | done, tested; sync verified twice on real migrations |
 | 2 | frontend content on `/content/*`, kana chart grid built from API | done (FluentFoxUI `b333f6d`, `1089d6c`) |
 | 2 | upload stroke JSON to R2, set `STROKES_BASE_URL` | **not started** |
 | 3 | `pkg/srs` (go-fsrs v4), `internal/learn/grading.go`, enums + constants | done, tested |
@@ -68,10 +68,11 @@ Backend:
 - On/kun mix-up rule ("wrong reading, then fixed → Hard") never fires: the request does not
   carry the first attempt.
 - A resent answer returns its stored result, but `usual_ms` is recalculated.
-- Content is read from the database on every request; could be cached.
+- Learning services cache each track's content in memory for `CONTENT_CACHE_TTL` (10 min).
 - Existing user tables keep `user_id` as `text` with no FKs (as AutoMigrate built them).
 - `make migrate` sets only `DATABASE_URL`; `DB_MAX_CONNS` / `DB_MIN_CONNS` must also be set.
-  `cmd/sync-content` uses `config.Load()`, so it needs the full API env.
+  `make migrate` (and the deploy's migrate step) also loads the course content embedded
+  from `content/`; there is no separate sync command any more.
 - Kana group titles are hard-coded in `internal/content/kana_groups.go`.
 - 20 N5 look-alikes point to non-N5 kanji and are skipped; 11 link once N4 is synced.
 - `kanji_look_alike` has no position column; order comes from `created_at`.
@@ -95,4 +96,4 @@ Frontend:
 - Unsent answers stored on the device are not tied to a user (server rejects, queue drops).
 
 Regenerating content: `node scripts/content/convert-frontend.mjs [uiPath]`, then
-`make sync-content`.
+`make migrate` (deploys run it automatically).
