@@ -28,6 +28,9 @@ func (s *SubmitAnswersService) answer(ctx context.Context, tx *gorm.DB, b *answe
 	}
 	check := checkAnswer(qt, item, pool, a)
 	grade := Grade(gradeInput(qt, a, &check), b.baselines[qt])
+	if !common.SESSION_KIND_RULES[b.session.Kind].Schedules {
+		grade = GradeResult{Reason: common.GradeReasonAnalyticsOnly, Active: grade.Active, Usual: grade.Usual}
+	}
 	log := newReviewLog(b, card, a, &check, &grade)
 
 	wasNew := card.State == srs.StateNew
@@ -56,10 +59,31 @@ func (s *SubmitAnswersService) applyGrade(ctx context.Context, tx *gorm.DB, b *a
 	if log.CountsForSRS {
 		return s.schedule(ctx, tx, b, card, log)
 	}
-	if card.State != srs.StateNew {
-		due := card.Due
-		log.DueAfter = &due
-		log.ScheduledDays = card.ScheduledDays
+	if card.State == srs.StateNew {
+		return nil
+	}
+	if !grade.Rated && !log.IsCorrect {
+		if err := s.pullDue(ctx, tx, b, card); err != nil {
+			return err
+		}
+	}
+	due := card.Due
+	log.DueAfter = &due
+	log.ScheduledDays = card.ScheduledDays
+	return nil
+}
+
+// pullDue is the safety net for misses that do not reach FSRS (practice,
+// tests, speed, match and trace): the card comes back within SAFETY_NET_DUE,
+// and a card already due sooner is left alone.
+func (s *SubmitAnswersService) pullDue(ctx context.Context, tx *gorm.DB, b *answerBatch, card *SRSCard) error {
+	limit := b.now.Add(common.SAFETY_NET_DUE).UTC()
+	if !card.Due.After(limit) {
+		return nil
+	}
+	card.Due = limit
+	if err := s.repo.SaveCard(ctx, tx, card); err != nil {
+		return fmt.Errorf("pull card %s due: %w", card.ID, err)
 	}
 	return nil
 }
@@ -77,6 +101,11 @@ func (s *SubmitAnswersService) schedule(ctx context.Context, tx *gorm.DB, b *ans
 		log.StabilityBefore, log.DifficultyBefore = &stability, &difficulty
 	}
 
+	// A test or practice may have created the card earlier without
+	// scheduling it; the item is introduced when it is first scheduled.
+	if card.State == srs.StateNew {
+		card.IntroducedAt = log.AnsweredAt
+	}
 	card.State, card.Due, card.Stability, card.Difficulty = next.State, next.Due, next.Stability, next.Difficulty
 	card.Reps, card.Lapses, card.LearningStep, card.ScheduledDays = next.Reps, next.Lapses, next.LearningStep, next.ScheduledDays
 	card.LastReviewAt = next.LastReview

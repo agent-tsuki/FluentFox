@@ -23,6 +23,9 @@ func (globalRand) IntN(n int) int { return rand.IntN(n) } //nolint:gosec // see 
 
 func (globalRand) Shuffle(n int, swap func(i, j int)) { rand.Shuffle(n, swap) } //nolint:gosec // see above
 
+// Int64N lets globalRand spread the due dates of known cards (srs.RandSource).
+func (globalRand) Int64N(n int64) int64 { return rand.Int64N(n) } //nolint:gosec // see above
+
 type QuestionCard struct {
 	ID        uuid.UUID
 	State     srs.State
@@ -54,7 +57,12 @@ func NewQuestionBuilder(rnd Rand) *QuestionBuilder {
 }
 
 func (b *QuestionBuilder) Build(in *QuestionInput) Question {
-	qt := b.chooseType(in)
+	return b.BuildAs(in, b.chooseType(in))
+}
+
+// BuildAs builds a question of a type the caller chose, such as a speed round
+// or a look-alike drill. qt must fit the card's facet.
+func (b *QuestionBuilder) BuildAs(in *QuestionInput, qt common.QuestionType) Question {
 	answer := questionAnswerKinds[qt]
 	q := Question{
 		CardID:          in.Card.ID,

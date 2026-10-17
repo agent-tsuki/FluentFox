@@ -221,10 +221,12 @@ func (s *SubmitAnswersService) createMissingCards(ctx context.Context, tx *gorm.
 	return nil
 }
 
-// newLessonCards creates the cards a lesson handed out ids for. Only items of
-// the session's track qualify, since card ids are derived from the item.
+// newLessonCards creates the cards a lesson, practice or test handed out ids
+// for. Only items of the session's track qualify, since card ids are derived
+// from the item. Outside a lesson the card stays new until a lesson or a
+// skip test schedules it.
 func (b *answerBatch) newLessonCards(ids []uuid.UUID) ([]SRSCard, error) {
-	if b.session.Kind != common.SessionKindLesson || len(b.pools) == 0 {
+	if !common.SESSION_KIND_RULES[b.session.Kind].CreatesCards || len(b.pools) == 0 {
 		return nil, exceptions.ErrSRSCardNotFound
 	}
 	userID := b.learner.UserID

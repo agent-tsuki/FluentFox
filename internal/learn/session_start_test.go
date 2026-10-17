@@ -27,7 +27,7 @@ func TestStartLessonService(t *testing.T) {
 			wantItems: []string{"あ", "い", "お", "じ", "ぢ"}, wantQuestions: 5},
 		{name: "skips items that already have their card", track: "hiragana",
 			setup: func(r *fakeRepo) {
-				r.addCard(SRSCard{ID: uuid.New(), ItemType: common.SRSItemKana, ItemID: kanaA, Facet: common.CardFacetRecognition})
+				r.addCard(SRSCard{ID: uuid.New(), ItemType: common.SRSItemKana, ItemID: kanaA, Facet: common.CardFacetRecognition, State: srs.StateLearning})
 			},
 			wantItems: []string{"い", "お", "じ", "ぢ", "ず"}, wantQuestions: 5},
 		{name: "stops at the daily new limit", track: "hiragana",
@@ -42,7 +42,7 @@ func TestStartLessonService(t *testing.T) {
 		{name: "a kanji missing only its reading card asks only the reading", track: "kanji_n5",
 			setup: func(r *fakeRepo) {
 				r.settings.LessonSize = 1
-				r.addCard(SRSCard{ID: uuid.New(), ItemType: common.SRSItemKanji, ItemID: kanjiOne, Facet: common.CardFacetMeaning})
+				r.addCard(SRSCard{ID: uuid.New(), ItemType: common.SRSItemKanji, ItemID: kanjiOne, Facet: common.CardFacetMeaning, State: srs.StateLearning})
 			},
 			wantItems: []string{"一"}, wantQuestions: 1},
 		{name: "a lesson needs a track", track: "", wantErr: exceptions.ErrLearningTrackInvalid},

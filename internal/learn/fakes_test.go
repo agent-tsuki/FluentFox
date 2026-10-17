@@ -122,7 +122,7 @@ func (f *fakeRepo) CountItemsIntroducedSince(_ context.Context, _ uuid.UUID, ite
 func (f *fakeRepo) ListCardKeys(_ context.Context, _ uuid.UUID, itemType common.SRSItemType) ([]CardKey, error) {
 	var keys []CardKey
 	for _, c := range f.cards {
-		if c.ItemType == itemType {
+		if c.ItemType == itemType && c.State != srs.StateNew {
 			keys = append(keys, CardKey{ItemID: c.ItemID, Facet: c.Facet})
 		}
 	}
@@ -312,23 +312,25 @@ func (f *fakeRepo) CompleteSession(_ context.Context, _ *gorm.DB, s *StudySessio
 
 // Test content: two hiragana units, one katakana unit and two kanji units.
 var (
-	unitA       = uuid.MustParse("10000000-0000-0000-0000-000000000001")
-	unitZa      = uuid.MustParse("10000000-0000-0000-0000-000000000002")
-	unitKA      = uuid.MustParse("10000000-0000-0000-0000-000000000003")
-	unitK1      = uuid.MustParse("10000000-0000-0000-0000-000000000004")
-	unitK2      = uuid.MustParse("10000000-0000-0000-0000-000000000005")
-	kanaA       = uuid.MustParse("20000000-0000-0000-0000-000000000001")
-	kanaI       = uuid.MustParse("20000000-0000-0000-0000-000000000002")
-	kanaO       = uuid.MustParse("20000000-0000-0000-0000-000000000003")
-	kanaJi      = uuid.MustParse("20000000-0000-0000-0000-000000000004")
-	kanaDji     = uuid.MustParse("20000000-0000-0000-0000-000000000005")
-	kanaZu      = uuid.MustParse("20000000-0000-0000-0000-000000000006")
-	kanaKA      = uuid.MustParse("20000000-0000-0000-0000-000000000007")
-	kanjiOne    = uuid.MustParse("30000000-0000-0000-0000-000000000001")
-	kanjiTwo    = uuid.MustParse("30000000-0000-0000-0000-000000000002")
-	kanjiMiddle = uuid.MustParse("30000000-0000-0000-0000-000000000003")
-	kanjiHalf   = uuid.MustParse("30000000-0000-0000-0000-000000000004")
-	kanjiDay    = uuid.MustParse("30000000-0000-0000-0000-000000000005")
+	unitA        = uuid.MustParse("10000000-0000-0000-0000-000000000001")
+	unitZa       = uuid.MustParse("10000000-0000-0000-0000-000000000002")
+	unitKA       = uuid.MustParse("10000000-0000-0000-0000-000000000003")
+	unitK1       = uuid.MustParse("10000000-0000-0000-0000-000000000004")
+	unitK2       = uuid.MustParse("10000000-0000-0000-0000-000000000005")
+	groupNumbers = uuid.MustParse("40000000-0000-0000-0000-000000000001")
+	groupNature  = uuid.MustParse("40000000-0000-0000-0000-000000000002")
+	kanaA        = uuid.MustParse("20000000-0000-0000-0000-000000000001")
+	kanaI        = uuid.MustParse("20000000-0000-0000-0000-000000000002")
+	kanaO        = uuid.MustParse("20000000-0000-0000-0000-000000000003")
+	kanaJi       = uuid.MustParse("20000000-0000-0000-0000-000000000004")
+	kanaDji      = uuid.MustParse("20000000-0000-0000-0000-000000000005")
+	kanaZu       = uuid.MustParse("20000000-0000-0000-0000-000000000006")
+	kanaKA       = uuid.MustParse("20000000-0000-0000-0000-000000000007")
+	kanjiOne     = uuid.MustParse("30000000-0000-0000-0000-000000000001")
+	kanjiTwo     = uuid.MustParse("30000000-0000-0000-0000-000000000002")
+	kanjiMiddle  = uuid.MustParse("30000000-0000-0000-0000-000000000003")
+	kanjiHalf    = uuid.MustParse("30000000-0000-0000-0000-000000000004")
+	kanjiDay     = uuid.MustParse("30000000-0000-0000-0000-000000000005")
 )
 
 var testChars = map[uuid.UUID]string{
@@ -346,8 +348,8 @@ func (f *fakeContent) ListKanaUnits(_ context.Context, script common.KanaScript)
 	}
 	return []content.KanaUnit{
 		// Listed out of order: the pool must sort by position.
-		{ID: unitZa, Script: script, Slug: "za", Title: "ざ row", Position: 2},
-		{ID: unitA, Script: script, Slug: "a", Title: "あ row", Position: 1},
+		{ID: unitZa, Script: script, GroupKey: common.KanaGroupDakuten, Slug: "za", Title: "ざ row", Position: 2},
+		{ID: unitA, Script: script, GroupKey: common.KanaGroupBasic, Slug: "a", Title: "あ row", Position: 1},
 	}, f.err
 }
 
@@ -375,10 +377,17 @@ func (f *fakeContent) ListKanaLookAlikes(_ context.Context, script common.KanaSc
 	}, nil
 }
 
+func (f *fakeContent) ListKanjiGroups(_ context.Context, level common.JLPTLevel) ([]content.KanjiGroup, error) {
+	return []content.KanjiGroup{
+		{ID: groupNumbers, Level: level, Slug: "numbers", Title: "Numbers", Position: 1},
+		{ID: groupNature, Level: level, Slug: "nature", Title: "Nature", Position: 2},
+	}, nil
+}
+
 func (f *fakeContent) ListKanjiUnits(_ context.Context, level common.JLPTLevel) ([]content.KanjiUnit, error) {
 	return []content.KanjiUnit{
-		{ID: unitK1, Level: level, Slug: "u01", Title: "Numbers", Position: 1},
-		{ID: unitK2, Level: level, Slug: "u02", Title: "Time", Position: 2},
+		{ID: unitK1, GroupID: groupNumbers, Level: level, Slug: "u01", Title: "Numbers", Position: 1},
+		{ID: unitK2, GroupID: groupNature, Level: level, Slug: "u02", Title: "Time", Position: 2},
 	}, f.err
 }
 

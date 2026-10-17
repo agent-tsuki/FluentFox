@@ -234,3 +234,68 @@ var QUESTION_TYPE_FACET = map[QuestionType]CardFacet{
 // Card ids are derived from (user, item, facet) so a lesson can hand out the
 // id of a card that is only created when its first answer arrives.
 var SRS_CARD_ID_NAMESPACE = uuid.MustParse("6f0c7a52-3d1e-4b8a-9c57-2a64e1f0b9d3")
+
+// SessionKindRule says what answers in a session do. Sessions that do not
+// schedule are analytics only, apart from the safety net. CreatesCards lets a
+// session hand out ids of cards that are only created by their first answer.
+type SessionKindRule struct {
+	Schedules    bool
+	CreatesCards bool
+	// Empty when the session is not a test.
+	Test TestKind
+}
+
+var SESSION_KIND_RULES = map[SessionKind]SessionKindRule{
+	SessionKindLesson:    {Schedules: true, CreatesCards: true},
+	SessionKindReview:    {Schedules: true},
+	SessionKindPractice:  {CreatesCards: true},
+	SessionKindUnitQuiz:  {CreatesCards: true, Test: TestKindUnitQuiz},
+	SessionKindSkipTest:  {CreatesCards: true, Test: TestKindSkip},
+	SessionKindFinalTest: {CreatesCards: true, Test: TestKindFinal},
+}
+
+var TEST_KIND_SESSION_KIND = map[TestKind]SessionKind{
+	TestKindUnitQuiz: SessionKindUnitQuiz,
+	TestKindSkip:     SessionKindSkipTest,
+	TestKindFinal:    SessionKindFinalTest,
+}
+
+// Pass marks (share of questions right) match the frontend course configs:
+// kana PASS_MARK and SKIP_PASS_MARK, and the kanji level config.
+const (
+	KANA_UNIT_QUIZ_PASS_MARK  float64 = 0.8
+	KANJI_UNIT_QUIZ_PASS_MARK float64 = 0.9
+	SKIP_TEST_PASS_MARK       float64 = 0.9
+	FINAL_TEST_PASS_MARK      float64 = 0.8
+)
+
+var TEST_PASS_MARKS = map[TestKind]map[SRSItemType]float64{
+	TestKindUnitQuiz: {SRSItemKana: KANA_UNIT_QUIZ_PASS_MARK, SRSItemKanji: KANJI_UNIT_QUIZ_PASS_MARK},
+	TestKindSkip:     {SRSItemKana: SKIP_TEST_PASS_MARK, SRSItemKanji: SKIP_TEST_PASS_MARK},
+	TestKindFinal:    {SRSItemKana: FINAL_TEST_PASS_MARK, SRSItemKanji: FINAL_TEST_PASS_MARK},
+}
+
+// TEST_SCOPE_ALL is the scope of a final test, and of a skip test over the
+// whole track.
+const TEST_SCOPE_ALL string = "all"
+
+const PERCENT float64 = 100
+
+// Weak practice ranks cards by the first two terms of the weakness score
+// (docs/learning-plan.md section 7.4): recall chance and lapse rate.
+const (
+	WEAK_RECALL_WEIGHT float64 = 0.4
+	WEAK_LAPSE_WEIGHT  float64 = 0.3
+)
+
+// A look-alike pair is sent as two characters joined by this, e.g. "ぬ:め".
+const PRACTICE_PAIR_SEPARATOR string = ":"
+
+// Matches varchar(1000) on kanji_note.text, which counts characters.
+const KANJI_NOTE_MAX_CHARS int = 1000
+
+var LEARNING_TRACK_UNIT_TYPE = map[LearningTrack]UnitType{
+	LearningTrackHiragana: UnitTypeKana,
+	LearningTrackKatakana: UnitTypeKana,
+	LearningTrackKanjiN5:  UnitTypeKanji,
+}

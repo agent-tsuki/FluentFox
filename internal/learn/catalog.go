@@ -27,11 +27,14 @@ type Item struct {
 	LookAlikes []uuid.UUID
 }
 
+// Group is the kana group key or the kanji group slug; skip tests use it as
+// their scope.
 type Unit struct {
 	Type  common.UnitType
 	ID    uuid.UUID
 	Slug  string
 	Title string
+	Group string
 }
 
 // Pool is the content of one track in path order.
@@ -72,6 +75,7 @@ type ContentReader interface {
 	ListKanaUnits(ctx context.Context, script common.KanaScript) ([]content.KanaUnit, error)
 	ListKana(ctx context.Context, script common.KanaScript) ([]content.Kana, error)
 	ListKanaLookAlikes(ctx context.Context, script common.KanaScript) ([]content.KanaLookAlikeRow, error)
+	ListKanjiGroups(ctx context.Context, level common.JLPTLevel) ([]content.KanjiGroup, error)
 	ListKanjiUnits(ctx context.Context, level common.JLPTLevel) ([]content.KanjiUnit, error)
 	ListKanji(ctx context.Context, level common.JLPTLevel) ([]content.Kanji, error)
 	ListKanjiKunReadings(ctx context.Context, kanjiIDs []uuid.UUID) ([]content.KanjiKunReading, error)
@@ -144,7 +148,9 @@ func (c *Catalog) loadKana(ctx context.Context, track common.LearningTrack, scri
 	poolUnits := make([]Unit, 0, len(units))
 	for i := range units {
 		unitOrder[units[i].ID] = units[i].Position
-		poolUnits = append(poolUnits, Unit{Type: common.UnitTypeKana, ID: units[i].ID, Slug: units[i].Slug, Title: units[i].Title})
+		poolUnits = append(poolUnits, Unit{
+			Type: common.UnitTypeKana, ID: units[i].ID, Slug: units[i].Slug, Title: units[i].Title, Group: string(units[i].GroupKey),
+		})
 	}
 	idBySlug := make(map[string]uuid.UUID, len(kana))
 	for i := range kana {
@@ -175,6 +181,10 @@ func (c *Catalog) loadKana(ctx context.Context, track common.LearningTrack, scri
 }
 
 func (c *Catalog) loadKanji(ctx context.Context, track common.LearningTrack, level common.JLPTLevel) (*Pool, error) {
+	groups, err := c.content.ListKanjiGroups(ctx, level)
+	if err != nil {
+		return nil, fmt.Errorf("load %s pool: %w", track, err)
+	}
 	units, err := c.content.ListKanjiUnits(ctx, level)
 	if err != nil {
 		return nil, fmt.Errorf("load %s pool: %w", track, err)
@@ -196,11 +206,17 @@ func (c *Catalog) loadKanji(ctx context.Context, track common.LearningTrack, lev
 		return nil, fmt.Errorf("load %s pool: %w", track, err)
 	}
 
+	groupSlugs := make(map[uuid.UUID]string, len(groups))
+	for i := range groups {
+		groupSlugs[groups[i].ID] = groups[i].Slug
+	}
 	unitOrder := make(map[uuid.UUID]int, len(units))
 	poolUnits := make([]Unit, 0, len(units))
 	for i := range units {
 		unitOrder[units[i].ID] = units[i].Position
-		poolUnits = append(poolUnits, Unit{Type: common.UnitTypeKanji, ID: units[i].ID, Slug: units[i].Slug, Title: units[i].Title})
+		poolUnits = append(poolUnits, Unit{
+			Type: common.UnitTypeKanji, ID: units[i].ID, Slug: units[i].Slug, Title: units[i].Title, Group: groupSlugs[units[i].GroupID],
+		})
 	}
 	slices.SortStableFunc(kanji, func(a, b content.Kanji) int {
 		if d := unitOrder[a.UnitID] - unitOrder[b.UnitID]; d != 0 {

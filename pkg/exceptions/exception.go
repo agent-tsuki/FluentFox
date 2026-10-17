@@ -125,3 +125,15 @@ var (
 	ErrSRSCardNotFound         = New(http.StatusNotFound, "CARD_NOT_FOUND", "card not found")
 	ErrQuestionTypeMismatch    = New(http.StatusUnprocessableEntity, "QUESTION_TYPE_MISMATCH", "question type does not fit the card")
 )
+
+var (
+	ErrUnitNotFound            = New(http.StatusNotFound, "UNIT_NOT_FOUND", "unit not found")
+	ErrUnitAmbiguous           = New(http.StatusUnprocessableEntity, "UNIT_AMBIGUOUS", "several tracks have this unit, pass track to choose one")
+	ErrUnitProgressStepInvalid = New(http.StatusUnprocessableEntity, "UNIT_STEP_INVALID", "step must be watched, traced, written or practised")
+	ErrPracticeModeInvalid     = New(http.StatusUnprocessableEntity, "PRACTICE_MODE_INVALID", "mode must be weak, unit, lookalike, speed or match")
+	ErrPracticeUnitRequired    = New(http.StatusUnprocessableEntity, "PRACTICE_UNIT_REQUIRED", "unit practice needs a unit")
+	ErrPracticePairInvalid     = New(http.StatusUnprocessableEntity, "PRACTICE_PAIR_INVALID", "pair must be two characters of the track, such as ぬ:め")
+	ErrTestKindInvalid         = New(http.StatusUnprocessableEntity, "TEST_KIND_INVALID", "kind must be unit_quiz, skip or final")
+	ErrTestScopeInvalid        = New(http.StatusUnprocessableEntity, "TEST_SCOPE_INVALID", "scope must be a unit slug, a group or all")
+	ErrKanjiNoteTooLong        = New(http.StatusUnprocessableEntity, "KANJI_NOTE_TOO_LONG", "a note is at most 1000 characters")
+)

@@ -157,3 +157,42 @@ type BaselineSample struct {
 	FirstInputMs *int    `gorm:"column:first_input_ms"`
 	AnswerText   *string `gorm:"column:answer_text"`
 }
+
+type UnitProgress struct {
+	UserID      uuid.UUID       `gorm:"column:user_id;type:uuid;primaryKey"`
+	UnitType    common.UnitType `gorm:"column:unit_type;type:unit_type;primaryKey"`
+	UnitID      uuid.UUID       `gorm:"column:unit_id;type:uuid;primaryKey"`
+	WatchedAt   *time.Time      `gorm:"column:watched_at"`
+	TracedAt    *time.Time      `gorm:"column:traced_at"`
+	WrittenAt   *time.Time      `gorm:"column:written_at"`
+	PractisedAt *time.Time      `gorm:"column:practised_at"`
+	QuizBestPct *int            `gorm:"column:quiz_best_pct"`
+	CompletedAt *time.Time      `gorm:"column:completed_at"`
+}
+
+func (UnitProgress) TableName() string { return "unit_progress" }
+
+type TestResult struct {
+	ID        uuid.UUID            `gorm:"type:uuid;primaryKey"`
+	UserID    uuid.UUID            `gorm:"column:user_id;type:uuid;not null"`
+	SessionID uuid.UUID            `gorm:"column:session_id;type:uuid;not null"`
+	Kind      common.TestKind      `gorm:"column:kind;type:test_kind;not null"`
+	Track     common.LearningTrack `gorm:"column:track;type:learning_track;not null"`
+	Scope     string               `gorm:"column:scope;not null"`
+	Score     int                  `gorm:"column:score;not null"`
+	Total     int                  `gorm:"column:total;not null"`
+	Passed    bool                 `gorm:"column:passed;not null"`
+	ActiveMs  int64                `gorm:"column:active_ms;not null"`
+	TakenAt   time.Time            `gorm:"column:taken_at;not null"`
+}
+
+func (TestResult) TableName() string { return "test_result" }
+
+type KanjiNote struct {
+	UserID    uuid.UUID `gorm:"column:user_id;type:uuid;primaryKey"`
+	KanjiID   uuid.UUID `gorm:"column:kanji_id;type:uuid;primaryKey"`
+	Text      string    `gorm:"column:text;not null"`
+	UpdatedAt time.Time `gorm:"column:updated_at;not null"`
+}
+
+func (KanjiNote) TableName() string { return "kanji_note" }

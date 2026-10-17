@@ -196,3 +196,25 @@ const (
 	KunAffixPrefix KunAffix = "prefix"
 	KunAffixSuffix KunAffix = "suffix"
 )
+
+// PracticeMode is the kind of practice session; it is not stored as an enum.
+type PracticeMode string
+
+const (
+	PracticeModeWeak      PracticeMode = "weak"
+	PracticeModeUnit      PracticeMode = "unit"
+	PracticeModeLookalike PracticeMode = "lookalike"
+	PracticeModeSpeed     PracticeMode = "speed"
+	PracticeModeMatch     PracticeMode = "match"
+)
+
+// UnitProgressStep is a study step of a unit page; each has a timestamp
+// column in unit_progress.
+type UnitProgressStep string
+
+const (
+	UnitStepWatched   UnitProgressStep = "watched"
+	UnitStepTraced    UnitProgressStep = "traced"
+	UnitStepWritten   UnitProgressStep = "written"
+	UnitStepPractised UnitProgressStep = "practised"
+)

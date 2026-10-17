@@ -86,20 +86,23 @@ func (r *Repository) CountLearnedItems(ctx context.Context, userID uuid.UUID, tr
 	return int(n), nil
 }
 
+// New cards a test or practice created are not introduced yet (see ListCardKeys).
 func (r *Repository) CountItemsIntroducedSince(ctx context.Context, userID uuid.UUID, itemType common.SRSItemType, since time.Time) (int, error) {
 	var n int64
 	err := r.db.WithContext(ctx).Model(&SRSCard{}).Select("COUNT(DISTINCT item_id)").
-		Where("user_id = ? AND item_type = ? AND introduced_at >= ?", userID, itemType, since).Scan(&n).Error
+		Where("user_id = ? AND item_type = ? AND state <> 0 AND introduced_at >= ?", userID, itemType, since).Scan(&n).Error
 	if err != nil {
 		return 0, fmt.Errorf("count items introduced for %s: %w", userID, err)
 	}
 	return int(n), nil
 }
 
+// A card still in the new state was created by a test or practice answer and
+// never scheduled, so its facet is still for a lesson to teach.
 func (r *Repository) ListCardKeys(ctx context.Context, userID uuid.UUID, itemType common.SRSItemType) ([]CardKey, error) {
 	var keys []CardKey
 	err := r.db.WithContext(ctx).Model(&SRSCard{}).Select("item_id, facet").
-		Where("user_id = ? AND item_type = ?", userID, itemType).Scan(&keys).Error
+		Where("user_id = ? AND item_type = ? AND state <> 0", userID, itemType).Scan(&keys).Error
 	if err != nil {
 		return nil, fmt.Errorf("list card keys for %s: %w", userID, err)
 	}
