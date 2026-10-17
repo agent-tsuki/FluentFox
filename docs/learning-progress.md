@@ -20,14 +20,15 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 | 5 | backend: practice, tests (unit/skip/final), safety net, unit progress, kanji notes | done, tested (FluentFox `dd1cdc9`…`eefc0b4`); end-to-end checked on Postgres |
 | 5 | frontend: practice / tests / path state / notes on the API, local progress record removed | done (FluentFoxUI up to `b71c0a5`, 130 tests); not yet clicked through against a live backend |
 | 6 | backend: progress APIs (overview, forecast, calendar, weak, weak-groups, confusions, items, dashboard) + `GET /learn/tests/history` | done, tested (FluentFox `382ce85`…`66d6ee3`); end-to-end checked on Postgres (Asia/Tokyo user) |
-| 6 | frontend progress pages, dashboard, settings page | in progress |
+| 6 | frontend: `/progress` page, dashboard on the API, mastery colours, item history, Settings → Learning, test history | done (FluentFoxUI up to `c05718e` + types note, 208 tests); not yet clicked through against a live backend |
 
 ## Next steps (in order)
 
 1. Run backend + frontend together and click through a lesson, a review and the result
    screen (nothing has been tested in a browser yet).
-2. Phase 6 backend progress APIs, then the frontend progress pages, dashboard and settings.
-3. Upload stroke JSON to R2.
+2. Upload stroke JSON to R2.
+3. Open the pull requests for both branches. GitHub reports FluentFoxUI moved to
+   `agent-tsuki/FluentFoxUi`; pushes still redirect, but update the remote URL.
 
 ## Decisions taken during implementation
 
@@ -58,6 +59,8 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 ## Known gaps and follow-ups
 
 Backend:
+- Overview tracks now include `items[{item_id, char, level}]` for chart colours (`5bc815a`).
+- Fixed: study day was wrong for the hour after the start on daylight-saving days (`6bd176b`).
 - `/progress/weak` ranks per card, so a kanji can appear twice (meaning and reading).
 - Dashboard `skillBalance`: grammar, vocabulary and speaking are always 0; `studyLog.xp` is null.
 - Practice and test answers count toward `max_reviews_per_day`; consider excluding them.
@@ -76,11 +79,11 @@ Backend:
 - README still mentions golang-migrate / `migration-up` in older sections.
 
 Frontend:
-- Until phase 6: kana mastery colours and kanji stages show "New"; kanji "Your progress"
-  section removed.
-- Tested-out units, skip/final best scores, certificate name and Print step have no API yet;
-  stored per user in localStorage (`ff-path-v2:<user>:<course>`), so not synced across
-  devices. Needs a backend endpoint for test history / skips.
+- Print dates, "put back in the path" and the certificate name stay in localStorage (no API);
+  test results and skips come from `/learn/tests/history`.
+- Study Log Daily/Weekly toggle does nothing and XP shows "—" (both were like this before).
+- Navbar month view uses the browser date, not the learner's day-start hour.
+- Dark-mode contrast of the new level colours not checked by eye.
 - Answers not saved: kana outside the session's cards (whole-chart speed round), kanji
   flashcards (self-graded), kanji writing.
 - Kana tests build their own options from the server's item list; ー and ッ are asked via
