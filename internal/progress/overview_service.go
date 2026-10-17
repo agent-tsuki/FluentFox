@@ -92,6 +92,7 @@ func trackOverview(x *progressIndex, pool *learn.Pool, totals *answerTotals) Tra
 		MasteredPct:   percentOf(levels.Mastered, len(pool.Items)),
 		Retention30d:  totals.retention(),
 		AvgAnswerMs:   totals.avgMs(),
+		Items:         x.itemLevels(pool),
 	}
 }
 

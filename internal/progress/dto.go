@@ -24,6 +24,13 @@ type TrackOverview struct {
 	MasteredPct   float64       `json:"mastered_pct"  doc:"0 to 100"`
 	Retention30d  *float64      `json:"retention_30d" doc:"Share of reviews recalled in the last 30 days, 0 to 1; null without reviews"`
 	AvgAnswerMs   *int          `json:"avg_answer_ms" doc:"Mean time of correct answers in the last 30 days; null without any"`
+	Items         []ItemLevel   `json:"items"         doc:"Every item of the track with its level, in path order"`
+}
+
+type ItemLevel struct {
+	ItemID uuid.UUID `json:"item_id"`
+	Char   string    `json:"char"`
+	Level  string    `json:"level"`
 }
 
 type TodayStats struct {

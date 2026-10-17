@@ -101,6 +101,15 @@ func (x *progressIndex) levelCounts(pool *learn.Pool) ItemsPerLevel {
 	return out
 }
 
+func (x *progressIndex) itemLevels(pool *learn.Pool) []ItemLevel {
+	out := make([]ItemLevel, 0, len(pool.Items))
+	for i := range pool.Items {
+		item := &pool.Items[i]
+		out = append(out, ItemLevel{ItemID: item.ID, Char: item.Char, Level: string(x.itemLevel(item))})
+	}
+	return out
+}
+
 // trackProgress counts the track's items in units that pass keep, and how
 // many of them have a level that passes reached.
 func (x *progressIndex) trackProgress(track common.LearningTrack, keep func(learn.Unit) bool, reached func(common.MasteryLevel) bool) (int, int) {

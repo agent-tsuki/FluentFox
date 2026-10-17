@@ -72,6 +72,13 @@ func TestOverviewServiceTracks(t *testing.T) {
 			if !samePtr(g.Retention30d, w.Retention30d) || !samePtr(g.AvgAnswerMs, w.AvgAnswerMs) {
 				t.Errorf("retention %v avg %v, want %v %v", deref(g.Retention30d), deref(g.AvgAnswerMs), deref(w.Retention30d), deref(w.AvgAnswerMs))
 			}
+			var fromItems ItemsPerLevel
+			for _, item := range g.Items {
+				fromItems.add(common.MasteryLevel(item.Level))
+			}
+			if len(g.Items) != w.TotalItems || fromItems != w.ItemsPerLevel {
+				t.Errorf("items %+v do not match the level counts %+v", g.Items, w.ItemsPerLevel)
+			}
 		})
 	}
 }
