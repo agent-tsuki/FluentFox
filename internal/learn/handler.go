@@ -15,6 +15,7 @@ type Handler struct {
 	lessons  *StartLessonService
 	reviews  *StartReviewService
 	answers  *SubmitAnswersService
+	complete *CompleteSessionService
 	logger   *zap.Logger
 }
 
@@ -24,9 +25,13 @@ func NewHandler(
 	lessons *StartLessonService,
 	reviews *StartReviewService,
 	answers *SubmitAnswersService,
+	complete *CompleteSessionService,
 	log *zap.Logger,
 ) *Handler {
-	return &Handler{settings: settings, summary: summary, lessons: lessons, reviews: reviews, answers: answers, logger: log}
+	return &Handler{
+		settings: settings, summary: summary, lessons: lessons, reviews: reviews,
+		answers: answers, complete: complete, logger: log,
+	}
 }
 
 type EmptyInput struct{}
@@ -81,6 +86,15 @@ func (h *Handler) StartReview(ctx context.Context, input *humautil.Input[StartRe
 // SubmitAnswers handles POST /learn/sessions/{id}/answers.
 func (h *Handler) SubmitAnswers(ctx context.Context, input *SubmitAnswersInput) (*humautil.Output[humautil.APIResponse[SubmitAnswersResponse]], error) {
 	resp, err := h.answers.Submit(ctx, middleware.ContextUserID(ctx), input.ID, &input.Body)
+	if err != nil {
+		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
+	}
+	return humautil.OK(resp), nil
+}
+
+// CompleteSession handles POST /learn/sessions/{id}/complete.
+func (h *Handler) CompleteSession(ctx context.Context, input *SessionIDInput) (*humautil.Output[humautil.APIResponse[SessionResult]], error) {
+	resp, err := h.complete.Complete(ctx, middleware.ContextUserID(ctx), input.ID)
 	if err != nil {
 		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
 	}

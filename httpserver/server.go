@@ -125,6 +125,7 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 		learn.NewStartLessonService(learnRepo, learnCatalog, learnQuestions, log),
 		learn.NewStartReviewService(learnRepo, learnCatalog, learnQuestions, log),
 		learn.NewSubmitAnswersService(learnRepo, learnCatalog, log),
+		learn.NewCompleteSessionService(learnRepo, log),
 		log,
 	))
 

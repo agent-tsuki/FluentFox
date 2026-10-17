@@ -10,6 +10,11 @@ import (
 
 // No route here is Public(), so every one needs a token and a verified email.
 func RegisterRoutes(api huma.API, h *Handler) {
+	registerOverviewRoutes(api, h)
+	registerSessionRoutes(api, h)
+}
+
+func registerOverviewRoutes(api huma.API, h *Handler) {
 	huma.Register(api, huma.Operation{
 		OperationID: "get-learning-settings",
 		Method:      http.MethodGet,
@@ -36,7 +41,9 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		Tags:        []string{"Learn"},
 		Security:    humautil.BearerSecurity(),
 	}, h.GetSummary)
+}
 
+func registerSessionRoutes(api huma.API, h *Handler) {
 	huma.Register(api, huma.Operation{
 		OperationID:   "start-lesson",
 		Method:        http.MethodPost,
@@ -66,4 +73,14 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		DefaultStatus: http.StatusOK,
 		Security:      humautil.BearerSecurity(),
 	}, h.SubmitAnswers)
+
+	huma.Register(api, huma.Operation{
+		OperationID:   "complete-session",
+		Method:        http.MethodPost,
+		Path:          "/learn/sessions/{id}/complete",
+		Summary:       "Complete a session and get its result screen",
+		Tags:          []string{"Learn"},
+		DefaultStatus: http.StatusOK,
+		Security:      humautil.BearerSecurity(),
+	}, h.CompleteSession)
 }
