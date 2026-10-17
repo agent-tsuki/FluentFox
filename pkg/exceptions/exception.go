@@ -124,8 +124,4 @@ var (
 	ErrStudySessionCompleted   = New(http.StatusConflict, "STUDY_SESSION_COMPLETED", "this study session is already completed")
 	ErrSRSCardNotFound         = New(http.StatusNotFound, "CARD_NOT_FOUND", "card not found")
 	ErrQuestionTypeMismatch    = New(http.StatusUnprocessableEntity, "QUESTION_TYPE_MISMATCH", "question type does not fit the card")
-	ErrDailyNewLimitReached    = New(http.StatusConflict, "DAILY_NEW_LIMIT_REACHED", "you have learned all new items for today")
-	ErrTrackComplete           = New(http.StatusConflict, "TRACK_COMPLETE", "every item of this track has been introduced")
-	ErrDailyReviewLimitReached = New(http.StatusConflict, "DAILY_REVIEW_LIMIT_REACHED", "you have reached today's review limit")
-	ErrNothingDue              = New(http.StatusConflict, "NOTHING_DUE", "no reviews are due right now")
 )

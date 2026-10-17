@@ -17,6 +17,7 @@ import (
 	"github.com/fluentfox/api/internal/auth"
 	"github.com/fluentfox/api/internal/common"
 	"github.com/fluentfox/api/internal/content"
+	"github.com/fluentfox/api/internal/learn"
 	"github.com/fluentfox/api/internal/services"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/database"
@@ -112,6 +113,14 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	content.RegisterRoutes(api, content.NewHandler(
 		content.NewKanaContentService(contentRepo, cfg.StrokesBaseURL, log),
 		content.NewKanjiContentService(contentRepo, cfg.StrokesBaseURL, log),
+		log,
+	))
+
+	learnRepo := learn.NewRepository(db)
+	learnCatalog := learn.NewCatalog(contentRepo)
+	learn.RegisterRoutes(api, learn.NewHandler(
+		learn.NewLearningSettingsService(learnRepo, log),
+		learn.NewSummaryService(learnRepo, learnCatalog, log),
 		log,
 	))
 

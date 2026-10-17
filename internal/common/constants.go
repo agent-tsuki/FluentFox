@@ -158,15 +158,31 @@ type FloatRange struct {
 	Max float64
 }
 
+const (
+	MIN_DESIRED_RETENTION   float64 = 0.70
+	MAX_DESIRED_RETENTION   float64 = 0.97
+	MAX_NEW_KANA_PER_DAY    int     = 100
+	MAX_NEW_KANJI_PER_DAY   int     = 50
+	MIN_MAX_REVIEWS_PER_DAY int     = 10
+	MAX_MAX_REVIEWS_PER_DAY int     = 1000
+	MIN_SESSION_SIZE        int     = 5
+	MAX_SESSION_SIZE        int     = 100
+	MIN_LESSON_SIZE         int     = 1
+	MAX_LESSON_SIZE         int     = 20
+	MIN_DAILY_GOAL_ANSWERS  int     = 5
+	MAX_DAILY_GOAL_ANSWERS  int     = 200
+	MAX_DAY_STARTS_AT_HOUR  int     = 23
+)
+
 var (
-	DESIRED_RETENTION_RANGE   = FloatRange{Min: 0.70, Max: 0.97}
-	NEW_KANA_PER_DAY_RANGE    = IntRange{Min: 0, Max: 100}
-	NEW_KANJI_PER_DAY_RANGE   = IntRange{Min: 0, Max: 50}
-	MAX_REVIEWS_PER_DAY_RANGE = IntRange{Min: 10, Max: 1000}
-	SESSION_SIZE_RANGE        = IntRange{Min: 5, Max: 100}
-	LESSON_SIZE_RANGE         = IntRange{Min: 1, Max: 20}
-	DAILY_GOAL_ANSWERS_RANGE  = IntRange{Min: 5, Max: 200}
-	DAY_STARTS_AT_HOUR_RANGE  = IntRange{Min: 0, Max: 23}
+	DESIRED_RETENTION_RANGE   = FloatRange{Min: MIN_DESIRED_RETENTION, Max: MAX_DESIRED_RETENTION}
+	NEW_KANA_PER_DAY_RANGE    = IntRange{Min: 0, Max: MAX_NEW_KANA_PER_DAY}
+	NEW_KANJI_PER_DAY_RANGE   = IntRange{Min: 0, Max: MAX_NEW_KANJI_PER_DAY}
+	MAX_REVIEWS_PER_DAY_RANGE = IntRange{Min: MIN_MAX_REVIEWS_PER_DAY, Max: MAX_MAX_REVIEWS_PER_DAY}
+	SESSION_SIZE_RANGE        = IntRange{Min: MIN_SESSION_SIZE, Max: MAX_SESSION_SIZE}
+	LESSON_SIZE_RANGE         = IntRange{Min: MIN_LESSON_SIZE, Max: MAX_LESSON_SIZE}
+	DAILY_GOAL_ANSWERS_RANGE  = IntRange{Min: MIN_DAILY_GOAL_ANSWERS, Max: MAX_DAILY_GOAL_ANSWERS}
+	DAY_STARTS_AT_HOUR_RANGE  = IntRange{Min: 0, Max: MAX_DAY_STARTS_AT_HOUR}
 )
 
 // desired_retention is numeric(3,2).
