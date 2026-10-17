@@ -17,7 +17,8 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 | 3 | `pkg/srs` (go-fsrs v4), `internal/learn/grading.go`, enums + constants | done, tested |
 | 4 | backend: settings, summary, question builder, lessons, reviews, answers, complete | done, tested (FluentFox `4745719`…`5ad7450`); end-to-end checked on Postgres incl. concurrent duplicate batches |
 | 4 | frontend: answer timer + queue, lesson / Review all / result screens, how-grading page, leech hint, `ts-fsrs` removed, guest prompts, Vitest (75 tests) | done (FluentFoxUI up to `7142efb`); not yet clicked through against a live backend |
-| 5 | practice modes, safety net, unit / skip / final tests, unit progress, notes | **not started** |
+| 5 | backend: practice, tests (unit/skip/final), safety net, unit progress, kanji notes | done, tested (FluentFox `dd1cdc9`…`eefc0b4`); end-to-end checked on Postgres |
+| 5 | frontend: practice / tests / path state / notes on the API | in progress |
 | 6 | progress APIs (overview, forecast, calendar, weakness, confusions, items, dashboard) | **not started** |
 | 6 | frontend progress pages, dashboard, settings page | **not started** |
 
@@ -25,13 +26,10 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 
 1. Run backend + frontend together and click through a lesson, a review and the result
    screen (nothing has been tested in a browser yet).
-2. Phase 5 backend: `POST /learn/practice`, `POST /learn/tests`, safety net for
-   speed/match/trace misses (`due = min(due, now + SAFETY_NET_DUE)`), skip-test pass creates
-   known cards (`srs.NewKnownCard`), `test_result`, `unit_progress`, `kanji_note` endpoints.
-3. Phase 5 frontend: practice modes, unit quizzes, skip/final tests, notes and path state on
+2. Phase 5 frontend (in progress): practice modes, unit quizzes, skip/final tests, notes and path state on
    the API; remove the remaining localStorage progress record.
-4. Phase 6 backend progress APIs, then the frontend progress pages, dashboard and settings.
-5. Upload stroke JSON to R2.
+3. Phase 6 backend progress APIs, then the frontend progress pages, dashboard and settings.
+4. Upload stroke JSON to R2.
 
 ## Decisions taken during implementation
 
@@ -51,10 +49,19 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 - Typed meanings ignore brackets, articles and punctuation before the typo check; readings are
   compared in hiragana. Romaji → kana conversion happens in the frontend input only.
 - `GradeCounts` on the result screen count cards (first graded answer), not answers.
+- Practice and test answers create an unscheduled card (state 0) when none exists, because
+  every `review_log` row needs a card. State-0 cards are ignored by lessons and new limits.
+- Safety net applies to wrong unrated answers in practice and tests, and to speed / match /
+  trace misses in any session.
+- Pass marks: kana unit quiz 0.8, kanji unit quiz 0.9, skip test 0.9, final test 0.8. Tests
+  ask every facet of every item in scope (N5 kanji final = 158 questions).
+- Unit progress takes `?track=` because kana slugs repeat across scripts.
 
 ## Known gaps and follow-ups
 
 Backend:
+- Practice and test answers count toward `max_reviews_per_day`; consider excluding them.
+- No Docker integration tests committed for the learn SQL (checked by hand on Postgres).
 - On/kun mix-up rule ("wrong reading, then fixed → Hard") never fires: the request does not
   carry the first attempt.
 - A resent answer returns its stored result, but `usual_ms` is recalculated.
