@@ -260,3 +260,24 @@ type KanjiNoteResponse struct {
 	Text      string     `json:"text"`
 	UpdatedAt *time.Time `json:"updated_at"`
 }
+
+type TestHistoryInput struct {
+	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5" doc:"Limit to one track; all tracks when omitted"`
+}
+
+type TestHistoryEntry struct {
+	Kind        string    `json:"kind"          doc:"unit_quiz, skip or final"`
+	Track       string    `json:"track"`
+	Scope       string    `json:"scope"         doc:"Unit slug, group or all"`
+	Score       int       `json:"score"         doc:"Best score"`
+	Total       int       `json:"total"         doc:"Questions in the best attempt"`
+	PassMark    float64   `json:"pass_mark"     doc:"Share of questions needed to pass, 0 to 1"`
+	Passed      bool      `json:"passed"        doc:"Any attempt passed"`
+	Attempts    int       `json:"attempts"`
+	TakenAt     time.Time `json:"taken_at"      doc:"When the best score was taken"`
+	LastTakenAt time.Time `json:"last_taken_at"`
+}
+
+type TestHistory struct {
+	Tests []TestHistoryEntry `json:"tests" doc:"One entry per track, kind and scope, in the order first taken"`
+}

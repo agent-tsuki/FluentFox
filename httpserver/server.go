@@ -133,6 +133,7 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	learn.RegisterPathRoutes(api, learn.NewPathHandler(
 		learn.NewUnitProgressService(learnRepo, learnCatalog, log),
 		learn.NewKanjiNoteService(learnRepo, log),
+		learn.NewTestHistoryService(learnRepo, log),
 		log,
 	))
 
