@@ -16,8 +16,8 @@ Branches: backend `claude/task-gllti3` (FluentFox), frontend `claude/task-gllti3
 | 2 | upload stroke JSON to R2, set `strokes_base_url` | not started |
 | 3 | `pkg/srs` (go-fsrs v4 wrapper), `internal/learn/grading.go`, learning enums + constants | done, with tests (`pkg/srs`, `internal/learn` pass) |
 | 4 | frontend `useAnswerTimer`, answer queue, `learnService` / `progressService` clients, auth guards | done (FluentFoxUI `b333f6d`; not yet used by any screen) |
-| 4 | backend sessions: settings, question builder, lessons, reviews, answers, complete | not started |
-| 4 | frontend lesson / review / result screens, remove `ts-fsrs` | not started |
+| 4 | backend sessions: settings, question builder, lessons, reviews, answers, complete | in progress |
+| 4 | frontend lesson / review / result screens, remove `ts-fsrs` | in progress |
 | 5 | practice modes, safety net, unit / skip / final tests, unit progress, notes | not started |
 | 6 | progress APIs (overview, forecast, calendar, weakness, confusions, items, dashboard) | not started |
 | 6 | frontend progress pages, dashboard, settings | not started |
@@ -63,10 +63,11 @@ Content (phase 2) follow-ups:
 
 ## Next steps (in order)
 
-1. Decide Go 1.26 vs own FSRS; update Dockerfiles if 1.26.
-2. Migration `000009`: unique (kanji_id, position) on kun readings and vocab.
-3. Agree the kana API shape with the frontend (`sections` grid or frontend builds it).
-4. Phase 4 backend: learning settings, question builder, lessons, reviews, answers, complete.
+1. ~~Go 1.26~~ chosen: Dockerfiles now use `golang:1.26-alpine`. Developers need
+   golangci-lint v2.6.2+ built with Go 1.26.
+2. ~~Migration `000009`~~ done: unique (kanji_id, position) on kun readings and vocab.
+3. ~~Kana API shape~~ decided: the frontend builds the chart grid from groups/units/kana.
+4. Phase 4 backend (in progress): learning settings, question builder, lessons, reviews, answers, complete.
 5. Phase 4 frontend: wire `useAnswerTimer` + answer queue into lesson/review/result screens,
    remove `ts-fsrs` and the localStorage progress services.
 6. Phase 5, then phase 6, as in the plan.
