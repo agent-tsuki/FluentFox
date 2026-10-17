@@ -138,6 +138,20 @@ See `.env.example` for all required variables with descriptions.
 
 ## Migrations
 
+The schema is managed by [goose](https://github.com/pressly/goose). SQL files
+live in `migrations/` (`000001_users.sql`, `000002_...`) and are embedded in the
+`cmd/migrate` binary. `000001` recreates the user tables exactly as GORM
+AutoMigrate used to build them, with `IF NOT EXISTS`, so it is safe on existing
+databases. Add a change as a new numbered file with `-- +goose Up` and
+`-- +goose Down` sections; never edit an applied file.
+
+- `make migrate` applies pending migrations (`go run ./cmd/migrate up`)
+- `make migrate-status` lists applied and pending migrations
+- `make migrate-down` rolls back the latest migration
+- Any other goose command works too, e.g. `go run ./cmd/migrate down-to 0`
+
+`cmd/migrate` reads `DATABASE_URL`, `DB_MAX_CONNS` and `DB_MIN_CONNS`.
+
 `refresh_tokens.user_id` has a unique index that the login upsert relies on.
 Run the migration against a database **before** deploying code that includes
 it: the migration first removes duplicate refresh-token rows (keeping each

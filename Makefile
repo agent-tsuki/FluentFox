@@ -2,7 +2,7 @@
 # Run `make help` to see available targets.
 
 .PHONY: help dev dev-down build test test-coverage \
-        migrate seed sync-content lint tidy update-disposable-domains
+        migrate migrate-status migrate-down seed sync-content lint tidy update-disposable-domains
 
 DEV_DB_URL  := postgres://fluentfox:fluentfox_dev@localhost:5435/fluentfox_dev?sslmode=disable
 TEST_DB_URL := postgres://fluentfox:fluentfox_test@localhost:5431/fluentfox_test?sslmode=disable
@@ -43,10 +43,16 @@ test-coverage: ## Run tests with coverage report
 	  xdg-open coverage.html 2>/dev/null || open coverage.html 2>/dev/null ; \
 	  exit $$EXIT_CODE
 
-# Database migrations (GORM AutoMigrate)
+# Database migrations (goose, SQL files in migrations/)
 
-migrate: ## Run GORM AutoMigrate to create/update tables from models
-	DATABASE_URL="$(DEV_DB_URL)" go run ./cmd/migrate
+migrate: ## Apply all pending goose migrations
+	DATABASE_URL="$(DEV_DB_URL)" go run ./cmd/migrate up
+
+migrate-status: ## Show which goose migrations are applied
+	DATABASE_URL="$(DEV_DB_URL)" go run ./cmd/migrate status
+
+migrate-down: ## Roll back the most recent goose migration
+	DATABASE_URL="$(DEV_DB_URL)" go run ./cmd/migrate down
 
 # Content
 
