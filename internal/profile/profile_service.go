@@ -9,6 +9,7 @@ import (
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"golang.org/x/sync/errgroup"
 	"gorm.io/gorm"
 
 	"github.com/fluentfox/api/internal/users"
@@ -26,29 +27,11 @@ func NewProfileService(repo ProfileRepo, avatars *AvatarResolver, log *zap.Logge
 }
 
 func (s *ProfileService) Get(ctx context.Context, userID, currentSessionID uuid.UUID) (ProfileResponse, error) {
-	user, err := s.repo.GetUserByID(ctx, userID)
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return ProfileResponse{}, exceptions.ErrUserNotFound
-	}
+	data, err := s.load(ctx, userID)
 	if err != nil {
-		return ProfileResponse{}, fmt.Errorf("get profile: load user: %w", err)
+		return ProfileResponse{}, err
 	}
-	profile, err := s.repo.GetUserProfileByUserID(ctx, userID)
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return ProfileResponse{}, exceptions.ErrProfileNotFound
-	}
-	if err != nil {
-		return ProfileResponse{}, fmt.Errorf("get profile: load profile: %w", err)
-	}
-	// Accounts created before settings existed have no row; show the defaults.
-	settings, err := s.repo.GetUserSettings(ctx, userID)
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return ProfileResponse{}, fmt.Errorf("get profile: load settings: %w", err)
-	}
-	sessions, err := s.repo.ListActiveSessions(ctx, userID, time.Now().UTC())
-	if err != nil {
-		return ProfileResponse{}, fmt.Errorf("get profile: %w", err)
-	}
+	user, profile, settings, sessions := data.user, data.profile, data.settings, data.sessions
 
 	resp := ProfileResponse{
 		UserID:         user.ID,
@@ -74,6 +57,61 @@ func (s *ProfileService) Get(ctx context.Context, userID, currentSessionID uuid.
 		resp.TargetLevel = &level
 	}
 	return resp, nil
+}
+
+type profileData struct {
+	user     users.User
+	profile  users.UserProfile
+	settings users.UserSettings
+	sessions []users.RefreshToken
+}
+
+// The four reads are independent, so they run at the same time: the request
+// then waits for one database round trip instead of four in a row.
+func (s *ProfileService) load(ctx context.Context, userID uuid.UUID) (profileData, error) {
+	var data profileData
+	g, gctx := errgroup.WithContext(ctx)
+	g.Go(func() error {
+		user, err := s.repo.GetUserByID(gctx, userID)
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return exceptions.ErrUserNotFound
+		}
+		data.user = user
+		return wrapLoadErr("load user", err)
+	})
+	g.Go(func() error {
+		profile, err := s.repo.GetUserProfileByUserID(gctx, userID)
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return exceptions.ErrProfileNotFound
+		}
+		data.profile = profile
+		return wrapLoadErr("load profile", err)
+	})
+	g.Go(func() error {
+		// Accounts created before settings existed have no row; show the defaults.
+		settings, err := s.repo.GetUserSettings(gctx, userID)
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil
+		}
+		data.settings = settings
+		return wrapLoadErr("load settings", err)
+	})
+	g.Go(func() error {
+		sessions, err := s.repo.ListActiveSessions(gctx, userID, time.Now().UTC())
+		data.sessions = sessions
+		return wrapLoadErr("load sessions", err)
+	})
+	if err := g.Wait(); err != nil {
+		return profileData{}, err //nolint:wrapcheck // each branch already wrapped or returned a sentinel
+	}
+	return data, nil
+}
+
+func wrapLoadErr(step string, err error) error {
+	if err == nil {
+		return nil
+	}
+	return fmt.Errorf("get profile: %s: %w", step, err)
 }
 
 type UpdateProfileService struct {
