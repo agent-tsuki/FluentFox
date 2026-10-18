@@ -88,6 +88,20 @@ type oauthHandoff struct {
 	Login    LoginResponse `json:"login"`
 	Email    string        `json:"email"`
 	ReturnTo string        `json:"return_to"`
+	// LoginResponse.RefreshToken is json:"-" so it never reaches a response
+	// body, which also drops it here; the handoff is encrypted, so it is kept
+	// in its own field and put back on exchange.
+	RefreshToken string `json:"refresh_token"`
+}
+
+func newOAuthHandoff(login *LoginResponse, email, returnTo string) oauthHandoff {
+	return oauthHandoff{Login: *login, Email: email, ReturnTo: returnTo, RefreshToken: login.RefreshToken}
+}
+
+func (h *oauthHandoff) login() LoginResponse {
+	login := h.Login
+	login.RefreshToken = h.RefreshToken
+	return login
 }
 
 type googleTokenResponse struct {
@@ -300,7 +314,7 @@ func (s *GoogleOAuthService) CompleteCallback(ctx context.Context, state, code s
 	if err != nil {
 		return result, fmt.Errorf("generate OAuth handoff code: %w", err)
 	}
-	handoff := oauthHandoff{Login: login, Email: user.Email, ReturnTo: transaction.ReturnTo}
+	handoff := newOAuthHandoff(&login, user.Email, transaction.ReturnTo)
 	if err := s.store.put(ctx, oauthExchangeKey(handoffCode), handoff, googleOAuthExchangeCodeTTL); err != nil {
 		return result, fmt.Errorf("save OAuth handoff: %w", err)
 	}
@@ -401,10 +415,10 @@ func (s *GoogleOAuthService) Exchange(ctx context.Context, code string) (OAuthEx
 	if err != nil {
 		return OAuthExchangeResponse{}, "", fmt.Errorf("consume OAuth handoff: %w", err)
 	}
-	if !found || handoff.Login.AccessToken == "" || handoff.Login.RefreshToken == "" {
+	if !found || handoff.Login.AccessToken == "" || handoff.RefreshToken == "" {
 		return OAuthExchangeResponse{}, "", errGoogleOAuthFailed
 	}
-	return OAuthExchangeResponse{LoginResponse: handoff.Login, Email: handoff.Email, ReturnTo: handoff.ReturnTo}, handoff.ReturnTo, nil
+	return OAuthExchangeResponse{LoginResponse: handoff.login(), Email: handoff.Email, ReturnTo: handoff.ReturnTo}, handoff.ReturnTo, nil
 }
 
 func (s *GoogleOAuthService) exchangeGoogleCode(ctx context.Context, code, verifier string) (string, error) {

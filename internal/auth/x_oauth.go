@@ -235,7 +235,7 @@ func (s *XOAuthService) CompleteCallback(ctx context.Context, requestToken, veri
 	if err != nil {
 		return result, fmt.Errorf("generate X OAuth handoff code: %w", err)
 	}
-	handoff := oauthHandoff{Login: login, Email: user.Email, ReturnTo: transaction.ReturnTo}
+	handoff := newOAuthHandoff(&login, user.Email, transaction.ReturnTo)
 	if err := s.store.put(ctx, xOAuthExchangeKey(handoffCode), handoff, xOAuthExchangeCodeTTL); err != nil {
 		return result, fmt.Errorf("save X OAuth handoff: %w", err)
 	}
@@ -274,10 +274,10 @@ func (s *XOAuthService) Exchange(ctx context.Context, code string) (OAuthExchang
 	if err != nil {
 		return OAuthExchangeResponse{}, "", fmt.Errorf("consume X OAuth handoff: %w", err)
 	}
-	if !found || handoff.Login.AccessToken == "" || handoff.Login.RefreshToken == "" {
+	if !found || handoff.Login.AccessToken == "" || handoff.RefreshToken == "" {
 		return OAuthExchangeResponse{}, "", errXOAuthFailed
 	}
-	return OAuthExchangeResponse{LoginResponse: handoff.Login, Email: handoff.Email, ReturnTo: handoff.ReturnTo}, handoff.ReturnTo, nil
+	return OAuthExchangeResponse{LoginResponse: handoff.login(), Email: handoff.Email, ReturnTo: handoff.ReturnTo}, handoff.ReturnTo, nil
 }
 
 func (s *XOAuthService) LinkStatus(ctx context.Context, userID uuid.UUID) (XOAuthLinkStatus, error) {
