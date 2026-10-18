@@ -20,6 +20,7 @@ const (
 	contextUserIDKey        authContextKey = "auth_user_id"
 	contextIsAdminKey       authContextKey = "auth_is_admin"
 	contextEmailVerifiedKey authContextKey = "auth_email_verified"
+	contextSessionIDKey     authContextKey = "auth_session_id"
 )
 
 // RequireAuth enforces a valid JWT access token.
@@ -44,6 +45,7 @@ func RequireAuth(maker *token.Maker) gin.HandlerFunc {
 		ctx := context.WithValue(c.Request.Context(), contextUserIDKey, claims.UserID)
 		ctx = context.WithValue(ctx, contextIsAdminKey, claims.IsAdmin)
 		ctx = context.WithValue(ctx, contextEmailVerifiedKey, claims.EmailVerified)
+		ctx = context.WithValue(ctx, contextSessionIDKey, claims.SessionID)
 		c.Request = c.Request.WithContext(ctx)
 
 		c.Next()
@@ -61,6 +63,14 @@ func RequireEmailVerified() gin.HandlerFunc {
 		}
 		c.Next()
 	}
+}
+
+// ContextSessionID is uuid.Nil for tokens issued before sessions existed.
+func ContextSessionID(ctx context.Context) uuid.UUID {
+	if id, ok := ctx.Value(contextSessionIDKey).(uuid.UUID); ok {
+		return id
+	}
+	return uuid.Nil
 }
 
 // ContextUserID extracts the authenticated user ID from the context.

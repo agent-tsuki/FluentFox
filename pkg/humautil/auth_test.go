@@ -29,7 +29,7 @@ func TestAuthMiddleware(t *testing.T) {
 
 	mint := func(t *testing.T, m *token.Maker, verified bool) string {
 		t.Helper()
-		raw, err := m.GenerateAccessToken(userID, false, verified)
+		raw, err := m.GenerateAccessToken(userID, false, verified, uuid.New())
 		if err != nil {
 			t.Fatalf("mint token: %v", err)
 		}

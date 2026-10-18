@@ -149,7 +149,7 @@ func TestAuthService_registerUser(t *testing.T) {
 			mailer := &fakeMailer{err: tc.mailErr}
 			mailer.onSend = func() { tc.repo.record("mail") }
 			releaser := NewStaleAccountReleaser(tc.repo, nopLogger())
-			sessions := NewLogin(tc.repo, newTestMaker(), nopLogger())
+			sessions := NewLogin(tc.repo, newTestMaker(), nil, nil, nopLogger())
 			svc := NewAuthService(tc.repo, mailer, checker, releaser, sessions, nopLogger())
 			req := RegisterRequest{
 				Email: "  Bob@GMAIL.com ", UserName: &username, FirstName: "Bob",
@@ -205,13 +205,13 @@ func TestAuthService_registerUser(t *testing.T) {
 			}
 
 			if err != nil {
-				if tc.repo.upsertedCalls != 0 {
+				if tc.repo.createdSessions != 0 {
 					t.Error("session must not be issued on failure")
 				}
 				return
 			}
-			if resp.AccessToken == "" || resp.RefreshToken == "" || tc.repo.upsertedCalls != 1 {
-				t.Errorf("want access and stored refresh token, got %+v (upserts %d)", resp, tc.repo.upsertedCalls)
+			if resp.AccessToken == "" || resp.RefreshToken == "" || tc.repo.createdSessions != 1 {
+				t.Errorf("want access and stored refresh token, got %+v (sessions %d)", resp, tc.repo.createdSessions)
 			}
 			wantUser := UserSummary{UserID: resp.User.UserID, Username: tc.repo.createdUsername, IsActive: true}
 			if resp.User != wantUser || resp.User.UserID == uuid.Nil {

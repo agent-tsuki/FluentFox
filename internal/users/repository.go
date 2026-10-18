@@ -246,16 +246,6 @@ func (r *Repository) GetRefreshTokenByHash(ctx context.Context, hash string) (Re
 	}
 	return rf, nil
 }
-func (r *Repository) RevokeRefreshToken(ctx context.Context, userID uuid.UUID) error {
-	result := r.db.WithContext(ctx).
-		Model(&RefreshToken{}).
-		Where("user_id = ?", userID).
-		Update("is_revoked", true)
-	if result.Error != nil {
-		return fmt.Errorf("revoke refresh token: %w", result.Error)
-	}
-	return nil
-}
 
 func (r *Repository) RevokeRefreshTokens(ctx context.Context, tx *gorm.DB, userID uuid.UUID) error {
 	result := tx.WithContext(ctx).
@@ -297,28 +287,4 @@ func (r *Repository) ReplaceVerificationToken(ctx context.Context, tx *gorm.DB, 
 		return fmt.Errorf("failed to insert new verification token: %w", err)
 	}
 	return nil
-}
-
-// One statement against idx_refresh_tokens_user_id, so a login costs a single
-// round trip and two concurrent first logins cannot create duplicate rows.
-func (r *Repository) UpsertRefreshToken(ctx context.Context, userID uuid.UUID, hashToken string, expiresAt time.Time) (RefreshToken, error) {
-	rf := RefreshToken{UserID: userID, TokenHash: hashToken, ExpiresAt: expiresAt}
-
-	result := r.db.WithContext(ctx).
-		Clauses(clause.OnConflict{
-			Columns: []clause.Column{{Name: "user_id"}},
-			DoUpdates: clause.Assignments(map[string]any{
-				"token_hash": hashToken,
-				"expires_at": expiresAt,
-				"is_revoked": false,
-				"updated_at": time.Now().UTC(),
-			}),
-		}).
-		Create(&rf)
-
-	if result.Error != nil {
-		return RefreshToken{}, fmt.Errorf("upsert refresh token: %w", result.Error)
-	}
-
-	return rf, nil
 }

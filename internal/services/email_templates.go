@@ -20,6 +20,7 @@ const (
 	passwordResetLinkTemplate = "password_reset_link.html"
 	dailyReminderTemplate     = "daily_reminder.html"
 	serverErrorAlertTemplate  = "server_error_alert.html"
+	loginCodeTemplate         = "login_code.html"
 )
 
 // html/template escapes every value, so a name like "<a href=…>" shows as
@@ -63,6 +64,15 @@ type passwordResetLinkData struct {
 	Name      string
 	ExpiresIn string
 	Button    emailButton
+}
+
+type loginCodeData struct {
+	emailLayout
+	Name      string
+	Code      string
+	ExpiresIn string
+	// " from Tokyo, Japan" or "" when the location is unknown.
+	Where string
 }
 
 type dailyReminderData struct {

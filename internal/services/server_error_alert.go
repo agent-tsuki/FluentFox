@@ -54,8 +54,7 @@ func (a *ServerErrorAlertMailer) NotifyServerError(ctx context.Context, e *alert
 	return nil
 }
 
-// The SMTP mailer writes the subject into a raw header, so a \r or \n from an
-// upstream error must not reach it.
+// A \r or \n from an upstream error must not reach the subject header.
 func firstLine(s string) string {
 	line, _, _ := strings.Cut(s, "\n")
 	return strings.Map(func(r rune) rune {

@@ -37,6 +37,51 @@ const (
 	EMAIL_SUPPORT_ADDRESS string = "support@foxsensei.com"
 )
 
+// One session per signed-in device. Old rows are pruned at login because
+// there is no background job.
+const (
+	MAX_ACTIVE_SESSIONS       int           = 10
+	SESSION_REVOKED_RETENTION time.Duration = 30 * 24 * time.Hour
+)
+
+// IP location happens inside the login request, so it gets a short budget;
+// on timeout the login goes ahead without a location.
+const IP_LOOKUP_TIMEOUT time.Duration = 1500 * time.Millisecond
+
+// Coordinates are rounded to 3 decimals (about 110 m): enough for a map pin,
+// without storing the exact spot a person logged in from.
+const LOCATION_COORD_SCALE float64 = 1000
+
+// Email code for password logins from a VPN. Six digits means the attempt
+// limit is what stops guessing, so it is checked under a row lock.
+const (
+	LOGIN_CODE_LENGTH        int           = 6
+	LOGIN_CODE_EXPIRES_AFTER time.Duration = 10 * time.Minute
+	LOGIN_CODE_MAX_ATTEMPTS  int           = 5
+	LOGIN_CODE_COOLDOWN      time.Duration = 60 * time.Second
+	LOGIN_CODE_SEND_WINDOW   time.Duration = 24 * time.Hour
+	LOGIN_CODE_DAILY_LIMIT   int64         = 10
+)
+
+// Uploaded avatars are re-encoded to a square JPEG. The browser shrinks photos
+// before upload, so the byte cap only has to cover an already-small image.
+const (
+	AVATAR_MAX_BYTES     int64  = 2 << 20
+	AVATAR_MIN_SOURCE_PX int    = 128
+	AVATAR_MAX_SOURCE_PX int    = 2048
+	AVATAR_OUTPUT_PX     int    = 512
+	AVATAR_JPEG_QUALITY  int    = 85
+	AVATAR_OBJECT_PREFIX string = "avatars/users/"
+	AVATAR_CONTENT_TYPE  string = "image/jpeg"
+	// Each upload gets a new key, so the old URL can be cached forever.
+	AVATAR_CACHE_CONTROL string = "public, max-age=31536000, immutable"
+	// A decoded 2048px image is 16 MB; two at a time caps avatar memory at
+	// about 32 MB however many uploads arrive together.
+	AVATAR_MAX_CONCURRENT_DECODES int = 2
+)
+
+const DEFAULT_AVATAR_PRESET_ID string = "men-warrior"
+
 // A burst of 500s would otherwise send one alert email each.
 const SERVER_ERROR_ALERT_INTERVAL time.Duration = 5 * time.Minute
 

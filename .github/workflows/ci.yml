@@ -53,10 +53,7 @@ jobs:
           JWT_ACCESS_SECRET: ci-placeholder-not-a-real-secret-0123456789
           JWT_ACCESS_EXPIRY_MINUTES: "15"
           JWT_REFRESH_EXPIRY_DAYS: "7"
-          SMTP_HOST: localhost
-          SMTP_PORT: "587"
-          SMTP_USERNAME: ci@example.com
-          SMTP_APP_PASSWORD: ci-placeholder
+          RESEND_API_KEY: ci-placeholder
           EMAIL_FROM_ADDRESS: ci@example.com
           R2_ACCOUNT_ID: ci-placeholder
           R2_ACCESS_KEY: ci-placeholder

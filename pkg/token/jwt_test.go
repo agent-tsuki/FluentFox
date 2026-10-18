@@ -24,7 +24,7 @@ func TestMaker_AccessToken_roundTrip(t *testing.T) {
 	m := NewMaker(testSecret, 15, 7)
 	uid := uuid.New()
 
-	raw, err := m.GenerateAccessToken(uid, true, true)
+	raw, err := m.GenerateAccessToken(uid, true, true, uuid.New())
 	if err != nil {
 		t.Fatal(err)
 	}

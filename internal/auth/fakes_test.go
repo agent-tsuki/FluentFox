@@ -56,13 +56,19 @@ type fakeUserRepo struct {
 
 	lookedUpEmail string
 
-	refresh       users.RefreshToken
-	refreshErr    error
-	upsertErr     error
-	upsertedHash  string
-	upsertedCalls int
-	revokeErr     error
-	revokedIDs    []uuid.UUID
+	refresh            users.RefreshToken
+	refreshErr         error
+	sessionErr         error
+	createdSessionID   uuid.UUID
+	createdSessionHash string
+	createdSessions    int
+	createdSession     users.NewSession
+	lastLoginSet       bool
+	rotateErr          error
+	rotateLost         bool
+	rotatedHash        string
+	revokeErr          error
+	revokedSessionIDs  []uuid.UUID
 
 	passwordReset        users.PasswordReset
 	passwordResetErr     error
@@ -77,6 +83,41 @@ type fakeUserRepo struct {
 	consumeErr           error
 	consumed             bool
 	consumedPasswordHash string
+
+	challengeStats    users.LoginChallengeStats
+	createdChallenge  *users.LoginChallenge
+	challenge         users.LoginChallenge
+	challengeErr      error
+	challengeAttempts int
+	challengeConsumed bool
+}
+
+func (f *fakeUserRepo) GetLoginChallengeStats(context.Context, *gorm.DB, uuid.UUID, time.Time) (users.LoginChallengeStats, error) {
+	return f.challengeStats, nil
+}
+
+func (f *fakeUserRepo) CreateLoginChallenge(_ context.Context, _ *gorm.DB, c *users.LoginChallenge) error {
+	f.createdChallenge = c
+	return nil
+}
+
+func (f *fakeUserRepo) LockLoginChallenge(context.Context, *gorm.DB, uuid.UUID) (users.LoginChallenge, error) {
+	return f.challenge, f.challengeErr
+}
+
+func (f *fakeUserRepo) RecordLoginChallengeAttempt(_ context.Context, _ *gorm.DB, _ uuid.UUID, attempts int) error {
+	f.record("RecordLoginChallengeAttempt")
+	f.challengeAttempts = attempts
+	return nil
+}
+
+func (f *fakeUserRepo) DeleteOldLoginChallenges(context.Context, *gorm.DB, uuid.UUID, time.Time) error {
+	return nil
+}
+
+func (f *fakeUserRepo) ConsumeLoginChallenge(context.Context, *gorm.DB, uuid.UUID, time.Time) error {
+	f.challengeConsumed = true
+	return nil
 }
 
 func (f *fakeUserRepo) record(name string) { f.calls = append(f.calls, name) }
@@ -184,18 +225,36 @@ func (f *fakeUserRepo) CreateUsersSettings(context.Context, *gorm.DB, uuid.UUID,
 	return nil
 }
 
-func (f *fakeUserRepo) UpsertRefreshToken(_ context.Context, userID uuid.UUID, hash string, exp time.Time) (users.RefreshToken, error) {
-	f.upsertedCalls++
-	f.upsertedHash = hash
-	return users.RefreshToken{UserID: userID, TokenHash: hash, ExpiresAt: exp}, f.upsertErr
+func (f *fakeUserRepo) CreateSession(_ context.Context, _ *gorm.DB, s *users.NewSession, _ time.Time) (uuid.UUID, error) {
+	f.createdSessions++
+	f.createdSessionHash = s.TokenHash
+	f.createdSession = *s
+	if f.createdSessionID == uuid.Nil {
+		f.createdSessionID = uuid.New()
+	}
+	return f.createdSessionID, f.sessionErr
+}
+
+func (f *fakeUserRepo) PruneSessions(context.Context, *gorm.DB, uuid.UUID, time.Time, time.Time, int) error {
+	return nil
+}
+
+func (f *fakeUserRepo) SetLastLogin(context.Context, *gorm.DB, uuid.UUID, time.Time) error {
+	f.lastLoginSet = true
+	return nil
+}
+
+func (f *fakeUserRepo) RotateSession(_ context.Context, _ uuid.UUID, _, newHash string, _, _ time.Time) (bool, error) {
+	f.rotatedHash = newHash
+	return !f.rotateLost, f.rotateErr
 }
 
 func (f *fakeUserRepo) GetRefreshTokenByHash(context.Context, string) (users.RefreshToken, error) {
 	return f.refresh, f.refreshErr
 }
 
-func (f *fakeUserRepo) RevokeRefreshToken(_ context.Context, userID uuid.UUID) error {
-	f.revokedIDs = append(f.revokedIDs, userID)
+func (f *fakeUserRepo) RevokeSessionByID(_ context.Context, sessionID uuid.UUID) error {
+	f.revokedSessionIDs = append(f.revokedSessionIDs, sessionID)
 	return f.revokeErr
 }
 

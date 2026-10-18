@@ -4,6 +4,7 @@
 package storage
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"time"
@@ -15,10 +16,10 @@ import (
 
 // R2Store implements Storage backed by Cloudflare R2 via the S3-compatible API.
 type R2Store struct {
-	client     *s3.Client
-	presigner  *s3.PresignClient
-	bucket     string
-	publicURL  string
+	client    *s3.Client
+	presigner *s3.PresignClient
+	bucket    string
+	publicURL string
 }
 
 // NewR2Store constructs an R2Store. accountID, accessKey, secretKey, bucket,
@@ -27,7 +28,7 @@ func NewR2Store(accountID, accessKey, secretKey, bucket, publicURL string) *R2St
 	endpoint := fmt.Sprintf("https://%s.r2.cloudflarestorage.com", accountID)
 
 	cfg := aws.Config{
-		Region: "auto",
+		Region:      "auto",
 		Credentials: credentials.NewStaticCredentialsProvider(accessKey, secretKey, ""),
 		EndpointResolverWithOptions: aws.EndpointResolverWithOptionsFunc(
 			func(service, region string, opts ...interface{}) (aws.Endpoint, error) {
@@ -81,6 +82,22 @@ func (s *R2Store) Delete(ctx context.Context, key string) error {
 	})
 	if err != nil {
 		return fmt.Errorf("storage: delete key %q: %w", key, err)
+	}
+	return nil
+}
+
+// Put uploads a small object the server has already checked, such as a
+// re-encoded avatar. Large or untrusted files should use a presigned upload.
+func (s *R2Store) Put(ctx context.Context, key, contentType, cacheControl string, body []byte) error {
+	_, err := s.client.PutObject(ctx, &s3.PutObjectInput{
+		Bucket:       aws.String(s.bucket),
+		Key:          aws.String(key),
+		Body:         bytes.NewReader(body),
+		ContentType:  aws.String(contentType),
+		CacheControl: aws.String(cacheControl),
+	})
+	if err != nil {
+		return fmt.Errorf("storage: put key %q: %w", key, err)
 	}
 	return nil
 }

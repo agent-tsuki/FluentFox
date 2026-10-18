@@ -122,15 +122,23 @@ See `.env.example` for all required variables with descriptions.
 - `APP_ENV=development` loads `.env.development`
 - `APP_ENV=test` loads `.env.test`
 - `APP_ENV=production` reads from the real environment (Railway injects these)
-- `RESEND_API_KEY` (optional) sends email through the Resend HTTP API, which is
-  faster than SMTP. `EMAIL_FROM_ADDRESS` must then be on a domain verified in
-  Resend. When it is empty, email goes through the `SMTP_*` settings, which are
-  still required either way.
+- `RESEND_API_KEY` (required) sends all email through the Resend HTTP API.
+  `EMAIL_FROM_ADDRESS` must be on a domain verified in Resend. There is no
+  SMTP option: Railway and many other hosts block outbound SMTP.
 - `ALERT_EMAIL_TO` (optional) gets an email when a request fails with a 500,
   with the error, request id and stack trace. At most one email is sent every
   5 minutes; the next one says how many errors were skipped. Empty turns it off.
   The email is sent in the background, so it is reliable on a long-running host
   (Railway) but may be lost on Vercel, which can stop the function after the response.
+- `VPNAPI_API_KEY` (optional) is a vpnapi.io key (free: 1,000 lookups a day). At login the API looks up
+  the client's city and whether it is a VPN; a password login from a VPN must
+  then also enter a code sent by email. Empty turns both off. The client IP is
+  only right when `TRUSTED_PROXIES` covers the host's proxy (Railway:
+  `100.64.0.0/10`).
+- `R2_ACCOUNT_ID`, `R2_ACCESS_KEY`, `R2_SECRET_KEY`, `R2_BUCKET_NAME` and
+  `R2_PUBLIC_URL` (all optional, but all five together) turn on profile photo
+  uploads to Cloudflare R2. Without them `PUT /profile/avatar` answers 503 and
+  the built-in avatars still work.
 - `STROKES_BASE_URL` (optional) is the public base URL of the kana and kanji
   stroke JSON files in R2. The `/content/*` endpoints return it as
   `strokes_base_url`; it is empty when unset.

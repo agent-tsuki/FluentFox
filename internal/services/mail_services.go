@@ -20,6 +20,7 @@ const (
 	passwordResetCodeSubject = "Your FoxSensei password reset code"
 	passwordResetLinkSubject = "Reset your FoxSensei password" //nolint:gosec // an email subject, not a credential
 	dailyReminderSubject     = "Don't break your streak! 🦊"
+	loginCodeSubject         = "Your FoxSensei sign-in code"
 
 	verifyPath        = "/verify"
 	resetPasswordPath = "/reset-password"
@@ -28,7 +29,7 @@ const (
 	ignoreIfNotYouNote = "Didn't ask for this? You can safely ignore this email."
 )
 
-// MailService holds the mailer (Resend or SMTP in production, a stub in tests)
+// MailService holds the mailer (Resend in production, a stub in tests)
 // and the base APP_URL used to build action links.
 type MailService struct {
 	mailer mailer.Mailer
@@ -110,6 +111,32 @@ func (s *MailService) SendPasswordResetLink(ctx context.Context, to, name, rawTo
 	if err := s.mailer.SendHTML(ctx, to, passwordResetLinkSubject, html); err != nil {
 		s.logger.Error("failed to send password reset link", zap.Error(err))
 		return fmt.Errorf("send password reset link: %w", err)
+	}
+	return nil
+}
+
+// where is a place such as "Tokyo, Japan", or "" when unknown.
+func (s *MailService) SendLoginCode(ctx context.Context, to, name, code, where string) error {
+	ctx, cancel := context.WithTimeout(ctx, common.EMAIL_SEND_TIMEOUT)
+	defer cancel()
+
+	data := loginCodeData{
+		emailLayout: newEmailLayout(s.appURL, loginCodeSubject,
+			"Enter this code to finish signing in to FoxSensei.", ignoreIfNotYouNote),
+		Name:      displayName(name),
+		Code:      code,
+		ExpiresIn: humanDuration(common.LOGIN_CODE_EXPIRES_AFTER),
+	}
+	if where != "" {
+		data.Where = " from " + where
+	}
+	html, err := renderEmail(loginCodeTemplate, data)
+	if err != nil {
+		return fmt.Errorf("send login code: %w", err)
+	}
+	if err := s.mailer.SendHTML(ctx, to, loginCodeSubject, html); err != nil {
+		s.logger.Error("failed to send login code", zap.Error(err))
+		return fmt.Errorf("send login code: %w", err)
 	}
 	return nil
 }

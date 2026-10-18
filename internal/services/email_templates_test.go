@@ -63,6 +63,14 @@ func TestMailService_RendersEveryEmailWithLayout(t *testing.T) {
 			wantContains: []string{"Hi there,", "AB12CD34", "10 minutes"},
 		},
 		{
+			name: "login code shows the code and where the sign-in came from",
+			send: func(s *MailService) error {
+				return s.SendLoginCode(context.Background(), "a@b.com", "Aiko", "123456", "Tokyo, Japan")
+			},
+			wantSubject:  loginCodeSubject,
+			wantContains: []string{"123456", "through a VPN or proxy from Tokyo, Japan", "10 minutes"},
+		},
+		{
 			name: "password reset link links to the reset page",
 			send: func(s *MailService) error {
 				return s.SendPasswordResetLink(context.Background(), "a@b.com", "Aiko", "abc")

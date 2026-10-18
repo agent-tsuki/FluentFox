@@ -1,0 +1,13 @@
+{{template "email_start" .}}
+{{template "email_heading" "Confirm it's you"}}
+{{template "email_text" (printf "Hi %s, someone just signed in to your FoxSensei account through a VPN or proxy%s. To finish signing in, enter this code:" .Name .Where)}}
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 12px;">
+  <tr>
+    <td align="center" style="padding:18px 32px;background-color:#FFF8F5;border:1px solid #F0E8E3;border-radius:12px;">
+      <span style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:30px;font-weight:700;letter-spacing:8px;color:#1A1210;">{{.Code}}</span>
+    </td>
+  </tr>
+</table>
+<p style="margin:0 0 28px;font-size:13px;color:#A89990;text-align:center;">This code expires in <strong style="color:#6B5E57;">{{.ExpiresIn}}</strong>.</p>
+{{template "email_text" "If this wasn't you, don't share the code. Reset your password straight away, because whoever signed in knows it."}}
+{{template "email_end" .}}

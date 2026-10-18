@@ -10,5 +10,6 @@ import (
 func ContextWithClaims(ctx context.Context, claims *token.Claims) context.Context {
 	ctx = context.WithValue(ctx, contextUserIDKey, claims.UserID)
 	ctx = context.WithValue(ctx, contextIsAdminKey, claims.IsAdmin)
+	ctx = context.WithValue(ctx, contextSessionIDKey, claims.SessionID)
 	return context.WithValue(ctx, contextEmailVerifiedKey, claims.EmailVerified)
 }

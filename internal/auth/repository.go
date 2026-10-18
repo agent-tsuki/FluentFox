@@ -26,10 +26,19 @@ type UserRepo interface {
 	GetUserByID(ctx context.Context, userID uuid.UUID) (users.User, error)
 	GetUserProfileByUserID(ctx context.Context, userID uuid.UUID) (users.UserProfile, error)
 	ReplaceVerificationToken(ctx context.Context, tx *gorm.DB, userID uuid.UUID, hashCode string, expiresAt *time.Time) error
-	UpsertRefreshToken(ctx context.Context, userID uuid.UUID, hashToken string, expiresAt time.Time) (users.RefreshToken, error)
 	GetRefreshTokenByHash(ctx context.Context, hash string) (users.RefreshToken, error)
-	RevokeRefreshToken(ctx context.Context, userID uuid.UUID) error
 	RevokeRefreshTokens(ctx context.Context, tx *gorm.DB, userID uuid.UUID) error
+	CreateSession(ctx context.Context, tx *gorm.DB, s *users.NewSession, now time.Time) (uuid.UUID, error)
+	PruneSessions(ctx context.Context, tx *gorm.DB, userID uuid.UUID, now, revokedBefore time.Time, keepActive int) error
+	SetLastLogin(ctx context.Context, tx *gorm.DB, userID uuid.UUID, at time.Time) error
+	RotateSession(ctx context.Context, sessionID uuid.UUID, oldHash, newHash string, expiresAt, now time.Time) (bool, error)
+	RevokeSessionByID(ctx context.Context, sessionID uuid.UUID) error
+	GetLoginChallengeStats(ctx context.Context, tx *gorm.DB, userID uuid.UUID, since time.Time) (users.LoginChallengeStats, error)
+	CreateLoginChallenge(ctx context.Context, tx *gorm.DB, c *users.LoginChallenge) error
+	LockLoginChallenge(ctx context.Context, tx *gorm.DB, id uuid.UUID) (users.LoginChallenge, error)
+	RecordLoginChallengeAttempt(ctx context.Context, tx *gorm.DB, id uuid.UUID, attempts int) error
+	ConsumeLoginChallenge(ctx context.Context, tx *gorm.DB, id uuid.UUID, now time.Time) error
+	DeleteOldLoginChallenges(ctx context.Context, tx *gorm.DB, userID uuid.UUID, before time.Time) error
 
 	GetUserForUsername(ctx context.Context, username string) (users.User, error)
 	LockUserForUpdate(ctx context.Context, tx *gorm.DB, userID uuid.UUID) (users.User, error)

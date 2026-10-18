@@ -109,6 +109,23 @@ var (
 	ErrPasswordResetEmailSendFailed = New(http.StatusServiceUnavailable, "PASSWORD_RESET_EMAIL_SEND_FAILED", "we could not send the password reset email, please try again")
 	ErrPasswordResetCodeInvalid     = New(http.StatusBadRequest, "PASSWORD_RESET_CODE_INVALID", "the password reset code is invalid or expired")
 	ErrPasswordResetTokenInvalid    = New(http.StatusBadRequest, "PASSWORD_RESET_TOKEN_INVALID", "the password reset link is invalid or expired")
+
+	ErrLoginCodeInvalid         = New(http.StatusBadRequest, "LOGIN_CODE_INVALID", "the sign-in code is invalid or expired")
+	ErrLoginCodeCooldown        = New(http.StatusTooManyRequests, "LOGIN_CODE_COOLDOWN", "please wait before requesting another sign-in code")
+	ErrLoginCodeDailyLimit      = New(http.StatusTooManyRequests, "LOGIN_CODE_DAILY_LIMIT", "sign-in code limit reached, please try again later")
+	ErrLoginCodeEmailSendFailed = New(http.StatusServiceUnavailable, "LOGIN_CODE_EMAIL_SEND_FAILED", "we could not send the sign-in code, please try again")
+)
+
+var (
+	ErrProfileNotFound            = New(http.StatusNotFound, "PROFILE_NOT_FOUND", "profile not found")
+	ErrTimeZoneInvalid            = New(http.StatusUnprocessableEntity, "TIME_ZONE_INVALID", "time zone is not a valid IANA name, e.g. Asia/Tokyo")
+	ErrAvatarPresetInvalid        = New(http.StatusUnprocessableEntity, "AVATAR_PRESET_INVALID", "unknown avatar preset")
+	ErrAvatarTypeInvalid          = New(http.StatusUnsupportedMediaType, "AVATAR_TYPE_INVALID", "avatar must be a JPEG or PNG image")
+	ErrAvatarImageInvalid         = New(http.StatusUnprocessableEntity, "AVATAR_IMAGE_INVALID", "image is corrupt, or too small or too large")
+	ErrAvatarUploadUnavailable    = New(http.StatusServiceUnavailable, "AVATAR_UPLOAD_UNAVAILABLE", "avatar upload is not available right now")
+	ErrSessionNotFound            = New(http.StatusNotFound, "SESSION_NOT_FOUND", "session not found")
+	ErrCannotRevokeCurrentSession = New(http.StatusUnprocessableEntity, "CANNOT_REVOKE_CURRENT_SESSION", "use log out to end this session")
+	ErrLocationInvalid            = New(http.StatusUnprocessableEntity, "LOCATION_INVALID", "latitude or longitude is out of range")
 )
 
 var (

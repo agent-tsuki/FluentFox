@@ -29,6 +29,8 @@ type User struct {
 	IsActive        bool `gorm:"column:is_active;default:true"`
 	IsDeleted       bool `gorm:"column:is_deleted;default:false"`
 
+	LastLoginAt *time.Time `gorm:"column:last_login_at"`
+
 	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime"`
 	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
 }
@@ -52,6 +54,9 @@ type UserProfile struct {
 	NativeLanguage string     `gorm:"column:native_language;not null"`
 	CountryCode    *string    `gorm:"column:country_code"`
 	TargetLevel    *JLPTLevel `gorm:"column:target_level;type:text;check:target_level IN ('N1','N2','N3','N4','N5')"`
+	AvatarPreset   *string    `gorm:"column:avatar_preset"`
+	OAuthImageURL  *string    `gorm:"column:oauth_image_url"`
+	City           *string    `gorm:"column:city"`
 
 	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime"`
 	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
@@ -110,14 +115,28 @@ func (u *UserVerification) BeforeCreate(_ *gorm.DB) error {
 	return nil
 }
 
+// RefreshToken is one signed-in device (a session); its ID is the JWT "sid".
 type RefreshToken struct {
 	ID        uuid.UUID `gorm:"type:uuid;primaryKey"`
-	UserID    uuid.UUID `gorm:"column:user_id;not null;uniqueIndex:idx_refresh_tokens_user_id"`
+	UserID    uuid.UUID `gorm:"column:user_id;not null"`
 	TokenHash string    `gorm:"column:token_hash;not null;index:idx_refresh_tokens_token_hash"`
 	IsRevoked bool      `gorm:"column:is_revoked;default:false"`
 	ExpiresAt time.Time `gorm:"column:expires_at;not null"`
-	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime"`
-	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
+
+	UserAgent         *string  `gorm:"column:user_agent"`
+	IPPrefix          *string  `gorm:"column:ip_prefix"`
+	CountryCode       *string  `gorm:"column:country_code"`
+	Region            *string  `gorm:"column:region"`
+	City              *string  `gorm:"column:city"`
+	Latitude          *float64 `gorm:"column:latitude"`
+	Longitude         *float64 `gorm:"column:longitude"`
+	LocationSource    *string  `gorm:"column:location_source"`
+	LocationAccuracyM *int     `gorm:"column:location_accuracy_m"`
+	IsVPN             *bool    `gorm:"column:is_vpn"`
+
+	LastUsedAt time.Time `gorm:"column:last_used_at;not null"`
+	CreatedAt  time.Time `gorm:"column:created_at;autoCreateTime"`
+	UpdatedAt  time.Time `gorm:"column:updated_at;autoUpdateTime"`
 }
 
 func (RefreshToken) TableName() string { return "refresh_tokens" }

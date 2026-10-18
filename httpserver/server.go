@@ -19,6 +19,7 @@ import (
 	"github.com/fluentfox/api/internal/common"
 	"github.com/fluentfox/api/internal/content"
 	"github.com/fluentfox/api/internal/learn"
+	"github.com/fluentfox/api/internal/profile"
 	"github.com/fluentfox/api/internal/progress"
 	"github.com/fluentfox/api/internal/services"
 	"github.com/fluentfox/api/internal/users"
@@ -26,8 +27,10 @@ import (
 	"github.com/fluentfox/api/pkg/database"
 	"github.com/fluentfox/api/pkg/emailcheck"
 	"github.com/fluentfox/api/pkg/humautil"
+	"github.com/fluentfox/api/pkg/ipintel"
 	"github.com/fluentfox/api/pkg/mailer"
 	"github.com/fluentfox/api/pkg/middleware"
+	"github.com/fluentfox/api/pkg/storage"
 	"github.com/fluentfox/api/pkg/token"
 	"github.com/fluentfox/api/pkg/validator"
 )
@@ -52,11 +55,7 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 		cfg.JWTAccessSecret,
 		cfg.JWTAccessExpiryMinutes, cfg.JWTRefreshExpiryDays,
 	)
-	var mailTransport mailer.Mailer = mailer.NewSMTPMailer(cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername, cfg.SMTPPassword, cfg.EmailFromAddress)
-	if cfg.ResendAPIKey != "" {
-		// One HTTPS call instead of an SMTP dial, STARTTLS and auth handshake per email.
-		mailTransport = mailer.NewResendMailer(cfg.ResendAPIKey, cfg.EmailFromAddress, common.EMAIL_SEND_TIMEOUT)
-	}
+	var mailTransport mailer.Mailer = mailer.NewResendMailer(cfg.ResendAPIKey, cfg.EmailFromAddress, common.EMAIL_SEND_TIMEOUT)
 	mailService := services.NewMailService(mailTransport, cfg.AppURL, log)
 	// Everything built from here on logs through the alerting logger. mailService
 	// keeps the plain one, so its own send failures never raise alerts.
@@ -81,6 +80,7 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	r.Use(gin.CustomRecovery(recoverPanic(log)))
 	r.Use(middleware.CORS(cfg.AllowedOrigins))
 	r.Use(middleware.Logger(log))
+	r.Use(middleware.RequestInfoCapture())
 	r.Use(otelgin.Middleware("fluentfox-api"))
 
 	humaConfig := huma.DefaultConfig("FluentFox API", "1.0.0")
@@ -91,7 +91,12 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	api.UseMiddleware(humautil.AuthMiddleware(api, tokenMaker, cfg.AllowedOrigins...))
 
 	staleReleaser := auth.NewStaleAccountReleaser(userRepo, log)
-	loginService := auth.NewLogin(userRepo, tokenMaker, log)
+	var locator auth.IPLocator
+	if cfg.VPNAPIKey != "" {
+		locator = ipintel.NewVPNAPI(cfg.VPNAPIKey, common.IP_LOOKUP_TIMEOUT)
+	}
+	loginChallenges := auth.NewLoginChallengeService(userRepo, mailService, cfg.JWTAccessSecret, log)
+	loginService := auth.NewLogin(userRepo, tokenMaker, locator, loginChallenges, log)
 	googleOAuth, err := auth.NewGoogleOAuthService(cfg, userRepo, loginService, log)
 	if err != nil {
 		cleanup()
@@ -115,6 +120,8 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	refreshMaxAge := cfg.JWTRefreshExpiryDays * 24 * 60 * 60
 	auth.RegisterGoogleOAuthRoutes(r, googleOAuth, tokenMaker, refreshMaxAge, log)
 	auth.RegisterXOAuthRoutes(r, xOAuth, tokenMaker, refreshMaxAge, log)
+
+	registerProfileRoutes(api, cfg, userRepo, log)
 
 	contentRepo := content.NewRepository(db)
 	content.RegisterRoutes(api, content.NewHandler(
@@ -205,4 +212,30 @@ func recoverPanic(log *zap.Logger) gin.RecoveryFunc {
 		)
 		c.AbortWithStatus(http.StatusInternalServerError)
 	}
+}
+
+func registerProfileRoutes(api huma.API, cfg *config.Config, userRepo *users.Repository, log *zap.Logger) {
+	// A nil interface (not a nil *R2Store) is what lets the services see
+	// "uploads off" when R2 is not configured.
+	var store profile.ObjectStore
+	if cfg.R2Enabled() {
+		store = storage.NewR2Store(cfg.R2AccountID, cfg.R2AccessKey, cfg.R2SecretKey, cfg.R2BucketName, cfg.R2PublicURL)
+	}
+	avatars := profile.NewAvatarResolver(cfg.R2PublicURL)
+	profileService := profile.NewProfileService(userRepo, avatars, log)
+	profile.RegisterRoutes(api,
+		profile.NewProfileHandler(
+			profileService,
+			profile.NewUpdateProfileService(userRepo, profileService, avatars, store, log),
+			profile.NewAvatarService(userRepo, store, avatars, log),
+			avatars,
+			log,
+		),
+		profile.NewSessionHandler(
+			profile.NewSessionListService(userRepo, log),
+			profile.NewSessionRevokeService(userRepo, log),
+			profile.NewSessionLocationService(userRepo, log),
+			log,
+		),
+	)
 }

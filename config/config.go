@@ -44,16 +44,16 @@ type Config struct {
 	UpstashRedisRESTToken         string
 	OAuthTransactionEncryptionKey string
 
-	// Email: Resend when ResendAPIKey is set, otherwise Gmail SMTP.
+	// Email goes through the Resend HTTP API; hosts such as Railway block SMTP.
 	ResendAPIKey        string
-	SMTPHost            string
-	SMTPPort            string
-	SMTPUsername        string
-	SMTPPassword        string
 	EmailFromAddress    string
 	EmailMXCheckEnabled bool // DNS mail-server check on or off.
 	// Receives an email for each 500; empty turns alerts off.
 	AlertEmailTo string
+
+	// vpnapi.io key for login location and VPN detection; empty turns both
+	// off (logins still work, without a location).
+	VPNAPIKey string
 
 	// Storage (Cloudflare R2)
 	R2AccountID  string
@@ -129,13 +129,10 @@ func Load() *Config {
 		UpstashRedisRESTToken:         v.GetString("UPSTASH_REDIS_REST_TOKEN"),
 		OAuthTransactionEncryptionKey: v.GetString("OAUTH_TRANSACTION_ENCRYPTION_KEY"),
 
-		SMTPHost:         require(v, "SMTP_HOST"),
-		SMTPPort:         require(v, "SMTP_PORT"),
-		SMTPUsername:     require(v, "SMTP_USERNAME"),
-		SMTPPassword:     require(v, "SMTP_APP_PASSWORD"),
 		EmailFromAddress: require(v, "EMAIL_FROM_ADDRESS"),
-		ResendAPIKey:     v.GetString("RESEND_API_KEY"),
+		ResendAPIKey:     require(v, "RESEND_API_KEY"),
 		AlertEmailTo:     v.GetString("ALERT_EMAIL_TO"),
+		VPNAPIKey:        v.GetString("VPNAPI_API_KEY"),
 
 		R2AccountID:  v.GetString("R2_ACCOUNT_ID"),
 		R2AccessKey:  v.GetString("R2_ACCESS_KEY"),
@@ -203,6 +200,14 @@ func LoadDatabase() *DatabaseConfig {
 		DBMaxConns:  int32(requireInt(v, "DB_MAX_CONNS")),
 		DBMinConns:  int32(requireInt(v, "DB_MIN_CONNS")),
 	}
+}
+
+// R2Enabled needs every R2 value, so avatar uploads either fully work or
+// answer 503. A partial setup is not fatal: these keys existed, unused,
+// before uploads did.
+func (c *Config) R2Enabled() bool {
+	return c.R2AccountID != "" && c.R2AccessKey != "" && c.R2SecretKey != "" &&
+		c.R2BucketName != "" && c.R2PublicURL != ""
 }
 
 func (c *Config) IsDevelopment() bool { return c.AppEnv == "development" }

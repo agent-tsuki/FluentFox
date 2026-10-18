@@ -102,6 +102,7 @@ type googleIDTokenClaims struct {
 	Name          string `json:"name"`
 	Locale        string `json:"locale"`
 	HostedDomain  string `json:"hd"`
+	Picture       string `json:"picture"`
 }
 
 // OAuthExchangeRequest is sent by the frontend callback page. The code only
@@ -293,6 +294,7 @@ func (s *GoogleOAuthService) CompleteCallback(ctx context.Context, state, code s
 	if err != nil {
 		return result, fmt.Errorf("issue OAuth session: %w", err)
 	}
+	saveOAuthImage(ctx, s.users, user.ID, claims.Picture, s.logger)
 
 	handoffCode, err := oauthRandom(32)
 	if err != nil {

@@ -72,6 +72,16 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		Metadata:      humautil.Public(),
 	}, h.Login)
 
+	huma.Register(api, huma.Operation{
+		OperationID:   "verify-login-code",
+		Method:        http.MethodPost,
+		Path:          "/auth/login/verify-code",
+		Summary:       "Finish a login with the emailed code (sent when the login came from a VPN)",
+		Tags:          []string{"Auth"},
+		DefaultStatus: http.StatusOK,
+		Metadata:      humautil.Public(),
+	}, h.VerifyLoginCode)
+
 	// Refresh and logout identify the user from the HttpOnly refresh cookie, so
 	// they work even when the in-memory access token has expired.
 	huma.Register(api, huma.Operation{

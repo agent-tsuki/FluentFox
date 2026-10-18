@@ -33,11 +33,26 @@ type UserSummary struct {
 }
 
 type LoginResponse struct {
-	AccessToken string `json:"access_token" doc:"Short-lived JWT access token"`
+	// omitzero: a login that needs an emailed code has no token and no user yet.
+	AccessToken string `json:"access_token,omitzero" doc:"Short-lived JWT access token"`
 	// RefreshToken is internal-only. It is written as an HttpOnly response
 	// cookie by the HTTP handler and must never appear in JSON or OpenAPI.
 	RefreshToken string      `json:"-"`
-	User         UserSummary `json:"user"          doc:"Authenticated user summary"`
+	User         UserSummary `json:"user,omitzero"   doc:"Authenticated user summary"`
+	// Set instead of tokens when the login needs an emailed code first.
+	LoginChallenge *LoginChallengeResponse `json:"login_challenge,omitempty" doc:"Present when a login needs an emailed code; no tokens are issued"`
+}
+
+type LoginChallengeResponse struct {
+	ChallengeID      uuid.UUID `json:"challenge_id"       doc:"Send back with the code to POST /auth/login/verify-code"`
+	Reason           string    `json:"reason"             enum:"vpn" doc:"Why a code is needed"`
+	EmailHint        string    `json:"email_hint"         doc:"Masked address the code was sent to, e.g. s****@gmail.com"`
+	ExpiresInSeconds int       `json:"expires_in_seconds" doc:"Seconds until the code expires"`
+}
+
+type VerifyLoginCodeRequest struct {
+	ChallengeID uuid.UUID `json:"challenge_id" validate:"required" doc:"challenge_id from the login response"`
+	Code        string    `json:"code"         validate:"required,len=6,numeric" minLength:"6" maxLength:"6" doc:"6-digit code from the email"`
 }
 
 // Embedding keeps the session fields flat in JSON, the same shape as /auth/login.

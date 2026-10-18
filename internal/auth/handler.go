@@ -142,6 +142,25 @@ func (h *Handler) Login(ctx context.Context, input *humautil.Input[LoginRequest]
 	if err != nil {
 		return nil, humautil.MapErr(err, log)
 	}
+	// No session yet, so no refresh cookie: the client must send the emailed code.
+	if resp.LoginChallenge != nil {
+		return &SessionOutput[LoginResponse]{
+			CacheControl: "no-store",
+			Body:         humautil.APIResponse[LoginResponse]{Status: "success", Data: resp},
+		}, nil
+	}
+
+	return sessionOK(resp, resp.RefreshToken, h.refreshMaxAge), nil
+}
+
+// VerifyLoginCode handles POST /auth/login/verify-code.
+func (h *Handler) VerifyLoginCode(ctx context.Context, input *humautil.Input[VerifyLoginCodeRequest]) (*SessionOutput[LoginResponse], error) {
+	log := middleware.LoggerFromContext(ctx, h.logger)
+
+	resp, err := h.loginService.VerifyLoginCode(ctx, input.Body)
+	if err != nil {
+		return nil, humautil.MapErr(err, log)
+	}
 
 	return sessionOK(resp, resp.RefreshToken, h.refreshMaxAge), nil
 }

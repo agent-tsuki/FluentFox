@@ -14,6 +14,9 @@ type Claims struct {
 	UserID        uuid.UUID `json:"user_id"`
 	IsAdmin          bool    `json:"is_admin"`
 	EmailVerified bool      `json:"email_verified"`
+	// The refresh_tokens row this token was issued for, so the device list can
+	// mark "this device". Nil in tokens issued before sessions existed.
+	SessionID uuid.UUID `json:"sid"`
 	jwt.RegisteredClaims
 }
 
@@ -38,11 +41,12 @@ func NewMaker(accessSecret string, accessExpiryMinutes, refreshExpiryDays int) *
 	}
 }
 
-func (m *Maker) GenerateAccessToken(userID uuid.UUID, is_admin bool, emailVerified bool) (string, error) {
+func (m *Maker) GenerateAccessToken(userID uuid.UUID, is_admin bool, emailVerified bool, sessionID uuid.UUID) (string, error) {
 	claims := Claims{
 		UserID:        userID,
 		IsAdmin:          is_admin,
 		EmailVerified: emailVerified,
+		SessionID:     sessionID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    jwtIssuer,
 			Audience:  jwt.ClaimStrings{jwtAudience},

@@ -83,6 +83,8 @@ type xVerifyCredentialsResponse struct {
 	// X only returns an email the user has verified, and only when the app has
 	// the "Request email from users" permission.
 	Email string `json:"email"`
+	// A 48px image; xLargeImage swaps in the 400px size.
+	ProfileImageURL string `json:"profile_image_url_https"`
 }
 
 func NewXOAuthService(cfg *config.Config, repo *users.Repository, login *LoginService, log *zap.Logger) (*XOAuthService, error) {
@@ -228,6 +230,7 @@ func (s *XOAuthService) CompleteCallback(ctx context.Context, requestToken, veri
 	if err != nil {
 		return result, fmt.Errorf("issue X OAuth session: %w", err)
 	}
+	saveOAuthImage(ctx, s.users, user.ID, xLargeImage(identity.ProfileImageURL), s.logger)
 	handoffCode, err := oauthRandom(32)
 	if err != nil {
 		return result, fmt.Errorf("generate X OAuth handoff code: %w", err)

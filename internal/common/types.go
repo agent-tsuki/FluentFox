@@ -250,3 +250,31 @@ const (
 	WeakGroupUnit     WeakGroupKind = "unit"
 	WeakGroupKanaKind WeakGroupKind = "kana_group"
 )
+
+// AvatarPreset is a built-in avatar. Path is the frontend's public path; the
+// frontend maps it to its hashed CDN file.
+type AvatarPreset struct {
+	ID    string
+	Group AvatarGroup
+	Path  string
+}
+
+type AvatarGroup string
+
+const (
+	AvatarGroupMale   AvatarGroup = "male"
+	AvatarGroupFemale AvatarGroup = "female"
+)
+
+var AVATAR_PRESETS = []AvatarPreset{
+	{ID: "men-warrior", Group: AvatarGroupMale, Path: "/avatars/men/warrior.png"},
+	{ID: "men-samurai", Group: AvatarGroupMale, Path: "/avatars/men/samurai.png"},
+	{ID: "men-noble", Group: AvatarGroupMale, Path: "/avatars/men/noble.png"},
+	{ID: "men-emperor", Group: AvatarGroupMale, Path: "/avatars/men/emperor.png"},
+	{ID: "men-citizen", Group: AvatarGroupMale, Path: "/avatars/men/citizen.png"},
+	{ID: "women-geisha-1", Group: AvatarGroupFemale, Path: "/avatars/women/geisha_1.png"},
+	{ID: "women-geisha-2", Group: AvatarGroupFemale, Path: "/avatars/women/geisha_2.png"},
+	{ID: "women-japanese", Group: AvatarGroupFemale, Path: "/avatars/women/japanese.png"},
+	{ID: "women-casual-1", Group: AvatarGroupFemale, Path: "/avatars/women/casual_1.png"},
+	{ID: "women-casual-2", Group: AvatarGroupFemale, Path: "/avatars/women/casual_2.png"},
+}

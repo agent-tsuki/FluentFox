@@ -6,12 +6,15 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/netip"
 	"slices"
 	"time"
 
 	"github.com/fluentfox/api/internal/common"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/exceptions"
+	"github.com/fluentfox/api/pkg/ipintel"
+	"github.com/fluentfox/api/pkg/middleware"
 	"github.com/fluentfox/api/pkg/token"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
@@ -49,9 +52,22 @@ type TokenVerificationService struct {
 }
 
 type LoginService struct {
-	userRepo UserRepo
-	maker    *token.Maker
-	logger   *zap.Logger
+	userRepo   UserRepo
+	maker      *token.Maker
+	locator    IPLocator
+	challenges LoginChallenger
+	logger     *zap.Logger
+}
+
+// IPLocator finds where a login comes from and whether it is a VPN. Nil turns
+// location and the VPN email code off.
+type IPLocator interface {
+	Lookup(ctx context.Context, ip netip.Addr) (ipintel.Result, error)
+}
+
+type LoginChallenger interface {
+	Start(ctx context.Context, user *users.User, loc *users.SessionLocation) (LoginChallengeResponse, error)
+	Consume(ctx context.Context, challengeID uuid.UUID, code string) (uuid.UUID, users.SessionLocation, error)
 }
 
 func NewTokenVerificationService(userRepo UserRepo, log *zap.Logger) *TokenVerificationService {
@@ -75,8 +91,8 @@ func NewResendVerificationService(userRepo UserRepo, mailService VerificationMai
 	return &ResendVerificationService{userRepo: userRepo, sender: newVerificationSender(userRepo, mailService), logger: log}
 }
 
-func NewLogin(userRepo UserRepo, maker *token.Maker, log *zap.Logger) *LoginService {
-	return &LoginService{userRepo: userRepo, maker: maker, logger: log}
+func NewLogin(userRepo UserRepo, maker *token.Maker, locator IPLocator, challenges LoginChallenger, log *zap.Logger) *LoginService {
+	return &LoginService{userRepo: userRepo, maker: maker, locator: locator, challenges: challenges, logger: log}
 }
 
 type staleHolder struct {
@@ -299,14 +315,14 @@ func (s *AuthService) generateUsername(firstName string, lastName *string) (stri
 }
 
 func (t *TokenService) generateAuthToken() (map[string]string, error) {
-    token, err := GenerateHashedToken(common.AUTH_TOKEN_LEN)
-    if err != nil {
-        return nil, err
-    }
-    return map[string]string{
-        "token":  token,
-        "hashed": hashVerificationToken(token),
-    }, nil
+	token, err := GenerateHashedToken(common.AUTH_TOKEN_LEN)
+	if err != nil {
+		return nil, err
+	}
+	return map[string]string{
+		"token":  token,
+		"hashed": hashVerificationToken(token),
+	}, nil
 }
 
 func (t *TokenService) authTokenExpireTime() time.Time {
@@ -366,7 +382,6 @@ func (t *TokenVerificationService) UpdateValidatedToken(ctx context.Context, tx 
 	return nil
 }
 
-
 func (t *LoginService) Login(ctx context.Context, loginReq LoginRequest) (LoginResponse, error) {
 	loginReq.Email = normalizeEmail(loginReq.Email)
 
@@ -398,13 +413,84 @@ func (t *LoginService) Login(ctx context.Context, loginReq LoginRequest) (LoginR
 		return LoginResponse{}, err
 	}
 
-	resp, err := t.JetTokenAssigner(ctx, userData)
+	loc := t.locate(ctx)
+	// Someone on a VPN may be hiding where they are, so a password alone is
+	// not enough: they must also prove they can read the account's email.
+	if loc.IsVPN != nil && *loc.IsVPN && t.challenges != nil {
+		challenge, err := t.challenges.Start(ctx, &userData, &loc)
+		if err != nil {
+			return LoginResponse{}, fmt.Errorf("login: %w", err)
+		}
+		t.logger.Info("Login needs an email code: VPN detected", zap.Stringer("user_id", userData.ID))
+		return LoginResponse{LoginChallenge: &challenge}, nil
+	}
+
+	resp, err := t.openSession(ctx, &userData, &loc)
 	if err != nil {
 		return LoginResponse{}, err
 	}
 
 	t.logger.Info("User logged in successfully", zap.Stringer("user_id", userData.ID))
 	return resp, nil
+}
+
+// VerifyLoginCode finishes a login that Login answered with a challenge.
+func (t *LoginService) VerifyLoginCode(ctx context.Context, req VerifyLoginCodeRequest) (LoginResponse, error) {
+	if t.challenges == nil {
+		return LoginResponse{}, exceptions.ErrLoginCodeInvalid
+	}
+	userID, loc, err := t.challenges.Consume(ctx, req.ChallengeID, req.Code)
+	if err != nil {
+		return LoginResponse{}, fmt.Errorf("verify login code: %w", err)
+	}
+
+	userData, err := t.userRepo.GetUserByID(ctx, userID)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return LoginResponse{}, exceptions.ErrLoginCodeInvalid
+	}
+	if err != nil {
+		return LoginResponse{}, fmt.Errorf("verify login code: load user: %w", err)
+	}
+	// The account may have been suspended while the code was in the inbox.
+	if err := t.ValidateUserDetail(&userData); err != nil {
+		return LoginResponse{}, err
+	}
+
+	resp, err := t.openSession(ctx, &userData, &loc)
+	if err != nil {
+		return LoginResponse{}, err
+	}
+	t.logger.Info("User logged in with email code", zap.Stringer("user_id", userData.ID))
+	return resp, nil
+}
+
+// A failed lookup must never block a login, so it only costs the location.
+func (t *LoginService) locate(ctx context.Context) users.SessionLocation {
+	info := middleware.RequestInfoFromContext(ctx)
+	if t.locator == nil || !info.IsPublic() {
+		return users.SessionLocation{}
+	}
+	ctx, cancel := context.WithTimeout(ctx, common.IP_LOOKUP_TIMEOUT)
+	defer cancel()
+
+	result, err := t.locator.Lookup(ctx, info.IP)
+	if err != nil {
+		t.logger.Warn("IP location lookup failed", zap.Error(err))
+		return users.SessionLocation{}
+	}
+	loc := users.SessionLocation{
+		CountryCode: result.CountryCode,
+		Region:      result.Region,
+		City:        result.City,
+		Source:      users.LocationSourceIP,
+		IsVPN:       &result.IsVPN,
+	}
+	// 0,0 means the provider has no coordinates for this address.
+	if result.Latitude != 0 || result.Longitude != 0 {
+		lat, lng := users.RoundCoordinate(result.Latitude), users.RoundCoordinate(result.Longitude)
+		loc.Latitude, loc.Longitude = &lat, &lng
+	}
+	return loc
 }
 
 // Unverified users may log in; AuthMiddleware keeps them out of everything
@@ -421,27 +507,65 @@ func (t *LoginService) ValidateUserDetail(userData *users.User) error {
 	return nil
 }
 
+// JetTokenAssigner opens a session for a login that is already proven: signup,
+// Google and X. Those skip the VPN code; the provider has verified the person.
 func (t *LoginService) JetTokenAssigner(ctx context.Context, userData users.User) (LoginResponse, error) {
-	// Generate short-lived JWT access token
-	accessToken, err := t.maker.GenerateAccessToken(userData.ID, userData.IsAdmin, userData.IsEmailVerified)
-	if err != nil {
-		t.logger.Error("Error while generating JWT token", zap.Error(err))
-		return LoginResponse{}, fmt.Errorf("issue access token: %w", err)
-	}
+	loc := t.locate(ctx)
+	return t.openSession(ctx, &userData, &loc)
+}
 
-	// Generate long-lived opaque refresh token
+// Each login gets its own session row so the user's other devices stay signed
+// in. Pruning, the insert and last_login_at commit together.
+func (t *LoginService) openSession(ctx context.Context, userData *users.User, loc *users.SessionLocation) (LoginResponse, error) {
 	refreshToken, err := t.maker.GenerateRefreshToken()
 	if err != nil {
 		t.logger.Error("Error while generating refresh token", zap.Error(err))
 		return LoginResponse{}, fmt.Errorf("issue refresh token: %w", err)
 	}
 
-	hashedRefresh := hashVerificationToken(refreshToken)
+	now := time.Now().UTC()
+	info := middleware.RequestInfoFromContext(ctx)
+	session := users.NewSession{
+		UserID:    userData.ID,
+		TokenHash: hashVerificationToken(refreshToken),
+		ExpiresAt: t.maker.RefreshExpiryTime(),
+		UserAgent: info.UserAgent,
+		IPPrefix:  info.IPPrefix(),
+		Location:  *loc,
+	}
 
-	expireAt := t.maker.RefreshExpiryTime()
-	if _, err := t.userRepo.UpsertRefreshToken(ctx, userData.ID, hashedRefresh, expireAt); err != nil {
-		t.logger.Error("Error while storing refresh token", zap.Error(err))
-		return LoginResponse{}, fmt.Errorf("store refresh token: %w", err)
+	var sessionID uuid.UUID
+	err = t.userRepo.Transaction(ctx, func(tx *gorm.DB) error {
+		// Serialises logins of one user, so two at once cannot both slip
+		// under the session limit or deadlock on each other's prune.
+		if _, err := t.userRepo.LockUserForUpdate(ctx, tx, userData.ID); err != nil {
+			return fmt.Errorf("lock user: %w", err)
+		}
+		// Keep one slot free for the session being created.
+		revokedBefore := now.Add(-common.SESSION_REVOKED_RETENTION)
+		if err := t.userRepo.PruneSessions(ctx, tx, userData.ID, now, revokedBefore, common.MAX_ACTIVE_SESSIONS-1); err != nil {
+			return fmt.Errorf("prune sessions: %w", err)
+		}
+		id, err := t.userRepo.CreateSession(ctx, tx, &session, now)
+		if err != nil {
+			return fmt.Errorf("create session: %w", err)
+		}
+		sessionID = id
+		return t.userRepo.SetLastLogin(ctx, tx, userData.ID, now)
+	})
+	if err != nil {
+		t.logger.Error("Error while storing session", zap.Error(err))
+		return LoginResponse{}, fmt.Errorf("store session: %w", err)
+	}
+
+	return t.tokenPair(userData, sessionID, refreshToken)
+}
+
+func (t *LoginService) tokenPair(userData *users.User, sessionID uuid.UUID, refreshToken string) (LoginResponse, error) {
+	accessToken, err := t.maker.GenerateAccessToken(userData.ID, userData.IsAdmin, userData.IsEmailVerified, sessionID)
+	if err != nil {
+		t.logger.Error("Error while generating JWT token", zap.Error(err))
+		return LoginResponse{}, fmt.Errorf("issue access token: %w", err)
 	}
 
 	return LoginResponse{
@@ -495,10 +619,28 @@ func (t *LoginService) RefreshToken(ctx context.Context, raw string) (LoginRespo
 		return LoginResponse{}, err
 	}
 
-	// Rotate: issue a brand-new token pair
-	return t.JetTokenAssigner(ctx, userData)
+	return t.rotate(ctx, &record, &userData)
 }
 
+// Rotating in place keeps the same session (device) and its sid; only the
+// token changes. A lost race with the same token is treated as invalid.
+func (t *LoginService) rotate(ctx context.Context, record *users.RefreshToken, userData *users.User) (LoginResponse, error) {
+	refreshToken, err := t.maker.GenerateRefreshToken()
+	if err != nil {
+		return LoginResponse{}, fmt.Errorf("refresh: issue refresh token: %w", err)
+	}
+
+	ok, err := t.userRepo.RotateSession(ctx, record.ID, record.TokenHash, hashVerificationToken(refreshToken),
+		t.maker.RefreshExpiryTime(), time.Now().UTC())
+	if err != nil {
+		return LoginResponse{}, fmt.Errorf("refresh: rotate session: %w", err)
+	}
+	if !ok {
+		t.logger.Warn("Refresh failed: token already rotated or revoked", zap.Stringer("user_id", record.UserID))
+		return LoginResponse{}, exceptions.ErrTokenInvalid
+	}
+	return t.tokenPair(userData, record.ID, refreshToken)
+}
 
 // Taking the user from the token, not from an email in the body, means nobody
 // can trigger mail to someone else's inbox.
@@ -556,7 +698,8 @@ func (t *LoginService) Logout(ctx context.Context, raw string) error {
 		return fmt.Errorf("logout: load token: %w", err)
 	}
 
-	if err := t.userRepo.RevokeRefreshToken(ctx, record.UserID); err != nil {
+	// Only this device signs out; the user's other sessions stay active.
+	if err := t.userRepo.RevokeSessionByID(ctx, record.ID); err != nil {
 		t.logger.Error("Logout failed: could not revoke token", zap.Error(err))
 		return fmt.Errorf("logout: %w", err)
 	}
