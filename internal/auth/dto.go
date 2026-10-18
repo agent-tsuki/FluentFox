@@ -1,6 +1,12 @@
 package auth
 
-import "github.com/google/uuid"
+import (
+	"net/http"
+
+	"github.com/google/uuid"
+
+	"github.com/fluentfox/api/pkg/humautil"
+)
 
 type RegisterRequest struct {
 	Email       string  `json:"email"        validate:"required,email"   format:"email"   doc:"User's email address"`
@@ -11,7 +17,6 @@ type RegisterRequest struct {
 	NativeLang  string  `json:"native_lang"  validate:"required"                             doc:"Native language code (e.g. en, ja)"`
 	Password    string  `json:"password"     validate:"required,min=8,max=128"   minLength:"8" maxLength:"128" doc:"Password — 8 to 128 characters"`
 }
-
 
 type LoginRequest struct {
 	Email    string `json:"email"    validate:"required,email" format:"email" doc:"User's email address"`
@@ -28,8 +33,10 @@ type UserSummary struct {
 }
 
 type LoginResponse struct {
-	AccessToken  string      `json:"access_token"  doc:"Short-lived JWT access token"`
-	RefreshToken string      `json:"refresh_token" doc:"Long-lived opaque refresh token"`
+	AccessToken string `json:"access_token" doc:"Short-lived JWT access token"`
+	// RefreshToken is internal-only. It is written as an HttpOnly response
+	// cookie by the HTTP handler and must never appear in JSON or OpenAPI.
+	RefreshToken string      `json:"-"`
 	User         UserSummary `json:"user"          doc:"Authenticated user summary"`
 }
 
@@ -39,8 +46,19 @@ type RegisterResponse struct {
 	LoginResponse
 }
 
-type RefreshTokenRequest struct {
-	RefreshToken string `json:"refresh_token" validate:"required" doc:"Opaque refresh token issued at login"`
+// RefreshCookieInput reads the opaque refresh credential from the HttpOnly
+// cookie rather than a JSON body, keeping it inaccessible to JavaScript.
+type RefreshCookieInput struct {
+	RefreshToken string `cookie:"__Host-ff_refresh" doc:"HttpOnly refresh-session cookie"`
+}
+
+// SessionOutput is the only response shape that can set the refresh cookie.
+// Cache-Control prevents browsers and intermediaries from storing access-token
+// responses. Huma serialises each http.Cookie into a Set-Cookie header.
+type SessionOutput[T any] struct {
+	SetCookie    []http.Cookie `header:"Set-Cookie"`
+	CacheControl string        `header:"Cache-Control"`
+	Body         humautil.APIResponse[T]
 }
 
 type ForgotPasswordRequest struct {

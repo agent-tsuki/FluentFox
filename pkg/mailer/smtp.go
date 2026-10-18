@@ -106,12 +106,3 @@ func dialWithDeadline(ctx context.Context, addr string) (net.Conn, error) {
 	}
 	return conn, nil
 }
-
-// SendDailyReminder sends a plain study-reminder email.
-func (m *SMTPMailer) SendDailyReminder(_ context.Context, to, name string, streakDays int) error {
-	html := fmt.Sprintf(
-		`<h1>Hey %s, keep your streak alive!</h1><p>You have a %d-day streak. Don't let it slip!</p><p><a href="https://fluentfox.app">Study now</a></p>`,
-		name, streakDays,
-	)
-	return m.SendHTML(context.Background(), to, "Don't break your streak!", html)
-}

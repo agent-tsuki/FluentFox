@@ -1,0 +1,16 @@
+{{template "email_start" .}}
+{{template "email_heading" "A request failed with a server error"}}
+{{template "email_text" (printf "The %s API answered a request with HTTP 500. Search the logs for the request ID to see the full request." .Env)}}
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:0 0 24px;font-size:13px;line-height:1.5;color:#1A1210;">
+  <tr><td width="110" style="padding:6px 0;color:#A89990;">Time (UTC)</td><td style="padding:6px 0;">{{.TimeUTC}}</td></tr>
+  <tr><td width="110" style="padding:6px 0;color:#A89990;">Request ID</td><td style="padding:6px 0;font-family:Menlo,Consolas,monospace;">{{if .RequestID}}{{.RequestID}}{{else}}none{{end}}</td></tr>
+  <tr><td width="110" style="padding:6px 0;color:#A89990;">Logged at</td><td style="padding:6px 0;font-family:Menlo,Consolas,monospace;">{{.Caller}}</td></tr>
+  {{if .Suppressed}}<tr><td width="110" style="padding:6px 0;color:#A89990;">Skipped</td><td style="padding:6px 0;">{{.Suppressed}} more error(s) since the last alert</td></tr>{{end}}
+</table>
+<p style="margin:0 0 8px;font-size:13px;font-weight:700;color:#1A1210;">Error</p>
+<pre style="margin:0 0 24px;padding:14px 16px;background-color:#FFF4F0;border:1px solid #F5D5C8;border-radius:8px;font-family:Menlo,Consolas,monospace;font-size:12px;line-height:1.5;color:#B3261E;white-space:pre-wrap;word-break:break-word;">{{.Error}}</pre>
+{{if .Stack}}
+<p style="margin:0 0 8px;font-size:13px;font-weight:700;color:#1A1210;">Stack trace</p>
+<pre style="margin:0 0 24px;padding:14px 16px;background-color:#F9F6F4;border-radius:8px;font-family:Menlo,Consolas,monospace;font-size:11px;line-height:1.5;color:#6B5E57;white-space:pre-wrap;word-break:break-word;">{{.Stack}}</pre>
+{{end}}
+{{template "email_end" .}}

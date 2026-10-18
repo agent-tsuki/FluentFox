@@ -1,0 +1,87 @@
+{{define "email_start"}}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+  <title>{{.Title}}</title>
+</head>
+<body style="margin:0;padding:0;background-color:#F5F0EB;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#F5F0EB;">{{.Preheader}}&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;</div>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#F5F0EB;">
+    <tr>
+      <td align="center" style="padding:32px 16px 48px;">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width:600px;width:100%;background-color:#FFFFFF;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.07);">
+          <tr>
+            <td style="height:6px;background-color:#EA6B44;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="center" style="padding:32px 40px 4px;">
+              <a href="{{.AppURL}}" style="text-decoration:none;">
+                <img src="{{.LogoURL}}" alt="FoxSensei" width="72" height="66" style="display:block;border:0;outline:none;width:72px;height:auto;">
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" style="padding:0 40px 28px;">
+              <span style="font-size:24px;font-weight:800;letter-spacing:-0.5px;color:#EA6B44;">FoxSensei</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px;">
+              <div style="height:1px;background-color:#F0EAE4;font-size:0;line-height:0;">&nbsp;</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 8px;">
+{{end}}
+
+{{define "email_end"}}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px;">
+              <div style="height:1px;background-color:#F0EAE4;font-size:0;line-height:0;">&nbsp;</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:24px 40px 32px;">
+              <p style="margin:0;font-size:12px;line-height:1.6;color:#A89990;text-align:center;">
+                {{.FooterNote}}<br>
+                Need help? Email us at <a href="mailto:{{.SupportEmail}}" style="color:#EA6B44;text-decoration:none;">{{.SupportEmail}}</a>
+              </p>
+              <p style="margin:16px 0 0;font-size:12px;color:#C4B8B2;text-align:center;">The FoxSensei Team &mdash; Learn Japanese Naturally</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+{{end}}
+
+{{define "email_heading"}}<p style="margin:0 0 12px;font-size:22px;font-weight:700;line-height:1.3;letter-spacing:-0.3px;color:#1A1210;">{{.}}</p>{{end}}
+
+{{define "email_text"}}<p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#6B5E57;">{{.}}</p>{{end}}
+
+{{define "email_button"}}
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:8px auto 12px;">
+  <tr>
+    <td align="center" bgcolor="#EA6B44" style="border-radius:10px;background-color:#EA6B44;">
+      <a href="{{.URL}}" style="display:inline-block;padding:15px 40px;font-size:16px;font-weight:700;letter-spacing:0.2px;color:#FFFFFF;text-decoration:none;border-radius:10px;">{{.Label}}</a>
+    </td>
+  </tr>
+</table>
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:24px 0 28px;background-color:#F9F6F4;border-radius:8px;">
+  <tr>
+    <td style="padding:16px 20px;">
+      <p style="margin:0 0 6px;font-size:12px;color:#A89990;">Button not working? Copy and paste this link into your browser:</p>
+      <p style="margin:0;font-size:12px;word-break:break-all;"><a href="{{.URL}}" style="color:#EA6B44;text-decoration:none;">{{.URL}}</a></p>
+    </td>
+  </tr>
+</table>
+{{end}}

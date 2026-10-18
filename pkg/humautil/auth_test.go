@@ -88,3 +88,47 @@ func TestAuthMiddleware(t *testing.T) {
 		})
 	}
 }
+
+func TestAuthMiddlewareCookieSessionCSRF(t *testing.T) {
+	InitHumaErrors()
+	maker := token.NewMaker("access-secret", 15, 7)
+	_, api := humatest.New(t)
+	api.UseMiddleware(AuthMiddleware(api, maker, "https://app.foxsensei.com"))
+
+	handler := func(context.Context, *struct{}) (*pingOutput, error) {
+		return &pingOutput{}, nil
+	}
+	huma.Register(api, huma.Operation{
+		OperationID: "refresh",
+		Method:      http.MethodPost,
+		Path:        "/auth/refresh",
+		Metadata:    Public(),
+	}, handler)
+	huma.Register(api, huma.Operation{
+		OperationID: "logout",
+		Method:      http.MethodPost,
+		Path:        "/auth/logout",
+		Metadata:    Public(),
+	}, handler)
+
+	tests := []struct {
+		name       string
+		path       string
+		headers    []any
+		wantStatus int
+	}{
+		{name: "rejects no origin", path: "/auth/refresh", wantStatus: http.StatusForbidden},
+		{name: "rejects an untrusted origin", path: "/auth/refresh", headers: []any{"Origin: https://evil.example", "X-CSRF-Token: 1"}, wantStatus: http.StatusForbidden},
+		{name: "rejects an absent csrf header", path: "/auth/refresh", headers: []any{"Origin: https://app.foxsensei.com"}, wantStatus: http.StatusForbidden},
+		{name: "allows an exact origin and csrf header", path: "/auth/refresh", headers: []any{"Origin: https://app.foxsensei.com", "X-CSRF-Token: 1"}, wantStatus: http.StatusOK},
+		{name: "protects logout too", path: "/auth/logout", headers: []any{"Origin: https://app.foxsensei.com", "X-CSRF-Token: 1"}, wantStatus: http.StatusOK},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			resp := api.Post(tc.path, tc.headers...)
+			if resp.Code != tc.wantStatus {
+				t.Fatalf("status = %d, want %d; body %s", resp.Code, tc.wantStatus, resp.Body.String())
+			}
+		})
+	}
+}

@@ -39,29 +39,7 @@ func (m *ResendMailer) SendHTML(ctx context.Context, to, subject, html string) e
 	}
 	_, err := m.client.Emails.SendWithContext(ctx, params)
 	if err != nil {
-		return fmt.Errorf("mailer: send email to %s: %w", to, err)
+		return fmt.Errorf("mailer: send email: %w", err)
 	}
 	return nil
-}
-
-// SendDailyReminder sends a study reminder email.
-func (m *ResendMailer) SendDailyReminder(ctx context.Context, to, name string, streakDays int) error {
-	params := &resend.SendEmailRequest{
-		From:    m.fromAddr,
-		To:      []string{to},
-		Subject: "Don't break your streak! 🦊",
-		Html:    reminderEmailHTML(name, streakDays),
-	}
-
-	_, err := m.client.Emails.SendWithContext(ctx, params)
-	if err != nil {
-		return fmt.Errorf("mailer: send daily reminder to %s: %w", to, err)
-	}
-	return nil
-}
-
-func reminderEmailHTML(name string, streakDays int) string {
-	return fmt.Sprintf(`<h1>Hey %s, keep your streak alive!</h1>
-<p>You have a %d-day streak. Don't let it slip!</p>
-<p><a href="https://fluentfox.app">Study now</a></p>`, name, streakDays)
 }

@@ -2,6 +2,8 @@ package auth
 
 import (
 	"context"
+	"net/http"
+	"time"
 
 	"github.com/fluentfox/api/pkg/humautil"
 	"github.com/fluentfox/api/pkg/middleware"
@@ -18,6 +20,7 @@ type Handler struct {
 	passwordReset *PasswordResetService
 	logger        *zap.Logger
 	validate      *validator.Validator
+	refreshMaxAge int
 }
 
 func NewHandler(
@@ -29,6 +32,7 @@ func NewHandler(
 	passwordReset *PasswordResetService,
 	log *zap.Logger,
 	v *validator.Validator,
+	refreshExpiryDays int,
 ) *Handler {
 	return &Handler{
 		authService:   authService,
@@ -39,6 +43,43 @@ func NewHandler(
 		passwordReset: passwordReset,
 		logger:        log,
 		validate:      v,
+		refreshMaxAge: int((time.Duration(refreshExpiryDays) * 24 * time.Hour).Seconds()),
+	}
+}
+
+const refreshCookieName = "__Host-ff_refresh"
+
+func refreshCookie(raw string, maxAge int) http.Cookie {
+	return http.Cookie{
+		Name:     refreshCookieName,
+		Value:    raw,
+		Path:     "/",
+		MaxAge:   maxAge,
+		Expires:  time.Now().UTC().Add(time.Duration(maxAge) * time.Second),
+		Secure:   true,
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+	}
+}
+
+func expiredRefreshCookie() http.Cookie {
+	return http.Cookie{
+		Name:     refreshCookieName,
+		Value:    "",
+		Path:     "/",
+		MaxAge:   -1,
+		Expires:  time.Unix(1, 0).UTC(),
+		Secure:   true,
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+	}
+}
+
+func sessionOK[T any](data T, rawRefresh string, maxAge int) *SessionOutput[T] {
+	return &SessionOutput[T]{
+		SetCookie:    []http.Cookie{refreshCookie(rawRefresh, maxAge)},
+		CacheControl: "no-store",
+		Body:         humautil.APIResponse[T]{Status: "success", Data: data},
 	}
 }
 
@@ -68,7 +109,7 @@ type AuthVerifyInput struct {
 }
 
 // AuthRegister handles POST /auth/register.
-func (h *Handler) AuthRegister(ctx context.Context, input *humautil.Input[RegisterRequest]) (*humautil.Output[humautil.APIResponse[RegisterResponse]], error) {
+func (h *Handler) AuthRegister(ctx context.Context, input *humautil.Input[RegisterRequest]) (*SessionOutput[RegisterResponse], error) {
 	log := middleware.LoggerFromContext(ctx, h.logger)
 
 	session, err := h.authService.registerUser(ctx, &input.Body)
@@ -76,10 +117,10 @@ func (h *Handler) AuthRegister(ctx context.Context, input *humautil.Input[Regist
 		return nil, humautil.MapErr(err, log)
 	}
 
-	return humautil.OK(RegisterResponse{
+	return sessionOK(RegisterResponse{
 		Message:       "registration successful, check your email to verify",
 		LoginResponse: session,
-	}), nil
+	}, session.RefreshToken, h.refreshMaxAge), nil
 }
 
 // AuthVerify handles POST /auth/verify?token=<token>.
@@ -94,7 +135,7 @@ func (h *Handler) AuthVerify(ctx context.Context, input *AuthVerifyInput) (*huma
 }
 
 // Login handles POST /auth/login.
-func (h *Handler) Login(ctx context.Context, input *humautil.Input[LoginRequest]) (*humautil.Output[humautil.APIResponse[LoginResponse]], error) {
+func (h *Handler) Login(ctx context.Context, input *humautil.Input[LoginRequest]) (*SessionOutput[LoginResponse], error) {
 	log := middleware.LoggerFromContext(ctx, h.logger)
 
 	resp, err := h.loginService.Login(ctx, input.Body)
@@ -102,19 +143,19 @@ func (h *Handler) Login(ctx context.Context, input *humautil.Input[LoginRequest]
 		return nil, humautil.MapErr(err, log)
 	}
 
-	return humautil.OK(resp), nil
+	return sessionOK(resp, resp.RefreshToken, h.refreshMaxAge), nil
 }
 
 // Refresh handles POST /auth/refresh.
-func (h *Handler) Refresh(ctx context.Context, input *humautil.Input[RefreshTokenRequest]) (*humautil.Output[humautil.APIResponse[LoginResponse]], error) {
+func (h *Handler) Refresh(ctx context.Context, input *RefreshCookieInput) (*SessionOutput[LoginResponse], error) {
 	log := middleware.LoggerFromContext(ctx, h.logger)
 
-	resp, err := h.loginService.RefreshToken(ctx, input.Body.RefreshToken)
+	resp, err := h.loginService.RefreshToken(ctx, input.RefreshToken)
 	if err != nil {
 		return nil, humautil.MapErr(err, log)
 	}
 
-	return humautil.OK(resp), nil
+	return sessionOK(resp, resp.RefreshToken, h.refreshMaxAge), nil
 }
 
 // ResendVerification handles POST /auth/verification/resend.
@@ -142,12 +183,19 @@ func (h *Handler) ChangeEmail(
 }
 
 // Logout handles POST /auth/logout.
-func (h *Handler) Logout(ctx context.Context, input *humautil.Input[RefreshTokenRequest]) (*humautil.Output[humautil.APIResponse[humautil.MessageBody]], error) {
+func (h *Handler) Logout(ctx context.Context, input *RefreshCookieInput) (*SessionOutput[humautil.MessageBody], error) {
 	log := middleware.LoggerFromContext(ctx, h.logger)
 
-	if err := h.loginService.Logout(ctx, input.Body.RefreshToken); err != nil {
+	if err := h.loginService.Logout(ctx, input.RefreshToken); err != nil {
 		return nil, humautil.MapErr(err, log)
 	}
 
-	return humautil.OK(humautil.MessageBody{Message: "logged out successfully"}), nil
+	return &SessionOutput[humautil.MessageBody]{
+		SetCookie:    []http.Cookie{expiredRefreshCookie()},
+		CacheControl: "no-store",
+		Body: humautil.APIResponse[humautil.MessageBody]{
+			Status: "success",
+			Data:   humautil.MessageBody{Message: "logged out successfully"},
+		},
+	}, nil
 }

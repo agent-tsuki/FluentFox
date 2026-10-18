@@ -52,6 +52,8 @@ type Config struct {
 	SMTPPassword        string
 	EmailFromAddress    string
 	EmailMXCheckEnabled bool // DNS mail-server check on or off.
+	// Receives an email for each 500; empty turns alerts off.
+	AlertEmailTo string
 
 	// Storage (Cloudflare R2)
 	R2AccountID  string
@@ -133,6 +135,7 @@ func Load() *Config {
 		SMTPPassword:     require(v, "SMTP_APP_PASSWORD"),
 		EmailFromAddress: require(v, "EMAIL_FROM_ADDRESS"),
 		ResendAPIKey:     v.GetString("RESEND_API_KEY"),
+		AlertEmailTo:     v.GetString("ALERT_EMAIL_TO"),
 
 		R2AccountID:  v.GetString("R2_ACCOUNT_ID"),
 		R2AccessKey:  v.GetString("R2_ACCESS_KEY"),

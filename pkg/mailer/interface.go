@@ -9,7 +9,4 @@ import "context"
 type Mailer interface {
 	// SendHTML sends an arbitrary HTML email. subject and html are caller-rendered.
 	SendHTML(ctx context.Context, to, subject, html string) error
-
-	// SendDailyReminder sends a study reminder to inactive users.
-	SendDailyReminder(ctx context.Context, to, name string, streakDays int) error
 }

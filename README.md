@@ -126,6 +126,11 @@ See `.env.example` for all required variables with descriptions.
   faster than SMTP. `EMAIL_FROM_ADDRESS` must then be on a domain verified in
   Resend. When it is empty, email goes through the `SMTP_*` settings, which are
   still required either way.
+- `ALERT_EMAIL_TO` (optional) gets an email when a request fails with a 500,
+  with the error, request id and stack trace. At most one email is sent every
+  5 minutes; the next one says how many errors were skipped. Empty turns it off.
+  The email is sent in the background, so it is reliable on a long-running host
+  (Railway) but may be lost on Vercel, which can stop the function after the response.
 - `STROKES_BASE_URL` (optional) is the public base URL of the kana and kanji
   stroke JSON files in R2. The `/content/*` endpoints return it as
   `strokes_base_url`; it is empty when unset.

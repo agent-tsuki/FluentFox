@@ -85,7 +85,7 @@ func (r *Repository) CreateUserVerification(ctx context.Context, tx *gorm.DB, us
 func (r *Repository) GetExistingUserForEmail(ctx context.Context, email string) (bool, error) {
 	var count int64
 	if err := r.db.WithContext(ctx).Model(&User{}).Where("email = ?", email).Count(&count).Error; err != nil {
-		return false, fmt.Errorf("error fetching user for email %s: %w", email, err)
+		return false, fmt.Errorf("error checking whether email is in use: %w", err)
 	}
 	return count > 0, nil
 }
@@ -158,7 +158,7 @@ func (r *Repository) GetUserForEmail(ctx context.Context, email string) (User, e
 		Model(&userData).Where("email = ?", email).
 		First(&userData)
 	if result.Error != nil {
-		return userData, fmt.Errorf("error fetching user for email %s: %w", email, result.Error)
+		return userData, fmt.Errorf("error fetching user by email: %w", result.Error)
 	}
 	return userData, nil
 }

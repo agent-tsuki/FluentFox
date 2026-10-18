@@ -46,9 +46,21 @@ func RegisterBearerScheme(api huma.API) {
 
 // Every operation is protected unless marked Public(), so a route that forgets
 // the flag fails closed. Must be added before any route is registered.
-func AuthMiddleware(api huma.API, maker *token.Maker) func(ctx huma.Context, next func(huma.Context)) {
+func AuthMiddleware(api huma.API, maker *token.Maker, allowedOrigins ...string) func(ctx huma.Context, next func(huma.Context)) {
+	allowed := make(map[string]struct{}, len(allowedOrigins))
+	for _, origin := range allowedOrigins {
+		origin = strings.TrimSpace(origin)
+		if origin != "" {
+			allowed[origin] = struct{}{}
+		}
+	}
+
 	return func(ctx huma.Context, next func(huma.Context)) {
 		op := ctx.Operation()
+		if isCookieSessionOperation(op) && !isTrustedCookieRequest(ctx, allowed) {
+			writeAppError(api, ctx, exceptions.ErrForbidden)
+			return
+		}
 		if op != nil && hasFlag(op, METADATA_PUBLIC) {
 			next(ctx)
 			return
@@ -79,6 +91,22 @@ func AuthMiddleware(api huma.API, maker *token.Maker) func(ctx huma.Context, nex
 
 		next(huma.WithContext(ctx, middleware.ContextWithClaims(ctx.Context(), claims)))
 	}
+}
+
+// Refresh and logout are authenticated by an HttpOnly cookie rather than a
+// bearer token. A required custom header forces CORS preflight, and the Origin
+// must exactly match configured first-party origins. This stops cross-site form
+// posts and credentialed cross-site fetches from using the cookie as CSRF.
+func isCookieSessionOperation(op *huma.Operation) bool {
+	return op != nil && op.Method == "POST" && (op.Path == "/auth/refresh" || op.Path == "/auth/logout")
+}
+
+func isTrustedCookieRequest(ctx huma.Context, allowed map[string]struct{}) bool {
+	origin := ctx.Header("Origin")
+	if _, ok := allowed[origin]; !ok {
+		return false
+	}
+	return strings.TrimSpace(ctx.Header("X-CSRF-Token")) != ""
 }
 
 func writeAppError(api huma.API, ctx huma.Context, appErr *exceptions.AppError) {

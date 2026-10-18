@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/fluentfox/api/pkg/exceptions"
+	"github.com/fluentfox/api/pkg/humautil"
 	"github.com/fluentfox/api/pkg/middleware"
 	"github.com/fluentfox/api/pkg/token"
 	"github.com/gin-gonic/gin"
@@ -19,7 +20,7 @@ import (
 // are browser navigations that must send HTTP redirects rather than JSON. The
 // exchange endpoint remains JSON and is covered by the application's global
 // CORS middleware.
-func RegisterGoogleOAuthRoutes(router gin.IRouter, service *GoogleOAuthService, tokenMaker *token.Maker, log *zap.Logger) {
+func RegisterGoogleOAuthRoutes(router gin.IRouter, service *GoogleOAuthService, tokenMaker *token.Maker, refreshMaxAge int, log *zap.Logger) {
 	router.GET("/auth/oauth/google/start", func(c *gin.Context) {
 		if service == nil {
 			writeGoogleOAuthError(c, errGoogleOAuthUnavailable, log)
@@ -104,6 +105,10 @@ func RegisterGoogleOAuthRoutes(router gin.IRouter, service *GoogleOAuthService, 
 			writeGoogleOAuthError(c, err, log)
 			return
 		}
+		c.SetSameSite(http.SameSiteLaxMode)
+		cookie := refreshCookie(response.RefreshToken, refreshMaxAge)
+		http.SetCookie(c.Writer, &cookie)
+		c.Header("Cache-Control", "no-store")
 		c.JSON(http.StatusOK, gin.H{"status": "success", "data": response})
 	})
 
@@ -151,7 +156,7 @@ func writeGoogleOAuthError(c *gin.Context, err error, log *zap.Logger) {
 		code = appErr.Code
 		message = appErr.Message
 	} else {
-		log.Error("unhandled Google OAuth error", zap.Error(err))
+		middleware.LoggerFromContext(c.Request.Context(), log).Error(humautil.InternalErrorLogMessage, zap.String("route", c.FullPath()), zap.Error(err))
 	}
 	// Keep the envelope consistent with Huma endpoints so the frontend has one
 	// error contract even though GET callback routes are redirect-oriented.

@@ -31,6 +31,15 @@ const (
 	EMAIL_MX_LOOKUP_TIMEOUT time.Duration = 1 * time.Second
 )
 
+// Email clients block inline SVG and data: images, so the logo is linked from the CDN.
+const (
+	EMAIL_LOGO_URL        string = "https://cdn.foxsensei.com/images/foxsensi_logo.png"
+	EMAIL_SUPPORT_ADDRESS string = "support@foxsensei.com"
+)
+
+// A burst of 500s would otherwise send one alert email each.
+const SERVER_ERROR_ALERT_INTERVAL time.Duration = 5 * time.Minute
+
 // The signup email counts toward the daily limit.
 const (
 	VERIFICATION_RESEND_COOLDOWN  time.Duration = 60 * time.Second

@@ -22,7 +22,9 @@ func CORS(allowedOrigins []string) gin.HandlerFunc {
 			c.Header("Vary", "Origin")
 			c.Header("Access-Control-Allow-Credentials", "true")
 			c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
-			c.Header("Access-Control-Allow-Headers", "Authorization, Content-Type, X-Request-ID")
+			// X-CSRF-Token makes cookie-authenticated refresh/logout requests
+			// non-simple, so browsers preflight them against this exact origin list.
+			c.Header("Access-Control-Allow-Headers", "Authorization, Content-Type, X-Request-ID, X-CSRF-Token")
 			c.Header("Access-Control-Max-Age", "86400")
 		}
 

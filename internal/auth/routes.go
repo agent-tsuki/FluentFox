@@ -72,8 +72,8 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		Metadata:      humautil.Public(),
 	}, h.Login)
 
-	// Refresh and logout identify the user by the refresh token in the body,
-	// so they work even when the access token has expired.
+	// Refresh and logout identify the user from the HttpOnly refresh cookie, so
+	// they work even when the in-memory access token has expired.
 	huma.Register(api, huma.Operation{
 		OperationID:   "refresh-token",
 		Method:        http.MethodPost,

@@ -46,6 +46,10 @@ func newAPIError(status int, code, message string) *APIError {
 	}
 }
 
+// InternalErrorLogMessage marks a log entry for a request that failed with a
+// 500; pkg/alert watches for it.
+const InternalErrorLogMessage = "unhandled internal error"
+
 // InitHumaErrors overrides huma's default error formatter with our canonical shape.
 // Call this once after creating the huma.API instance in main.
 func InitHumaErrors() {
@@ -59,6 +63,9 @@ func InitHumaErrors() {
 func MapErr(err error, log *zap.Logger) error {
 	if appErr, ok := exceptions.As(err); ok {
 		apiErr := newAPIError(appErr.Status, appErr.Code, appErr.Message)
+		if appErr.Status >= http.StatusInternalServerError {
+			logServerAppError(appErr, log)
+		}
 		if appErr.RetryAfter > 0 {
 			// Round up so a client never retries a fraction of a second too early.
 			seconds := int(math.Ceil(appErr.RetryAfter.Seconds()))
@@ -66,8 +73,18 @@ func MapErr(err error, log *zap.Logger) error {
 		}
 		return apiErr
 	}
-	log.Error("unhandled internal error", zap.Error(err))
+	log.Error(InternalErrorLogMessage, zap.Error(err))
 	return newAPIError(http.StatusInternalServerError, "INTERNAL_ERROR", "an unexpected error occurred")
+}
+
+// AppError.Error() is only the client message, so the cause is logged instead
+// when there is one.
+func logServerAppError(appErr *exceptions.AppError, log *zap.Logger) {
+	var cause error = appErr
+	if appErr.Err != nil {
+		cause = appErr.Err
+	}
+	log.Error(InternalErrorLogMessage, zap.String("error_code", appErr.Code), zap.Error(cause))
 }
 
 // statusToCode maps an HTTP status to a machine-readable error code used when

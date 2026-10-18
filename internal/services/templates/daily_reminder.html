@@ -1,0 +1,5 @@
+{{template "email_start" .}}
+{{template "email_heading" (printf "Hi %s, keep your streak alive 🔥" .Name)}}
+{{template "email_text" (printf "You're on a %d-day streak. A few minutes of practice today keeps it going, and your reviews are ready when you are." .StreakDays)}}
+{{template "email_button" .Button}}
+{{template "email_end" .}}

@@ -16,7 +16,7 @@ import (
 // RegisterXOAuthRoutes mounts X's OAuth 1.0a browser endpoints. OAuth 1.0a
 // has no state parameter, so the signed request token is additionally bound to
 // an HttpOnly, SameSite cookie before the user is redirected to X.
-func RegisterXOAuthRoutes(router gin.IRouter, service *XOAuthService, tokenMaker *token.Maker, log *zap.Logger) {
+func RegisterXOAuthRoutes(router gin.IRouter, service *XOAuthService, tokenMaker *token.Maker, refreshMaxAge int, log *zap.Logger) {
 	router.GET("/auth/oauth/x/start", func(c *gin.Context) {
 		if service == nil {
 			writeGoogleOAuthError(c, errXOAuthUnavailable, log)
@@ -104,6 +104,10 @@ func RegisterXOAuthRoutes(router gin.IRouter, service *XOAuthService, tokenMaker
 			writeGoogleOAuthError(c, err, log)
 			return
 		}
+		c.SetSameSite(http.SameSiteLaxMode)
+		cookie := refreshCookie(response.RefreshToken, refreshMaxAge)
+		http.SetCookie(c.Writer, &cookie)
+		c.Header("Cache-Control", "no-store")
 		c.JSON(http.StatusOK, gin.H{"status": "success", "data": response})
 	})
 
