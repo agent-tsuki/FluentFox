@@ -150,8 +150,12 @@ func createOAuthUser(ctx context.Context, repo *users.Repository, in *oauthNewUs
 	return users.User{}, fmt.Errorf("create OAuth user: %w", err)
 }
 
-// Five random bytes encode to at least the eight characters used as a suffix.
-const oauthUsernameSuffixBytes = 5
+// Unpadded base64 turns 6 bytes into exactly 8 characters (6*8/6). Fewer
+// bytes give fewer characters and the slice below would panic.
+const (
+	oauthUsernameSuffixBytes = 6
+	oauthUsernameSuffixLen   = 8
+)
 
 // oauthUsername uses the first candidate that has letters or digits, then adds
 // a random suffix so a public profile name cannot be guessed from the email.
@@ -168,7 +172,7 @@ func oauthUsername(ctx context.Context, repo *users.Repository, fallback string,
 		if err != nil {
 			return "", err
 		}
-		candidate := base + strings.ToLower(raw[:8])
+		candidate := base + strings.ToLower(raw[:oauthUsernameSuffixLen])
 		exists, err := repo.GetExistingUserForUsername(ctx, candidate)
 		if err != nil {
 			return "", fmt.Errorf("check OAuth username: %w", err)
