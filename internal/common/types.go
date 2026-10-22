@@ -278,3 +278,31 @@ var AVATAR_PRESETS = []AvatarPreset{
 	{ID: "women-casual-1", Group: AvatarGroupFemale, Path: "/avatars/women/casual_1.png"},
 	{ID: "women-casual-2", Group: AvatarGroupFemale, Path: "/avatars/women/casual_2.png"},
 }
+
+type ClassPlatform string
+
+const (
+	ClassPlatformYouTube ClassPlatform = "youtube"
+	ClassPlatformUdemy   ClassPlatform = "udemy"
+	ClassPlatformWebsite ClassPlatform = "website"
+)
+
+// ChannelField is a channel display field with a YouTube value and an
+// editor's custom value.
+type ChannelField string
+
+const (
+	ChannelFieldName         ChannelField = "name"
+	ChannelFieldAvatarURL    ChannelField = "avatar_url"
+	ChannelFieldBannerURL    ChannelField = "banner_url"
+	ChannelFieldDescription  ChannelField = "description"
+	ChannelFieldIntroVideoID ChannelField = "intro_video_id"
+)
+
+// Media fields are edited with classes.channel.media, the rest with
+// classes.channel.edit.
+var CHANNEL_MEDIA_FIELDS = map[ChannelField]bool{
+	ChannelFieldAvatarURL:    true,
+	ChannelFieldBannerURL:    true,
+	ChannelFieldIntroVideoID: true,
+}

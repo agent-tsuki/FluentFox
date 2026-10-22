@@ -1,11 +1,69 @@
 package middleware
 
 import (
+	"net/http/httptest"
 	"net/netip"
 	"strings"
 	"testing"
 	"unicode/utf8"
+
+	"github.com/gin-gonic/gin"
 )
+
+func TestRequestInfoCapture_ClientIP(t *testing.T) {
+	tests := []struct {
+		name              string
+		trustVercelHeader bool
+		vercelHeader      string
+		remoteAddr        string
+		want              string
+	}{
+		{
+			name:              "uses Vercel's client IP instead of the function peer",
+			trustVercelHeader: true,
+			vercelHeader:      "203.0.113.77",
+			remoteAddr:        "152.233.15.9:443",
+			want:              "203.0.113.77",
+		},
+		{
+			name:         "does not trust a Vercel header outside Vercel",
+			vercelHeader: "203.0.113.77",
+			remoteAddr:   "198.51.100.9:443",
+			want:         "198.51.100.9",
+		},
+		{
+			name:              "falls back when Vercel header is invalid",
+			trustVercelHeader: true,
+			vercelHeader:      "203.0.113.77, 152.233.15.9",
+			remoteAddr:        "152.233.15.9:443",
+			want:              "152.233.15.9",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			r := gin.New()
+			if err := r.SetTrustedProxies(nil); err != nil {
+				t.Fatal(err)
+			}
+			r.Use(RequestInfoCapture(tt.trustVercelHeader))
+
+			var got RequestInfo
+			r.GET("/", func(c *gin.Context) {
+				got = RequestInfoFromContext(c.Request.Context())
+			})
+
+			req := httptest.NewRequest("GET", "http://example.test/", nil)
+			req.RemoteAddr = tt.remoteAddr
+			req.Header.Set(vercelForwardedForHeader, tt.vercelHeader)
+			r.ServeHTTP(httptest.NewRecorder(), req)
+
+			if value := got.IP.String(); value != tt.want {
+				t.Errorf("captured IP = %q, want %q", value, tt.want)
+			}
+		})
+	}
+}
 
 func TestRequestInfo_IPPrefix(t *testing.T) {
 	tests := []struct {

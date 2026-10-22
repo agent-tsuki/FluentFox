@@ -21,8 +21,11 @@ const (
 	passwordResetLinkSubject = "Reset your FoxSensei password" //nolint:gosec // an email subject, not a credential
 	dailyReminderSubject     = "Don't break your streak! 🦊"
 	loginCodeSubject         = "Your FoxSensei sign-in code"
+	staffInviteSubject       = "You're invited to help run FoxSensei classes"
 
 	verifyPath        = "/verify"
+	invitePath        = "/invite/"
+	hoursPerDay       = 24
 	resetPasswordPath = "/reset-password"
 	dashboardPath     = "/dashboard"
 
@@ -137,6 +140,29 @@ func (s *MailService) SendLoginCode(ctx context.Context, to, name, code, where s
 	if err := s.mailer.SendHTML(ctx, to, loginCodeSubject, html); err != nil {
 		s.logger.Error("failed to send login code", zap.Error(err))
 		return fmt.Errorf("send login code: %w", err)
+	}
+	return nil
+}
+
+// The token goes in the path because the frontend route is /invite/{token}
+// and Google sign-in can return to that path.
+func (s *MailService) SendStaffInvite(ctx context.Context, to, rawToken string) error {
+	ctx, cancel := context.WithTimeout(ctx, common.EMAIL_SEND_TIMEOUT)
+	defer cancel()
+
+	html, err := renderEmail(staffInviteTemplate, staffInviteData{
+		emailLayout: newEmailLayout(s.appURL, staffInviteSubject,
+			"Accept your invite to edit FoxSensei class pages.",
+			"Not expecting this? You can safely ignore this email."),
+		ExpiresIn: plural(int(common.STAFF_INVITE_EXPIRES_AFTER/(hoursPerDay*time.Hour)), "day"),
+		Button:    emailButton{URL: s.appURL + invitePath + url.PathEscape(rawToken), Label: "Accept invite"},
+	})
+	if err != nil {
+		return fmt.Errorf("send staff invite: %w", err)
+	}
+	if err := s.mailer.SendHTML(ctx, to, staffInviteSubject, html); err != nil {
+		s.logger.Error("failed to send staff invite", zap.Error(err))
+		return fmt.Errorf("send staff invite: %w", err)
 	}
 	return nil
 }

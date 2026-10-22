@@ -134,7 +134,10 @@ See `.env.example` for all required variables with descriptions.
   the client's city and whether it is a VPN; a password login from a VPN must
   then also enter a code sent by email. Empty turns both off. The client IP is
   only right when `TRUSTED_PROXIES` covers the host's proxy (Railway:
-  `100.64.0.0/10`).
+  `100.64.0.0/10`). On Vercel, the API reads the platform-controlled
+  `X-Vercel-Forwarded-For` header when the automatically exposed `VERCEL=1`
+  system variable is available; enable **Automatically expose System
+  Environment Variables** in the Vercel project if it is not already on.
 - `R2_ACCOUNT_ID`, `R2_ACCESS_KEY`, `R2_SECRET_KEY`, `R2_BUCKET_NAME` and
   `R2_PUBLIC_URL` (all optional, but all five together) turn on profile photo
   uploads to Cloudflare R2. Without them `PUT /profile/avatar` answers 503 and
@@ -142,6 +145,11 @@ See `.env.example` for all required variables with descriptions.
 - `STROKES_BASE_URL` (optional) is the public base URL of the kana and kanji
   stroke JSON files in R2. The `/content/*` endpoints return it as
   `strokes_base_url`; it is empty when unset.
+- `YOUTUBE_API_KEY` (optional) is a YouTube Data API v3 key used only by the
+  classes admin sync (`POST /admin/classes/channels/{id}/sync` and
+  `.../courses/{id}/sync-playlist`). Without it those answer 503
+  `YOUTUBE_SYNC_UNAVAILABLE`; the public `/classes` pages never call YouTube.
+  Channel avatar and banner uploads use the same R2 settings as profile photos.
 - `DATABASE_URL` may end with `default_query_exec_mode=simple_protocol`
   (e.g. `...?sslmode=require&default_query_exec_mode=simple_protocol`). pgx
   then skips preparing each new query on a fresh connection, saving one round

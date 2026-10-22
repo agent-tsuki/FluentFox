@@ -17,6 +17,7 @@ func TestValidOAuthReturnTo(t *testing.T) {
 	}{
 		{name: "uses dashboard by default", raw: "", want: "/dashboard", ok: true},
 		{name: "accepts internal path and query", raw: "/dashboard?tab=review", want: "/dashboard?tab=review", ok: true},
+		{name: "accepts invite page with token", raw: "/invite/AbC_-123", want: "/invite/AbC_-123", ok: true},
 		{name: "rejects scheme relative URL", raw: "//attacker.example", ok: false},
 		{name: "rejects absolute URL", raw: "https://attacker.example", ok: false},
 		{name: "rejects relative URL", raw: "dashboard", ok: false},

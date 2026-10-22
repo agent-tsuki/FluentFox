@@ -449,3 +449,39 @@ const (
 // Course content only changes on deploy, so the learning services keep each
 // loaded track in memory instead of re-reading every content table per request.
 const CONTENT_CACHE_TTL time.Duration = 10 * time.Minute
+
+// Staff invites are single use. The link token is 32 random bytes, so it
+// cannot be guessed, and only its SHA-256 is stored.
+const (
+	STAFF_INVITE_EXPIRES_AFTER time.Duration = 7 * 24 * time.Hour
+	STAFF_INVITE_TOKEN_BYTES   int           = 32
+)
+
+// Classes catalog. The public pages read only the database; YouTube is
+// called only by the admin sync endpoints.
+var CLASS_LEVELS = []JLPTLevel{JLPTLevelN5, JLPTLevelN4, JLPTLevelN3, JLPTLevelN2, JLPTLevelN1}
+
+const (
+	CLASS_RELATED_LIMIT int = 4
+	CLASS_HISTORY_LIMIT int = 200
+)
+
+// One sync makes up to YOUTUBE_PLAYLIST_MAX_PAGES playlist calls plus one
+// videos call per 50 videos, so the whole sync gets a budget that fits the
+// server's 15s WriteTimeout.
+const (
+	YOUTUBE_REQUEST_TIMEOUT    time.Duration = 5 * time.Second
+	YOUTUBE_SYNC_BUDGET        time.Duration = 12 * time.Second
+	YOUTUBE_PLAYLIST_MAX_PAGES int           = 10
+)
+
+// Channel images reuse the avatar settings; banners keep their aspect ratio.
+// A decoded 4096px banner is 64 MB, so only one is decoded at a time.
+const (
+	CLASS_CHANNEL_OBJECT_PREFIX        string = "classes/channels/"
+	CLASS_BANNER_MAX_BYTES             int64  = 6 << 20
+	CLASS_BANNER_MIN_WIDTH_PX          int    = 640
+	CLASS_BANNER_MAX_SOURCE_PX         int    = 4096
+	CLASS_BANNER_MAX_WIDTH_PX          int    = 2048
+	CLASS_IMAGE_MAX_CONCURRENT_DECODES int    = 1
+)

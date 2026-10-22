@@ -20,6 +20,9 @@ type Config struct {
 	AppURL         string
 	AllowedOrigins []string
 	TrustedProxies []string // empty: trust no proxy, use the direct peer address
+	// VercelDeployment permits the Vercel-controlled client-IP header. It is
+	// enabled only by Vercel's automatically exposed VERCEL=1 runtime variable.
+	VercelDeployment bool
 
 	// Database
 	DatabaseURL string
@@ -54,6 +57,10 @@ type Config struct {
 	// vpnapi.io key for login location and VPN detection; empty turns both
 	// off (logins still work, without a location).
 	VPNAPIKey string
+
+	// YouTube Data API key for the classes admin sync; empty turns sync off
+	// (503 YOUTUBE_SYNC_UNAVAILABLE). Public class pages never call YouTube.
+	YouTubeAPIKey string
 
 	// Storage (Cloudflare R2)
 	R2AccountID  string
@@ -107,9 +114,10 @@ func Load() *Config {
 	}
 
 	cfg := &Config{
-		Port:   v.GetString("PORT"),
-		AppEnv: appEnv,
-		AppURL: require(v, "APP_URL"),
+		Port:             v.GetString("PORT"),
+		AppEnv:           appEnv,
+		AppURL:           require(v, "APP_URL"),
+		VercelDeployment: v.GetString("VERCEL") == "1",
 
 		DatabaseURL: require(v, "DATABASE_URL"),
 		DBMaxConns:  int32(requireInt(v, "DB_MAX_CONNS")),
@@ -141,6 +149,7 @@ func Load() *Config {
 		R2PublicURL:  v.GetString("R2_PUBLIC_URL"),
 
 		StrokesBaseURL: v.GetString("STROKES_BASE_URL"),
+		YouTubeAPIKey:  v.GetString("YOUTUBE_API_KEY"),
 
 		LogLevel: v.GetString("LOG_LEVEL"),
 	}

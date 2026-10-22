@@ -1,0 +1,6 @@
+{{template "email_start" .}}
+{{template "email_heading" "You're invited to help run FoxSensei classes"}}
+{{template "email_text" "A FoxSensei admin invited you to edit class pages. Sign in with this email address, then accept the invite to get access."}}
+{{template "email_button" .Button}}
+<p style="margin:0 0 28px;font-size:13px;color:#A89990;text-align:center;">This invite expires in <strong style="color:#6B5E57;">{{.ExpiresIn}}</strong> and works only once.</p>
+{{template "email_end" .}}

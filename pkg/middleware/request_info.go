@@ -10,6 +10,8 @@ import (
 
 const requestInfoKey contextKey = "request_info"
 
+const vercelForwardedForHeader = "X-Vercel-Forwarded-For"
+
 // Masking keeps enough of an address to show "203.0.113.x" on a device list
 // without storing the exact address of a person's home connection.
 const (
@@ -25,17 +27,37 @@ type RequestInfo struct {
 	UserAgent string
 }
 
-// RequestInfoCapture reads the client address through c.ClientIP, which only
-// trusts X-Forwarded-For from TRUSTED_PROXIES, so a client cannot fake it.
-func RequestInfoCapture() gin.HandlerFunc {
+// RequestInfoCapture records the address of the browser that made the
+// request. On a Vercel deployment, the runtime peer is a Vercel address, so
+// use Vercel's platform-controlled client-IP header instead. Everywhere else,
+// Gin only trusts X-Forwarded-For from TRUSTED_PROXIES, so a client cannot
+// fake it.
+//
+// trustVercelForwardedFor must only be true when Vercel set the request header
+// (Config derives it from Vercel's VERCEL=1 runtime variable).
+func RequestInfoCapture(trustVercelForwardedFor bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		info := RequestInfo{UserAgent: truncate(c.Request.UserAgent(), userAgentMax)}
-		if ip, err := netip.ParseAddr(c.ClientIP()); err == nil {
-			info.IP = ip.Unmap()
+		if ip, ok := requestIP(c, trustVercelForwardedFor); ok {
+			info.IP = ip
 		}
 		c.Request = c.Request.WithContext(ContextWithRequestInfo(c.Request.Context(), info))
 		c.Next()
 	}
+}
+
+func requestIP(c *gin.Context, trustVercelForwardedFor bool) (netip.Addr, bool) {
+	if trustVercelForwardedFor {
+		// Vercel documents this as the requester's public address. Reject a
+		// comma-separated chain instead of guessing which proxy supplied it.
+		if ip, err := netip.ParseAddr(strings.TrimSpace(c.GetHeader(vercelForwardedForHeader))); err == nil {
+			return ip.Unmap(), true
+		}
+	}
+	if ip, err := netip.ParseAddr(c.ClientIP()); err == nil {
+		return ip.Unmap(), true
+	}
+	return netip.Addr{}, false
 }
 
 func ContextWithRequestInfo(ctx context.Context, info RequestInfo) context.Context {

@@ -15,7 +15,9 @@ import (
 	"go.uber.org/zap/zapcore"
 
 	"github.com/fluentfox/api/config"
+	"github.com/fluentfox/api/internal/access"
 	"github.com/fluentfox/api/internal/auth"
+	"github.com/fluentfox/api/internal/classes"
 	"github.com/fluentfox/api/internal/common"
 	"github.com/fluentfox/api/internal/content"
 	"github.com/fluentfox/api/internal/learn"
@@ -33,6 +35,7 @@ import (
 	"github.com/fluentfox/api/pkg/storage"
 	"github.com/fluentfox/api/pkg/token"
 	"github.com/fluentfox/api/pkg/validator"
+	"github.com/fluentfox/api/pkg/youtube"
 )
 
 func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), error) {
@@ -80,7 +83,7 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	r.Use(gin.CustomRecovery(recoverPanic(log)))
 	r.Use(middleware.CORS(cfg.AllowedOrigins))
 	r.Use(middleware.Logger(log))
-	r.Use(middleware.RequestInfoCapture())
+	r.Use(middleware.RequestInfoCapture(cfg.VercelDeployment))
 	r.Use(otelgin.Middleware("fluentfox-api"))
 
 	humaConfig := huma.DefaultConfig("FluentFox API", "1.0.0")
@@ -122,6 +125,12 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	auth.RegisterXOAuthRoutes(r, xOAuth, tokenMaker, refreshMaxAge, log)
 
 	registerProfileRoutes(api, cfg, userRepo, log)
+
+	accessRepo := access.NewRepository(db)
+	permissionChecker := access.NewChecker(accessRepo, log)
+	registerAccessRoutes(api, accessRepo, permissionChecker, userRepo, mailService, log)
+	registerClassesRoutes(api, cfg, classes.NewRepository(db), permissionChecker,
+		access.NewEditableChannels(permissionChecker, accessRepo), log)
 
 	contentRepo := content.NewRepository(db)
 	content.RegisterRoutes(api, content.NewHandler(
@@ -237,5 +246,69 @@ func registerProfileRoutes(api huma.API, cfg *config.Config, userRepo *users.Rep
 			profile.NewSessionLocationService(userRepo, log),
 			log,
 		),
+	)
+}
+
+func registerAccessRoutes(
+	api huma.API, repo *access.Repository, checker *access.Checker, userRepo *users.Repository, mail *services.MailService, log *zap.Logger,
+) {
+	access.RegisterRoutes(api,
+		access.NewPermissionHandler(
+			access.NewMyPermissionsService(repo, log),
+			access.NewListPermissionsService(checker, repo, log),
+			access.NewGrantPermissionService(checker, repo, userRepo, log),
+			access.NewRevokePermissionService(checker, repo, log),
+			log,
+		),
+		access.NewInviteHandler(access.InviteServices{
+			Create:  access.NewCreateInviteService(checker, repo, mail, log),
+			List:    access.NewListInvitesService(checker, repo, log),
+			Resend:  access.NewResendInviteService(checker, repo, mail, log),
+			Revoke:  access.NewRevokeInviteService(checker, repo, log),
+			Preview: access.NewPreviewInviteService(repo, log),
+			Accept:  access.NewAcceptInviteService(repo, userRepo, log),
+		}, log),
+	)
+}
+
+func registerClassesRoutes(
+	api huma.API, cfg *config.Config, repo *classes.Repository, perms classes.PermissionChecker, grants classes.GrantLister, log *zap.Logger,
+) {
+	// Nil interfaces (not nil pointers) let the services answer 503 when R2
+	// or the YouTube key is not configured.
+	var store classes.ObjectStore
+	if cfg.R2Enabled() {
+		store = storage.NewR2Store(cfg.R2AccountID, cfg.R2AccessKey, cfg.R2SecretKey, cfg.R2BucketName, cfg.R2PublicURL)
+	}
+	var ytChannels classes.YouTubeChannels
+	var ytPlaylists classes.YouTubePlaylists
+	if cfg.YouTubeAPIKey != "" {
+		client := youtube.NewClient(cfg.YouTubeAPIKey, common.YOUTUBE_REQUEST_TIMEOUT)
+		ytChannels, ytPlaylists = client, client
+	}
+	courseReader := classes.NewCourseAdminGetService(repo, perms, log)
+	classes.RegisterRoutes(api,
+		classes.NewCatalogHandler(classes.NewListCoursesService(repo, log), classes.NewCourseDetailService(repo, log), log),
+		classes.NewChannelAdminHandler(&classes.ChannelAdminServices{
+			List:       classes.NewChannelListService(repo, grants, log),
+			Read:       classes.NewChannelReadService(repo, perms, log),
+			Create:     classes.NewChannelCreateService(repo, perms, log),
+			Update:     classes.NewChannelUpdateService(repo, perms, log),
+			Media:      classes.NewChannelMediaService(repo, perms, store, cfg.R2PublicURL, log),
+			IntroVideo: classes.NewIntroVideoService(repo, perms, log),
+			Reset:      classes.NewResetFieldService(repo, perms, store, cfg.R2PublicURL, log),
+			Visibility: classes.NewChannelVisibilityService(repo, perms, log),
+			Sync:       classes.NewChannelSyncService(repo, ytChannels, perms, log),
+			History:    classes.NewChannelHistoryService(repo, perms, log),
+		}, log),
+		classes.NewCourseAdminHandler(&classes.CourseAdminServices{
+			List:       classes.NewCourseAdminListService(repo, perms, log),
+			Get:        courseReader,
+			Create:     classes.NewCourseCreateService(repo, courseReader, perms, log),
+			Update:     classes.NewCourseUpdateService(repo, courseReader, perms, log),
+			Delete:     classes.NewCourseDeleteService(repo, perms, log),
+			Visibility: classes.NewCourseVisibilityService(repo, courseReader, perms, log),
+			Sync:       classes.NewPlaylistSyncService(repo, ytPlaylists, courseReader, perms, log),
+		}, log),
 	)
 }

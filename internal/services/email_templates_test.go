@@ -78,6 +78,14 @@ func TestMailService_RendersEveryEmailWithLayout(t *testing.T) {
 			wantSubject:  passwordResetLinkSubject,
 			wantContains: []string{testAppURL + "/reset-password?token=abc", "1 hour"},
 		},
+		{
+			name: "staff invite links to the invite page with the token in the path",
+			send: func(s *MailService) error {
+				return s.SendStaffInvite(context.Background(), "a@b.com", "abc_-1")
+			},
+			wantSubject:  staffInviteSubject,
+			wantContains: []string{testAppURL + "/invite/abc_-1", "7 days"},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
