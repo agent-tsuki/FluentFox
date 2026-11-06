@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"go.uber.org/zap"
 
 	"github.com/fluentfox/api/internal/common"
 )
@@ -76,7 +77,7 @@ func TestKanaQuizPlan(t *testing.T) {
 
 func TestKanaQuizQuestionsAreMultipleChoiceBothWays(t *testing.T) {
 	repo := newFakeRepo()
-	svc := NewStartTestService(repo, NewCatalog(&fakeContent{}), NewQuestionBuilder(&fixedRand{}), &fixedRand{}, nil)
+	svc := NewStartTestService(repo, NewCatalog(&fakeContent{}), NewQuestionBuilder(&fixedRand{}), &fakeCloser{}, &fixedRand{}, zap.NewNop())
 	got, err := svc.Start(t.Context(), testUserID, &StartTestRequest{Kind: "unit_quiz", Track: "hiragana", Scope: "a"})
 	if err != nil {
 		t.Fatalf("start: %v", err)

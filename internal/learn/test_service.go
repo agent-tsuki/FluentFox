@@ -12,20 +12,33 @@ import (
 	"github.com/fluentfox/api/pkg/exceptions"
 )
 
+type TestSessionRepo interface {
+	ItemSessionRepo
+	ListUnfinishedTests(ctx context.Context, userID uuid.UUID, kind common.SessionKind, track common.LearningTrack, scope string) ([]uuid.UUID, error)
+}
+
+var _ TestSessionRepo = (*Repository)(nil)
+
+// SessionCloser completes a session and scores it (CompleteSessionService).
+type SessionCloser interface {
+	Complete(ctx context.Context, userID, sessionID uuid.UUID) (SessionResult, error)
+}
+
 type StartTestService struct {
-	repo      ItemSessionRepo
+	repo      TestSessionRepo
 	catalog   *Catalog
 	questions *QuestionBuilder
+	closer    SessionCloser
 	rnd       Rand
 	now       func() time.Time
 	logger    *zap.Logger
 }
 
-func NewStartTestService(repo ItemSessionRepo, catalog *Catalog, questions *QuestionBuilder, rnd Rand, log *zap.Logger) *StartTestService {
+func NewStartTestService(repo TestSessionRepo, catalog *Catalog, questions *QuestionBuilder, closer SessionCloser, rnd Rand, log *zap.Logger) *StartTestService {
 	if rnd == nil {
 		rnd = globalRand{}
 	}
-	return &StartTestService{repo: repo, catalog: catalog, questions: questions, rnd: rnd, now: time.Now, logger: log}
+	return &StartTestService{repo: repo, catalog: catalog, questions: questions, closer: closer, rnd: rnd, now: time.Now, logger: log}
 }
 
 // Start asks every facet of every item in scope once, in random order; a
@@ -64,12 +77,32 @@ func (s *StartTestService) Start(ctx context.Context, userID uuid.UUID, req *Sta
 		s.rnd.Shuffle(len(questions), func(i, j int) { questions[i], questions[j] = questions[j], questions[i] })
 	}
 
+	s.closeUnfinished(ctx, userID, sessionKind, track, scope)
+
 	session := newStudySession(userID, sessionKind, &track, now)
 	session.Scope = &scope
+	session.QuestionPlan = planOf(questions)
 	if err := s.repo.CreateSession(ctx, &session); err != nil {
 		return SessionStart{}, fmt.Errorf("start test: %w", err)
 	}
 	return SessionStart{Session: toSessionDTO(&session), Questions: questions}, nil
+}
+
+// closeUnfinished scores the user's earlier attempts at the same test that
+// were left part way (the tab closed or reloaded), so leaving a test that is
+// going badly still counts as an attempt. Attempts with no answers are left
+// alone. A failure is logged rather than blocking the new test.
+func (s *StartTestService) closeUnfinished(ctx context.Context, userID uuid.UUID, kind common.SessionKind, track common.LearningTrack, scope string) {
+	ids, err := s.repo.ListUnfinishedTests(ctx, userID, kind, track, scope)
+	if err != nil {
+		s.logger.Warn("list unfinished tests", zap.Error(err))
+		return
+	}
+	for _, id := range ids {
+		if _, err := s.closer.Complete(ctx, userID, id); err != nil {
+			s.logger.Warn("close unfinished test", zap.String("session_id", id.String()), zap.Error(err))
+		}
+	}
 }
 
 // testScope resolves a test's scope to its items in path order, and returns

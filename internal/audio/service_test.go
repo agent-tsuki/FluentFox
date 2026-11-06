@@ -205,3 +205,28 @@ func TestBusyVoiceDefersWithoutMarkingItDown(t *testing.T) {
 		t.Error("voice was marked down for being busy")
 	}
 }
+
+func TestFind(t *testing.T) {
+	ctx := context.Background()
+	fallbackKey := common.AUDIO_OBJECT_PREFIX + "openjtalk-mei/" + clipHash("いぬ") + ".wav"
+	synth := &fakeSynth{}
+	svc := newTestService(newFakeStore(mainKey("ねこ"), fallbackKey), mainVoice(synth), Voice{Profile: "openjtalk-mei", Synth: synth})
+
+	resp, err := svc.Find(ctx, []string{"ねこ", "いぬ", "とり"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	urls := []string{resp.Items[0].Segments[0].URL, resp.Items[1].Segments[0].URL, resp.Items[2].Segments[0].URL}
+	want := []string{testCDN + "/" + mainKey("ねこ"), testCDN + "/" + fallbackKey, ""}
+	for i := range want {
+		if urls[i] != want[i] {
+			t.Errorf("text %d url = %q, want %q", i, urls[i], want[i])
+		}
+	}
+	if synth.count() != 0 {
+		t.Errorf("a lookup synthesized %d clips, want none", synth.count())
+	}
+	if !resp.Pending {
+		t.Error("pending = false, want true for the clip that does not exist")
+	}
+}

@@ -80,7 +80,7 @@ func TestStartTestService(t *testing.T) {
 			if tc.setup != nil {
 				tc.setup(repo)
 			}
-			svc := NewStartTestService(repo, NewCatalog(&fakeContent{}), NewQuestionBuilder(&fixedRand{}), &fixedRand{}, zap.NewNop())
+			svc := NewStartTestService(repo, NewCatalog(&fakeContent{}), NewQuestionBuilder(&fixedRand{}), &fakeCloser{}, &fixedRand{}, zap.NewNop())
 			svc.now = func() time.Time { return testNow }
 			got, err := svc.Start(context.Background(), testUserID, &tc.req)
 			if !errors.Is(err, tc.wantErr) {

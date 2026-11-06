@@ -127,6 +127,9 @@ func (s *SubmitAnswersService) apply(ctx context.Context, tx *gorm.DB, b *answer
 	if err != nil {
 		return nil, err
 	}
+	if err := s.checkAsked(ctx, tx, b, answers, done); err != nil {
+		return nil, err
+	}
 	if err := s.lockCards(ctx, tx, b, answers); err != nil {
 		return nil, err
 	}
@@ -151,6 +154,36 @@ func (s *SubmitAnswersService) apply(ctx context.Context, tx *gorm.DB, b *answer
 		return nil, err
 	}
 	return results, nil
+}
+
+// checkAsked refuses, for a test, an answer about a card the test did not
+// ask, or one more answer about a card than the times it was asked. A resent
+// answer (already stored) is not counted again.
+func (s *SubmitAnswersService) checkAsked(ctx context.Context, tx *gorm.DB, b *answerBatch, answers []AnswerRequestItem, done map[uuid.UUID]ReviewLog) error {
+	if b.session.QuestionPlan == nil {
+		return nil
+	}
+	left := b.session.QuestionPlan.asksPerCard()
+	logs, err := s.repo.ListSessionLogs(ctx, tx, b.session.ID)
+	if err != nil {
+		return fmt.Errorf("apply answers: %w", err)
+	}
+	for i := range logs {
+		left[logs[i].CardID]--
+	}
+	seen := make(map[uuid.UUID]bool, len(answers))
+	for i := range answers {
+		a := &answers[i]
+		if _, stored := done[a.ClientEventID]; stored || seen[a.ClientEventID] {
+			continue
+		}
+		seen[a.ClientEventID] = true
+		if left[a.CardID] <= 0 {
+			return exceptions.ErrTestAnswerNotAsked
+		}
+		left[a.CardID]--
+	}
+	return nil
 }
 
 // A resent answer returns the result stored the first time.

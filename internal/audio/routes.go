@@ -10,8 +10,8 @@ import (
 
 const routeTag = "Audio"
 
-// Fetching a stored clip needs no API call at all (it is on the CDN); only
-// generating a new one needs a signed-in user, so the endpoint cannot be used
+// Anyone may look up stored clips (/audio/clips); generating a new one
+// (/audio/speech) needs a signed-in user, so the API cannot be used
 // anonymously as a free text-to-speech service.
 func RegisterRoutes(api huma.API, h *Handler) {
 	huma.Register(api, huma.Operation{
@@ -22,6 +22,15 @@ func RegisterRoutes(api huma.API, h *Handler) {
 		Tags:        []string{routeTag},
 		Metadata:    humautil.Public(),
 	}, h.Info)
+
+	huma.Register(api, huma.Operation{
+		OperationID: "find-audio-clips",
+		Method:      http.MethodPost,
+		Path:        "/audio/clips",
+		Summary:     "Get CDN URLs of the spoken clips that already exist for texts (never generates)",
+		Tags:        []string{routeTag},
+		Metadata:    humautil.Public(),
+	}, h.Find)
 
 	huma.Register(api, huma.Operation{
 		OperationID: "speak-texts",

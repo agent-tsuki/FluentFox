@@ -149,6 +149,20 @@ func (r *Repository) CreateSession(ctx context.Context, s *StudySession) error {
 	return nil
 }
 
+// ListUnfinishedTests lists the user's open sessions of a test (kind, track
+// and scope) that have at least one answer.
+func (r *Repository) ListUnfinishedTests(ctx context.Context, userID uuid.UUID, kind common.SessionKind, track common.LearningTrack, scope string) ([]uuid.UUID, error) {
+	var ids []uuid.UUID
+	err := r.db.WithContext(ctx).Model(&StudySession{}).
+		Where("user_id = ? AND kind = ? AND track = ? AND scope = ? AND completed_at IS NULL", userID, kind, track, scope).
+		Where("EXISTS (SELECT 1 FROM review_log WHERE review_log.session_id = study_session.id)").
+		Pluck("id", &ids).Error
+	if err != nil {
+		return nil, fmt.Errorf("list unfinished %s tests for %s: %w", kind, userID, err)
+	}
+	return ids, nil
+}
+
 func (r *Repository) GetSession(ctx context.Context, userID, sessionID uuid.UUID) (StudySession, error) {
 	var s StudySession
 	if err := r.db.WithContext(ctx).Where("id = ? AND user_id = ?", sessionID, userID).First(&s).Error; err != nil {

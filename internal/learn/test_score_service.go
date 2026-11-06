@@ -67,7 +67,11 @@ func (s *TestScoreService) Result(ctx context.Context, tx *gorm.DB, session *Stu
 	if err != nil {
 		return nil, fmt.Errorf("test result: %w", err)
 	}
-	res := scoreTest(session, kind, testQuestionCount(kind, items), scoredLogs(kind, items, logs), s.now().UTC())
+	total := testQuestionCount(kind, items)
+	if session.QuestionPlan != nil {
+		total = len(session.QuestionPlan)
+	}
+	res := scoreTest(session, kind, total, scoredLogs(kind, items, logs), s.now().UTC())
 	res.Scope = scope
 	if err := s.repo.InsertTestResult(ctx, tx, &res); err != nil {
 		return nil, fmt.Errorf("test result: %w", err)

@@ -59,6 +59,7 @@ type SubmitRepo interface {
 	GetSession(ctx context.Context, userID, sessionID uuid.UUID) (StudySession, error)
 	LockSession(ctx context.Context, tx *gorm.DB, sessionID uuid.UUID) (StudySession, error)
 	FindReviewLogs(ctx context.Context, tx *gorm.DB, userID uuid.UUID, eventIDs []uuid.UUID) ([]ReviewLog, error)
+	ListSessionLogs(ctx context.Context, tx *gorm.DB, sessionID uuid.UUID) ([]ReviewLog, error)
 	ListExistingCardIDs(ctx context.Context, tx *gorm.DB, userID uuid.UUID, ids []uuid.UUID) ([]uuid.UUID, error)
 	CreateCards(ctx context.Context, tx *gorm.DB, cards []SRSCard) error
 	LockCards(ctx context.Context, tx *gorm.DB, userID uuid.UUID, ids []uuid.UUID) ([]SRSCard, error)

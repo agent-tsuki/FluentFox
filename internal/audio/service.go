@@ -31,6 +31,8 @@ type ObjectStore interface {
 type Requester struct {
 	UserID uuid.UUID
 	Admin  bool
+	// LookupOnly finds stored clips and never generates (anyone may ask).
+	LookupOnly bool
 }
 
 // errDeferred means a clip was not generated now (request budget or the
@@ -73,9 +75,8 @@ func (s *SpeechService) enabled() bool {
 	return s.store != nil && len(s.voices) > 0
 }
 
-// Info tells clients where the main voice's clips live, so they can fetch a
-// clip straight from the CDN (base_url + "/" + sha256(sentence) + ext) and
-// call Speak only for clips that do not exist yet.
+// Info tells clients whether spoken audio is on, the main voice's folder (to
+// name their saved copies and drop ones from an older folder) and its credit.
 func (s *SpeechService) Info() SpeechInfo {
 	if !s.enabled() {
 		return SpeechInfo{}
@@ -87,6 +88,14 @@ func (s *SpeechService) Info() SpeechInfo {
 		Ext:     s.encoder.Ext(),
 		Credit:  main.Credit,
 	}
+}
+
+// Find returns the CDN URLs of the clips already stored for texts, without
+// generating any; a sentence with no clip has no url. Clients fetch only
+// URLs listed here or by Speak, so the CDN is never asked for a clip that
+// does not exist (it would keep that 404 for hours).
+func (s *SpeechService) Find(ctx context.Context, texts []string) (SpeechResponse, error) {
+	return s.Speak(ctx, Requester{LookupOnly: true}, texts)
 }
 
 func (s *SpeechService) Speak(ctx context.Context, who Requester, texts []string) (SpeechResponse, error) {
@@ -157,6 +166,9 @@ func (s *SpeechService) resolve(ctx context.Context, who Requester, sentence str
 			return SpeechSegment{Text: sentence, URL: url, Voice: voice.Profile, credit: voice.Credit}
 		}
 		if errors.Is(err, errDeferred) {
+			if who.LookupOnly {
+				continue // The next voice may have spoken it.
+			}
 			return SpeechSegment{Text: sentence}
 		}
 		s.downUntil[i].Store(time.Now().Add(common.AUDIO_VOICE_RETRY_AFTER).UnixNano())
@@ -177,7 +189,7 @@ func (s *SpeechService) findOrCreate(
 	if exists {
 		return s.publicURL + "/" + key, nil
 	}
-	if budget.Add(-1) < 0 || (!who.Admin && !s.limiter.take(who.UserID)) {
+	if who.LookupOnly || budget.Add(-1) < 0 || (!who.Admin && !s.limiter.take(who.UserID)) {
 		return "", errDeferred
 	}
 	clip, err := s.generate(ctx, voice, sentence)

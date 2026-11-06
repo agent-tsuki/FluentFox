@@ -32,3 +32,11 @@ func (h *Handler) Speak(ctx context.Context, input *humautil.Input[SpeechRequest
 	}
 	return humautil.OK(resp), nil
 }
+
+func (h *Handler) Find(ctx context.Context, input *humautil.Input[SpeechRequest]) (*humautil.Output[humautil.APIResponse[SpeechResponse]], error) {
+	resp, err := h.speech.Find(ctx, input.Body.Texts)
+	if err != nil {
+		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
+	}
+	return humautil.OK(resp), nil
+}

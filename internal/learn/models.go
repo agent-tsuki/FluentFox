@@ -64,6 +64,8 @@ type StudySession struct {
 	AnswerCount  int                   `gorm:"column:answer_count;not null"`
 	CorrectCount int                   `gorm:"column:correct_count;not null"`
 	ActiveMs     int64                 `gorm:"column:active_ms;not null"`
+	// QuestionPlan is what a test asked; nil for other sessions.
+	QuestionPlan QuestionPlan `gorm:"column:question_plan;type:jsonb"`
 }
 
 func (StudySession) TableName() string { return "study_session" }

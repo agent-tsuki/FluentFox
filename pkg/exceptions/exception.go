@@ -195,3 +195,8 @@ var (
 	ErrAudioTextEmpty   = New(http.StatusUnprocessableEntity, "AUDIO_TEXT_EMPTY", "a text has nothing to speak")
 	ErrAudioTextTooLong = New(http.StatusUnprocessableEntity, "AUDIO_TEXT_TOO_LONG", "a text is longer than 300 characters")
 )
+
+// Tests
+var (
+	ErrTestAnswerNotAsked = New(http.StatusUnprocessableEntity, "TEST_ANSWER_NOT_ASKED", "this test did not ask that question, or it was already answered")
+)

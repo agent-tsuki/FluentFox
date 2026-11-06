@@ -300,6 +300,26 @@ func (f *fakeRepo) MarkGoalMet(_ context.Context, _ *gorm.DB, _ uuid.UUID, local
 	return nil
 }
 
+func (f *fakeRepo) ListUnfinishedTests(_ context.Context, userID uuid.UUID, kind common.SessionKind, track common.LearningTrack, scope string) ([]uuid.UUID, error) {
+	var out []uuid.UUID
+	for _, s := range f.sessions {
+		open := s.UserID == userID && s.Kind == kind && s.CompletedAt == nil &&
+			s.Track != nil && *s.Track == track && s.Scope != nil && *s.Scope == scope
+		if open && slices.ContainsFunc(f.logs, func(l ReviewLog) bool { return l.SessionID == s.ID }) {
+			out = append(out, s.ID)
+		}
+	}
+	return out, nil
+}
+
+// fakeCloser records the sessions a test start completed.
+type fakeCloser struct{ closed []uuid.UUID }
+
+func (c *fakeCloser) Complete(_ context.Context, _, sessionID uuid.UUID) (SessionResult, error) {
+	c.closed = append(c.closed, sessionID)
+	return SessionResult{}, nil
+}
+
 func (f *fakeRepo) ListSessionLogs(_ context.Context, _ *gorm.DB, sessionID uuid.UUID) ([]ReviewLog, error) {
 	var out []ReviewLog
 	for _, l := range f.logs {
