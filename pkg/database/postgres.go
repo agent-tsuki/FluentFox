@@ -39,5 +39,9 @@ func NewDB(dsn string, maxConns, minConns int32) (*gorm.DB, error) {
 		return nil, fmt.Errorf("database: ping: %w", err)
 	}
 
+	if err := registerQueryTiming(db); err != nil {
+		return nil, err
+	}
+
 	return db, nil
 }

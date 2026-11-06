@@ -85,6 +85,14 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	r.Use(middleware.Logger(log))
 	r.Use(middleware.RequestInfoCapture(cfg.VercelDeployment))
 	r.Use(otelgin.Middleware("fluentfox-api"))
+	// Outermost to innermost: gzip the final body, tag public GETs for
+	// browser/CDN caching, then time the handler (app vs database).
+	r.Use(middleware.Compress())
+	r.Use(middleware.PublicCache(
+		middleware.PublicCacheRule{Prefix: "/content/", CacheControl: common.CONTENT_HTTP_CACHE_CONTROL},
+		middleware.PublicCacheRule{Prefix: "/classes", CacheControl: common.CLASSES_HTTP_CACHE_CONTROL},
+	))
+	r.Use(middleware.ServerTiming())
 
 	humaConfig := huma.DefaultConfig("FluentFox API", "1.0.0")
 	humaConfig.CreateHooks = nil

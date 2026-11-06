@@ -485,3 +485,16 @@ const (
 	CLASS_BANNER_MAX_WIDTH_PX          int    = 2048
 	CLASS_IMAGE_MAX_CONCURRENT_DECODES int    = 1
 )
+
+// The public content routes (kana, kanji) keep built responses in memory for
+// CONTENT_CACHE_TTL too. This cap bounds the per-character cache, whose key
+// comes from the URL.
+const CONTENT_CACHE_MAX_ENTRIES int = 4096
+
+// HTTP caching for public, user-independent GET routes (middleware.PublicCache).
+// Course content changes only on deploy; the class catalogue is edited by staff,
+// so it is kept fresh for a minute and may be served stale while revalidating.
+const (
+	CONTENT_HTTP_CACHE_CONTROL string = "public, max-age=300, stale-while-revalidate=86400"
+	CLASSES_HTTP_CACHE_CONTROL string = "public, max-age=60, stale-while-revalidate=300"
+)

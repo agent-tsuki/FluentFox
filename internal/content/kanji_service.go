@@ -12,6 +12,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/fluentfox/api/internal/common"
+	"github.com/fluentfox/api/pkg/cache"
 	"github.com/fluentfox/api/pkg/exceptions"
 )
 
@@ -19,10 +20,18 @@ type KanjiContentService struct {
 	repo           KanjiReader
 	strokesBaseURL string
 	logger         *zap.Logger
+	indexes        *cache.TTL[KanjiLevelIndex]
+	details        *cache.TTL[KanjiLevelDetail]
+	entries        *cache.TTL[KanjiEntryResponse]
 }
 
 func NewKanjiContentService(repo KanjiReader, strokesBaseURL string, log *zap.Logger) *KanjiContentService {
-	return &KanjiContentService{repo: repo, strokesBaseURL: strokesBaseURL, logger: log}
+	return &KanjiContentService{
+		repo: repo, strokesBaseURL: strokesBaseURL, logger: log,
+		indexes: cache.NewTTL[KanjiLevelIndex](common.CONTENT_CACHE_TTL, common.CONTENT_CACHE_MAX_ENTRIES),
+		details: cache.NewTTL[KanjiLevelDetail](common.CONTENT_CACHE_TTL, common.CONTENT_CACHE_MAX_ENTRIES),
+		entries: cache.NewTTL[KanjiEntryResponse](common.CONTENT_CACHE_TTL, common.CONTENT_CACHE_MAX_ENTRIES),
+	}
 }
 
 // kanjiChildren holds the per-kanji rows of the child tables, keyed by kanji id.
@@ -33,11 +42,47 @@ type kanjiChildren struct {
 	lookAlikes map[uuid.UUID][]KanjiLookAlikeRow
 }
 
+// GetLevelIndex, GetLevelDetail and GetEntry are served from memory; their
+// queries run once per key per TTL. Not-found results are not cached.
 func (s *KanjiContentService) GetLevelIndex(ctx context.Context, rawLevel string) (KanjiLevelIndex, error) {
 	level, err := parseKanjiLevel(rawLevel)
 	if err != nil {
 		return KanjiLevelIndex{}, err
 	}
+	resp, err := s.indexes.Get(ctx, string(level), func(ctx context.Context) (KanjiLevelIndex, error) {
+		return s.loadLevelIndex(ctx, level)
+	})
+	if err != nil {
+		return KanjiLevelIndex{}, fmt.Errorf("cached kanji index: %w", err)
+	}
+	return resp, nil
+}
+
+func (s *KanjiContentService) GetLevelDetail(ctx context.Context, rawLevel string) (KanjiLevelDetail, error) {
+	level, err := parseKanjiLevel(rawLevel)
+	if err != nil {
+		return KanjiLevelDetail{}, err
+	}
+	resp, err := s.details.Get(ctx, string(level), func(ctx context.Context) (KanjiLevelDetail, error) {
+		return s.loadLevelDetail(ctx, level)
+	})
+	if err != nil {
+		return KanjiLevelDetail{}, fmt.Errorf("cached kanji detail: %w", err)
+	}
+	return resp, nil
+}
+
+func (s *KanjiContentService) GetEntry(ctx context.Context, char string) (KanjiEntryResponse, error) {
+	resp, err := s.entries.Get(ctx, char, func(ctx context.Context) (KanjiEntryResponse, error) {
+		return s.loadEntry(ctx, char)
+	})
+	if err != nil {
+		return KanjiEntryResponse{}, fmt.Errorf("cached kanji entry: %w", err)
+	}
+	return resp, nil
+}
+
+func (s *KanjiContentService) loadLevelIndex(ctx context.Context, level common.JLPTLevel) (KanjiLevelIndex, error) {
 	groups, err := s.repo.ListKanjiGroups(ctx, level)
 	if err != nil {
 		return KanjiLevelIndex{}, fmt.Errorf("get kanji index: %w", err)
@@ -69,11 +114,7 @@ func (s *KanjiContentService) GetLevelIndex(ctx context.Context, rawLevel string
 	}, nil
 }
 
-func (s *KanjiContentService) GetLevelDetail(ctx context.Context, rawLevel string) (KanjiLevelDetail, error) {
-	level, err := parseKanjiLevel(rawLevel)
-	if err != nil {
-		return KanjiLevelDetail{}, err
-	}
+func (s *KanjiContentService) loadLevelDetail(ctx context.Context, level common.JLPTLevel) (KanjiLevelDetail, error) {
 	units, err := s.repo.ListKanjiUnits(ctx, level)
 	if err != nil {
 		return KanjiLevelDetail{}, fmt.Errorf("get kanji detail: %w", err)
@@ -97,7 +138,7 @@ func (s *KanjiContentService) GetLevelDetail(ctx context.Context, rawLevel strin
 
 // Only kanji of a level that is served are found, so this route never leaks
 // content the level routes would refuse.
-func (s *KanjiContentService) GetEntry(ctx context.Context, char string) (KanjiEntryResponse, error) {
+func (s *KanjiContentService) loadEntry(ctx context.Context, char string) (KanjiEntryResponse, error) {
 	kanji, err := s.repo.GetKanjiByChar(ctx, char)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return KanjiEntryResponse{}, exceptions.ErrKanjiNotFound

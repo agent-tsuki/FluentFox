@@ -9,6 +9,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/fluentfox/api/internal/common"
+	"github.com/fluentfox/api/pkg/cache"
 	"github.com/fluentfox/api/pkg/exceptions"
 )
 
@@ -16,17 +17,32 @@ type KanaContentService struct {
 	repo           KanaReader
 	strokesBaseURL string
 	logger         *zap.Logger
+	courses        *cache.TTL[KanaCourseResponse]
 }
 
 func NewKanaContentService(repo KanaReader, strokesBaseURL string, log *zap.Logger) *KanaContentService {
-	return &KanaContentService{repo: repo, strokesBaseURL: strokesBaseURL, logger: log}
+	return &KanaContentService{
+		repo: repo, strokesBaseURL: strokesBaseURL, logger: log,
+		courses: cache.NewTTL[KanaCourseResponse](common.CONTENT_CACHE_TTL, common.CONTENT_CACHE_MAX_ENTRIES),
+	}
 }
 
+// GetCourse is served from memory; the queries run once per script per TTL.
 func (s *KanaContentService) GetCourse(ctx context.Context, rawScript string) (KanaCourseResponse, error) {
 	script, err := parseKanaScript(rawScript)
 	if err != nil {
 		return KanaCourseResponse{}, err
 	}
+	resp, err := s.courses.Get(ctx, string(script), func(ctx context.Context) (KanaCourseResponse, error) {
+		return s.loadCourse(ctx, script)
+	})
+	if err != nil {
+		return KanaCourseResponse{}, fmt.Errorf("cached kana course: %w", err)
+	}
+	return resp, nil
+}
+
+func (s *KanaContentService) loadCourse(ctx context.Context, script common.KanaScript) (KanaCourseResponse, error) {
 	units, err := s.repo.ListKanaUnits(ctx, script)
 	if err != nil {
 		return KanaCourseResponse{}, fmt.Errorf("get kana course: %w", err)
