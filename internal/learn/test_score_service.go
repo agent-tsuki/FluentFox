@@ -67,7 +67,7 @@ func (s *TestScoreService) Result(ctx context.Context, tx *gorm.DB, session *Stu
 	if err != nil {
 		return nil, fmt.Errorf("test result: %w", err)
 	}
-	res := scoreTest(session, kind, testTotal(items), logs, s.now().UTC())
+	res := scoreTest(session, kind, testQuestionCount(kind, items), scoredLogs(kind, items, logs), s.now().UTC())
 	res.Scope = scope
 	if err := s.repo.InsertTestResult(ctx, tx, &res); err != nil {
 		return nil, fmt.Errorf("test result: %w", err)
@@ -78,11 +78,25 @@ func (s *TestScoreService) Result(ctx context.Context, tx *gorm.DB, session *Stu
 	return toTestScore(&res), nil
 }
 
-// scoreTest counts the cards whose first answer was right. Unanswered
-// questions count against the score, so stopping early cannot pass a test.
-func scoreTest(session *StudySession, kind common.TestKind, total int, logs []ReviewLog, now time.Time) TestResult {
+// scoredLogs are the answers a test is scored on: every answer of a kana
+// unit quiz, which asks each kana several times, and otherwise each card's
+// first answer.
+func scoredLogs(kind common.TestKind, items []*Item, logs []ReviewLog) []*ReviewLog {
+	if !isKanaUnitQuiz(kind, items) {
+		return firstGradedLogs(logs)
+	}
+	out := make([]*ReviewLog, 0, len(logs))
+	for i := range logs {
+		out = append(out, &logs[i])
+	}
+	return out
+}
+
+// scoreTest counts the right answers. Unanswered questions count against
+// the score, so stopping early cannot pass a test.
+func scoreTest(session *StudySession, kind common.TestKind, total int, logs []*ReviewLog, now time.Time) TestResult {
 	correct := 0
-	for _, l := range firstGradedLogs(logs) {
+	for _, l := range logs {
 		if l.IsCorrect {
 			correct++
 		}

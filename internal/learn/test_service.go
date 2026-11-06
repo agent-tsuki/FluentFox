@@ -28,9 +28,11 @@ func NewStartTestService(repo ItemSessionRepo, catalog *Catalog, questions *Ques
 	return &StartTestService{repo: repo, catalog: catalog, questions: questions, rnd: rnd, now: time.Now, logger: log}
 }
 
-// Start asks every facet of every item in scope once, in random order. Items
-// the user has not learned yet are asked too: that is what a skip test is
-// for. The score is worked out when the session is completed.
+// Start asks every facet of every item in scope once, in random order; a
+// kana unit quiz instead asks each kana several times, both ways round (see
+// kanaQuizPlan). Items the user has not learned yet are asked too: that is
+// what a skip test is for. The score is worked out when the session is
+// completed.
 func (s *StartTestService) Start(ctx context.Context, userID uuid.UUID, req *StartTestRequest) (SessionStart, error) {
 	kind := common.TestKind(req.Kind)
 	sessionKind, ok := common.TEST_KIND_SESSION_KIND[kind]
@@ -54,8 +56,13 @@ func (s *StartTestService) Start(ctx context.Context, userID uuid.UUID, req *Sta
 	if err != nil {
 		return SessionStart{}, err
 	}
-	questions := set.everyFacet(items, 0)
-	s.rnd.Shuffle(len(questions), func(i, j int) { questions[i], questions[j] = questions[j], questions[i] })
+	var questions []Question
+	if isKanaUnitQuiz(kind, items) {
+		questions = set.kanaQuizQuestions(items, s.rnd)
+	} else {
+		questions = set.everyFacet(items, 0)
+		s.rnd.Shuffle(len(questions), func(i, j int) { questions[i], questions[j] = questions[j], questions[i] })
+	}
 
 	session := newStudySession(userID, sessionKind, &track, now)
 	session.Scope = &scope
@@ -99,4 +106,13 @@ func testTotal(items []*Item) int {
 		n += len(common.SRS_ITEM_FACETS[item.Type])
 	}
 	return n
+}
+
+// testQuestionCount is the number of questions a test asks, which is what
+// it is scored out of.
+func testQuestionCount(kind common.TestKind, items []*Item) int {
+	if isKanaUnitQuiz(kind, items) {
+		return kanaUnitQuizTotal(len(items))
+	}
+	return testTotal(items)
 }

@@ -25,6 +25,14 @@ type ObjectStore interface {
 	Put(ctx context.Context, key, contentType, cacheControl string, body []byte) error
 }
 
+// Requester is who asked for audio. Admins pre-generate whole courses, so the
+// per-user hourly limit does not apply to them; the per-request cap still does,
+// which is what protects the voice engine.
+type Requester struct {
+	UserID uuid.UUID
+	Admin  bool
+}
+
 // errDeferred means a clip was not generated now (request budget or the
 // user's hourly limit); it is returned without a URL for the client to ask again.
 var errDeferred = errors.New("audio: generation deferred")
@@ -81,7 +89,7 @@ func (s *SpeechService) Info() SpeechInfo {
 	}
 }
 
-func (s *SpeechService) Speak(ctx context.Context, userID uuid.UUID, texts []string) (SpeechResponse, error) {
+func (s *SpeechService) Speak(ctx context.Context, who Requester, texts []string) (SpeechResponse, error) {
 	if !s.enabled() {
 		return SpeechResponse{}, exceptions.ErrAudioUnavailable
 	}
@@ -94,7 +102,7 @@ func (s *SpeechService) Speak(ctx context.Context, userID uuid.UUID, texts []str
 			return SpeechResponse{}, exceptions.ErrAudioTextEmpty
 		}
 	}
-	segments, err := s.resolveAll(ctx, userID, split)
+	segments, err := s.resolveAll(ctx, who, split)
 	if err != nil {
 		return SpeechResponse{}, err
 	}
@@ -102,7 +110,7 @@ func (s *SpeechService) Speak(ctx context.Context, userID uuid.UUID, texts []str
 }
 
 // resolveAll resolves each distinct sentence once, a few at a time.
-func (s *SpeechService) resolveAll(ctx context.Context, userID uuid.UUID, split [][]string) (map[string]SpeechSegment, error) {
+func (s *SpeechService) resolveAll(ctx context.Context, who Requester, split [][]string) (map[string]SpeechSegment, error) {
 	budget := &atomic.Int32{}
 	budget.Store(int32(common.AUDIO_MAX_NEW_PER_REQUEST))
 	var mu sync.Mutex
@@ -119,7 +127,7 @@ func (s *SpeechService) resolveAll(ctx context.Context, userID uuid.UUID, split 
 				continue
 			}
 			g.Go(func() error {
-				seg := s.resolve(gctx, userID, sentence, budget)
+				seg := s.resolve(gctx, who, sentence, budget)
 				mu.Lock()
 				segments[sentence] = seg
 				mu.Unlock()
@@ -136,14 +144,14 @@ func (s *SpeechService) resolveAll(ctx context.Context, userID uuid.UUID, split 
 // resolve tries each voice in order: its stored clip, else a new one. A voice
 // that just failed is skipped for a minute so a dead engine does not add its
 // timeout to every request.
-func (s *SpeechService) resolve(ctx context.Context, userID uuid.UUID, sentence string, budget *atomic.Int32) SpeechSegment {
+func (s *SpeechService) resolve(ctx context.Context, who Requester, sentence string, budget *atomic.Int32) SpeechSegment {
 	for i, voice := range s.voices {
 		if time.Now().UnixNano() < s.downUntil[i].Load() {
 			continue
 		}
 		key := common.AUDIO_OBJECT_PREFIX + voice.Profile + "/" + clipHash(sentence) + s.encoder.Ext()
 		url, err := s.known.Get(ctx, key, func(ctx context.Context) (string, error) {
-			return s.findOrCreate(ctx, userID, voice, key, sentence, budget)
+			return s.findOrCreate(ctx, who, voice, key, sentence, budget)
 		})
 		if err == nil {
 			return SpeechSegment{Text: sentence, URL: url, Voice: voice.Profile, credit: voice.Credit}
@@ -158,7 +166,7 @@ func (s *SpeechService) resolve(ctx context.Context, userID uuid.UUID, sentence 
 }
 
 func (s *SpeechService) findOrCreate(
-	ctx context.Context, userID uuid.UUID, voice Voice, key, sentence string, budget *atomic.Int32,
+	ctx context.Context, who Requester, voice Voice, key, sentence string, budget *atomic.Int32,
 ) (string, error) {
 	lookupCtx, cancel := context.WithTimeout(ctx, common.AUDIO_STORE_TIMEOUT)
 	defer cancel()
@@ -169,7 +177,7 @@ func (s *SpeechService) findOrCreate(
 	if exists {
 		return s.publicURL + "/" + key, nil
 	}
-	if budget.Add(-1) < 0 || !s.limiter.take(userID) {
+	if budget.Add(-1) < 0 || (!who.Admin && !s.limiter.take(who.UserID)) {
 		return "", errDeferred
 	}
 	clip, err := s.generate(ctx, voice, sentence)
@@ -186,20 +194,24 @@ func (s *SpeechService) findOrCreate(
 
 // generate runs a voice and the encoder. Only a few run at once: they are the
 // expensive part, and the VOICEVOX engine renders one sentence per CPU.
+// Waiting for a slot is not the voice failing: a clip that waits too long is
+// deferred (errDeferred), so a busy queue never marks a healthy voice as down.
 func (s *SpeechService) generate(ctx context.Context, voice Voice, sentence string) ([]byte, error) {
-	synthCtx, cancel := context.WithTimeout(ctx, common.AUDIO_SYNTH_TIMEOUT)
-	defer cancel()
+	waitCtx, cancelWait := context.WithTimeout(ctx, common.AUDIO_SLOT_WAIT)
+	defer cancelWait()
 	select {
 	case s.slots <- struct{}{}:
 		defer func() { <-s.slots }()
-	case <-synthCtx.Done():
-		return nil, fmt.Errorf("audio: wait for a synthesis slot: %w", synthCtx.Err())
+	case <-waitCtx.Done():
+		return nil, fmt.Errorf("audio: all voices busy: %w", errDeferred)
 	}
+	synthCtx, cancel := context.WithTimeout(ctx, common.AUDIO_SYNTH_TIMEOUT)
+	defer cancel()
 	wav, err := voice.Synth.Synthesize(synthCtx, sentence)
 	if err != nil {
 		return nil, fmt.Errorf("audio: synthesize with %s: %w", voice.Profile, err)
 	}
-	clip, err := s.encoder.Encode(synthCtx, wav)
+	clip, err := s.encoder.Encode(synthCtx, normalizePeak(wav))
 	if err != nil {
 		return nil, fmt.Errorf("audio: encode: %w", err)
 	}

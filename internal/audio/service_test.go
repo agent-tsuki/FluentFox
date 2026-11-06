@@ -29,7 +29,7 @@ func mainVoice(s Synthesizer) Voice {
 }
 
 func TestSpeak(t *testing.T) {
-	user := uuid.New()
+	user := Requester{UserID: uuid.New()}
 	ctx := context.Background()
 
 	t.Run("stored clip is returned without synthesis", func(t *testing.T) {
@@ -130,6 +130,19 @@ func TestSpeak(t *testing.T) {
 			t.Error("pending = false, want true once the limit is reached")
 		}
 	})
+
+	t.Run("admins are not held to the hourly limit", func(t *testing.T) {
+		svc := newTestService(newFakeStore(), mainVoice(&fakeSynth{}))
+		svc.limiter = newGenerationLimiter(1, svc.limiter.window)
+		admin := Requester{UserID: uuid.New(), Admin: true}
+		resp, err := svc.Speak(ctx, admin, []string{"ひとつ", "ふたつ", "みっつ"})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if resp.Pending {
+			t.Error("pending = true, want every clip made for an admin")
+		}
+	})
 }
 
 func TestSpeakErrors(t *testing.T) {
@@ -147,7 +160,7 @@ func TestSpeakErrors(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			if _, err := tc.svc.Speak(ctx, uuid.New(), tc.texts); !errors.Is(err, tc.want) {
+			if _, err := tc.svc.Speak(ctx, Requester{UserID: uuid.New()}, tc.texts); !errors.Is(err, tc.want) {
 				t.Errorf("err = %v, want %v", err, tc.want)
 			}
 		})
@@ -156,10 +169,39 @@ func TestSpeakErrors(t *testing.T) {
 
 func TestInfo(t *testing.T) {
 	info := newTestService(newFakeStore(), mainVoice(&fakeSynth{})).Info()
-	if !info.Enabled || info.BaseURL != testCDN+"/audio/v1/voicevox-14" || info.Ext != ".wav" {
+	if !info.Enabled || info.BaseURL != testCDN+"/"+common.AUDIO_OBJECT_PREFIX+"voicevox-14" || info.Ext != ".wav" {
 		t.Errorf("info = %+v", info)
 	}
 	if off := newTestService(nil).Info(); off.Enabled {
 		t.Errorf("info without storage = %+v, want disabled", off)
+	}
+}
+
+type slowSynth struct{ release chan struct{} }
+
+func (s *slowSynth) Synthesize(ctx context.Context, text string) ([]byte, error) {
+	select {
+	case <-s.release:
+		return []byte("RIFF....WAVE" + text), nil
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	}
+}
+
+// A queue longer than the slot wait defers the extra clips; it must not mark
+// the voice as down, or the next request would skip a healthy voice.
+func TestBusyVoiceDefersWithoutMarkingItDown(t *testing.T) {
+	synth := &slowSynth{release: make(chan struct{})}
+	svc := newTestService(newFakeStore(), mainVoice(synth))
+	svc.slots = make(chan struct{}) // no free slot at all
+	resp, err := svc.Speak(context.Background(), Requester{UserID: uuid.New()}, []string{"あ"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !resp.Pending || resp.Items[0].Segments[0].URL != "" {
+		t.Errorf("resp = %+v, want the clip deferred", resp)
+	}
+	if svc.downUntil[0].Load() != 0 {
+		t.Error("voice was marked down for being busy")
 	}
 }

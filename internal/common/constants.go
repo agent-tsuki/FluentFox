@@ -502,19 +502,22 @@ const (
 // Spoken audio (internal/audio). Each sentence is generated once, stored in R2
 // under a hash of its text and served by the CDN from then on, so these limits
 // only bound new generations. A request generates at most
-// AUDIO_MAX_NEW_PER_REQUEST clips so it finishes well inside the server's 15s
-// WriteTimeout; the rest come back without a URL and the client asks again.
+// AUDIO_MAX_NEW_PER_REQUEST clips and waits at most AUDIO_SLOT_WAIT for a free
+// voice, so it finishes inside the server's 15s WriteTimeout even on a slow
+// CPU (a short clip takes about 3s on Railway); the rest come back without a
+// URL and the client asks again.
 const (
-	AUDIO_OBJECT_PREFIX        string        = "audio/v1/"
+	AUDIO_OBJECT_PREFIX        string        = "audio/v2/"
 	AUDIO_CACHE_CONTROL        string        = "public, max-age=31536000, immutable"
 	AUDIO_INFO_CACHE_CONTROL   string        = "public, max-age=3600"
 	AUDIO_MAX_TEXTS            int           = 20
 	AUDIO_MAX_TEXT_RUNES       int           = 300
-	AUDIO_MAX_NEW_PER_REQUEST  int           = 8
+	AUDIO_MAX_NEW_PER_REQUEST  int           = 4
 	AUDIO_GENERATIONS_PER_HOUR int           = 300
 	AUDIO_MAX_CONCURRENT_SYNTH int           = 2
 	AUDIO_MAX_PARALLEL_LOOKUPS int           = 4
-	AUDIO_SYNTH_TIMEOUT        time.Duration = 6 * time.Second
+	AUDIO_SYNTH_TIMEOUT        time.Duration = 8 * time.Second
+	AUDIO_SLOT_WAIT            time.Duration = 4 * time.Second
 	AUDIO_VOICE_RETRY_AFTER    time.Duration = time.Minute
 	AUDIO_STORE_TIMEOUT        time.Duration = 5 * time.Second
 	AUDIO_KNOWN_CLIPS_TTL      time.Duration = 24 * time.Hour
@@ -523,9 +526,34 @@ const (
 	AUDIO_MP3_BITRATE          string        = "48k"
 )
 
+// How clips are rendered. Changing any of these changes how a stored clip
+// sounds, so bump AUDIO_OBJECT_PREFIX (audio/v2/ -> v3) with them: clips are
+// then generated afresh instead of mixing old and new. A lone kana is spoken
+// slower, or its vowel is too short to hear clearly; every clip is scaled so
+// its loudest point sits at AUDIO_TARGET_PEAK_DBFS, as VOICEVOX renders short
+// texts much quieter than sentences.
+const (
+	AUDIO_SPEED                float64 = 0.95
+	AUDIO_SHORT_SPEED          float64 = 0.75
+	AUDIO_SHORT_TEXT_MAX_RUNES int     = 2
+	AUDIO_TARGET_PEAK_DBFS     float64 = -3
+	AUDIO_MAX_GAIN             float64 = 8
+)
+
 // VOICEVOX style 14 is 冥鳴ひまり (normal). Its terms allow free commercial use
 // with this credit shown wherever the audio is used.
 const (
 	VOICEVOX_DEFAULT_SPEAKER int    = 14
 	VOICEVOX_DEFAULT_CREDIT  string = "VOICEVOX:冥鳴ひまり"
 )
+
+// A kana unit quiz asks each kana of the unit KANA_UNIT_QUIZ_ASKS_PER_KANA
+// times, at most KANA_UNIT_QUIZ_MAX_QUESTIONS in all, split evenly between
+// the KANA_UNIT_QUIZ_DIRECTIONS (kana -> romaji and romaji -> kana). A unit
+// with more kana than fit asks as many different kana as it can.
+const (
+	KANA_UNIT_QUIZ_ASKS_PER_KANA int = 4
+	KANA_UNIT_QUIZ_MAX_QUESTIONS int = 20
+)
+
+var KANA_UNIT_QUIZ_DIRECTIONS = []QuestionType{QuestionKanaMCQRomaji, QuestionKanaMCQKana}

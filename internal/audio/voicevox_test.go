@@ -36,8 +36,8 @@ func TestVoicevoxSynthesize(t *testing.T) {
 	if !isWAV(wav) {
 		t.Errorf("result is not WAV: %q", wav)
 	}
-	if synthesisBody["outputSamplingRate"] != float64(24000) || synthesisBody["outputStereo"] != false {
-		t.Errorf("synthesis query = %v, want 24 kHz mono", synthesisBody)
+	if synthesisBody["outputSamplingRate"] != float64(24000) || synthesisBody["outputStereo"] != false || synthesisBody["speedScale"] != 0.75 {
+		t.Errorf("synthesis query = %v, want 24 kHz mono at the short-text speed", synthesisBody)
 	}
 	if _, ok := synthesisBody["accent_phrases"]; !ok {
 		t.Error("engine fields were dropped from the query")

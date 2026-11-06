@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"unicode/utf8"
 
 	"github.com/fluentfox/api/internal/common"
 )
@@ -45,6 +46,7 @@ func (v *Voicevox) Synthesize(ctx context.Context, text string) ([]byte, error) 
 	}
 	fields["outputSamplingRate"] = json.RawMessage(strconv.Itoa(common.AUDIO_SAMPLE_RATE))
 	fields["outputStereo"] = json.RawMessage("false")
+	fields["speedScale"] = json.RawMessage(strconv.FormatFloat(speedFor(text), 'f', -1, 64))
 	body, err := json.Marshal(fields)
 	if err != nil {
 		return nil, fmt.Errorf("voicevox: encode audio query: %w", err)
@@ -80,6 +82,14 @@ func (v *Voicevox) post(ctx context.Context, path string, params url.Values, bod
 		return nil, fmt.Errorf("voicevox: %s answered %d", path, resp.StatusCode)
 	}
 	return data, nil
+}
+
+// A lone kana (あ, きゃ) is spoken slower so its vowel is long enough to hear.
+func speedFor(text string) float64 {
+	if utf8.RuneCountInString(text) <= common.AUDIO_SHORT_TEXT_MAX_RUNES {
+		return common.AUDIO_SHORT_SPEED
+	}
+	return common.AUDIO_SPEED
 }
 
 func isWAV(b []byte) bool {

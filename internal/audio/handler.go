@@ -25,7 +25,8 @@ func (h *Handler) Info(_ context.Context, _ *EmptyInput) (*humautil.Output[humau
 }
 
 func (h *Handler) Speak(ctx context.Context, input *humautil.Input[SpeechRequest]) (*humautil.Output[humautil.APIResponse[SpeechResponse]], error) {
-	resp, err := h.speech.Speak(ctx, middleware.ContextUserID(ctx), input.Body.Texts)
+	who := Requester{UserID: middleware.ContextUserID(ctx), Admin: middleware.ContextIsAdmin(ctx)}
+	resp, err := h.speech.Speak(ctx, who, input.Body.Texts)
 	if err != nil {
 		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
 	}

@@ -25,8 +25,8 @@ func TestStartTestService(t *testing.T) {
 		wantErr   error
 	}{
 		{
-			name: "a unit quiz asks every item of the unit", req: StartTestRequest{Kind: "unit_quiz", Track: "hiragana", Scope: "a"},
-			wantItems: []uuid.UUID{kanaA, kanaI, kanaO}, wantKind: common.SessionKindUnitQuiz, wantScope: "a",
+			name: "a kana unit quiz asks each kana of the unit four times", req: StartTestRequest{Kind: "unit_quiz", Track: "hiragana", Scope: "a"},
+			wantItems: []uuid.UUID{kanaA, kanaI, kanaO, kanaA, kanaI, kanaO, kanaA, kanaI, kanaO, kanaA, kanaI, kanaO}, wantKind: common.SessionKindUnitQuiz, wantScope: "a",
 		},
 		{
 			name: "a kanji unit quiz asks both facets", req: StartTestRequest{Kind: "unit_quiz", Track: "kanji_n5", Scope: "u02"},
@@ -56,7 +56,7 @@ func TestStartTestService(t *testing.T) {
 				c.ID = uuid.New()
 				r.addCard(c)
 			},
-			wantItems: []uuid.UUID{kanaA, kanaI, kanaO}, wantKind: common.SessionKindUnitQuiz, wantScope: "a",
+			wantItems: []uuid.UUID{kanaA, kanaI, kanaO, kanaA, kanaI, kanaO, kanaA, kanaI, kanaO, kanaA, kanaI, kanaO}, wantKind: common.SessionKindUnitQuiz, wantScope: "a",
 		},
 		{
 			name:    "an unknown unit is not found",
@@ -137,6 +137,24 @@ func testSession(r *fakeRepo, kind common.SessionKind, track common.LearningTrac
 	return s.ID
 }
 
+// answeredTimes repeats each answer of a test session until every card was
+// answered times times, as in a kana unit quiz.
+func answeredTimes(r *fakeRepo, id uuid.UUID, times int) uuid.UUID {
+	var extra []ReviewLog
+	for _, l := range r.logs {
+		if l.SessionID != id {
+			continue
+		}
+		for range times - 1 {
+			again := l
+			again.ID, again.ClientEventID = uuid.New(), uuid.New()
+			extra = append(extra, again)
+		}
+	}
+	r.logs = append(r.logs, extra...)
+	return id
+}
+
 func TestCompleteTestSession(t *testing.T) {
 	tests := []struct {
 		name  string
@@ -147,9 +165,9 @@ func TestCompleteTestSession(t *testing.T) {
 		{
 			name: "a passed unit quiz keeps the best score and completes the unit",
 			setup: func(r *fakeRepo) uuid.UUID {
-				return testSession(r, common.SessionKindUnitQuiz, common.LearningTrackHiragana, "a", []uuid.UUID{kanaA, kanaI, kanaO}, nil)
+				return answeredTimes(r, testSession(r, common.SessionKindUnitQuiz, common.LearningTrackHiragana, "a", []uuid.UUID{kanaA, kanaI, kanaO}, nil), 4)
 			},
-			want: &TestScore{Kind: "unit_quiz", Score: 3, Total: 3, Passed: true, PassMark: common.KANA_UNIT_QUIZ_PASS_MARK},
+			want: &TestScore{Kind: "unit_quiz", Score: 12, Total: 12, Passed: true, PassMark: common.KANA_UNIT_QUIZ_PASS_MARK},
 			check: func(t *testing.T, r *fakeRepo) {
 				if len(r.unitQuizzes) != 1 || r.unitQuizzes[0].UnitID != unitA || *r.unitQuizzes[0].QuizBestPct != 100 || r.unitQuizzes[0].CompletedAt == nil {
 					t.Errorf("unit quizzes = %+v, want あ row at 100 %% and completed", r.unitQuizzes)
@@ -159,14 +177,21 @@ func TestCompleteTestSession(t *testing.T) {
 		{
 			name: "a failed unit quiz records its score without completing the unit",
 			setup: func(r *fakeRepo) uuid.UUID {
-				return testSession(r, common.SessionKindUnitQuiz, common.LearningTrackHiragana, "a", []uuid.UUID{kanaA, kanaI}, []uuid.UUID{kanaO})
+				return answeredTimes(r, testSession(r, common.SessionKindUnitQuiz, common.LearningTrackHiragana, "a", []uuid.UUID{kanaA, kanaI}, []uuid.UUID{kanaO}), 4)
 			},
-			want: &TestScore{Kind: "unit_quiz", Score: 2, Total: 3, Passed: false, PassMark: common.KANA_UNIT_QUIZ_PASS_MARK},
+			want: &TestScore{Kind: "unit_quiz", Score: 8, Total: 12, Passed: false, PassMark: common.KANA_UNIT_QUIZ_PASS_MARK},
 			check: func(t *testing.T, r *fakeRepo) {
 				if len(r.unitQuizzes) != 1 || *r.unitQuizzes[0].QuizBestPct != 66 || r.unitQuizzes[0].CompletedAt != nil {
 					t.Errorf("unit quizzes = %+v, want 66 %% and not completed", r.unitQuizzes)
 				}
 			},
+		},
+		{
+			name: "every answer of a kana unit quiz counts, unanswered ones against it",
+			setup: func(r *fakeRepo) uuid.UUID {
+				return answeredTimes(r, testSession(r, common.SessionKindUnitQuiz, common.LearningTrackHiragana, "a", []uuid.UUID{kanaA, kanaI, kanaO}, nil), 3)
+			},
+			want: &TestScore{Kind: "unit_quiz", Score: 9, Total: 12, Passed: false, PassMark: common.KANA_UNIT_QUIZ_PASS_MARK},
 		},
 		{
 			name: "a kanji unit quiz needs the stricter kanji pass mark",
