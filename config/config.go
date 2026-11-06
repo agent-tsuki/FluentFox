@@ -72,6 +72,19 @@ type Config struct {
 	// Public base URL of the kana and kanji stroke JSON files; sent to clients as-is.
 	StrokesBaseURL string
 
+	// Spoken audio. VOICEVOX is the main voice (an engine reachable at
+	// VoicevoxURL, e.g. a private Railway service); Open JTalk is the fallback
+	// when its binary, dictionary and voice are all set. ffmpeg, when found,
+	// compresses clips to MP3; without it they are stored as WAV.
+	VoicevoxURL       string
+	VoicevoxSpeakerID int
+	VoicevoxCredit    string
+	OpenJTalkBin      string
+	OpenJTalkDict     string
+	OpenJTalkVoice    string
+	OpenJTalkCredit   string
+	FFmpegBin         string
+
 	// Logging
 	LogLevel string
 }
@@ -151,6 +164,14 @@ func Load() *Config {
 		StrokesBaseURL: v.GetString("STROKES_BASE_URL"),
 		YouTubeAPIKey:  v.GetString("YOUTUBE_API_KEY"),
 
+		VoicevoxURL:     strings.TrimRight(v.GetString("VOICEVOX_URL"), "/"),
+		VoicevoxCredit:  v.GetString("VOICEVOX_CREDIT"),
+		OpenJTalkBin:    v.GetString("OPEN_JTALK_BIN"),
+		OpenJTalkDict:   v.GetString("OPEN_JTALK_DICT"),
+		OpenJTalkVoice:  v.GetString("OPEN_JTALK_VOICE"),
+		OpenJTalkCredit: v.GetString("OPEN_JTALK_CREDIT"),
+		FFmpegBin:       v.GetString("FFMPEG_BIN"),
+
 		LogLevel: v.GetString("LOG_LEVEL"),
 	}
 	if cfg.LogLevel == "" {
@@ -162,6 +183,12 @@ func Load() *Config {
 
 	if len(cfg.JWTAccessSecret) < common.JWT_SECRET_MIN_BYTES {
 		panic(fmt.Sprintf("config: JWT_ACCESS_SECRET must be at least %d bytes", common.JWT_SECRET_MIN_BYTES))
+	}
+
+	v.SetDefault("VOICEVOX_SPEAKER_ID", common.VOICEVOX_DEFAULT_SPEAKER)
+	cfg.VoicevoxSpeakerID = v.GetInt("VOICEVOX_SPEAKER_ID")
+	if cfg.VoicevoxCredit == "" {
+		cfg.VoicevoxCredit = common.VOICEVOX_DEFAULT_CREDIT
 	}
 
 	v.SetDefault("EMAIL_MX_CHECK_ENABLED", true)
@@ -214,6 +241,11 @@ func LoadDatabase() *DatabaseConfig {
 // R2Enabled needs every R2 value, so avatar uploads either fully work or
 // answer 503. A partial setup is not fatal: these keys existed, unused,
 // before uploads did.
+// OpenJTalkEnabled needs the binary, dictionary and voice together.
+func (c *Config) OpenJTalkEnabled() bool {
+	return c.OpenJTalkBin != "" && c.OpenJTalkDict != "" && c.OpenJTalkVoice != ""
+}
+
 func (c *Config) R2Enabled() bool {
 	return c.R2AccountID != "" && c.R2AccessKey != "" && c.R2SecretKey != "" &&
 		c.R2BucketName != "" && c.R2PublicURL != ""

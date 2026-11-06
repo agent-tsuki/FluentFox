@@ -145,6 +145,27 @@ See `.env.example` for all required variables with descriptions.
 - `STROKES_BASE_URL` (optional) is the public base URL of the kana and kanji
   stroke JSON files in R2. The `/content/*` endpoints return it as
   `strokes_base_url`; it is empty when unset.
+- Spoken audio (`GET /audio/info`, `POST /audio/speech`, all optional) needs
+  R2 (above) and at least one voice. Each sentence is generated once, stored
+  in R2 under `audio/v1/<voice>/<sha256 of the sentence>.<ext>` and served by
+  the CDN from then on.
+  - `VOICEVOX_URL`: base URL of a VOICEVOX engine, the main voice. On Railway,
+    add a service from the official `voicevox/voicevox_engine:cpu-latest`
+    image (about 1–2 GB RAM) and point this at its private URL, e.g.
+    `http://voicevox.railway.internal:50021`; do not give it a public domain.
+    `VOICEVOX_SPEAKER_ID` defaults to 14 (冥鳴ひまり) and `VOICEVOX_CREDIT` to
+    `VOICEVOX:冥鳴ひまり`; the credit must be shown wherever the audio is used.
+  - `OPEN_JTALK_BIN`, `OPEN_JTALK_DICT` and `OPEN_JTALK_VOICE` (all three) turn
+    on the Open JTalk fallback, used while the VOICEVOX engine is down. Set
+    `OPEN_JTALK_CREDIT` for its voice, e.g. `HTS Voice "Mei" © Nagoya
+    Institute of Technology (CC BY 3.0)`. The Alpine image has no Open JTalk
+    package; on Debian it is `open-jtalk open-jtalk-mecab-naist-jdic
+    hts-voice-nitech-jp-atr503-m001`, locally `brew install open-jtalk`.
+  - `FFMPEG_BIN` (e.g. `/usr/bin/ffmpeg`; `apk add ffmpeg` on Alpine)
+    compresses clips to MP3, about a fifteenth of the WAV size. Without it
+    clips are stored as WAV.
+  - The R2 bucket needs a CORS rule allowing `GET` and `HEAD` from the app's
+    origins, so the browser can fetch and cache clips directly.
 - `YOUTUBE_API_KEY` (optional) is a YouTube Data API v3 key used only by the
   classes admin sync (`POST /admin/classes/channels/{id}/sync` and
   `.../courses/{id}/sync-playlist`). Without it those answer 503

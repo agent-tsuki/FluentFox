@@ -1,0 +1,91 @@
+[
+  {
+    "name": "single word",
+    "text": "あさ",
+    "sentences": [
+      "あさ"
+    ]
+  },
+  {
+    "name": "trims ascii and ideographic spaces",
+    "text": "\u3000 あさ \t\n",
+    "sentences": [
+      "あさ"
+    ]
+  },
+  {
+    "name": "splits after the full stop",
+    "text": "あさです。おはようございます。",
+    "sentences": [
+      "あさです。",
+      "おはようございます。"
+    ]
+  },
+  {
+    "name": "full-width marks fold and split",
+    "text": "すごい！ほんとう？はい",
+    "sentences": [
+      "すごい!",
+      "ほんとう?",
+      "はい"
+    ]
+  },
+  {
+    "name": "line breaks split",
+    "text": "ねこ\nいぬ\r\nとり",
+    "sentences": [
+      "ねこ",
+      "いぬ",
+      "とり"
+    ]
+  },
+  {
+    "name": "inner whitespace collapses",
+    "text": "これは   ペン\u3000です。",
+    "sentences": [
+      "これは ペン です。"
+    ]
+  },
+  {
+    "name": "closing bracket joins the sentence before it",
+    "text": "「こんにちは。」と言った。",
+    "sentences": [
+      "「こんにちは。」",
+      "と言った。"
+    ]
+  },
+  {
+    "name": "repeated marks stay together",
+    "text": "なに！？うそ",
+    "sentences": [
+      "なに!?",
+      "うそ"
+    ]
+  },
+  {
+    "name": "half-width katakana folds",
+    "text": "ｶﾀｶﾅ",
+    "sentences": [
+      "カタカナ"
+    ]
+  },
+  {
+    "name": "nothing to speak",
+    "text": " \u3000\n ",
+    "sentences": []
+  },
+  {
+    "name": "byte order mark is dropped",
+    "text": "\uFEFFあ",
+    "sentences": [
+      "あ"
+    ]
+  },
+  {
+    "name": "long vowel mark stays",
+    "text": "ー",
+    "sentences": [
+      "ー"
+    ]
+  }
+]

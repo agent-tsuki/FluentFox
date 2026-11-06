@@ -498,3 +498,34 @@ const (
 	CONTENT_HTTP_CACHE_CONTROL string = "public, max-age=300, stale-while-revalidate=86400"
 	CLASSES_HTTP_CACHE_CONTROL string = "public, max-age=60, stale-while-revalidate=300"
 )
+
+// Spoken audio (internal/audio). Each sentence is generated once, stored in R2
+// under a hash of its text and served by the CDN from then on, so these limits
+// only bound new generations. A request generates at most
+// AUDIO_MAX_NEW_PER_REQUEST clips so it finishes well inside the server's 15s
+// WriteTimeout; the rest come back without a URL and the client asks again.
+const (
+	AUDIO_OBJECT_PREFIX        string        = "audio/v1/"
+	AUDIO_CACHE_CONTROL        string        = "public, max-age=31536000, immutable"
+	AUDIO_INFO_CACHE_CONTROL   string        = "public, max-age=3600"
+	AUDIO_MAX_TEXTS            int           = 20
+	AUDIO_MAX_TEXT_RUNES       int           = 300
+	AUDIO_MAX_NEW_PER_REQUEST  int           = 8
+	AUDIO_GENERATIONS_PER_HOUR int           = 300
+	AUDIO_MAX_CONCURRENT_SYNTH int           = 2
+	AUDIO_MAX_PARALLEL_LOOKUPS int           = 4
+	AUDIO_SYNTH_TIMEOUT        time.Duration = 6 * time.Second
+	AUDIO_VOICE_RETRY_AFTER    time.Duration = time.Minute
+	AUDIO_STORE_TIMEOUT        time.Duration = 5 * time.Second
+	AUDIO_KNOWN_CLIPS_TTL      time.Duration = 24 * time.Hour
+	AUDIO_KNOWN_CLIPS_MAX      int           = 50000
+	AUDIO_SAMPLE_RATE          int           = 24000
+	AUDIO_MP3_BITRATE          string        = "48k"
+)
+
+// VOICEVOX style 14 is 冥鳴ひまり (normal). Its terms allow free commercial use
+// with this credit shown wherever the audio is used.
+const (
+	VOICEVOX_DEFAULT_SPEAKER int    = 14
+	VOICEVOX_DEFAULT_CREDIT  string = "VOICEVOX:冥鳴ひまり"
+)

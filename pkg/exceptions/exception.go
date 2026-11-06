@@ -188,3 +188,10 @@ var (
 	ErrYouTubeSourceMissing   = New(http.StatusUnprocessableEntity, "YOUTUBE_SOURCE_MISSING", "set a YouTube channel id, handle or playlist id before syncing")
 	ErrYouTubeSourceNotFound  = New(http.StatusNotFound, "YOUTUBE_SOURCE_NOT_FOUND", "YouTube has no channel or playlist with this id")
 )
+
+// Spoken audio
+var (
+	ErrAudioUnavailable = New(http.StatusServiceUnavailable, "AUDIO_UNAVAILABLE", "spoken audio is not available right now")
+	ErrAudioTextEmpty   = New(http.StatusUnprocessableEntity, "AUDIO_TEXT_EMPTY", "a text has nothing to speak")
+	ErrAudioTextTooLong = New(http.StatusUnprocessableEntity, "AUDIO_TEXT_TOO_LONG", "a text is longer than 300 characters")
+)

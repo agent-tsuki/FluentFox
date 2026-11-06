@@ -6,12 +6,14 @@ package storage
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 )
 
 // R2Store implements Storage backed by Cloudflare R2 via the S3-compatible API.
@@ -100,4 +102,21 @@ func (s *R2Store) Put(ctx context.Context, key, contentType, cacheControl string
 		return fmt.Errorf("storage: put key %q: %w", key, err)
 	}
 	return nil
+}
+
+// Exists reports whether an object is stored under key. A HEAD request
+// returns no body, so a missing object shows up as NotFound rather than NoSuchKey.
+func (s *R2Store) Exists(ctx context.Context, key string) (bool, error) {
+	_, err := s.client.HeadObject(ctx, &s3.HeadObjectInput{
+		Bucket: aws.String(s.bucket),
+		Key:    aws.String(key),
+	})
+	if err == nil {
+		return true, nil
+	}
+	var notFound *types.NotFound
+	if errors.As(err, &notFound) {
+		return false, nil
+	}
+	return false, fmt.Errorf("storage: head key %q: %w", key, err)
 }
