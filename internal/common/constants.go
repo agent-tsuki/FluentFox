@@ -556,8 +556,8 @@ const (
 // only bound new generations. A request generates at most
 // AUDIO_MAX_NEW_PER_REQUEST clips and waits at most AUDIO_SLOT_WAIT for a free
 // voice, so it finishes inside the server's 15s WriteTimeout even on a slow
-// CPU (a short clip takes about 3s on Railway); the rest come back without a
-// URL and the client asks again.
+// CPU (AivisSpeech takes 7-11s a sentence on Railway's CPU); the rest come
+// back without a URL and the client asks again.
 const (
 	AUDIO_OBJECT_PREFIX        string        = "audio/v2/"
 	AUDIO_CACHE_CONTROL        string        = "public, max-age=31536000, immutable"
@@ -568,8 +568,8 @@ const (
 	AUDIO_GENERATIONS_PER_HOUR int           = 300
 	AUDIO_MAX_CONCURRENT_SYNTH int           = 2
 	AUDIO_MAX_PARALLEL_LOOKUPS int           = 4
-	AUDIO_SYNTH_TIMEOUT        time.Duration = 8 * time.Second
-	AUDIO_SLOT_WAIT            time.Duration = 4 * time.Second
+	AUDIO_SYNTH_TIMEOUT        time.Duration = 11 * time.Second
+	AUDIO_SLOT_WAIT            time.Duration = 3 * time.Second
 	AUDIO_VOICE_RETRY_AFTER    time.Duration = time.Minute
 	AUDIO_STORE_TIMEOUT        time.Duration = 5 * time.Second
 	AUDIO_KNOWN_CLIPS_TTL      time.Duration = 24 * time.Hour
@@ -637,6 +637,7 @@ const (
 // AUDIO_ENGINE_TIMEOUT bounds the admin page's calls to the voice engine
 // (its list of styles, a preview); the model list is large, so it gets more.
 const (
+	AUDIO_PREVIEW_TIMEOUT      time.Duration = 13 * time.Second
 	AUDIO_CAST_TTL             time.Duration = time.Minute
 	AUDIO_ENGINE_TIMEOUT       time.Duration = 15 * time.Second
 	AUDIO_ENGINE_MODELS_LIMIT  time.Duration = time.Minute
@@ -650,6 +651,17 @@ const (
 // AUDIO_JOB_STALE_AFTER (its worker died) is queued again. Each batch of
 // texts is asked for up to AUDIO_JOB_MAX_ROUNDS times, AUDIO_JOB_ROUND_WAIT
 // apart, as the speech service makes a few clips per call.
+//
+// The worker answers no web request, so it gives the engine far longer than
+// the API can: AUDIO_WORKER_SYNTH_TIMEOUT a sentence, and it waits up to
+// AUDIO_WORKER_SLOT_WAIT for a free engine slot. AUDIO_ENGINE_CALL_LIMIT caps
+// any single engine call whatever the caller's deadline.
+const (
+	AUDIO_WORKER_SYNTH_TIMEOUT time.Duration = 90 * time.Second
+	AUDIO_WORKER_SLOT_WAIT     time.Duration = 5 * time.Minute
+	AUDIO_ENGINE_CALL_LIMIT    time.Duration = 2 * time.Minute
+)
+
 const (
 	AUDIO_JOB_POLL        time.Duration = 5 * time.Second
 	AUDIO_JOB_HEARTBEAT   time.Duration = 20 * time.Second

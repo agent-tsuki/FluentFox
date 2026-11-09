@@ -16,6 +16,7 @@ import (
 
 	"github.com/fluentfox/api/config"
 	"github.com/fluentfox/api/internal/audio"
+	"github.com/fluentfox/api/internal/common"
 	"github.com/fluentfox/api/pkg/database"
 	"github.com/fluentfox/api/pkg/storage"
 )
@@ -70,7 +71,9 @@ func newCast(cfg *config.WorkerConfig, repo *audio.Repository, log *zap.Logger) 
 	if cfg.FFmpegBin != "" {
 		encoder = audio.NewFFmpegMP3(cfg.FFmpegBin)
 	}
-	speech := audio.NewSpeechService(store, cfg.R2PublicURL, main, encoder, log).WithClipIndex(repo)
+	speech := audio.NewSpeechService(store, cfg.R2PublicURL, main, encoder, log).
+		WithClipIndex(repo).
+		WithTimeouts(common.AUDIO_WORKER_SYNTH_TIMEOUT, common.AUDIO_WORKER_SLOT_WAIT)
 	return audio.NewCast(speech, repo, engine.Synth, log)
 }
 

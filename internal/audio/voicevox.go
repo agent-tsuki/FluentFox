@@ -30,7 +30,8 @@ func NewVoicevox(baseURL string, speakerID int) *Voicevox {
 	return &Voicevox{
 		baseURL: baseURL,
 		speaker: strconv.Itoa(speakerID),
-		client:  &http.Client{Timeout: common.AUDIO_SYNTH_TIMEOUT},
+		// The caller's context sets the real deadline (the API's is short, the worker's long).
+		client: &http.Client{Timeout: common.AUDIO_ENGINE_CALL_LIMIT},
 	}
 }
 

@@ -273,7 +273,10 @@ func (s *PreviewService) Preview(ctx context.Context, userID uuid.UUID, req Prev
 	if !s.engine.Configured() {
 		return PreviewResponse{}, exceptions.ErrAudioEngineUnavailable
 	}
-	wav, err := s.engine.Synth(req.StyleID).Synthesize(ctx, req.Text)
+	// Under the server's 15s write timeout, so a slow engine answers 503 rather than a dropped connection.
+	previewCtx, cancel := context.WithTimeout(ctx, common.AUDIO_PREVIEW_TIMEOUT)
+	defer cancel()
+	wav, err := s.engine.Synth(req.StyleID).Synthesize(previewCtx, req.Text)
 	if err != nil {
 		s.log.Warn("audio admin: preview", zap.Int("style", req.StyleID), zap.Error(err))
 		return PreviewResponse{}, exceptions.ErrAudioEngineUnavailable

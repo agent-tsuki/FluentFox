@@ -5,6 +5,7 @@ import (
 	"errors"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
@@ -282,4 +283,45 @@ func TestModelOfSpeaker(t *testing.T) {
 	if err != nil || none != nil {
 		t.Fatalf("id = %v, err = %v; want none", none, err)
 	}
+}
+
+// delayedSynth takes `delay` per sentence, or fails when its context ends first.
+type delayedSynth struct{ delay time.Duration }
+
+func (s delayedSynth) Synthesize(ctx context.Context, text string) ([]byte, error) {
+	select {
+	case <-time.After(s.delay):
+		return []byte("RIFF....WAVE" + text), nil
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	}
+}
+
+func TestWithTimeouts(t *testing.T) {
+	ctx := context.Background()
+	admin := Requester{UserID: uuid.New(), Admin: true}
+	slow := Voice{Profile: "aivisspeech-1", Synth: delayedSynth{delay: 50 * time.Millisecond}}
+
+	t.Run("a render longer than the timeout makes no clip", func(t *testing.T) {
+		svc := newTestService(newFakeStore(), slow).WithTimeouts(10*time.Millisecond, time.Second)
+		resp, err := svc.Speak(ctx, admin, []string{"はい"})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !resp.Pending {
+			t.Fatal("want no clip when the engine is slower than the timeout")
+		}
+	})
+
+	t.Run("a longer timeout lets the slow engine finish, and its voices share it", func(t *testing.T) {
+		main := newTestService(newFakeStore(), mainVoice(&fakeSynth{})).WithTimeouts(time.Second, time.Second)
+		svc := main.WithVoices([]Voice{slow})
+		resp, err := svc.Speak(ctx, admin, []string{"はい"})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if resp.Pending {
+			t.Fatal("want the clip made within the longer timeout")
+		}
+	})
 }

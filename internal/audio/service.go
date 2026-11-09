@@ -62,6 +62,10 @@ type SpeechService struct {
 	slots     chan struct{}
 	downUntil []atomic.Int64
 	log       *zap.Logger
+
+	// synthTimeout and slotWait bound one generation (see WithTimeouts).
+	synthTimeout time.Duration
+	slotWait     time.Duration
 }
 
 // NewSpeechService takes the voices in order of preference. A nil store or no
@@ -77,7 +81,17 @@ func NewSpeechService(store ObjectStore, publicURL string, voices []Voice, encod
 		slots:     make(chan struct{}, common.AUDIO_MAX_CONCURRENT_SYNTH),
 		downUntil: make([]atomic.Int64, len(voices)),
 		log:       log,
+
+		synthTimeout: common.AUDIO_SYNTH_TIMEOUT,
+		slotWait:     common.AUDIO_SLOT_WAIT,
 	}
+}
+
+// WithTimeouts lets a caller with no request deadline (the audio worker) give
+// the engine longer. Call it before WithVoices, which shares it.
+func (s *SpeechService) WithTimeouts(synth, slotWait time.Duration) *SpeechService {
+	s.synthTimeout, s.slotWait = synth, slotWait
+	return s
 }
 
 // WithVoices is the same service speaking with other voices (a listening
@@ -95,6 +109,9 @@ func (s *SpeechService) WithVoices(voices []Voice) *SpeechService {
 		slots:     s.slots,
 		downUntil: make([]atomic.Int64, len(voices)),
 		log:       s.log,
+
+		synthTimeout: s.synthTimeout,
+		slotWait:     s.slotWait,
 	}
 }
 
@@ -289,7 +306,7 @@ func (s *SpeechService) findOrCreate(
 // Waiting for a slot is not the voice failing: a clip that waits too long is
 // deferred (errDeferred), so a busy queue never marks a healthy voice as down.
 func (s *SpeechService) generate(ctx context.Context, voice Voice, sentence string) ([]byte, error) {
-	waitCtx, cancelWait := context.WithTimeout(ctx, common.AUDIO_SLOT_WAIT)
+	waitCtx, cancelWait := context.WithTimeout(ctx, s.slotWait)
 	defer cancelWait()
 	select {
 	case s.slots <- struct{}{}:
@@ -297,7 +314,7 @@ func (s *SpeechService) generate(ctx context.Context, voice Voice, sentence stri
 	case <-waitCtx.Done():
 		return nil, fmt.Errorf("audio: all voices busy: %w", errDeferred)
 	}
-	synthCtx, cancel := context.WithTimeout(ctx, common.AUDIO_SYNTH_TIMEOUT)
+	synthCtx, cancel := context.WithTimeout(ctx, s.synthTimeout)
 	defer cancel()
 	wav, err := voice.Synth.Synthesize(synthCtx, sentence)
 	if err != nil {
