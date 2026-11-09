@@ -337,7 +337,7 @@ func registerAudioRoutes(api huma.API, cfg *config.Config, log *zap.Logger) {
 	var voices []audio.Voice
 	if cfg.VoicevoxURL != "" {
 		voices = append(voices, audio.Voice{
-			Profile: audio.VoicevoxProfile(cfg.VoicevoxSpeakerID),
+			Profile: audio.EngineProfile(cfg.VoicevoxEngine, cfg.VoicevoxSpeakerID),
 			Credit:  cfg.VoicevoxCredit,
 			Synth:   audio.NewVoicevox(cfg.VoicevoxURL, cfg.VoicevoxSpeakerID),
 		})
@@ -369,7 +369,7 @@ func altVoices(cfg *config.Config, main []audio.Voice) []audio.Voice {
 		return nil
 	}
 	alt := []audio.Voice{{
-		Profile: audio.VoicevoxProfile(cfg.VoicevoxAltSpeakerID),
+		Profile: audio.EngineProfile(cfg.VoicevoxEngine, cfg.VoicevoxAltSpeakerID),
 		Credit:  cfg.VoicevoxAltCredit,
 		Synth:   audio.NewVoicevox(cfg.VoicevoxURL, cfg.VoicevoxAltSpeakerID),
 	}}

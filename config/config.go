@@ -5,6 +5,7 @@ package config
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -88,6 +89,9 @@ type Config struct {
 	// Second VOICEVOX speaker, for the other side of a dialogue (0 = none).
 	VoicevoxAltSpeakerID int
 	VoicevoxAltCredit    string
+	// Engine behind VOICEVOX_URL, naming its clip folders: "voicevox", or
+	// e.g. "aivisspeech" (the same API with other voices).
+	VoicevoxEngine string
 
 	// Logging
 	LogLevel string
@@ -197,6 +201,11 @@ func Load() *Config {
 	v.SetDefault("VOICEVOX_ALT_SPEAKER_ID", common.VOICEVOX_ALT_DEFAULT_SPEAKER)
 	cfg.VoicevoxAltSpeakerID = v.GetInt("VOICEVOX_ALT_SPEAKER_ID")
 	cfg.VoicevoxAltCredit = v.GetString("VOICEVOX_ALT_CREDIT")
+	v.SetDefault("VOICEVOX_ENGINE", common.VOICEVOX_DEFAULT_ENGINE)
+	cfg.VoicevoxEngine = strings.ToLower(v.GetString("VOICEVOX_ENGINE"))
+	if !regexp.MustCompile(common.VOICEVOX_ENGINE_PATTERN).MatchString(cfg.VoicevoxEngine) {
+		panic(fmt.Sprintf("config: VOICEVOX_ENGINE must match %s", common.VOICEVOX_ENGINE_PATTERN))
+	}
 	if cfg.VoicevoxAltCredit == "" {
 		cfg.VoicevoxAltCredit = common.VOICEVOX_ALT_DEFAULT_CREDIT
 	}

@@ -599,6 +599,14 @@ const (
 	VOICEVOX_DEFAULT_CREDIT  string = "VOICEVOX:冥鳴ひまり"
 )
 
+// VOICEVOX_DEFAULT_ENGINE names the engine behind VOICEVOX_URL in clip
+// folders (VOICEVOX_ENGINE overrides it, e.g. "aivisspeech" for AivisSpeech,
+// whose API is the same); VOICEVOX_ENGINE_PATTERN keeps the name path-safe.
+const (
+	VOICEVOX_DEFAULT_ENGINE string = "voicevox"
+	VOICEVOX_ENGINE_PATTERN string = `^[a-z][a-z0-9-]{0,31}$`
+)
+
 // VOICEVOX style 13 is 青山龍星 (normal), the second voice of a dialogue. Same
 // terms: free commercial use with the credit shown.
 const (

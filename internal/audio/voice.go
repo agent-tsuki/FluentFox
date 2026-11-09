@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"strings"
+
+	"github.com/fluentfox/api/internal/common"
 )
 
 // Synthesizer turns one sentence into WAV bytes.
@@ -22,7 +24,14 @@ type Voice struct {
 }
 
 func VoicevoxProfile(speakerID int) string {
-	return fmt.Sprintf("voicevox-%d", speakerID)
+	return EngineProfile(common.VOICEVOX_DEFAULT_ENGINE, speakerID)
+}
+
+// EngineProfile names a VOICEVOX-compatible engine's voice, e.g.
+// "aivisspeech-888753760" for AivisSpeech (same API, other voices), so each
+// engine's clips keep their own folder.
+func EngineProfile(engine string, speakerID int) string {
+	return fmt.Sprintf("%s-%d", engine, speakerID)
 }
 
 // OpenJTalkProfile is named after the voice file, e.g.

@@ -160,6 +160,16 @@ See `.env.example` for all required variables with descriptions.
     `VOICEVOX_ALT_SPEAKER_ID` defaults to 13 (青山龍星, credit
     `VOICEVOX_ALT_CREDIT`, default `VOICEVOX:青山龍星`); 0 turns it off and
     the main voice speaks both sides.
+    `VOICEVOX_URL` may instead point at an AivisSpeech engine (same API, more
+    natural voices; Docker image `ghcr.io/aivis-project/aivisspeech-engine`):
+    set `VOICEVOX_ENGINE=aivisspeech` so its clips get their own folder, the
+    speaker IDs to the AivisSpeech style IDs (`GET /speakers` on the engine),
+    and the credits to what each voice model's licence asks for.
+  - Clips are made the first time a signed-in, verified learner plays a text;
+    guests only get clips that exist. To make the chapter content's clips
+    ahead of time, run with an admin account (no hourly limit):
+    `FOXSENSEI_TOKEN=<admin access token> node scripts/audio/pregenerate.mjs`
+    (`--only listening|words`, `--api URL`, `--dry-run`).
   - `OPEN_JTALK_BIN`, `OPEN_JTALK_DICT` and `OPEN_JTALK_VOICE` (all three) turn
     on the Open JTalk fallback, used while the VOICEVOX engine is down. Set
     `OPEN_JTALK_CREDIT` for its voice, e.g. `HTS Voice "Mei" © Nagoya
