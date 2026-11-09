@@ -354,5 +354,24 @@ func registerAudioRoutes(api huma.API, cfg *config.Config, log *zap.Logger) {
 		encoder = audio.NewFFmpegMP3(cfg.FFmpegBin)
 	}
 	log.Info("spoken audio", zap.Bool("storage", store != nil), zap.Int("voices", len(voices)), zap.String("format", encoder.Ext()))
-	audio.RegisterRoutes(api, audio.NewHandler(audio.NewSpeechService(store, cfg.R2PublicURL, voices, encoder, log), log))
+	handler := audio.NewHandler(audio.NewSpeechService(store, cfg.R2PublicURL, voices, encoder, log), log)
+	if alt := altVoices(cfg, voices); len(alt) > 0 {
+		handler.WithAltVoice(audio.NewSpeechService(store, cfg.R2PublicURL, alt, encoder, log))
+	}
+	audio.RegisterRoutes(api, handler)
+}
+
+// altVoices speak the other side of a dialogue: a second VOICEVOX speaker,
+// then the main voices' Open JTalk fallback (so a dialogue still has recorded
+// audio while VOICEVOX is down, in one voice).
+func altVoices(cfg *config.Config, main []audio.Voice) []audio.Voice {
+	if cfg.VoicevoxURL == "" || cfg.VoicevoxAltSpeakerID <= 0 || cfg.VoicevoxAltSpeakerID == cfg.VoicevoxSpeakerID {
+		return nil
+	}
+	alt := []audio.Voice{{
+		Profile: audio.VoicevoxProfile(cfg.VoicevoxAltSpeakerID),
+		Credit:  cfg.VoicevoxAltCredit,
+		Synth:   audio.NewVoicevox(cfg.VoicevoxURL, cfg.VoicevoxAltSpeakerID),
+	}}
+	return append(alt, main[1:]...)
 }

@@ -599,6 +599,20 @@ const (
 	VOICEVOX_DEFAULT_CREDIT  string = "VOICEVOX:冥鳴ひまり"
 )
 
+// VOICEVOX style 13 is 青山龍星 (normal), the second voice of a dialogue. Same
+// terms: free commercial use with the credit shown.
+const (
+	VOICEVOX_ALT_DEFAULT_SPEAKER int    = 13
+	VOICEVOX_ALT_DEFAULT_CREDIT  string = "VOICEVOX:青山龍星" //nolint:gosec // a credit line, not a secret
+)
+
+// Voices a speech request may ask for: the main one, or the second voice of a
+// dialogue (the main voice answers when no second voice is set up).
+const (
+	AUDIO_VOICE_MAIN string = "main"
+	AUDIO_VOICE_ALT  string = "alt"
+)
+
 // A kana unit quiz asks each kana of the unit KANA_UNIT_QUIZ_ASKS_PER_KANA
 // times, at most KANA_UNIT_QUIZ_MAX_QUESTIONS in all, split evenly between
 // the KANA_UNIT_QUIZ_DIRECTIONS (kana -> romaji and romaji -> kana). A unit

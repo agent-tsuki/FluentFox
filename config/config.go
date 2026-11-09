@@ -85,6 +85,10 @@ type Config struct {
 	OpenJTalkCredit   string
 	FFmpegBin         string
 
+	// Second VOICEVOX speaker, for the other side of a dialogue (0 = none).
+	VoicevoxAltSpeakerID int
+	VoicevoxAltCredit    string
+
 	// Logging
 	LogLevel string
 }
@@ -189,6 +193,12 @@ func Load() *Config {
 	cfg.VoicevoxSpeakerID = v.GetInt("VOICEVOX_SPEAKER_ID")
 	if cfg.VoicevoxCredit == "" {
 		cfg.VoicevoxCredit = common.VOICEVOX_DEFAULT_CREDIT
+	}
+	v.SetDefault("VOICEVOX_ALT_SPEAKER_ID", common.VOICEVOX_ALT_DEFAULT_SPEAKER)
+	cfg.VoicevoxAltSpeakerID = v.GetInt("VOICEVOX_ALT_SPEAKER_ID")
+	cfg.VoicevoxAltCredit = v.GetString("VOICEVOX_ALT_CREDIT")
+	if cfg.VoicevoxAltCredit == "" {
+		cfg.VoicevoxAltCredit = common.VOICEVOX_ALT_DEFAULT_CREDIT
 	}
 
 	v.SetDefault("EMAIL_MX_CHECK_ENABLED", true)

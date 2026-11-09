@@ -16,6 +16,22 @@ type fakeChapters struct {
 	chapters  []GrammarChapter
 	words     []ChapterWord
 	sentences []GrammarSentence
+	passages  []ChapterPassage
+	lines     []ChapterPassageLine
+}
+
+func (f *fakeChapters) ListChapterPassages(_ context.Context, chapterID uuid.UUID) ([]ChapterPassage, error) {
+	var out []ChapterPassage
+	for _, p := range f.passages {
+		if p.ChapterID == chapterID {
+			out = append(out, p)
+		}
+	}
+	return out, nil
+}
+
+func (f *fakeChapters) ListPassageLines(context.Context, uuid.UUID) ([]ChapterPassageLine, error) {
+	return f.lines, nil
 }
 
 func (f *fakeChapters) ListGrammarChapters(_ context.Context, level common.JLPTLevel) ([]GrammarChapter, error) {
@@ -74,5 +90,35 @@ func TestChapterContentService(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestChapterContentServicePassages(t *testing.T) {
+	chapter, dialogue, monologue := uuid.New(), uuid.New(), uuid.New()
+	zero, one := 0, 1
+	repo := &fakeChapters{
+		chapters: []GrammarChapter{{ID: chapter, Slug: "ch1", Number: 1, Title: "Identity"}},
+		passages: []ChapterPassage{
+			{ID: dialogue, ChapterID: chapter, Position: 1, Kind: ListeningDialogue, Title: "Meeting", Speakers: []string{"アナ", "ケン"}},
+			{ID: monologue, ChapterID: chapter, Position: 2, Kind: ListeningMonologue, Title: "Me"},
+		},
+		lines: []ChapterPassageLine{
+			{PassageID: dialogue, Position: 1, Speaker: &zero, Text: "初[はじ]めまして。", Translation: "Nice to meet you."},
+			{PassageID: dialogue, Position: 2, Speaker: &one, Text: "どうぞ よろしく。", Translation: "Pleased to meet you."},
+			{PassageID: monologue, Position: 1, Text: "私[わたし] は リン です。", Translation: "I am Lin."},
+		},
+	}
+	got, err := NewChapterContentService(repo, zap.NewNop()).Get(context.Background(), "n5", "ch1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got.Passages) != 2 {
+		t.Fatalf("passages = %d, want 2", len(got.Passages))
+	}
+	if d := got.Passages[0]; len(d.Lines) != 2 || *d.Lines[1].Speaker != 1 || len(d.Speakers) != 2 {
+		t.Fatalf("dialogue = %+v", d)
+	}
+	if m := got.Passages[1]; len(m.Lines) != 1 || m.Lines[0].Speaker != nil || m.Speakers == nil {
+		t.Fatalf("monologue = %+v (speakers must be [] not null)", m)
 	}
 }

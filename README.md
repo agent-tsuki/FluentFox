@@ -155,6 +155,11 @@ See `.env.example` for all required variables with descriptions.
     `http://voicevox.railway.internal:50021`; do not give it a public domain.
     `VOICEVOX_SPEAKER_ID` defaults to 14 (冥鳴ひまり) and `VOICEVOX_CREDIT` to
     `VOICEVOX:冥鳴ひまり`; the credit must be shown wherever the audio is used.
+    Listening dialogues give their second speaker another voice from the same
+    engine (`"voice": "alt"` on `/audio/speech` and `/audio/clips`):
+    `VOICEVOX_ALT_SPEAKER_ID` defaults to 13 (青山龍星, credit
+    `VOICEVOX_ALT_CREDIT`, default `VOICEVOX:青山龍星`); 0 turns it off and
+    the main voice speaks both sides.
   - `OPEN_JTALK_BIN`, `OPEN_JTALK_DICT` and `OPEN_JTALK_VOICE` (all three) turn
     on the Open JTalk fallback, used while the VOICEVOX engine is down. Set
     `OPEN_JTALK_CREDIT` for its voice, e.g. `HTS Voice "Mei" © Nagoya

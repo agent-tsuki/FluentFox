@@ -4,6 +4,7 @@ package audio
 // length (common.AUDIO_MAX_TEXT_RUNES) is checked by the service.
 type SpeechRequest struct {
 	Texts []string `json:"texts" minItems:"1" maxItems:"20" doc:"Japanese texts to speak, up to 300 characters each; each is split into sentences, one clip per sentence"`
+	Voice string   `json:"voice,omitempty" enum:"main,alt" doc:"main (default), or alt: the second voice of a dialogue; the main voice answers when there is none"`
 }
 
 type SpeechResponse struct {
@@ -29,4 +30,7 @@ type SpeechInfo struct {
 	BaseURL string `json:"base_url,omitempty" doc:"Main voice's folder: clip URL = base_url + \"/\" + hex(sha256(sentence)) + ext"`
 	Ext     string `json:"ext,omitempty"      doc:".mp3, or .wav where the server has no ffmpeg"`
 	Credit  string `json:"credit,omitempty"   doc:"Credit line for the main voice"`
+
+	AltBaseURL string `json:"alt_base_url,omitempty" doc:"The second voice's folder (voice: alt), named like base_url; missing when there is no second voice"`
+	AltCredit  string `json:"alt_credit,omitempty"   doc:"Credit line for the second voice"`
 }

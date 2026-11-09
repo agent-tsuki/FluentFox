@@ -1,0 +1,1795 @@
+{
+  "level": "N5",
+  "chapters": [
+    {
+      "slug": "ch1",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "Meeting a classmate",
+          "speakers": [
+            "アナ",
+            "佐藤[さとう]"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "初[はじ]めまして。 アナ です。",
+              "translation": "Nice to meet you. I am Ana."
+            },
+            {
+              "speaker": 1,
+              "text": "初[はじ]めまして。 佐藤[さとう] です。 どうぞ よろしく お願[ねが]いします。",
+              "translation": "Nice to meet you. I am Sato. Pleased to meet you."
+            },
+            {
+              "speaker": 0,
+              "text": "佐藤[さとう] さん は 学生[がくせい] です か。",
+              "translation": "Are you a student, Mr Sato?"
+            },
+            {
+              "speaker": 1,
+              "text": "いいえ、 学生[がくせい] じゃ ありません。 会社員[かいしゃいん] です。",
+              "translation": "No, I am not a student. I am a company employee."
+            },
+            {
+              "speaker": 0,
+              "text": "そう です か。 私[わたし] は さくら 大学[だいがく] の 学生[がくせい] です。",
+              "translation": "I see. I am a student at Sakura University."
+            },
+            {
+              "speaker": 1,
+              "text": "あの 人[ひと] も 学生[がくせい] です か。",
+              "translation": "Is that person a student too?"
+            },
+            {
+              "speaker": 0,
+              "text": "はい、 あの 人[ひと] も 学生[がくせい] です。 ケン さん です。",
+              "translation": "Yes, that person is a student too. It is Ken."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "Introducing myself",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "初[はじ]めまして。",
+              "translation": "Nice to meet you."
+            },
+            {
+              "speaker": null,
+              "text": "私[わたし] は リン です。",
+              "translation": "I am Lin."
+            },
+            {
+              "speaker": null,
+              "text": "さくら 大学[だいがく] の 学生[がくせい] です。",
+              "translation": "I am a student at Sakura University."
+            },
+            {
+              "speaker": null,
+              "text": "二十歳[はたち] です。",
+              "translation": "I am twenty years old."
+            },
+            {
+              "speaker": null,
+              "text": "どうぞ よろしく お願[ねが]いします。",
+              "translation": "Pleased to meet you."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch2",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "Whose is this?",
+          "speakers": [
+            "田中[たなか]",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "すみません、 これ は 何[なん] です か。",
+              "translation": "Excuse me, what is this?"
+            },
+            {
+              "speaker": 0,
+              "text": "それ は 日本[にほん] の お土産[みやげ] です。 チョコレート です。",
+              "translation": "That is a souvenir from Japan. It is chocolate."
+            },
+            {
+              "speaker": 1,
+              "text": "そう です か。 この かばん は 田中[たなか] さん の です か。",
+              "translation": "I see. Is this bag yours, Ms Tanaka?"
+            },
+            {
+              "speaker": 0,
+              "text": "いいえ、 違[ちが]います。 それ は 先生[せんせい] の です。",
+              "translation": "No, it is not. That is the teacher’s."
+            },
+            {
+              "speaker": 1,
+              "text": "じゃ、 あの 傘[かさ] は だれ の です か。",
+              "translation": "Then whose is that umbrella?"
+            },
+            {
+              "speaker": 0,
+              "text": "あれ は 私[わたし] の です。",
+              "translation": "That one is mine."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "My bag",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "これ は 私[わたし] の かばん です。",
+              "translation": "This is my bag."
+            },
+            {
+              "speaker": null,
+              "text": "この 本[ほん] は 日本語[にほんご] の 本[ほん] です。",
+              "translation": "This book is a Japanese book."
+            },
+            {
+              "speaker": null,
+              "text": "それ は 辞書[じしょ] です。",
+              "translation": "That is a dictionary."
+            },
+            {
+              "speaker": null,
+              "text": "この ボールペン も 私[わたし] の です。",
+              "translation": "This ballpoint pen is mine too."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch3",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "At a department store",
+          "speakers": [
+            "店員[てんいん]",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "すみません、 時計[とけい] 売[う]り場[ば] は どこ です か。",
+              "translation": "Excuse me, where is the watch counter?"
+            },
+            {
+              "speaker": 0,
+              "text": "時計[とけい] 売[う]り場[ば] は 5階[ごかい] です。",
+              "translation": "The watch counter is on the fifth floor."
+            },
+            {
+              "speaker": 1,
+              "text": "どうも。 この 時計[とけい] は いくら です か。",
+              "translation": "Thanks. How much is this watch?"
+            },
+            {
+              "speaker": 0,
+              "text": "一万[いちまん] 八千[はっせん] 円[えん] です。",
+              "translation": "It is eighteen thousand yen."
+            },
+            {
+              "speaker": 1,
+              "text": "じゃ、 これ を ください。",
+              "translation": "Then I will take this one."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "My university",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "ここ は さくら 大学[だいがく] です。",
+              "translation": "This is Sakura University."
+            },
+            {
+              "speaker": null,
+              "text": "食堂[しょくどう] は 1階[いっかい] です。",
+              "translation": "The cafeteria is on the first floor."
+            },
+            {
+              "speaker": null,
+              "text": "教室[きょうしつ] は 3階[さんがい] です。",
+              "translation": "The classroom is on the third floor."
+            },
+            {
+              "speaker": null,
+              "text": "お手洗[てあら]い は あちら です。",
+              "translation": "The toilets are over there."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch4",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "What time do you get up?",
+          "speakers": [
+            "アナ",
+            "佐藤[さとう]"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "佐藤[さとう] さん、 毎朝[まいあさ] 何時[なんじ] に 起[お]きます か。",
+              "translation": "Mr Sato, what time do you get up every morning?"
+            },
+            {
+              "speaker": 1,
+              "text": "6時[ろくじ] に 起[お]きます。 アナ さん は？",
+              "translation": "I get up at six. And you, Ana?"
+            },
+            {
+              "speaker": 0,
+              "text": "私[わたし] は 7時[しちじ] 半[はん] に 起[お]きます。",
+              "translation": "I get up at half past seven."
+            },
+            {
+              "speaker": 1,
+              "text": "昨日[きのう] は 何時[なんじ] まで 勉強[べんきょう] しました か。",
+              "translation": "Until what time did you study yesterday?"
+            },
+            {
+              "speaker": 0,
+              "text": "夜[よる] 11時[じゅういちじ] まで 勉強[べんきょう] しました。",
+              "translation": "I studied until eleven at night."
+            },
+            {
+              "speaker": 1,
+              "text": "大変[たいへん] です ね。",
+              "translation": "That is hard work."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "My day",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "私[わたし] は 毎朝[まいあさ] 6時[ろくじ] に 起[お]きます。",
+              "translation": "I get up at six every morning."
+            },
+            {
+              "speaker": null,
+              "text": "9時[くじ] から 5時[ごじ] まで 働[はたら]きます。",
+              "translation": "I work from nine to five."
+            },
+            {
+              "speaker": null,
+              "text": "12時[じゅうにじ] から 1時[いちじ] まで 休[やす]みます。",
+              "translation": "I take a break from twelve to one."
+            },
+            {
+              "speaker": null,
+              "text": "晩[ばん] 11時[じゅういちじ] に 寝[ね]ます。",
+              "translation": "At night I go to bed at eleven."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch5",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "Plans for Sunday",
+          "speakers": [
+            "田中[たなか]",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "田中[たなか] さん、 日曜日[にちようび] どこ へ 行[い]きます か。",
+              "translation": "Ms Tanaka, where are you going on Sunday?"
+            },
+            {
+              "speaker": 0,
+              "text": "京都[きょうと] へ 行[い]きます。",
+              "translation": "I am going to Kyoto."
+            },
+            {
+              "speaker": 1,
+              "text": "何[なに] で 行[い]きます か。",
+              "translation": "How are you going?"
+            },
+            {
+              "speaker": 0,
+              "text": "新幹線[しんかんせん] で 行[い]きます。",
+              "translation": "I am going by shinkansen."
+            },
+            {
+              "speaker": 1,
+              "text": "だれ と 行[い]きます か。",
+              "translation": "Who are you going with?"
+            },
+            {
+              "speaker": 0,
+              "text": "家族[かぞく] と 行[い]きます。 ケン さん は？",
+              "translation": "I am going with my family. And you, Ken?"
+            },
+            {
+              "speaker": 1,
+              "text": "私[わたし] は どこ へ も 行[い]きません。",
+              "translation": "I am not going anywhere."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "A trip to Osaka",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "先週[せんしゅう] 友達[ともだち] と 大阪[おおさか] へ 行[い]きました。",
+              "translation": "Last week I went to Osaka with a friend."
+            },
+            {
+              "speaker": null,
+              "text": "電車[でんしゃ] で 行[い]きました。",
+              "translation": "We went by train."
+            },
+            {
+              "speaker": null,
+              "text": "夜[よる] 10時[じゅうじ] に 家[うち] へ 帰[かえ]りました。",
+              "translation": "I got home at ten at night."
+            },
+            {
+              "speaker": null,
+              "text": "来月[らいげつ] 国[くに] へ 帰[かえ]ります。",
+              "translation": "Next month I am going back to my country."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch6",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "Shall we see a film?",
+          "speakers": [
+            "アナ",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "アナ さん、 一緒[いっしょ] に 映画[えいが] を 見[み]ません か。",
+              "translation": "Ana, would you like to see a film together?"
+            },
+            {
+              "speaker": 0,
+              "text": "いい です ね。 いつ です か。",
+              "translation": "Sounds good. When?"
+            },
+            {
+              "speaker": 1,
+              "text": "土曜日[どようび] の 午後[ごご] です。",
+              "translation": "Saturday afternoon."
+            },
+            {
+              "speaker": 0,
+              "text": "どこ で 会[あ]いましょう か。",
+              "translation": "Where shall we meet?"
+            },
+            {
+              "speaker": 1,
+              "text": "駅[えき] で 会[あ]いましょう。 2時[にじ] は どう です か。",
+              "translation": "Let’s meet at the station. How about two o’clock?"
+            },
+            {
+              "speaker": 0,
+              "text": "はい、 いい です よ。 じゃ、 また 土曜日[どようび] に。",
+              "translation": "Yes, that is fine. See you on Saturday, then."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "My Sunday",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "日曜日[にちようび] 公園[こうえん] で 写真[しゃしん] を 撮[と]りました。",
+              "translation": "On Sunday I took photos in the park."
+            },
+            {
+              "speaker": null,
+              "text": "それから 店[みせ] で パン と 牛乳[ぎゅうにゅう] を 買[か]いました。",
+              "translation": "After that I bought bread and milk at a shop."
+            },
+            {
+              "speaker": null,
+              "text": "晩[ばん] 家[うち] で 映画[えいが] を 見[み]ました。",
+              "translation": "In the evening I watched a film at home."
+            },
+            {
+              "speaker": null,
+              "text": "時々[ときどき] 友達[ともだち] と ご飯[はん] を 食[た]べます。",
+              "translation": "Sometimes I eat with friends."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch7",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "A birthday present",
+          "speakers": [
+            "田中[たなか]",
+            "佐藤[さとう]"
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "田中[たなか] さん、 それ は 何[なん] です か。",
+              "translation": "Ms Tanaka, what is that?"
+            },
+            {
+              "speaker": 0,
+              "text": "時計[とけい] です。 誕生日[たんじょうび] に 父[ちち] に もらいました。",
+              "translation": "It is a watch. I got it from my father for my birthday."
+            },
+            {
+              "speaker": 1,
+              "text": "いい です ね。 私[わたし] は 友達[ともだち] に 本[ほん] を もらいました。",
+              "translation": "Nice. I got a book from a friend."
+            },
+            {
+              "speaker": 0,
+              "text": "そう です か。 もう 読[よ]みました か。",
+              "translation": "Really? Have you read it yet?"
+            },
+            {
+              "speaker": 1,
+              "text": "いいえ、 まだ です。",
+              "translation": "No, not yet."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "Chopsticks",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "日本人[にほんじん] は 箸[はし] で ご飯[はん] を 食[た]べます。",
+              "translation": "Japanese people eat with chopsticks."
+            },
+            {
+              "speaker": null,
+              "text": "先週[せんしゅう] 友達[ともだち] に 箸[はし] を もらいました。",
+              "translation": "Last week I got chopsticks from a friend."
+            },
+            {
+              "speaker": null,
+              "text": "毎日[まいにち] 箸[はし] で 食[た]べます。",
+              "translation": "I eat with chopsticks every day."
+            },
+            {
+              "speaker": null,
+              "text": "来週[らいしゅう] 母[はは] に 花[はな] を 送[おく]ります。",
+              "translation": "Next week I will send my mother flowers."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch8",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "Your town",
+          "speakers": [
+            "アナ",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "アナ さん の 町[まち] は どんな 町[まち] です か。",
+              "translation": "Ana, what kind of town is yours?"
+            },
+            {
+              "speaker": 0,
+              "text": "静[しず]か な 町[まち] です。 とても きれい です。",
+              "translation": "It is a quiet town. It is very pretty."
+            },
+            {
+              "speaker": 1,
+              "text": "便利[べんり] です か。",
+              "translation": "Is it convenient?"
+            },
+            {
+              "speaker": 0,
+              "text": "いいえ、 あまり 便利[べんり] じゃ ありません。",
+              "translation": "No, it is not very convenient."
+            },
+            {
+              "speaker": 1,
+              "text": "食[た]べ物[もの] は どう です か。",
+              "translation": "How is the food?"
+            },
+            {
+              "speaker": 0,
+              "text": "とても おいしい です。",
+              "translation": "It is very good."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "Tokyo",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "東京[とうきょう] は 大[おお]きい 町[まち] です。",
+              "translation": "Tokyo is a big city."
+            },
+            {
+              "speaker": null,
+              "text": "とても にぎやか です。",
+              "translation": "It is very lively."
+            },
+            {
+              "speaker": null,
+              "text": "電車[でんしゃ] は 便利[べんり] です が、 少[すこ]し 高[たか]い です。",
+              "translation": "The trains are convenient, but a little expensive."
+            },
+            {
+              "speaker": null,
+              "text": "日本[にほん] の 人[ひと] は とても 親切[しんせつ] です。",
+              "translation": "People in Japan are very kind."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch9",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "What do you like?",
+          "speakers": [
+            "田中[たなか]",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "ケン さん は どんな 音楽[おんがく] が 好[す]き です か。",
+              "translation": "Ken, what kind of music do you like?"
+            },
+            {
+              "speaker": 1,
+              "text": "ジャズ が 好[す]き です。 田中[たなか] さん は？",
+              "translation": "I like jazz. And you, Ms Tanaka?"
+            },
+            {
+              "speaker": 0,
+              "text": "私[わたし] は スポーツ が 好[す]き です。 野球[やきゅう] が 大好[だいす]き です。",
+              "translation": "I like sport. I love baseball."
+            },
+            {
+              "speaker": 1,
+              "text": "じゃ、 今晩[こんばん] 一緒[いっしょ] に 野球[やきゅう] を 見[み]ません か。",
+              "translation": "Then would you like to watch baseball together tonight?"
+            },
+            {
+              "speaker": 0,
+              "text": "すみません。 今晩[こんばん] は 用事[ようじ] が あります から。",
+              "translation": "Sorry. I have something to do tonight."
+            },
+            {
+              "speaker": 1,
+              "text": "そう です か。 残念[ざんねん] です ね。",
+              "translation": "I see. That is a shame."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "Learning Japanese",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "私[わたし] は 日本語[にほんご] が 好[す]き です。",
+              "translation": "I like Japanese."
+            },
+            {
+              "speaker": null,
+              "text": "平仮名[ひらがな] は 大体[だいたい] 分[わ]かります。",
+              "translation": "I understand most hiragana."
+            },
+            {
+              "speaker": null,
+              "text": "でも、 漢字[かんじ] は あまり 分[わ]かりません。",
+              "translation": "But I do not understand kanji very well."
+            },
+            {
+              "speaker": null,
+              "text": "漢字[かんじ] は 難[むずか]しい です から、 毎日[まいにち] 勉強[べんきょう] します。",
+              "translation": "Kanji are difficult, so I study every day."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch10",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "Where is the cat?",
+          "speakers": [
+            "アナ",
+            "佐藤[さとう]"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "佐藤[さとう] さん、 猫[ねこ] は どこ に います か。",
+              "translation": "Mr Sato, where is the cat?"
+            },
+            {
+              "speaker": 1,
+              "text": "机[つくえ] の 下[した] に います よ。",
+              "translation": "It is under the desk."
+            },
+            {
+              "speaker": 0,
+              "text": "え？ いません よ。",
+              "translation": "What? It is not there."
+            },
+            {
+              "speaker": 1,
+              "text": "じゃ、 ベッド の 上[うえ] です か。",
+              "translation": "Then is it on the bed?"
+            },
+            {
+              "speaker": 0,
+              "text": "あ、 いました。 窓[まど] の 近[ちか]く に います。",
+              "translation": "Oh, there it is. It is near the window."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "My room",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "私[わたし] の 部屋[へや] に ベッド と 机[つくえ] が あります。",
+              "translation": "In my room there is a bed and a desk."
+            },
+            {
+              "speaker": null,
+              "text": "机[つくえ] の 上[うえ] に パソコン が あります。",
+              "translation": "There is a computer on the desk."
+            },
+            {
+              "speaker": null,
+              "text": "ベッド の 下[した] に 猫[ねこ] が います。",
+              "translation": "There is a cat under the bed."
+            },
+            {
+              "speaker": null,
+              "text": "窓[まど] の 外[そと] に 大[おお]きい 木[き] が あります。",
+              "translation": "Outside the window there is a big tree."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch11",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "At the post office",
+          "speakers": [
+            "局員[きょくいん]",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "すみません、 この 切手[きって] を 5枚[ごまい] ください。",
+              "translation": "Excuse me, five of these stamps, please."
+            },
+            {
+              "speaker": 0,
+              "text": "はい、 5枚[ごまい] です ね。",
+              "translation": "Yes, five."
+            },
+            {
+              "speaker": 1,
+              "text": "それから、 封筒[ふうとう] を 二[ふた]つ ください。",
+              "translation": "And two envelopes, please."
+            },
+            {
+              "speaker": 0,
+              "text": "全部[ぜんぶ] で 600[ろっぴゃく] 円[えん] です。",
+              "translation": "That is six hundred yen altogether."
+            },
+            {
+              "speaker": 1,
+              "text": "アメリカ まで どの くらい かかります か。",
+              "translation": "How long does it take to America?"
+            },
+            {
+              "speaker": 0,
+              "text": "1週間[いっしゅうかん] ぐらい です。",
+              "translation": "About a week."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "My family",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "私[わたし] の 家族[かぞく] は 4人[よにん] です。",
+              "translation": "There are four people in my family."
+            },
+            {
+              "speaker": null,
+              "text": "父[ちち] と 母[はは] と 兄[あに] と 私[わたし] です。",
+              "translation": "My father, my mother, my older brother and me."
+            },
+            {
+              "speaker": null,
+              "text": "兄[あに] は 会社員[かいしゃいん] です。",
+              "translation": "My brother is a company employee."
+            },
+            {
+              "speaker": null,
+              "text": "私[わたし] は 1日[いちにち] に 2時間[にじかん] 日本語[にほんご] を 勉強[べんきょう] します。",
+              "translation": "I study Japanese for two hours a day."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch12",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "How was Hokkaido?",
+          "speakers": [
+            "田中[たなか]",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "ケン さん、 北海道[ほっかいどう] は どう でした か。",
+              "translation": "Ken, how was Hokkaido?"
+            },
+            {
+              "speaker": 1,
+              "text": "とても 楽[たの]しかった です。 でも、 寒[さむ]かった です。",
+              "translation": "It was a lot of fun. But it was cold."
+            },
+            {
+              "speaker": 0,
+              "text": "天気[てんき] は よかった です か。",
+              "translation": "Was the weather good?"
+            },
+            {
+              "speaker": 1,
+              "text": "いいえ、 あまり よく なかった です。 雪[ゆき] が 多[おお]かった です。",
+              "translation": "No, it was not very good. There was a lot of snow."
+            },
+            {
+              "speaker": 0,
+              "text": "東京[とうきょう] と 北海道[ほっかいどう] と どちら が 寒[さむ]い です か。",
+              "translation": "Which is colder, Tokyo or Hokkaido?"
+            },
+            {
+              "speaker": 1,
+              "text": "北海道[ほっかいどう] の ほう が ずっと 寒[さむ]い です。",
+              "translation": "Hokkaido is much colder."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "The seasons",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "日本[にほん] に は 季節[きせつ] が 四[よっ]つ あります。",
+              "translation": "Japan has four seasons."
+            },
+            {
+              "speaker": null,
+              "text": "私[わたし] は 秋[あき] が 一番[いちばん] 好[す]き です。",
+              "translation": "I like autumn best."
+            },
+            {
+              "speaker": null,
+              "text": "秋[あき] は 夏[なつ] より 涼[すず]しい です から。",
+              "translation": "Because autumn is cooler than summer."
+            },
+            {
+              "speaker": null,
+              "text": "去年[きょねん] の 冬[ふゆ] は 雪[ゆき] が 少[すく]なかった です。",
+              "translation": "Last winter there was little snow."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch13",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "I’m hungry",
+          "speakers": [
+            "アナ",
+            "佐藤[さとう]"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "佐藤[さとう] さん、 お腹[なか] が 空[す]きました ね。",
+              "translation": "Mr Sato, I’m hungry, aren’t you?"
+            },
+            {
+              "speaker": 1,
+              "text": "ええ。 何[なに] か 食[た]べたい です ね。",
+              "translation": "Yes. I would like to eat something."
+            },
+            {
+              "speaker": 0,
+              "text": "何[なに] を 食[た]べたい です か。",
+              "translation": "What would you like to eat?"
+            },
+            {
+              "speaker": 1,
+              "text": "ラーメン が 食[た]べたい です。",
+              "translation": "I would like ramen."
+            },
+            {
+              "speaker": 0,
+              "text": "じゃ、 駅[えき] の 前[まえ] の 店[みせ] へ 食[た]べ に 行[い]きましょう。",
+              "translation": "Then let’s go and eat at the shop in front of the station."
+            },
+            {
+              "speaker": 1,
+              "text": "いい です ね。 行[い]きましょう。",
+              "translation": "Good idea. Let’s go."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "This weekend",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "今週[こんしゅう] の 週末[しゅうまつ] は 海[うみ] へ 泳[およ]ぎ に 行[い]きます。",
+              "translation": "This weekend I am going to the sea to swim."
+            },
+            {
+              "speaker": null,
+              "text": "新[あたら]しい 水着[みずぎ] が 欲[ほ]しい です。",
+              "translation": "I want a new swimsuit."
+            },
+            {
+              "speaker": null,
+              "text": "土曜日[どようび] に デパート へ 買[か]い物[もの] に 行[い]きます。",
+              "translation": "On Saturday I am going shopping at a department store."
+            },
+            {
+              "speaker": null,
+              "text": "日曜日[にちようび] は 家[うち] で ゆっくり 休[やす]みたい です。",
+              "translation": "On Sunday I want to rest at home."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch14",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "In a taxi",
+          "speakers": [
+            "アナ",
+            "運転手[うんてんしゅ]"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "さくら 病院[びょういん] まで お願[ねが]いします。",
+              "translation": "To Sakura Hospital, please."
+            },
+            {
+              "speaker": 1,
+              "text": "はい、 分[わ]かりました。",
+              "translation": "Yes, certainly."
+            },
+            {
+              "speaker": 0,
+              "text": "次[つぎ] の 信号[しんごう] を 右[みぎ] へ 曲[ま]がって ください。",
+              "translation": "Please turn right at the next traffic light."
+            },
+            {
+              "speaker": 1,
+              "text": "はい。",
+              "translation": "Yes."
+            },
+            {
+              "speaker": 0,
+              "text": "すみません、 ここ で 止[と]めて ください。",
+              "translation": "Excuse me, please stop here."
+            },
+            {
+              "speaker": 1,
+              "text": "1200[せんにひゃく] 円[えん] です。",
+              "translation": "That is one thousand two hundred yen."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "A rainy afternoon",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "今[いま] 雨[あめ] が 降[ふ]って います。",
+              "translation": "It is raining now."
+            },
+            {
+              "speaker": null,
+              "text": "母[はは] は 台所[だいどころ] で 料理[りょうり] を 作[つく]って います。",
+              "translation": "My mother is cooking in the kitchen."
+            },
+            {
+              "speaker": null,
+              "text": "弟[おとうと] は 部屋[へや] で 本[ほん] を 読[よ]んで います。",
+              "translation": "My younger brother is reading a book in his room."
+            },
+            {
+              "speaker": null,
+              "text": "私[わたし] は 友達[ともだち] に 電話[でんわ] を かけて います。",
+              "translation": "I am phoning a friend."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch15",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "At the museum",
+          "speakers": [
+            "アナ",
+            "係[かかり]の人[ひと]"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "すみません、 ここ で 写真[しゃしん] を 撮[と]って も いい です か。",
+              "translation": "Excuse me, may I take photos here?"
+            },
+            {
+              "speaker": 1,
+              "text": "すみません。 ここ で 写真[しゃしん] を 撮[と]って は いけません。",
+              "translation": "I’m sorry. You must not take photos here."
+            },
+            {
+              "speaker": 0,
+              "text": "そう です か。 この 資料[しりょう] を もらって も いい です か。",
+              "translation": "I see. May I take this leaflet?"
+            },
+            {
+              "speaker": 1,
+              "text": "はい、 どうぞ。",
+              "translation": "Yes, please do."
+            },
+            {
+              "speaker": 0,
+              "text": "あの 人[ひと] を 知[し]って います か。 この 絵[え] の 人[ひと] です。",
+              "translation": "Do you know that person? The one in this painting."
+            },
+            {
+              "speaker": 1,
+              "text": "ええ、 とても 有名[ゆうめい] な 人[ひと] です よ。",
+              "translation": "Yes, they are very famous."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "My friend",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "私[わたし] の 友達[ともだち] は 大阪[おおさか] に 住[す]んで います。",
+              "translation": "My friend lives in Osaka."
+            },
+            {
+              "speaker": null,
+              "text": "銀行[ぎんこう] で 働[はたら]いて います。",
+              "translation": "They work at a bank."
+            },
+            {
+              "speaker": null,
+              "text": "結婚[けっこん] して います。",
+              "translation": "They are married."
+            },
+            {
+              "speaker": null,
+              "text": "子供[こども] が 二人[ふたり] います。",
+              "translation": "They have two children."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch16",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "At the doctor’s",
+          "speakers": [
+            "医者[いしゃ]",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "どう しました か。",
+              "translation": "What seems to be the matter?"
+            },
+            {
+              "speaker": 1,
+              "text": "熱[ねつ] が あります。 頭[あたま] も 痛[いた]い です。",
+              "translation": "I have a fever. My head hurts too."
+            },
+            {
+              "speaker": 0,
+              "text": "風邪[かぜ] です ね。 この 薬[くすり] を 飲[の]んで ください。",
+              "translation": "It is a cold. Please take this medicine."
+            },
+            {
+              "speaker": 1,
+              "text": "お風呂[ふろ] に 入[はい]って も いい です か。",
+              "translation": "May I take a bath?"
+            },
+            {
+              "speaker": 0,
+              "text": "今日[きょう] は 入[はい]らないで ください。",
+              "translation": "Please do not take one today."
+            },
+            {
+              "speaker": 1,
+              "text": "明日[あした] 会社[かいしゃ] へ 行[い]かなければ なりません か。",
+              "translation": "Do I have to go to work tomorrow?"
+            },
+            {
+              "speaker": 0,
+              "text": "いいえ、 行[い]かなくても いい です。 ゆっくり 休[やす]んで ください。",
+              "translation": "No, you do not have to. Please get plenty of rest."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "My mornings",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "毎朝[まいあさ] 6時[ろくじ] に 起[お]きて、 シャワー を 浴[あ]びます。",
+              "translation": "Every morning I get up at six and take a shower."
+            },
+            {
+              "speaker": null,
+              "text": "朝[あさ] ご飯[はん] を 食[た]べて から、 会社[かいしゃ] へ 行[い]きます。",
+              "translation": "After eating breakfast I go to work."
+            },
+            {
+              "speaker": null,
+              "text": "9時[くじ] まで に 会社[かいしゃ] に 着[つ]かなければ なりません。",
+              "translation": "I have to get to the office by nine."
+            },
+            {
+              "speaker": null,
+              "text": "日曜日[にちようび] は 早[はや]く 起[お]きなくても いい です。",
+              "translation": "On Sundays I do not have to get up early."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch17",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "Hobbies",
+          "speakers": [
+            "田中[たなか]",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "ケン さん の 趣味[しゅみ] は 何[なん] です か。",
+              "translation": "Ken, what is your hobby?"
+            },
+            {
+              "speaker": 1,
+              "text": "私[わたし] の 趣味[しゅみ] は ピアノ を 弾[ひ]く こと です。",
+              "translation": "My hobby is playing the piano."
+            },
+            {
+              "speaker": 0,
+              "text": "すごい です ね。 日本[にほん] の 歌[うた] も 弾[ひ]く こと が できます か。",
+              "translation": "Wow. Can you play Japanese songs too?"
+            },
+            {
+              "speaker": 1,
+              "text": "はい、 少[すこ]し できます。 田中[たなか] さん の 趣味[しゅみ] は？",
+              "translation": "Yes, a few. What is your hobby, Ms Tanaka?"
+            },
+            {
+              "speaker": 0,
+              "text": "私[わたし] は 写真[しゃしん] を 撮[と]る こと です。",
+              "translation": "Mine is taking photos."
+            },
+            {
+              "speaker": 1,
+              "text": "今度[こんど] 写真[しゃしん] を 見[み]せて ください。",
+              "translation": "Please show me your photos some time."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "Before bed",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "私[わたし] は 寝[ね]る 前[まえ] に、 日記[にっき] を 書[か]きます。",
+              "translation": "Before I go to bed, I write in my diary."
+            },
+            {
+              "speaker": null,
+              "text": "日本語[にほんご] で 書[か]く こと が できます。",
+              "translation": "I can write it in Japanese."
+            },
+            {
+              "speaker": null,
+              "text": "でも、 漢字[かんじ] は まだ あまり 書[か]けません。",
+              "translation": "But I still cannot write many kanji."
+            },
+            {
+              "speaker": null,
+              "text": "毎日[まいにち] 少[すこ]し ずつ 練習[れんしゅう] します。",
+              "translation": "I practise a little every day."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch18",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "Mount Fuji",
+          "speakers": [
+            "アナ",
+            "佐藤[さとう]"
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "アナ さん は 富士山[ふじさん] に 登[のぼ]った こと が あります か。",
+              "translation": "Ana, have you ever climbed Mount Fuji?"
+            },
+            {
+              "speaker": 0,
+              "text": "いいえ、 まだ ありません。 佐藤[さとう] さん は？",
+              "translation": "No, not yet. Have you, Mr Sato?"
+            },
+            {
+              "speaker": 1,
+              "text": "一度[いちど] 登[のぼ]った こと が あります。",
+              "translation": "I have climbed it once."
+            },
+            {
+              "speaker": 0,
+              "text": "どう でした か。",
+              "translation": "How was it?"
+            },
+            {
+              "speaker": 1,
+              "text": "大変[たいへん] でした が、 景色[けしき] が とても きれい でした。",
+              "translation": "It was hard, but the view was beautiful."
+            },
+            {
+              "speaker": 0,
+              "text": "私[わたし] も 一度[いちど] 登[のぼ]りたい です。",
+              "translation": "I want to climb it once too."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "My Sundays",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "日曜日[にちようび] は 掃除[そうじ] を したり、 洗濯[せんたく] を したり します。",
+              "translation": "On Sundays I do things like cleaning and laundry."
+            },
+            {
+              "speaker": null,
+              "text": "午後[ごご] は 友達[ともだち] と テニス を したり、 買[か]い物[もの] に 行[い]ったり します。",
+              "translation": "In the afternoon I play tennis with friends, go shopping and so on."
+            },
+            {
+              "speaker": null,
+              "text": "晩[ばん] ご飯[はん] を 食[た]べた 後[あと] で、 テレビ を 見[み]ます。",
+              "translation": "After dinner I watch TV."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch19",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "Tomorrow’s match (casual)",
+          "speakers": [
+            "田中[たなか]",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "明日[あした] の 試合[しあい]、 どう 思[おも]う？",
+              "translation": "What do you think about tomorrow’s match?"
+            },
+            {
+              "speaker": 0,
+              "text": "たぶん 日本[にほん] が 勝[か]つ と 思[おも]う よ。",
+              "translation": "I think Japan will probably win."
+            },
+            {
+              "speaker": 1,
+              "text": "そう？ 僕[ぼく] は 負[ま]ける と 思[おも]う。",
+              "translation": "Really? I think they will lose."
+            },
+            {
+              "speaker": 0,
+              "text": "どうして？",
+              "translation": "Why?"
+            },
+            {
+              "speaker": 1,
+              "text": "相手[あいて] の チーム が とても 強[つよ]い から。",
+              "translation": "Because the other team is very strong."
+            },
+            {
+              "speaker": 0,
+              "text": "でも、 きっと 大丈夫[だいじょうぶ] だ よ。",
+              "translation": "But I am sure it will be fine."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "The weather forecast",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "ニュース で、 明日[あした] は 雨[あめ] が 降[ふ]る と 言[い]って いました。",
+              "translation": "The news said it will rain tomorrow."
+            },
+            {
+              "speaker": null,
+              "text": "私[わたし] も 明日[あした] は 寒[さむ]く なる と 思[おも]います。",
+              "translation": "I also think it will get cold tomorrow."
+            },
+            {
+              "speaker": null,
+              "text": "東京[とうきょう] は 物価[ぶっか] が 高[たか]い と 思[おも]います。",
+              "translation": "I think prices in Tokyo are high."
+            },
+            {
+              "speaker": null,
+              "text": "でも、 とても 便利[べんり] だ と 思[おも]います。",
+              "translation": "But I think it is very convenient."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch20",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "Who is that?",
+          "speakers": [
+            "アナ",
+            "佐藤[さとう]"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "佐藤[さとう] さん、 あそこ に いる 人[ひと] は だれ です か。",
+              "translation": "Mr Sato, who is the person over there?"
+            },
+            {
+              "speaker": 1,
+              "text": "どの 人[ひと] です か。",
+              "translation": "Which person?"
+            },
+            {
+              "speaker": 0,
+              "text": "眼鏡[めがね] を 掛[か]けて いる 人[ひと] です。",
+              "translation": "The person wearing glasses."
+            },
+            {
+              "speaker": 1,
+              "text": "ああ、 青[あお]い セーター を 着[き]て いる 人[ひと] です ね。 山田[やまだ] さん です。",
+              "translation": "Ah, the person in the blue jumper. That is Mr Yamada."
+            },
+            {
+              "speaker": 0,
+              "text": "山田[やまだ] さん は どんな 人[ひと] です か。",
+              "translation": "What kind of person is he?"
+            },
+            {
+              "speaker": 1,
+              "text": "料理[りょうり] が 上手[じょうず] な 人[ひと] です よ。",
+              "translation": "He is someone who is good at cooking."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "My flat",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "私[わたし] が 住[す]んで いる アパート は 駅[えき] から 近[ちか]い です。",
+              "translation": "The flat I live in is close to the station."
+            },
+            {
+              "speaker": null,
+              "text": "台所[だいどころ] が 広[ひろ]い 部屋[へや] です。",
+              "translation": "It is a place with a big kitchen."
+            },
+            {
+              "speaker": null,
+              "text": "家賃[やちん] は あまり 高[たか]く ありません。",
+              "translation": "The rent is not very high."
+            },
+            {
+              "speaker": null,
+              "text": "隣[となり] に 住[す]んで いる 人[ひと] は 優[やさ]しい 人[ひと] です。",
+              "translation": "The person who lives next door is kind."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch21",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "Asking the way",
+          "speakers": [
+            "アナ",
+            "男[おとこ]の人[ひと]"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "すみません、 駅[えき] は どこ です か。",
+              "translation": "Excuse me, where is the station?"
+            },
+            {
+              "speaker": 1,
+              "text": "この 道[みち] を まっすぐ 行[い]く と、 交差点[こうさてん] が あります。",
+              "translation": "If you go straight along this road, there is a crossroads."
+            },
+            {
+              "speaker": 0,
+              "text": "交差点[こうさてん] です ね。",
+              "translation": "A crossroads."
+            },
+            {
+              "speaker": 1,
+              "text": "そこ を 左[ひだり] へ 曲[ま]がる と、 右[みぎ] に 駅[えき] が あります。",
+              "translation": "Turn left there and the station is on the right."
+            },
+            {
+              "speaker": 0,
+              "text": "分[わ]かりました。 ありがとう ございます。",
+              "translation": "I see. Thank you very much."
+            },
+            {
+              "speaker": 1,
+              "text": "道[みち] を 渡[わた]る とき、 車[くるま] に 気[き] を 付[つ]けて ください。",
+              "translation": "Watch out for cars when you cross the road."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "The park near my house",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "駅[えき] を 出[で]て 右[みぎ] へ 曲[ま]がる と、 大[おお]きい 公園[こうえん] が あります。",
+              "translation": "If you leave the station and turn right, there is a big park."
+            },
+            {
+              "speaker": null,
+              "text": "春[はる] に なる と、 桜[さくら] が とても きれい です。",
+              "translation": "When spring comes, the cherry blossoms are beautiful."
+            },
+            {
+              "speaker": null,
+              "text": "子供[こども] の とき、 よく この 公園[こうえん] で 遊[あそ]びました。",
+              "translation": "When I was a child I often played in this park."
+            },
+            {
+              "speaker": null,
+              "text": "暇[ひま] な とき、 今[いま] も ここ を 散歩[さんぽ] します。",
+              "translation": "When I have free time I still walk here."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch22",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "If it rains",
+          "speakers": [
+            "田中[たなか]",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "明日[あした] の ピクニック、 雨[あめ] が 降[ふ]ったら どう します か。",
+              "translation": "What shall we do about tomorrow’s picnic if it rains?"
+            },
+            {
+              "speaker": 0,
+              "text": "雨[あめ] が 降[ふ]ったら、 美術館[びじゅつかん] へ 行[い]きましょう。",
+              "translation": "If it rains, let’s go to the art museum."
+            },
+            {
+              "speaker": 1,
+              "text": "いい です ね。 晴[は]れたら？",
+              "translation": "Good idea. And if it is sunny?"
+            },
+            {
+              "speaker": 0,
+              "text": "晴[は]れたら、 公園[こうえん] で お弁当[べんとう] を 食[た]べましょう。",
+              "translation": "If it is sunny, let’s eat our lunch boxes in the park."
+            },
+            {
+              "speaker": 1,
+              "text": "駅[えき] に 着[つ]いたら、 電話[でんわ] を ください。",
+              "translation": "Call me when you get to the station."
+            },
+            {
+              "speaker": 0,
+              "text": "分[わ]かりました。 じゃ、 また 明日[あした]。",
+              "translation": "All right. See you tomorrow, then."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "My dream",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "もし お金[かね] が たくさん あったら、 世界[せかい] を 旅行[りょこう] したい です。",
+              "translation": "If I had a lot of money, I would like to travel the world."
+            },
+            {
+              "speaker": null,
+              "text": "大学[だいがく] を 卒業[そつぎょう] したら、 日本[にほん] へ 留学[りゅうがく] します。",
+              "translation": "When I graduate from university, I will study in Japan."
+            },
+            {
+              "speaker": null,
+              "text": "日本[にほん] に 着[つ]いたら、 まず 大使館[たいしかん] へ 行[い]きます。",
+              "translation": "When I arrive in Japan, I will go to the embassy first."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch23",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "After the move",
+          "speakers": [
+            "アナ",
+            "佐藤[さとう]"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "佐藤[さとう] さん、 昨日[きのう] は 引[ひ]っ越[こ]し を 手伝[てつだ]って くれて、 ありがとう ございました。",
+              "translation": "Mr Sato, thank you for helping me move yesterday."
+            },
+            {
+              "speaker": 1,
+              "text": "いいえ。 新[あたら]しい 部屋[へや] は どう です か。",
+              "translation": "Not at all. How is the new place?"
+            },
+            {
+              "speaker": 0,
+              "text": "とても いい です。 母[はは] が カーテン を 送[おく]って くれました。",
+              "translation": "It is very nice. My mother sent me curtains."
+            },
+            {
+              "speaker": 1,
+              "text": "よかった です ね。",
+              "translation": "That is good."
+            },
+            {
+              "speaker": 0,
+              "text": "今度[こんど] 料理[りょうり] を 作[つく]って あげます。 ぜひ 来[き]て ください。",
+              "translation": "Next time I will cook for you. Please come."
+            },
+            {
+              "speaker": 1,
+              "text": "ありがとう。 楽[たの]しみ に して います。",
+              "translation": "Thank you. I am looking forward to it."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "My grandmother",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "子供[こども] の とき、 祖母[そぼ] が よく お菓子[かし] を 作[つく]って くれました。",
+              "translation": "When I was a child, my grandmother often made sweets for me."
+            },
+            {
+              "speaker": null,
+              "text": "祖父[そふ] は 町[まち] を 案内[あんない] して くれました。",
+              "translation": "My grandfather showed me around the town."
+            },
+            {
+              "speaker": null,
+              "text": "私[わたし] は 祖母[そぼ] に 手紙[てがみ] を 書[か]いて あげました。",
+              "translation": "I wrote letters to my grandmother."
+            },
+            {
+              "speaker": null,
+              "text": "今[いま] も 祖母[そぼ] の お菓子[かし] が 一番[いちばん] 好[す]き です。",
+              "translation": "I still like my grandmother’s sweets best."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch24",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "The view from your room",
+          "speakers": [
+            "田中[たなか]",
+            "ケン"
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "田中[たなか] さん の 部屋[へや] から 何[なに] が 見[み]えます か。",
+              "translation": "What can you see from your room, Ms Tanaka?"
+            },
+            {
+              "speaker": 0,
+              "text": "海[うみ] が 見[み]えます。 夏[なつ] は 花火[はなび] も 見[み]えます よ。",
+              "translation": "I can see the sea. In summer I can see the fireworks too."
+            },
+            {
+              "speaker": 1,
+              "text": "いい です ね。 夜[よる] は 波[なみ] の 音[おと] が 聞[き]こえます か。",
+              "translation": "Lovely. Can you hear the waves at night?"
+            },
+            {
+              "speaker": 0,
+              "text": "ええ、 静[しず]か な とき は よく 聞[き]こえます。",
+              "translation": "Yes, I can hear them well when it is quiet."
+            },
+            {
+              "speaker": 1,
+              "text": "今度[こんど] の 花火[はなび]、 一緒[いっしょ] に 見[み]ません か。",
+              "translation": "Would you like to watch the next fireworks together?"
+            },
+            {
+              "speaker": 0,
+              "text": "ぜひ。",
+              "translation": "I would love to."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "Speaking Japanese",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "日本[にほん] に 来[き]た とき、 日本語[にほんご] が ほとんど 話[はな]せません でした。",
+              "translation": "When I came to Japan, I could hardly speak Japanese."
+            },
+            {
+              "speaker": null,
+              "text": "今[いま] は 少[すこ]し 話[はな]せる よう に なりました。",
+              "translation": "Now I have become able to speak a little."
+            },
+            {
+              "speaker": null,
+              "text": "漢字[かんじ] も 百[ひゃく] ぐらい 読[よ]める よう に なりました。",
+              "translation": "I can now read about a hundred kanji too."
+            },
+            {
+              "speaker": null,
+              "text": "もっと 上手[じょうず] に なりたい です。",
+              "translation": "I want to get better."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch25",
+      "passages": [
+        {
+          "kind": "dialogue",
+          "title": "A lost wallet",
+          "speakers": [
+            "アナ",
+            "佐藤[さとう]"
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "どう しよう。 財布[さいふ] が ありません。",
+              "translation": "What shall I do? My wallet is gone."
+            },
+            {
+              "speaker": 1,
+              "text": "最後[さいご] に 使[つか]った の は いつ です か。",
+              "translation": "When did you last use it?"
+            },
+            {
+              "speaker": 0,
+              "text": "駅[えき] で 切符[きっぷ] を 買[か]った とき は ありました。",
+              "translation": "I had it when I bought a ticket at the station."
+            },
+            {
+              "speaker": 1,
+              "text": "じゃ、 すぐ 駅[えき] に 連絡[れんらく] しましょう。",
+              "translation": "Then let’s contact the station right away."
+            },
+            {
+              "speaker": 0,
+              "text": "だれ か が 拾[ひろ]って くれたら いい です ね。",
+              "translation": "I hope someone has picked it up."
+            },
+            {
+              "speaker": 1,
+              "text": "大丈夫[だいじょうぶ]。 日本[にほん] では 財布[さいふ] が よく 見[み]つかります から。",
+              "translation": "Don’t worry. In Japan lost wallets are often found."
+            }
+          ]
+        },
+        {
+          "kind": "monologue",
+          "title": "Rubbish day",
+          "speakers": [],
+          "lines": [
+            {
+              "speaker": null,
+              "text": "日本[にほん] では ごみ を 出[だ]す 日[ひ] が 決[き]まって います。",
+              "translation": "In Japan there are set days for putting out rubbish."
+            },
+            {
+              "speaker": null,
+              "text": "瓶[びん] と 缶[かん] は 水曜日[すいようび] に 出[だ]します。",
+              "translation": "Bottles and cans go out on Wednesdays."
+            },
+            {
+              "speaker": null,
+              "text": "分[わ]からない とき は、 いつでも 近所[きんじょ] の 人[ひと] に 聞[き]いて ください。",
+              "translation": "When you are not sure, ask your neighbours any time."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
