@@ -25,6 +25,14 @@ type ObjectStore interface {
 	Put(ctx context.Context, key, contentType, cacheControl string, body []byte) error
 }
 
+// ClipIndex records the stored clips (*Repository satisfies it), so finding a
+// clip is one database query per request instead of a storage request per
+// sentence.
+type ClipIndex interface {
+	ExistingClips(ctx context.Context, keys []string) (map[string]bool, error)
+	RecordClip(ctx context.Context, c *ClipRecord) error
+}
+
 // Requester is who asked for audio. Admins pre-generate whole courses, so the
 // per-user hourly limit does not apply to them; the per-request cap still does,
 // which is what protects the voice engine.
@@ -49,6 +57,7 @@ type SpeechService struct {
 	voices    []Voice
 	encoder   Encoder
 	known     *cache.TTL[string]
+	clips     ClipIndex
 	limiter   *generationLimiter
 	slots     chan struct{}
 	downUntil []atomic.Int64
@@ -68,6 +77,70 @@ func NewSpeechService(store ObjectStore, publicURL string, voices []Voice, encod
 		slots:     make(chan struct{}, common.AUDIO_MAX_CONCURRENT_SYNTH),
 		downUntil: make([]atomic.Int64, len(voices)),
 		log:       log,
+	}
+}
+
+// WithVoices is the same service speaking with other voices (a listening
+// character's). It shares the storage, the engine slots, the hourly limit and
+// the known-clips cache, so more voices do not mean more load on the engine.
+func (s *SpeechService) WithVoices(voices []Voice) *SpeechService {
+	return &SpeechService{
+		store:     s.store,
+		publicURL: s.publicURL,
+		voices:    voices,
+		encoder:   s.encoder,
+		known:     s.known,
+		clips:     s.clips,
+		limiter:   s.limiter,
+		slots:     s.slots,
+		downUntil: make([]atomic.Int64, len(voices)),
+		log:       s.log,
+	}
+}
+
+// WithClipIndex looks clips up in (and records them to) the index before
+// storage. Call it before WithVoices, which shares it.
+func (s *SpeechService) WithClipIndex(clips ClipIndex) *SpeechService {
+	s.clips = clips
+	return s
+}
+
+func (s *SpeechService) objectKey(voice Voice, sentence string) string {
+	return common.AUDIO_OBJECT_PREFIX + voice.Profile + "/" + clipHash(sentence) + s.encoder.Ext()
+}
+
+// indexedClips asks the index once for every clip the request could use. An
+// index error is not fatal: storage still answers.
+func (s *SpeechService) indexedClips(ctx context.Context, split [][]string) map[string]bool {
+	if s.clips == nil {
+		return nil
+	}
+	var keys []string
+	for _, sentences := range split {
+		for _, sentence := range sentences {
+			for _, voice := range s.voices {
+				keys = append(keys, s.objectKey(voice, sentence))
+			}
+		}
+	}
+	found, err := s.clips.ExistingClips(ctx, keys)
+	if err != nil {
+		s.log.Warn("audio clip index unavailable; asking storage", zap.Error(err))
+		return nil
+	}
+	return found
+}
+
+func (s *SpeechService) recordClip(ctx context.Context, who Requester, voice Voice, key, sentence string, size int) {
+	if s.clips == nil {
+		return
+	}
+	rec := &ClipRecord{ObjectKey: key, Profile: voice.Profile, Text: sentence, Bytes: size}
+	if who.UserID != uuid.Nil {
+		rec.CreatedBy = &who.UserID
+	}
+	if err := s.clips.RecordClip(ctx, rec); err != nil {
+		s.log.Warn("audio: record clip", zap.String("key", key), zap.Error(err))
 	}
 }
 
@@ -122,6 +195,7 @@ func (s *SpeechService) Speak(ctx context.Context, who Requester, texts []string
 func (s *SpeechService) resolveAll(ctx context.Context, who Requester, split [][]string) (map[string]SpeechSegment, error) {
 	budget := &atomic.Int32{}
 	budget.Store(int32(common.AUDIO_MAX_NEW_PER_REQUEST))
+	indexed := s.indexedClips(ctx, split)
 	var mu sync.Mutex
 	segments := make(map[string]SpeechSegment)
 	g, gctx := errgroup.WithContext(ctx)
@@ -136,7 +210,7 @@ func (s *SpeechService) resolveAll(ctx context.Context, who Requester, split [][
 				continue
 			}
 			g.Go(func() error {
-				seg := s.resolve(gctx, who, sentence, budget)
+				seg := s.resolve(gctx, who, sentence, budget, indexed)
 				mu.Lock()
 				segments[sentence] = seg
 				mu.Unlock()
@@ -153,13 +227,16 @@ func (s *SpeechService) resolveAll(ctx context.Context, who Requester, split [][
 // resolve tries each voice in order: its stored clip, else a new one. A voice
 // that just failed is skipped for a minute so a dead engine does not add its
 // timeout to every request.
-func (s *SpeechService) resolve(ctx context.Context, who Requester, sentence string, budget *atomic.Int32) SpeechSegment {
+func (s *SpeechService) resolve(ctx context.Context, who Requester, sentence string, budget *atomic.Int32, indexed map[string]bool) SpeechSegment {
 	for i, voice := range s.voices {
 		if time.Now().UnixNano() < s.downUntil[i].Load() {
 			continue
 		}
-		key := common.AUDIO_OBJECT_PREFIX + voice.Profile + "/" + clipHash(sentence) + s.encoder.Ext()
+		key := s.objectKey(voice, sentence)
 		url, err := s.known.Get(ctx, key, func(ctx context.Context) (string, error) {
+			if indexed[key] {
+				return s.publicURL + "/" + key, nil
+			}
 			return s.findOrCreate(ctx, who, voice, key, sentence, budget)
 		})
 		if err == nil {
@@ -187,6 +264,8 @@ func (s *SpeechService) findOrCreate(
 		return "", fmt.Errorf("audio: look up clip: %w", err)
 	}
 	if exists {
+		// Made before the index existed: add it, so the next lookup skips storage.
+		s.recordClip(ctx, Requester{}, voice, key, sentence, 0)
 		return s.publicURL + "/" + key, nil
 	}
 	if who.LookupOnly || budget.Add(-1) < 0 || (!who.Admin && !s.limiter.take(who.UserID)) {
@@ -201,6 +280,7 @@ func (s *SpeechService) findOrCreate(
 	if err := s.store.Put(storeCtx, key, s.encoder.ContentType(), common.AUDIO_CACHE_CONTROL, clip); err != nil {
 		return "", fmt.Errorf("audio: store clip: %w", err)
 	}
+	s.recordClip(ctx, who, voice, key, sentence, len(clip))
 	return s.publicURL + "/" + key, nil
 }
 

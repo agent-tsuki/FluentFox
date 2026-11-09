@@ -328,3 +328,21 @@ var CHANNEL_MEDIA_FIELDS = map[ChannelField]bool{
 	ChannelFieldBannerURL:    true,
 	ChannelFieldIntroVideoID: true,
 }
+
+// AudioJobKind is what an audio worker job does.
+type AudioJobKind string
+
+const (
+	AudioJobGenerate     AudioJobKind = "generate"
+	AudioJobInstallModel AudioJobKind = "install_model"
+)
+
+type AudioJobStatus string
+
+const (
+	AudioJobQueued    AudioJobStatus = "queued"
+	AudioJobRunning   AudioJobStatus = "running"
+	AudioJobDone      AudioJobStatus = "done"
+	AudioJobFailed    AudioJobStatus = "failed"
+	AudioJobCancelled AudioJobStatus = "cancelled"
+)

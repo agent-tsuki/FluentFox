@@ -87,8 +87,13 @@ func (s *ListeningSyncService) syncChapter(ctx context.Context, tx *gorm.DB, lev
 	lines := 0
 	for i := range c.Passages {
 		p := &c.Passages[i]
+		names, voices := make([]string, len(p.Speakers)), make([]string, len(p.Speakers))
+		for j, sp := range p.Speakers {
+			names[j], voices[j] = sp.Name, sp.Voice
+		}
 		passageID, err := s.repo.UpsertChapterPassage(ctx, tx, &ChapterPassage{
-			ChapterID: chapterID, Position: i + 1, Kind: p.Kind, Title: p.Title, Speakers: database.TextArray(nonNil(p.Speakers)),
+			ChapterID: chapterID, Position: i + 1, Kind: p.Kind, Title: p.Title,
+			Speakers: database.TextArray(names), SpeakerVoices: database.TextArray(voices),
 		})
 		if err != nil {
 			return 0, err //nolint:wrapcheck // already wrapped by the repository

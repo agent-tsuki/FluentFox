@@ -16,8 +16,11 @@ const (
 	ListeningMonologue ListeningPassageKind = "monologue"
 )
 
-// dialogueSpeakers is how many people talk in a dialogue: one per voice.
-const dialogueSpeakers = 2
+// A dialogue has 2 to maxSpeakers people; a monologue at most one (its reader).
+const (
+	minDialogueSpeakers = 2
+	maxSpeakers         = 4
+)
 
 type ChapterPassage struct {
 	ID        uuid.UUID            `gorm:"type:uuid;primaryKey"`
@@ -26,6 +29,8 @@ type ChapterPassage struct {
 	Kind      ListeningPassageKind `gorm:"column:kind;type:listening_passage_kind;not null"`
 	Title     string               `gorm:"column:title;not null"`
 	Speakers  database.TextArray   `gorm:"column:speakers;type:text[];not null"`
+	// SpeakerVoices is each speaker's voice key (e.g. "f1"), in speaker order.
+	SpeakerVoices database.TextArray `gorm:"column:speaker_voices;type:text[];not null"`
 
 	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime"`
 	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
@@ -60,10 +65,16 @@ type ListeningFileChapter struct {
 }
 
 type ListeningFilePassage struct {
-	Kind     ListeningPassageKind `json:"kind"`
-	Title    string               `json:"title"`
-	Speakers []string             `json:"speakers"`
-	Lines    []ListeningFileLine  `json:"lines"`
+	Kind     ListeningPassageKind   `json:"kind"`
+	Title    string                 `json:"title"`
+	Speakers []ListeningFileSpeaker `json:"speakers"`
+	Lines    []ListeningFileLine    `json:"lines"`
+}
+
+// ListeningFileSpeaker is a character and the voice (cast key) that plays it.
+type ListeningFileSpeaker struct {
+	Name  string `json:"name"`
+	Voice string `json:"voice"`
 }
 
 type ListeningFileLine struct {

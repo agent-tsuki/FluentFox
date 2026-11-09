@@ -165,11 +165,32 @@ See `.env.example` for all required variables with descriptions.
     set `VOICEVOX_ENGINE=aivisspeech` so its clips get their own folder, the
     speaker IDs to the AivisSpeech style IDs (`GET /speakers` on the engine),
     and the credits to what each voice model's licence asks for.
+  - Each voice key has a voice: `main`, and the listening characters' cast
+    keys (`f1`–`f4` female, `m1`–`m5` male; content names one per speaker in
+    `content/listening/*.json`). The `audio_voice` table maps a key to an
+    engine style; a super-admin changes it on the admin Audio page
+    (`/admin/audio/*`), and every server picks the change up within a minute.
+    A key with no row is spoken by the main voice from the env. A cast voice
+    has no fallback: after a change its clips do not exist until they are
+    made, and the app says so rather than playing another voice.
+  - Every stored clip is recorded in `audio_clip`, so finding clips is one
+    database query instead of a storage request per sentence. Clips made
+    before the table are added the first time they are found in R2.
+  - The audio worker (`cmd/audioworker`) runs the jobs queued on the Audio
+    page: generate a voice's (or every voice's) missing clips, or install an
+    AivisHub model. Run it on Railway next to the engine: add a service from
+    this repo with config file `railway.audioworker.json`, and give it
+    `DATABASE_URL`, `DB_MAX_CONNS`, `DB_MIN_CONNS`, the `R2_*` values and
+    `VOICEVOX_URL` (the engine's private URL). `VOICEVOX_ENGINE`,
+    `VOICEVOX_SPEAKER_ID`, `VOICEVOX_CREDIT` and `FFMPEG_BIN` must be the
+    same as the API's, so the worker's clips land where the API looks. On
+    start it installs the models the cast uses that the engine is missing.
   - Clips are made the first time a signed-in, verified learner plays a text;
     guests only get clips that exist. To make the chapter content's clips
-    ahead of time, run with an admin account (no hourly limit):
-    `FOXSENSEI_TOKEN=<admin access token> node scripts/audio/pregenerate.mjs`
-    (`--only listening|words`, `--api URL`, `--dry-run`).
+    ahead of time, queue a generate job on the Audio page (or, without the
+    worker, run `FOXSENSEI_TOKEN=<admin access token> node
+    scripts/audio/pregenerate.mjs` with `--only listening|words`, `--api URL`,
+    `--dry-run`).
   - `OPEN_JTALK_BIN`, `OPEN_JTALK_DICT` and `OPEN_JTALK_VOICE` (all three) turn
     on the Open JTalk fallback, used while the VOICEVOX engine is down. Set
     `OPEN_JTALK_CREDIT` for its voice, e.g. `HTS Voice "Mei" © Nagoya

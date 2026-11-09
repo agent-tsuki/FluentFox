@@ -62,3 +62,34 @@ func TestHandlerAltVoice(t *testing.T) {
 		}
 	})
 }
+
+func TestHandlerCastVoices(t *testing.T) {
+	ctx := context.Background()
+	store := newFakeStore(common.AUDIO_OBJECT_PREFIX + "aivisspeech-606865152/" + clipHash("はい") + ".wav")
+	main := newTestService(store, mainVoice(&fakeSynth{}))
+	rows := &fakeCastStore{voices: []CastVoice{{Key: "m1", Engine: "aivisspeech", StyleID: 606865152, Credit: "AivisSpeech:fumifumi"}}}
+	cast := NewCast(main, rows, func(int) Synthesizer { return &fakeSynth{} }, zap.NewNop())
+	h := NewHandler(main, zap.NewNop()).WithCast(cast)
+
+	out, err := h.Find(ctx, speechInput("m1", "はい"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if url := out.Body.Data.Items[0].Segments[0].URL; !strings.Contains(url, "aivisspeech-606865152/") {
+		t.Fatalf("url = %q, want the cast voice's folder", url)
+	}
+	unknown, err := h.Find(ctx, speechInput("f9", "はい"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if unknown.Body.Data.Items[0].Segments[0].URL != "" {
+		t.Fatal("an unknown cast key should be spoken by the main voice")
+	}
+	info, _ := h.Info(ctx, &EmptyInput{})
+	if v := info.Body.Data.Voices; len(v) != 1 || !strings.HasSuffix(v["m1"].BaseURL, "aivisspeech-606865152") || v["m1"].Credit != "AivisSpeech:fumifumi" {
+		t.Fatalf("voices = %+v", v)
+	}
+	if !strings.HasSuffix(info.Body.Data.BaseURL, "voicevox-14") {
+		t.Fatalf("base_url = %q, want the env main voice while main has no row", info.Body.Data.BaseURL)
+	}
+}

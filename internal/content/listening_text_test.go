@@ -35,20 +35,31 @@ func TestCheckRubyText(t *testing.T) {
 }
 
 func TestCheckPassage(t *testing.T) {
-	zero, two := 0, 2
+	zero, two, three := 0, 2, 3
 	line := func(speaker *int) ListeningFileLine {
 		return ListeningFileLine{Speaker: speaker, Text: "はい。", Translation: "Yes."}
+	}
+	sp := func(names ...string) []ListeningFileSpeaker {
+		out := make([]ListeningFileSpeaker, len(names))
+		for i, n := range names {
+			out[i] = ListeningFileSpeaker{Name: n, Voice: "f1"}
+		}
+		return out
 	}
 	tests := []struct {
 		name string
 		p    ListeningFilePassage
 		want error
 	}{
-		{"a dialogue", ListeningFilePassage{Kind: ListeningDialogue, Title: "t", Speakers: []string{"アナ", "ケン"}, Lines: []ListeningFileLine{line(&zero)}}, nil},
+		{"a dialogue", ListeningFilePassage{Kind: ListeningDialogue, Title: "t", Speakers: sp("アナ", "ケン"), Lines: []ListeningFileLine{line(&zero)}}, nil},
+		{"four people", ListeningFilePassage{Kind: ListeningDialogue, Title: "t", Speakers: sp("アナ", "ケン", "リン", "先生[せんせい]"), Lines: []ListeningFileLine{line(&three)}}, nil},
 		{"a monologue", ListeningFilePassage{Kind: ListeningMonologue, Title: "t", Lines: []ListeningFileLine{line(nil)}}, nil},
-		{"one speaker", ListeningFilePassage{Kind: ListeningDialogue, Title: "t", Speakers: []string{"アナ"}, Lines: []ListeningFileLine{line(&zero)}}, errPassageSpeakers},
-		{"a third speaker", ListeningFilePassage{Kind: ListeningDialogue, Title: "t", Speakers: []string{"アナ", "ケン"}, Lines: []ListeningFileLine{line(&two)}}, errLineSpeaker},
-		{"a speaker in a monologue", ListeningFilePassage{Kind: ListeningMonologue, Title: "t", Lines: []ListeningFileLine{line(&zero)}}, errLineSpeaker},
+		{"a monologue with its reader", ListeningFilePassage{Kind: ListeningMonologue, Title: "t", Speakers: sp("リン"), Lines: []ListeningFileLine{line(nil)}}, nil},
+		{"one speaker", ListeningFilePassage{Kind: ListeningDialogue, Title: "t", Speakers: sp("アナ"), Lines: []ListeningFileLine{line(&zero)}}, errPassageSpeakers},
+		{"five people", ListeningFilePassage{Kind: ListeningDialogue, Title: "t", Speakers: sp("ア", "イ", "ウ", "エ", "オ"), Lines: []ListeningFileLine{line(&zero)}}, errPassageSpeakers},
+		{"a speaker who is not in the scene", ListeningFilePassage{Kind: ListeningDialogue, Title: "t", Speakers: sp("アナ", "ケン"), Lines: []ListeningFileLine{line(&two)}}, errLineSpeaker},
+		{"a speaker line in a monologue", ListeningFilePassage{Kind: ListeningMonologue, Title: "t", Lines: []ListeningFileLine{line(&zero)}}, errLineSpeaker},
+		{"a bad voice key", ListeningFilePassage{Kind: ListeningDialogue, Title: "t", Speakers: []ListeningFileSpeaker{{Name: "アナ", Voice: "F 1"}, {Name: "ケン", Voice: "m1"}}, Lines: []ListeningFileLine{line(&zero)}}, errSpeakerVoice},
 		{"no lines", ListeningFilePassage{Kind: ListeningMonologue, Title: "t"}, errPassageNoLines},
 		{"an unknown kind", ListeningFilePassage{Kind: "song", Title: "t", Lines: []ListeningFileLine{line(nil)}}, errPassageKind},
 	}

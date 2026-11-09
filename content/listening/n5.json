@@ -8,8 +8,14 @@
           "kind": "dialogue",
           "title": "Meeting a classmate",
           "speakers": [
-            "アナ",
-            "佐藤[さとう]"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
           ],
           "lines": [
             {
@@ -52,7 +58,12 @@
         {
           "kind": "monologue",
           "title": "Introducing myself",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "リン",
+              "voice": "f3"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -80,6 +91,80 @@
               "translation": "Pleased to meet you."
             }
           ]
+        },
+        {
+          "kind": "dialogue",
+          "title": "First day of class",
+          "speakers": [
+            {
+              "name": "先生[せんせい]",
+              "voice": "m3"
+            },
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "皆[みな]さん、 おはよう ございます。",
+              "translation": "Good morning, everyone."
+            },
+            {
+              "speaker": 1,
+              "text": "おはよう ございます。",
+              "translation": "Good morning."
+            },
+            {
+              "speaker": 0,
+              "text": "私[わたし] は 山本[やまもと] です。 この クラス の 先生[せんせい] です。",
+              "translation": "I am Yamamoto. I am this class’s teacher."
+            },
+            {
+              "speaker": 0,
+              "text": "じゃ、 自己紹介[じこしょうかい] を お願[ねが]いします。 アナ さん から どうぞ。",
+              "translation": "Now, please introduce yourselves. Ana, go ahead."
+            },
+            {
+              "speaker": 1,
+              "text": "初[はじ]めまして。 アナ です。 学生[がくせい] です。 どうぞ よろしく お願[ねが]いします。",
+              "translation": "Nice to meet you. I am Ana. I am a student. Pleased to meet you."
+            },
+            {
+              "speaker": 0,
+              "text": "アナ さん、 お国[くに] は どちら です か。",
+              "translation": "Ana, which country are you from?"
+            },
+            {
+              "speaker": 1,
+              "text": "スペイン です。",
+              "translation": "Spain."
+            },
+            {
+              "speaker": 2,
+              "text": "初[はじ]めまして。 佐藤[さとう] です。 会社員[かいしゃいん] です。 よろしく お願[ねが]いします。",
+              "translation": "Nice to meet you. I am Sato. I am a company employee. Pleased to meet you."
+            },
+            {
+              "speaker": 3,
+              "text": "ケン です。 アメリカ 人[じん] です。 エンジニア です。 よろしく お願[ねが]いします。",
+              "translation": "I am Ken. I am American. I am an engineer. Pleased to meet you."
+            },
+            {
+              "speaker": 0,
+              "text": "皆[みな]さん、 よろしく お願[ねが]いします。 じゃ、 始[はじ]めましょう。",
+              "translation": "Pleased to meet you all. Now, let’s begin."
+            }
+          ]
         }
       ]
     },
@@ -90,8 +175,14 @@
           "kind": "dialogue",
           "title": "Whose is this?",
           "speakers": [
-            "田中[たなか]",
-            "ケン"
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -129,7 +220,12 @@
         {
           "kind": "monologue",
           "title": "My bag",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "アナ",
+              "voice": "f1"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -162,8 +258,14 @@
           "kind": "dialogue",
           "title": "At a department store",
           "speakers": [
-            "店員[てんいん]",
-            "ケン"
+            {
+              "name": "店員[てんいん]",
+              "voice": "f4"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -196,7 +298,12 @@
         {
           "kind": "monologue",
           "title": "My university",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -229,8 +336,14 @@
           "kind": "dialogue",
           "title": "What time do you get up?",
           "speakers": [
-            "アナ",
-            "佐藤[さとう]"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
           ],
           "lines": [
             {
@@ -268,7 +381,12 @@
         {
           "kind": "monologue",
           "title": "My day",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -291,6 +409,71 @@
               "translation": "At night I go to bed at eleven."
             }
           ]
+        },
+        {
+          "kind": "dialogue",
+          "title": "Morning at the office",
+          "speakers": [
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            },
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "課長[かちょう]",
+              "voice": "m3"
+            }
+          ],
+          "lines": [
+            {
+              "speaker": 2,
+              "text": "おはよう ございます。 今[いま] 何時[なんじ] です か。",
+              "translation": "Good morning. What time is it now?"
+            },
+            {
+              "speaker": 1,
+              "text": "9時[くじ] 10分[じゅっぷん] です。",
+              "translation": "It is ten past nine."
+            },
+            {
+              "speaker": 2,
+              "text": "佐藤[さとう] さん は？",
+              "translation": "Where is Sato?"
+            },
+            {
+              "speaker": 1,
+              "text": "まだ です。 佐藤[さとう] さん は 毎朝[まいあさ] 9時[くじ] 半[はん] に 来[き]ます。",
+              "translation": "Not here yet. Sato comes at half past nine every morning."
+            },
+            {
+              "speaker": 2,
+              "text": "そう です か。 会議[かいぎ] は 10時[じゅうじ] から です よ。",
+              "translation": "I see. The meeting is from ten, you know."
+            },
+            {
+              "speaker": 0,
+              "text": "おはよう ございます。 すみません、 電車[でんしゃ] が 遅[おく]れました。",
+              "translation": "Good morning. Sorry, the train was late."
+            },
+            {
+              "speaker": 2,
+              "text": "大丈夫[だいじょうぶ] です。 会議[かいぎ] は 10時[じゅうじ] から 12時[じゅうにじ] まで です。",
+              "translation": "That’s fine. The meeting is from ten to twelve."
+            },
+            {
+              "speaker": 0,
+              "text": "分[わ]かりました。 昼休[ひるやす]み は 何時[なんじ] から です か。",
+              "translation": "Understood. What time does the lunch break start?"
+            },
+            {
+              "speaker": 1,
+              "text": "12時[じゅうにじ] から 1時[いちじ] まで です。",
+              "translation": "From twelve to one."
+            }
+          ]
         }
       ]
     },
@@ -301,8 +484,14 @@
           "kind": "dialogue",
           "title": "Plans for Sunday",
           "speakers": [
-            "田中[たなか]",
-            "ケン"
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -345,7 +534,12 @@
         {
           "kind": "monologue",
           "title": "A trip to Osaka",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "アナ",
+              "voice": "f1"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -378,8 +572,14 @@
           "kind": "dialogue",
           "title": "Shall we see a film?",
           "speakers": [
-            "アナ",
-            "ケン"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -417,7 +617,12 @@
         {
           "kind": "monologue",
           "title": "My Sunday",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -440,6 +645,80 @@
               "translation": "Sometimes I eat with friends."
             }
           ]
+        },
+        {
+          "kind": "dialogue",
+          "title": "Plans for Saturday",
+          "speakers": [
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            },
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "皆[みな]さん、 土曜日[どようび] に 何[なに] を します か。",
+              "translation": "Everyone, what are you doing on Saturday?"
+            },
+            {
+              "speaker": 0,
+              "text": "私[わたし] は 何[なに] も しません。",
+              "translation": "I am not doing anything."
+            },
+            {
+              "speaker": 2,
+              "text": "私[わたし] も 何[なに] も しません。",
+              "translation": "Me neither."
+            },
+            {
+              "speaker": 1,
+              "text": "じゃ、 一緒[いっしょ] に 公園[こうえん] へ 行[い]きません か。 写真[しゃしん] を 撮[と]りましょう。",
+              "translation": "Then shall we go to the park together? Let’s take photos."
+            },
+            {
+              "speaker": 3,
+              "text": "いい です ね。 公園[こうえん] で お弁当[べんとう] を 食[た]べましょう。",
+              "translation": "Sounds good. Let’s eat lunch boxes in the park."
+            },
+            {
+              "speaker": 0,
+              "text": "私[わたし] は サンドイッチ を 作[つく]ります。",
+              "translation": "I will make sandwiches."
+            },
+            {
+              "speaker": 2,
+              "text": "じゃ、 私[わたし] は 飲[の]み物[もの] を 買[か]います。",
+              "translation": "Then I will buy the drinks."
+            },
+            {
+              "speaker": 1,
+              "text": "何時[なんじ] に 会[あ]いましょう か。",
+              "translation": "What time shall we meet?"
+            },
+            {
+              "speaker": 3,
+              "text": "10時[じゅうじ] に 駅[えき] で 会[あ]いましょう。",
+              "translation": "Let’s meet at the station at ten."
+            },
+            {
+              "speaker": 1,
+              "text": "分[わ]かりました。 じゃ、 土曜日[どようび] に。",
+              "translation": "Got it. See you on Saturday, then."
+            }
+          ]
         }
       ]
     },
@@ -450,8 +729,14 @@
           "kind": "dialogue",
           "title": "A birthday present",
           "speakers": [
-            "田中[たなか]",
-            "佐藤[さとう]"
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
           ],
           "lines": [
             {
@@ -484,7 +769,12 @@
         {
           "kind": "monologue",
           "title": "Chopsticks",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -517,8 +807,14 @@
           "kind": "dialogue",
           "title": "Your town",
           "speakers": [
-            "アナ",
-            "ケン"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -556,7 +852,12 @@
         {
           "kind": "monologue",
           "title": "Tokyo",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "リン",
+              "voice": "f3"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -589,8 +890,14 @@
           "kind": "dialogue",
           "title": "What do you like?",
           "speakers": [
-            "田中[たなか]",
-            "ケン"
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -628,7 +935,12 @@
         {
           "kind": "monologue",
           "title": "Learning Japanese",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -661,8 +973,14 @@
           "kind": "dialogue",
           "title": "Where is the cat?",
           "speakers": [
-            "アナ",
-            "佐藤[さとう]"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
           ],
           "lines": [
             {
@@ -695,7 +1013,12 @@
         {
           "kind": "monologue",
           "title": "My room",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -718,6 +1041,66 @@
               "translation": "Outside the window there is a big tree."
             }
           ]
+        },
+        {
+          "kind": "dialogue",
+          "title": "Where are my keys?",
+          "speakers": [
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            },
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "あれ？ 鍵[かぎ] が ありません。",
+              "translation": "Huh? My keys are gone."
+            },
+            {
+              "speaker": 1,
+              "text": "机[つくえ] の 上[うえ] に ありません か。",
+              "translation": "Aren’t they on the desk?"
+            },
+            {
+              "speaker": 0,
+              "text": "ありません。 机[つくえ] の 上[うえ] に は 本[ほん] と 眼鏡[めがね] が あります。",
+              "translation": "No. On the desk there are books and glasses."
+            },
+            {
+              "speaker": 2,
+              "text": "かばん の 中[なか] は？",
+              "translation": "What about inside your bag?"
+            },
+            {
+              "speaker": 0,
+              "text": "かばん の 中[なか] に も ありません。",
+              "translation": "They aren’t in the bag either."
+            },
+            {
+              "speaker": 1,
+              "text": "じゃ、 ドア の 近[ちか]く は どう です か。",
+              "translation": "Then how about near the door?"
+            },
+            {
+              "speaker": 2,
+              "text": "あ、 ありました！ 靴[くつ] の 隣[となり] に あります よ。",
+              "translation": "Oh, here they are! They are next to the shoes."
+            },
+            {
+              "speaker": 0,
+              "text": "よかった。 ありがとう ございます。",
+              "translation": "What a relief. Thank you."
+            }
+          ]
         }
       ]
     },
@@ -728,8 +1111,14 @@
           "kind": "dialogue",
           "title": "At the post office",
           "speakers": [
-            "局員[きょくいん]",
-            "ケン"
+            {
+              "name": "局員[きょくいん]",
+              "voice": "f3"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -767,7 +1156,12 @@
         {
           "kind": "monologue",
           "title": "My family",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -800,8 +1194,14 @@
           "kind": "dialogue",
           "title": "How was Hokkaido?",
           "speakers": [
-            "田中[たなか]",
-            "ケン"
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -839,7 +1239,12 @@
         {
           "kind": "monologue",
           "title": "The seasons",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "アナ",
+              "voice": "f1"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -872,8 +1277,14 @@
           "kind": "dialogue",
           "title": "I’m hungry",
           "speakers": [
-            "アナ",
-            "佐藤[さとう]"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
           ],
           "lines": [
             {
@@ -911,7 +1322,12 @@
         {
           "kind": "monologue",
           "title": "This weekend",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -934,6 +1350,76 @@
               "translation": "On Sunday I want to rest at home."
             }
           ]
+        },
+        {
+          "kind": "dialogue",
+          "title": "At a restaurant",
+          "speakers": [
+            {
+              "name": "店員[てんいん]",
+              "voice": "f4"
+            },
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "いらっしゃいませ。 何名様[なんめいさま] です か。",
+              "translation": "Welcome. How many people?"
+            },
+            {
+              "speaker": 2,
+              "text": "二人[ふたり] です。",
+              "translation": "Two."
+            },
+            {
+              "speaker": 0,
+              "text": "こちら へ どうぞ。",
+              "translation": "This way, please."
+            },
+            {
+              "speaker": 1,
+              "text": "ケン さん、 何[なに] が 食[た]べたい です か。",
+              "translation": "Ken, what would you like to eat?"
+            },
+            {
+              "speaker": 2,
+              "text": "私[わたし] は 天[てん]ぷら が 食[た]べたい です。 アナ さん は？",
+              "translation": "I would like tempura. And you, Ana?"
+            },
+            {
+              "speaker": 1,
+              "text": "私[わたし] は お寿司[すし] に します。",
+              "translation": "I will have sushi."
+            },
+            {
+              "speaker": 0,
+              "text": "お飲[の]み物[もの] は？",
+              "translation": "And to drink?"
+            },
+            {
+              "speaker": 2,
+              "text": "ビール を 一[ひと]つ ください。",
+              "translation": "One beer, please."
+            },
+            {
+              "speaker": 1,
+              "text": "私[わたし] は 冷[つめ]たい お茶[ちゃ] を お願[ねが]いします。",
+              "translation": "Cold tea for me, please."
+            },
+            {
+              "speaker": 0,
+              "text": "かしこまりました。 少々[しょうしょう] お待[ま]ち ください。",
+              "translation": "Certainly. Please wait a moment."
+            }
+          ]
         }
       ]
     },
@@ -944,8 +1430,14 @@
           "kind": "dialogue",
           "title": "In a taxi",
           "speakers": [
-            "アナ",
-            "運転手[うんてんしゅ]"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "運転手[うんてんしゅ]",
+              "voice": "m3"
+            }
           ],
           "lines": [
             {
@@ -983,7 +1475,12 @@
         {
           "kind": "monologue",
           "title": "A rainy afternoon",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -1016,8 +1513,14 @@
           "kind": "dialogue",
           "title": "At the museum",
           "speakers": [
-            "アナ",
-            "係[かかり]の人[ひと]"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "係[かかり]の人[ひと]",
+              "voice": "m5"
+            }
           ],
           "lines": [
             {
@@ -1055,7 +1558,12 @@
         {
           "kind": "monologue",
           "title": "My friend",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -1088,8 +1596,14 @@
           "kind": "dialogue",
           "title": "At the doctor’s",
           "speakers": [
-            "医者[いしゃ]",
-            "ケン"
+            {
+              "name": "医者[いしゃ]",
+              "voice": "f3"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -1132,7 +1646,12 @@
         {
           "kind": "monologue",
           "title": "My mornings",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -1165,8 +1684,14 @@
           "kind": "dialogue",
           "title": "Hobbies",
           "speakers": [
-            "田中[たなか]",
-            "ケン"
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -1204,7 +1729,12 @@
         {
           "kind": "monologue",
           "title": "Before bed",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "アナ",
+              "voice": "f1"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -1237,8 +1767,14 @@
           "kind": "dialogue",
           "title": "Mount Fuji",
           "speakers": [
-            "アナ",
-            "佐藤[さとう]"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
           ],
           "lines": [
             {
@@ -1276,7 +1812,12 @@
         {
           "kind": "monologue",
           "title": "My Sundays",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -1294,6 +1835,70 @@
               "translation": "After dinner I watch TV."
             }
           ]
+        },
+        {
+          "kind": "dialogue",
+          "title": "Summer holiday stories",
+          "speakers": [
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            },
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "夏休[なつやす]み は どこ か へ 行[い]きました か。",
+              "translation": "Did you go anywhere for the summer holiday?"
+            },
+            {
+              "speaker": 1,
+              "text": "北海道[ほっかいどう] へ 行[い]きました。 山[やま] に 登[のぼ]ったり、 牛乳[ぎゅうにゅう] を 飲[の]んだり しました。",
+              "translation": "I went to Hokkaido. I climbed mountains, drank milk and so on."
+            },
+            {
+              "speaker": 2,
+              "text": "いい です ね。 私[わたし] は 沖縄[おきなわ] で 泳[およ]ぎました。",
+              "translation": "Nice. I swam in Okinawa."
+            },
+            {
+              "speaker": 3,
+              "text": "沖縄[おきなわ] は 行[い]った こと が ありません。 どう でした か。",
+              "translation": "I have never been to Okinawa. How was it?"
+            },
+            {
+              "speaker": 2,
+              "text": "海[うみ] が とても きれい でした。 魚[さかな] も たくさん 見[み]ました。",
+              "translation": "The sea was beautiful. I saw lots of fish, too."
+            },
+            {
+              "speaker": 0,
+              "text": "私[わたし] は どこ へ も 行[い]きません でした。 家[うち] で 本[ほん] を 読[よ]んだり、 映画[えいが] を 見[み]たり しました。",
+              "translation": "I didn’t go anywhere. I read books, watched films and so on at home."
+            },
+            {
+              "speaker": 3,
+              "text": "私[わたし] は 国[くに] へ 帰[かえ]って、 家族[かぞく] に 会[あ]いました。",
+              "translation": "I went back to my country and saw my family."
+            },
+            {
+              "speaker": 1,
+              "text": "皆[みな]さん、 楽[たの]しい 夏休[なつやす]み でした ね。",
+              "translation": "Sounds like everyone had a fun summer holiday."
+            }
+          ]
         }
       ]
     },
@@ -1304,8 +1909,14 @@
           "kind": "dialogue",
           "title": "Tomorrow’s match (casual)",
           "speakers": [
-            "田中[たなか]",
-            "ケン"
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -1343,7 +1954,12 @@
         {
           "kind": "monologue",
           "title": "The weather forecast",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -1376,8 +1992,14 @@
           "kind": "dialogue",
           "title": "Who is that?",
           "speakers": [
-            "アナ",
-            "佐藤[さとう]"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
           ],
           "lines": [
             {
@@ -1415,7 +2037,12 @@
         {
           "kind": "monologue",
           "title": "My flat",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "リン",
+              "voice": "f3"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -1448,8 +2075,14 @@
           "kind": "dialogue",
           "title": "Asking the way",
           "speakers": [
-            "アナ",
-            "男[おとこ]の人[ひと]"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "男[おとこ]の人[ひと]",
+              "voice": "m4"
+            }
           ],
           "lines": [
             {
@@ -1487,7 +2120,12 @@
         {
           "kind": "monologue",
           "title": "The park near my house",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -1520,8 +2158,14 @@
           "kind": "dialogue",
           "title": "If it rains",
           "speakers": [
-            "田中[たなか]",
-            "ケン"
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -1559,7 +2203,12 @@
         {
           "kind": "monologue",
           "title": "My dream",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "アナ",
+              "voice": "f1"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -1577,6 +2226,66 @@
               "translation": "When I arrive in Japan, I will go to the embassy first."
             }
           ]
+        },
+        {
+          "kind": "dialogue",
+          "title": "Planning a party",
+          "speakers": [
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            },
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            }
+          ],
+          "lines": [
+            {
+              "speaker": 0,
+              "text": "来週[らいしゅう] の パーティー、 何人[なんにん] 来[き]ます か。",
+              "translation": "How many people are coming to next week’s party?"
+            },
+            {
+              "speaker": 1,
+              "text": "たぶん 10人[じゅうにん] ぐらい です。",
+              "translation": "Probably about ten."
+            },
+            {
+              "speaker": 2,
+              "text": "雨[あめ] が 降[ふ]ったら、 どこ で しましょう か。",
+              "translation": "If it rains, where shall we have it?"
+            },
+            {
+              "speaker": 1,
+              "text": "雨[あめ] が 降[ふ]ったら、 私[わたし] の 家[うち] で しましょう。",
+              "translation": "If it rains, let’s have it at my place."
+            },
+            {
+              "speaker": 0,
+              "text": "晴[は]れたら、 公園[こうえん] で バーベキュー を しましょう。",
+              "translation": "If it is sunny, let’s have a barbecue in the park."
+            },
+            {
+              "speaker": 2,
+              "text": "いい です ね。 準備[じゅんび] が 終[お]わったら、 連絡[れんらく] して ください。",
+              "translation": "Sounds good. Let me know when the preparations are done."
+            },
+            {
+              "speaker": 1,
+              "text": "分[わ]かりました。 駅[えき] に 着[つ]いたら、 電話[でんわ] を ください。 迎[むか]え に 行[い]きます。",
+              "translation": "All right. Call me when you get to the station. I will come and pick you up."
+            },
+            {
+              "speaker": 0,
+              "text": "ありがとう ございます。 楽[たの]しみ です ね。",
+              "translation": "Thank you. I’m looking forward to it."
+            }
+          ]
         }
       ]
     },
@@ -1587,8 +2296,14 @@
           "kind": "dialogue",
           "title": "After the move",
           "speakers": [
-            "アナ",
-            "佐藤[さとう]"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
           ],
           "lines": [
             {
@@ -1626,7 +2341,12 @@
         {
           "kind": "monologue",
           "title": "My grandmother",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -1659,8 +2379,14 @@
           "kind": "dialogue",
           "title": "The view from your room",
           "speakers": [
-            "田中[たなか]",
-            "ケン"
+            {
+              "name": "田中[たなか]",
+              "voice": "f2"
+            },
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
           ],
           "lines": [
             {
@@ -1698,7 +2424,12 @@
         {
           "kind": "monologue",
           "title": "Speaking Japanese",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "ケン",
+              "voice": "m2"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -1731,8 +2462,14 @@
           "kind": "dialogue",
           "title": "A lost wallet",
           "speakers": [
-            "アナ",
-            "佐藤[さとう]"
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
           ],
           "lines": [
             {
@@ -1770,7 +2507,12 @@
         {
           "kind": "monologue",
           "title": "Rubbish day",
-          "speakers": [],
+          "speakers": [
+            {
+              "name": "大家[おおや]さん",
+              "voice": "m4"
+            }
+          ],
           "lines": [
             {
               "speaker": null,
@@ -1786,6 +2528,81 @@
               "speaker": null,
               "text": "分[わ]からない とき は、 いつでも 近所[きんじょ] の 人[ひと] に 聞[き]いて ください。",
               "translation": "When you are not sure, ask your neighbours any time."
+            }
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "title": "At the police box",
+          "speakers": [
+            {
+              "name": "アナ",
+              "voice": "f1"
+            },
+            {
+              "name": "警察官[けいさつかん]",
+              "voice": "m3"
+            },
+            {
+              "name": "佐藤[さとう]",
+              "voice": "m1"
+            }
+          ],
+          "lines": [
+            {
+              "speaker": 1,
+              "text": "どう しました か。",
+              "translation": "What happened?"
+            },
+            {
+              "speaker": 0,
+              "text": "財布[さいふ] を 無[な]くしました。",
+              "translation": "I lost my wallet."
+            },
+            {
+              "speaker": 1,
+              "text": "どこ で 無[な]くしました か。",
+              "translation": "Where did you lose it?"
+            },
+            {
+              "speaker": 0,
+              "text": "たぶん 駅[えき] の 近[ちか]く です。 午後[ごご] 3時[さんじ] ごろ です。",
+              "translation": "Probably near the station. Around three in the afternoon."
+            },
+            {
+              "speaker": 1,
+              "text": "どんな 財布[さいふ] です か。",
+              "translation": "What kind of wallet is it?"
+            },
+            {
+              "speaker": 0,
+              "text": "黒[くろ]い 財布[さいふ] です。 中[なか] に カード と お金[かね] が 入[はい]って います。",
+              "translation": "It is a black wallet. There are cards and money in it."
+            },
+            {
+              "speaker": 1,
+              "text": "ちょっと 待[ま]って ください。 この 財布[さいふ] です か。",
+              "translation": "Please wait a moment. Is it this wallet?"
+            },
+            {
+              "speaker": 0,
+              "text": "はい、 それ です！ よかった。",
+              "translation": "Yes, that’s it! What a relief."
+            },
+            {
+              "speaker": 2,
+              "text": "だれ か が 拾[ひろ]って くれた ん です ね。",
+              "translation": "Someone picked it up for you, then."
+            },
+            {
+              "speaker": 1,
+              "text": "ええ、 さっき 学生[がくせい] さん が 届[とど]けて くれました。",
+              "translation": "Yes, a student brought it in a little while ago."
+            },
+            {
+              "speaker": 0,
+              "text": "本当[ほんとう] に ありがとう ございました。",
+              "translation": "Thank you so much."
             }
           ]
         }

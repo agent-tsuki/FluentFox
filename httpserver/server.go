@@ -135,10 +135,10 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 	auth.RegisterXOAuthRoutes(r, xOAuth, tokenMaker, refreshMaxAge, log)
 
 	registerProfileRoutes(api, cfg, userRepo, log)
-	registerAudioRoutes(api, cfg, log)
 
 	accessRepo := access.NewRepository(db)
 	permissionChecker := access.NewChecker(accessRepo, log)
+	registerAudioRoutes(api, cfg, audio.NewRepository(db), permissionChecker, log)
 	registerAccessRoutes(api, accessRepo, permissionChecker, userRepo, mailService, log)
 	registerClassesRoutes(api, cfg, classes.NewRepository(db), permissionChecker,
 		access.NewEditableChannels(permissionChecker, accessRepo), log)
@@ -329,7 +329,7 @@ func registerClassesRoutes(
 
 // Voices in order of preference: VOICEVOX, then Open JTalk. With no R2 or no
 // voice the service answers 503 and clients keep the browser's own voice.
-func registerAudioRoutes(api huma.API, cfg *config.Config, log *zap.Logger) {
+func registerAudioRoutes(api huma.API, cfg *config.Config, repo *audio.Repository, admins audio.SuperAdmins, log *zap.Logger) {
 	var store audio.ObjectStore
 	if cfg.R2Enabled() {
 		store = storage.NewR2Store(cfg.R2AccountID, cfg.R2AccessKey, cfg.R2SecretKey, cfg.R2BucketName, cfg.R2PublicURL)
@@ -354,11 +354,27 @@ func registerAudioRoutes(api huma.API, cfg *config.Config, log *zap.Logger) {
 		encoder = audio.NewFFmpegMP3(cfg.FFmpegBin)
 	}
 	log.Info("spoken audio", zap.Bool("storage", store != nil), zap.Int("voices", len(voices)), zap.String("format", encoder.Ext()))
-	handler := audio.NewHandler(audio.NewSpeechService(store, cfg.R2PublicURL, voices, encoder, log), log)
+	speech := audio.NewSpeechService(store, cfg.R2PublicURL, voices, encoder, log).WithClipIndex(repo)
+	handler := audio.NewHandler(speech, log)
 	if alt := altVoices(cfg, voices); len(alt) > 0 {
-		handler.WithAltVoice(audio.NewSpeechService(store, cfg.R2PublicURL, alt, encoder, log))
+		handler.WithAltVoice(speech.WithVoices(alt))
 	}
+	// The voice behind each key comes from audio_voice, set on the admin page.
+	engine := audio.NewEngine(cfg.VoicevoxURL, cfg.VoicevoxEngine)
+	var synth audio.SynthFor
+	if engine.Configured() {
+		synth = engine.Synth
+	}
+	cast := audio.NewCast(speech, repo, synth, log)
+	handler.WithCast(cast)
 	audio.RegisterRoutes(api, handler)
+	audio.RegisterAdminRoutes(api, audio.NewAdminHandler(&audio.AdminServices{
+		Voices:  audio.NewVoiceListService(admins, cast, repo, repo, log),
+		Set:     audio.NewVoiceSetService(admins, engine, repo, cast, log),
+		Engine:  audio.NewEngineStatusService(admins, engine, log),
+		Preview: audio.NewPreviewService(admins, engine, log),
+		Jobs:    audio.NewJobService(admins, repo, log),
+	}, log))
 }
 
 // altVoices speak the other side of a dialogue: a second VOICEVOX speaker,

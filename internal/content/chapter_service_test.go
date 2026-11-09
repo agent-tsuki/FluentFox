@@ -99,7 +99,7 @@ func TestChapterContentServicePassages(t *testing.T) {
 	repo := &fakeChapters{
 		chapters: []GrammarChapter{{ID: chapter, Slug: "ch1", Number: 1, Title: "Identity"}},
 		passages: []ChapterPassage{
-			{ID: dialogue, ChapterID: chapter, Position: 1, Kind: ListeningDialogue, Title: "Meeting", Speakers: []string{"アナ", "ケン"}},
+			{ID: dialogue, ChapterID: chapter, Position: 1, Kind: ListeningDialogue, Title: "Meeting", Speakers: []string{"アナ", "ケン"}, SpeakerVoices: []string{"f1", "m2"}},
 			{ID: monologue, ChapterID: chapter, Position: 2, Kind: ListeningMonologue, Title: "Me"},
 		},
 		lines: []ChapterPassageLine{
@@ -115,10 +115,10 @@ func TestChapterContentServicePassages(t *testing.T) {
 	if len(got.Passages) != 2 {
 		t.Fatalf("passages = %d, want 2", len(got.Passages))
 	}
-	if d := got.Passages[0]; len(d.Lines) != 2 || *d.Lines[1].Speaker != 1 || len(d.Speakers) != 2 {
+	if d := got.Passages[0]; len(d.Lines) != 2 || *d.Lines[1].Speaker != 1 || len(d.Speakers) != 2 || d.SpeakerVoices[1] != "m2" {
 		t.Fatalf("dialogue = %+v", d)
 	}
-	if m := got.Passages[1]; len(m.Lines) != 1 || m.Lines[0].Speaker != nil || m.Speakers == nil {
+	if m := got.Passages[1]; len(m.Lines) != 1 || m.Lines[0].Speaker != nil || m.Speakers == nil || m.SpeakerVoices == nil {
 		t.Fatalf("monologue = %+v (speakers must be [] not null)", m)
 	}
 }

@@ -28,12 +28,13 @@ func (r *Repository) ChapterIDBySlug(ctx context.Context, tx *gorm.DB, level com
 
 func (r *Repository) UpsertChapterPassage(ctx context.Context, tx *gorm.DB, p *ChapterPassage) (uuid.UUID, error) {
 	id, err := upsertReturningID(ctx, tx, `
-		INSERT INTO chapter_passage (id, chapter_id, position, kind, title, speakers, created_at, updated_at)
-		VALUES (?, ?, ?, ?, ?, ?, now(), now())
+		INSERT INTO chapter_passage (id, chapter_id, position, kind, title, speakers, speaker_voices, created_at, updated_at)
+		VALUES (?, ?, ?, ?, ?, ?, ?, now(), now())
 		ON CONFLICT (chapter_id, position) DO UPDATE SET
-			kind = EXCLUDED.kind, title = EXCLUDED.title, speakers = EXCLUDED.speakers, updated_at = now()
+			kind = EXCLUDED.kind, title = EXCLUDED.title, speakers = EXCLUDED.speakers,
+			speaker_voices = EXCLUDED.speaker_voices, updated_at = now()
 		RETURNING id`,
-		uuid.New(), p.ChapterID, p.Position, p.Kind, p.Title, p.Speakers)
+		uuid.New(), p.ChapterID, p.Position, p.Kind, p.Title, p.Speakers, p.SpeakerVoices)
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("upsert chapter passage %d: %w", p.Position, err)
 	}

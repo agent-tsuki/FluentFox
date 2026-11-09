@@ -43,12 +43,14 @@ type ChapterContentResponse struct {
 type ChapterPassageDTO struct {
 	Kind     ListeningPassageKind `json:"kind"     enum:"dialogue,monologue"`
 	Title    string               `json:"title"`
-	Speakers []string             `json:"speakers" doc:"A dialogue's two speakers (with readings); empty for a monologue"`
-	Lines    []ChapterLineDTO     `json:"lines"`
+	Speakers []string             `json:"speakers" doc:"A dialogue's 2-4 speakers (with readings); a monologue's reader, or none"`
+	// SpeakerVoices pairs with Speakers: the voice each one is played by.
+	SpeakerVoices []string         `json:"speaker_voices" doc:"Each speaker's voice key (e.g. f1, m2) for /audio/speech; empty in older content"`
+	Lines         []ChapterLineDTO `json:"lines"`
 }
 
 type ChapterLineDTO struct {
-	Speaker     *int   `json:"speaker,omitempty" doc:"0 or 1 in a dialogue: which speaker (and voice); missing in a monologue"`
+	Speaker     *int   `json:"speaker,omitempty" doc:"In a dialogue, which speaker (index into speakers); missing in a monologue"`
 	Text        string `json:"text"`
 	Translation string `json:"translation"`
 }
@@ -154,7 +156,8 @@ func (s *ChapterContentService) addPassages(ctx context.Context, chapter *Gramma
 	for i := range passages {
 		p := &passages[i]
 		out.Passages = append(out.Passages, ChapterPassageDTO{
-			Kind: p.Kind, Title: p.Title, Speakers: nonNil(p.Speakers), Lines: nonNilLines(byPassage[p.ID]),
+			Kind: p.Kind, Title: p.Title, Speakers: nonNil(p.Speakers), SpeakerVoices: nonNil(p.SpeakerVoices),
+			Lines: nonNilLines(byPassage[p.ID]),
 		})
 	}
 	return nil

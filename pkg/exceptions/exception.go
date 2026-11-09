@@ -196,6 +196,15 @@ var (
 	ErrAudioTextTooLong = New(http.StatusUnprocessableEntity, "AUDIO_TEXT_TOO_LONG", "a text is longer than 300 characters")
 )
 
+// Audio admin (voice cast, previews, worker jobs).
+var (
+	ErrAudioEngineUnavailable = New(http.StatusServiceUnavailable, "AUDIO_ENGINE_UNAVAILABLE", "the voice engine is not reachable")
+	ErrAudioStyleNotFound     = New(http.StatusUnprocessableEntity, "AUDIO_STYLE_NOT_FOUND", "the voice engine has no style with this id")
+	ErrAudioVoiceKeyUnknown   = New(http.StatusUnprocessableEntity, "AUDIO_VOICE_KEY_UNKNOWN", "no voice uses this key")
+	ErrAudioJobNotFound       = New(http.StatusNotFound, "AUDIO_JOB_NOT_FOUND", "no queued or running audio job with this id")
+	ErrAudioJobInvalid        = New(http.StatusUnprocessableEntity, "AUDIO_JOB_INVALID", "an install_model job needs a model_uuid")
+)
+
 // Tests
 var (
 	ErrTestAnswerNotAsked = New(http.StatusUnprocessableEntity, "TEST_ANSWER_NOT_ASKED", "this test did not ask that question, or it was already answered")

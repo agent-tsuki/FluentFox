@@ -614,12 +614,56 @@ const (
 	VOICEVOX_ALT_DEFAULT_CREDIT  string = "VOICEVOX:青山龍星" //nolint:gosec // a credit line, not a secret
 )
 
+// AivisSpeech voice models are installed from AivisHub by UUID; an install
+// downloads a few hundred MB, so it gets a generous timeout.
+const (
+	AIVIS_HUB_MODEL_URL       string        = "https://api.aivis-project.com/v1/aivm-models/%s/download?model_type=AIVMX"
+	AIVIS_MODEL_INSTALL_LIMIT time.Duration = 15 * time.Minute
+)
+
+// AUDIO_VOICE_KEY_PATTERN is a cast key: a voice a listening character is
+// played by (the audio_voice table maps keys to engine voices), e.g. "f1".
+const AUDIO_VOICE_KEY_PATTERN string = `^[a-z][a-z0-9]{0,15}$`
+
 // Voices a speech request may ask for: the main one, or the second voice of a
 // dialogue (the main voice answers when no second voice is set up).
 const (
 	AUDIO_VOICE_MAIN string = "main"
 	AUDIO_VOICE_ALT  string = "alt"
 )
+
+// The voice cast (audio_voice) is read at most once per AUDIO_CAST_TTL on
+// each server, so a super-admin's change reaches every instance within it.
+// AUDIO_ENGINE_TIMEOUT bounds the admin page's calls to the voice engine
+// (its list of styles, a preview); the model list is large, so it gets more.
+const (
+	AUDIO_CAST_TTL             time.Duration = time.Minute
+	AUDIO_ENGINE_TIMEOUT       time.Duration = 15 * time.Second
+	AUDIO_ENGINE_MODELS_LIMIT  time.Duration = time.Minute
+	AUDIO_PREVIEW_MAX_RUNES    int           = 120
+	AUDIO_JOBS_LIST_LIMIT      int           = 20
+	AUDIO_CLIP_LOOKUP_MAX_KEYS int           = 5000
+)
+
+// The audio worker polls for queued jobs every AUDIO_JOB_POLL and marks the
+// job it runs every AUDIO_JOB_HEARTBEAT; a running job with no mark for
+// AUDIO_JOB_STALE_AFTER (its worker died) is queued again. Each batch of
+// texts is asked for up to AUDIO_JOB_MAX_ROUNDS times, AUDIO_JOB_ROUND_WAIT
+// apart, as the speech service makes a few clips per call.
+const (
+	AUDIO_JOB_POLL        time.Duration = 5 * time.Second
+	AUDIO_JOB_HEARTBEAT   time.Duration = 20 * time.Second
+	AUDIO_JOB_STALE_AFTER time.Duration = 2 * time.Minute
+	AUDIO_JOB_MAX_ROUNDS  int           = 40
+	AUDIO_JOB_ROUND_WAIT  time.Duration = 500 * time.Millisecond
+	AUDIO_JOB_ERROR_RUNES int           = 500
+)
+
+// Credit lines name the engine the way its terms ask: "AivisSpeech:まお".
+var AUDIO_ENGINE_CREDIT_NAMES = map[string]string{
+	"voicevox":    "VOICEVOX",
+	"aivisspeech": "AivisSpeech",
+}
 
 // A kana unit quiz asks each kana of the unit KANA_UNIT_QUIZ_ASKS_PER_KANA
 // times, at most KANA_UNIT_QUIZ_MAX_QUESTIONS in all, split evenly between

@@ -3,8 +3,11 @@ package content
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strings"
 	"unicode"
+
+	"github.com/fluentfox/api/internal/common"
 )
 
 // Listening text is written with its readings: words are separated by
@@ -82,9 +85,10 @@ func readingEnd(runes []rune, open int) (int, error) {
 
 var (
 	errPassageKind     = errors.New("kind must be dialogue or monologue")
-	errPassageSpeakers = errors.New("a dialogue has two speakers, a monologue none")
+	errPassageSpeakers = errors.New("a dialogue has 2 to 4 speakers, a monologue at most one (its reader)")
+	errSpeakerVoice    = errors.New("a speaker's voice must be a cast key such as f1 or m2")
 	errPassageNoLines  = errors.New("no lines")
-	errLineSpeaker     = errors.New("line speaker must be 0 or 1 in a dialogue, and absent in a monologue")
+	errLineSpeaker     = errors.New("line speaker must be one of the dialogue's speakers, and absent in a monologue")
 	errLineTranslation = errors.New("line has no translation")
 	errPassageTitle    = errors.New("no title")
 )
@@ -101,36 +105,41 @@ func checkPassage(p *ListeningFilePassage) error {
 		return errPassageNoLines
 	}
 	for i := range p.Lines {
-		if err := checkLine(p.Kind, &p.Lines[i]); err != nil {
+		if err := checkLine(p.Kind, len(p.Speakers), &p.Lines[i]); err != nil {
 			return fmt.Errorf("line %d: %w", i+1, err)
 		}
 	}
 	return nil
 }
 
+var voiceKey = regexp.MustCompile(common.AUDIO_VOICE_KEY_PATTERN)
+
 func checkSpeakers(p *ListeningFilePassage) error {
-	want := 0
+	lowest, highest := 0, 1
 	switch p.Kind {
 	case ListeningDialogue:
-		want = dialogueSpeakers
+		lowest, highest = minDialogueSpeakers, maxSpeakers
 	case ListeningMonologue:
 	default:
 		return errPassageKind
 	}
-	if len(p.Speakers) != want {
+	if len(p.Speakers) < lowest || len(p.Speakers) > highest {
 		return errPassageSpeakers
 	}
 	for i, s := range p.Speakers {
-		if err := checkRubyText(s); err != nil {
+		if err := checkRubyText(s.Name); err != nil {
 			return fmt.Errorf("speaker %d: %w", i, err)
+		}
+		if !voiceKey.MatchString(s.Voice) {
+			return fmt.Errorf("speaker %d %q: %w", i, s.Voice, errSpeakerVoice)
 		}
 	}
 	return nil
 }
 
-func checkLine(kind ListeningPassageKind, line *ListeningFileLine) error {
+func checkLine(kind ListeningPassageKind, speakers int, line *ListeningFileLine) error {
 	if kind == ListeningDialogue {
-		if line.Speaker == nil || *line.Speaker < 0 || *line.Speaker >= dialogueSpeakers {
+		if line.Speaker == nil || *line.Speaker < 0 || *line.Speaker >= speakers {
 			return errLineSpeaker
 		}
 	} else if line.Speaker != nil {

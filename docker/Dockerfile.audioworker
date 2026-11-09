@@ -1,0 +1,21 @@
+# docker/Dockerfile.audioworker
+# The audio worker (cmd/audioworker), run on Railway next to the voice engine.
+# ffmpeg is installed for MP3 clips, but only used when FFMPEG_BIN is set: set
+# it only if the API has it too, so both store clips in the same format.
+FROM golang:1.26-alpine AS deps
+WORKDIR /build
+COPY go.mod go.sum ./
+RUN go mod download
+
+FROM deps AS builder
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -trimpath -o /out/audioworker ./cmd/audioworker
+
+FROM alpine:3.21 AS runtime
+RUN apk add --no-cache ca-certificates tzdata ffmpeg && \
+    addgroup -S appgroup && \
+    adduser  -S appuser -G appgroup
+WORKDIR /app
+COPY --from=builder /out/audioworker ./audioworker
+USER appuser
+CMD ["./audioworker"]
