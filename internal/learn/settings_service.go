@@ -75,7 +75,23 @@ func applySettings(st *LearningSettings, req *UpdateLearningSettingsRequest) err
 	if req.ShowRetention != nil {
 		st.ShowRetention = *req.ShowRetention
 	}
+	if req.ChapterCompletion != nil {
+		completion, err := parseChapterCompletion(*req.ChapterCompletion)
+		if err != nil {
+			return err
+		}
+		st.ChapterCompletion = completion
+	}
 	return nil
+}
+
+func parseChapterCompletion(raw string) (common.ChapterCompletion, error) {
+	switch c := common.ChapterCompletion(raw); c {
+	case common.ChapterCompletionAuto, common.ChapterCompletionManual:
+		return c, nil
+	default:
+		return "", exceptions.ErrLearningSettingsInvalid
+	}
 }
 
 func applyIntSettings(st *LearningSettings, req *UpdateLearningSettingsRequest) error {
@@ -87,6 +103,7 @@ func applyIntSettings(st *LearningSettings, req *UpdateLearningSettingsRequest) 
 		{req.LessonSize, &st.LessonSize, common.LESSON_SIZE_RANGE},
 		{req.DailyGoalAnswers, &st.DailyGoalAnswers, common.DAILY_GOAL_ANSWERS_RANGE},
 		{req.DayStartsAtHour, &st.DayStartsAtHour, common.DAY_STARTS_AT_HOUR_RANGE},
+		{req.ChapterPassPct, &st.ChapterPassPct, common.CHAPTER_PASS_PCT_RANGE},
 	}
 	for _, f := range ints {
 		if f.in == nil {
@@ -116,15 +133,17 @@ func roundTo(v float64, decimals int) float64 {
 
 func toSettingsResponse(s *LearningSettings) LearningSettingsResponse {
 	return LearningSettingsResponse{
-		DesiredRetention: s.DesiredRetention,
-		NewKanaPerDay:    s.NewKanaPerDay,
-		NewKanjiPerDay:   s.NewKanjiPerDay,
-		MaxReviewsPerDay: s.MaxReviewsPerDay,
-		SessionSize:      s.SessionSize,
-		LessonSize:       s.LessonSize,
-		DailyGoalAnswers: s.DailyGoalAnswers,
-		DayStartsAtHour:  s.DayStartsAtHour,
-		AnswerMode:       string(s.AnswerMode),
-		ShowRetention:    s.ShowRetention,
+		DesiredRetention:  s.DesiredRetention,
+		NewKanaPerDay:     s.NewKanaPerDay,
+		NewKanjiPerDay:    s.NewKanjiPerDay,
+		MaxReviewsPerDay:  s.MaxReviewsPerDay,
+		SessionSize:       s.SessionSize,
+		LessonSize:        s.LessonSize,
+		DailyGoalAnswers:  s.DailyGoalAnswers,
+		DayStartsAtHour:   s.DayStartsAtHour,
+		AnswerMode:        string(s.AnswerMode),
+		ShowRetention:     s.ShowRetention,
+		ChapterPassPct:    s.ChapterPassPct,
+		ChapterCompletion: string(s.ChapterCompletion),
 	}
 }

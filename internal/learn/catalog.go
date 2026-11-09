@@ -27,6 +27,8 @@ type Item struct {
 	Readings   []string
 	KeyReading string
 	LookAlikes []uuid.UUID
+	// Set for grammar sentences only.
+	Sentence *SentenceItem
 }
 
 // Group is the kana group key or the kanji group slug; skip tests use it as
@@ -82,6 +84,7 @@ type ContentReader interface {
 	ListKanji(ctx context.Context, level common.JLPTLevel) ([]content.Kanji, error)
 	ListKanjiKunReadings(ctx context.Context, kanjiIDs []uuid.UUID) ([]content.KanjiKunReading, error)
 	ListKanjiLookAlikes(ctx context.Context, kanjiIDs []uuid.UUID) ([]content.KanjiLookAlikeRow, error)
+	ChapterReader
 }
 
 // Catalog loads track content for the learning services. Pools are read-only
@@ -127,6 +130,9 @@ func (c *Catalog) Load(ctx context.Context, track common.LearningTrack) (*Pool, 
 func (c *Catalog) loadFresh(ctx context.Context, track common.LearningTrack) (*Pool, error) {
 	if script, ok := common.LEARNING_TRACK_KANA_SCRIPT[track]; ok {
 		return c.loadKana(ctx, track, script)
+	}
+	if level, ok := common.LEARNING_TRACK_CHAPTER_LEVEL[track]; ok {
+		return c.loadChapters(ctx, track, level)
 	}
 	return c.loadKanji(ctx, track, common.LEARNING_TRACK_KANJI_LEVEL[track])
 }

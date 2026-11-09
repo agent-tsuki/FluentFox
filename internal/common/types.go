@@ -43,8 +43,10 @@ const (
 type SRSItemType string
 
 const (
-	SRSItemKana  SRSItemType = "kana"
-	SRSItemKanji SRSItemType = "kanji"
+	SRSItemKana            SRSItemType = "kana"
+	SRSItemKanji           SRSItemType = "kanji"
+	SRSItemVocab           SRSItemType = "vocab"
+	SRSItemGrammarSentence SRSItemType = "grammar_sentence"
 )
 
 // CardFacet maps to the card_facet PostgreSQL enum. Writing is unused in v1.
@@ -61,9 +63,11 @@ const (
 type LearningTrack string
 
 const (
-	LearningTrackHiragana LearningTrack = "hiragana"
-	LearningTrackKatakana LearningTrack = "katakana"
-	LearningTrackKanjiN5  LearningTrack = "kanji_n5"
+	LearningTrackHiragana  LearningTrack = "hiragana"
+	LearningTrackKatakana  LearningTrack = "katakana"
+	LearningTrackKanjiN5   LearningTrack = "kanji_n5"
+	LearningTrackVocabN5   LearningTrack = "vocab_n5"
+	LearningTrackGrammarN5 LearningTrack = "grammar_n5"
 )
 
 // SessionKind maps to the session_kind PostgreSQL enum.
@@ -82,21 +86,26 @@ const (
 type QuestionType string
 
 const (
-	QuestionKanaMCQRomaji     QuestionType = "kana_mcq_romaji"
-	QuestionKanaMCQKana       QuestionType = "kana_mcq_kana"
-	QuestionKanaTyped         QuestionType = "kana_typed"
-	QuestionKanaListen        QuestionType = "kana_listen"
-	QuestionKanaBuild         QuestionType = "kana_build"
-	QuestionKanaLookalike     QuestionType = "kana_lookalike"
-	QuestionKanaSpeed         QuestionType = "kana_speed"
-	QuestionKanaMatch         QuestionType = "kana_match"
-	QuestionKanaTrace         QuestionType = "kana_trace"
-	QuestionKanjiMeaningMCQ   QuestionType = "kanji_meaning_mcq"
-	QuestionKanjiMeaningTyped QuestionType = "kanji_meaning_typed"
-	QuestionKanjiReadingMCQ   QuestionType = "kanji_reading_mcq"
-	QuestionKanjiReadingTyped QuestionType = "kanji_reading_typed"
-	QuestionKanjiListen       QuestionType = "kanji_listen"
-	QuestionKanjiLookalike    QuestionType = "kanji_lookalike"
+	QuestionKanaMCQRomaji       QuestionType = "kana_mcq_romaji"
+	QuestionKanaMCQKana         QuestionType = "kana_mcq_kana"
+	QuestionKanaTyped           QuestionType = "kana_typed"
+	QuestionKanaListen          QuestionType = "kana_listen"
+	QuestionKanaBuild           QuestionType = "kana_build"
+	QuestionKanaLookalike       QuestionType = "kana_lookalike"
+	QuestionKanaSpeed           QuestionType = "kana_speed"
+	QuestionKanaMatch           QuestionType = "kana_match"
+	QuestionKanaTrace           QuestionType = "kana_trace"
+	QuestionKanjiMeaningMCQ     QuestionType = "kanji_meaning_mcq"
+	QuestionKanjiMeaningTyped   QuestionType = "kanji_meaning_typed"
+	QuestionKanjiReadingMCQ     QuestionType = "kanji_reading_mcq"
+	QuestionKanjiReadingTyped   QuestionType = "kanji_reading_typed"
+	QuestionKanjiListen         QuestionType = "kanji_listen"
+	QuestionKanjiLookalike      QuestionType = "kanji_lookalike"
+	QuestionVocabMeaningMCQ     QuestionType = "vocab_meaning_mcq"
+	QuestionVocabMeaningTyped   QuestionType = "vocab_meaning_typed"
+	QuestionGrammarGapMCQ       QuestionType = "grammar_gap_mcq"
+	QuestionGrammarGapTyped     QuestionType = "grammar_gap_typed"
+	QuestionGrammarTranslateMCQ QuestionType = "grammar_translate_mcq"
 )
 
 // GradeReason maps to the grade_reason PostgreSQL enum.
@@ -140,8 +149,19 @@ const (
 type UnitType string
 
 const (
-	UnitTypeKana  UnitType = "kana"
-	UnitTypeKanji UnitType = "kanji"
+	UnitTypeKana           UnitType = "kana"
+	UnitTypeKanji          UnitType = "kanji"
+	UnitTypeVocabChapter   UnitType = "vocab_chapter"
+	UnitTypeGrammarChapter UnitType = "grammar_chapter"
+)
+
+// ChapterCompletion maps to the chapter_completion PostgreSQL enum: whether
+// passing a chapter's exercise completes it, or the learner marks it.
+type ChapterCompletion string
+
+const (
+	ChapterCompletionAuto   ChapterCompletion = "auto"
+	ChapterCompletionManual ChapterCompletion = "manual"
 )
 
 // TestKind maps to the test_kind PostgreSQL enum.
@@ -240,6 +260,8 @@ const (
 	SkillKanjiMeaning Skill = "kanji_meaning"
 	SkillKanjiReading Skill = "kanji_reading"
 	SkillListening    Skill = "listening"
+	SkillVocabulary   Skill = "vocabulary"
+	SkillGrammar      Skill = "grammar"
 )
 
 // WeakGroupKind says whether a weak group is a unit or a whole kana group

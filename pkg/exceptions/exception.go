@@ -200,3 +200,8 @@ var (
 var (
 	ErrTestAnswerNotAsked = New(http.StatusUnprocessableEntity, "TEST_ANSWER_NOT_ASKED", "this test did not ask that question, or it was already answered")
 )
+
+// Grammar chapters.
+var (
+	ErrGrammarChapterNotFound = New(http.StatusNotFound, "GRAMMAR_CHAPTER_NOT_FOUND", "grammar chapter not found")
+)

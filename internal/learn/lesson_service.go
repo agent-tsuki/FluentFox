@@ -3,12 +3,14 @@ package learn
 import (
 	"context"
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
 	"github.com/fluentfox/api/internal/common"
+	"github.com/fluentfox/api/pkg/exceptions"
 	"github.com/fluentfox/api/pkg/srs"
 )
 
@@ -32,6 +34,10 @@ func (s *StartLessonService) Start(ctx context.Context, userID uuid.UUID, req *S
 	track, err := parseTrack(req.Track)
 	if err != nil {
 		return SessionStart{}, err
+	}
+	// Chapter words and sentences are learned through their chapter, not lessons.
+	if !slices.Contains(common.LESSON_TRACKS, track) {
+		return SessionStart{}, exceptions.ErrLearningTrackInvalid
 	}
 	now := s.now()
 	l, err := loadLearner(ctx, s.repo, userID, now)

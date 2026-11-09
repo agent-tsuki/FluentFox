@@ -48,12 +48,16 @@ func (s *TestScoreService) Result(ctx context.Context, tx *gorm.DB, session *Stu
 	if kind == "" || session.Track == nil {
 		return nil, nil
 	}
+	rules, err := s.rules(ctx, session, kind)
+	if err != nil {
+		return nil, fmt.Errorf("test result: %w", err)
+	}
 	stored, err := s.repo.FindTestResult(ctx, tx, session.ID)
 	if err != nil {
 		return nil, fmt.Errorf("test result: %w", err)
 	}
 	if stored != nil {
-		return toTestScore(stored), nil
+		return toTestScore(stored, rules.passMark), nil
 	}
 	pool, err := s.catalog.Load(ctx, *session.Track)
 	if err != nil {
@@ -71,15 +75,39 @@ func (s *TestScoreService) Result(ctx context.Context, tx *gorm.DB, session *Stu
 	if session.QuestionPlan != nil {
 		total = len(session.QuestionPlan)
 	}
-	res := scoreTest(session, kind, total, scoredLogs(kind, items, logs), s.now().UTC())
+	res := scoreTest(session, kind, total, scoredLogs(kind, items, logs), rules.passMark, s.now().UTC())
 	res.Scope = scope
 	if err := s.repo.InsertTestResult(ctx, tx, &res); err != nil {
 		return nil, fmt.Errorf("test result: %w", err)
 	}
-	if err := s.unlock(ctx, tx, &res, pool, items); err != nil {
+	if err := s.unlock(ctx, tx, &res, pool, items, rules); err != nil {
 		return nil, err
 	}
-	return toTestScore(&res), nil
+	return toTestScore(&res, rules.passMark), nil
+}
+
+type testRules struct {
+	passMark       float64
+	completeOnPass bool
+}
+
+// rules are a test's pass mark and whether passing completes its unit: the
+// learner's own settings for a chapter quiz, the fixed ones otherwise. Only
+// the grammar exercise can be left for the learner to mark complete.
+func (s *TestScoreService) rules(ctx context.Context, session *StudySession, kind common.TestKind) (testRules, error) {
+	track := *session.Track
+	out := testRules{passMark: passMark(kind, track), completeOnPass: true}
+	if _, chapter := common.LEARNING_TRACK_CHAPTER_LEVEL[track]; !chapter {
+		return out, nil
+	}
+	settings, err := s.repo.EnsureSettings(ctx, session.UserID)
+	if err != nil {
+		return testRules{}, fmt.Errorf("chapter test rules: %w", err)
+	}
+	out.passMark = float64(settings.ChapterPassPct) / common.PERCENT
+	out.completeOnPass = common.LEARNING_TRACK_ITEM_TYPE[track] != common.SRSItemGrammarSentence ||
+		settings.ChapterCompletion == common.ChapterCompletionAuto
+	return out, nil
 }
 
 // scoredLogs are the answers a test is scored on: every answer of a kana
@@ -98,7 +126,7 @@ func scoredLogs(kind common.TestKind, items []*Item, logs []ReviewLog) []*Review
 
 // scoreTest counts the right answers. Unanswered questions count against
 // the score, so stopping early cannot pass a test.
-func scoreTest(session *StudySession, kind common.TestKind, total int, logs []*ReviewLog, now time.Time) TestResult {
+func scoreTest(session *StudySession, kind common.TestKind, total int, logs []*ReviewLog, mark float64, now time.Time) TestResult {
 	correct := 0
 	for _, l := range logs {
 		if l.IsCorrect {
@@ -109,7 +137,7 @@ func scoreTest(session *StudySession, kind common.TestKind, total int, logs []*R
 	return TestResult{
 		ID: uuid.New(), UserID: session.UserID, SessionID: session.ID, Kind: kind, Track: *session.Track,
 		Score: score, Total: total, ActiveMs: session.ActiveMs, TakenAt: now,
-		Passed: total > 0 && float64(score)/float64(total) >= passMark(kind, *session.Track),
+		Passed: total > 0 && float64(score)/float64(total) >= mark,
 	}
 }
 
@@ -117,10 +145,10 @@ func passMark(kind common.TestKind, track common.LearningTrack) float64 {
 	return common.TEST_PASS_MARKS[kind][common.LEARNING_TRACK_ITEM_TYPE[track]]
 }
 
-func (s *TestScoreService) unlock(ctx context.Context, tx *gorm.DB, res *TestResult, pool *Pool, items []*Item) error {
+func (s *TestScoreService) unlock(ctx context.Context, tx *gorm.DB, res *TestResult, pool *Pool, items []*Item, rules testRules) error {
 	switch {
 	case res.Kind == common.TestKindUnitQuiz:
-		return s.recordUnitQuiz(ctx, tx, res, pool)
+		return s.recordUnitQuiz(ctx, tx, res, pool, rules.completeOnPass)
 	case res.Kind == common.TestKindSkip && res.Passed:
 		return s.createKnownCards(ctx, tx, res, items)
 	default:
@@ -128,8 +156,8 @@ func (s *TestScoreService) unlock(ctx context.Context, tx *gorm.DB, res *TestRes
 	}
 }
 
-// A passed quiz completes the unit.
-func (s *TestScoreService) recordUnitQuiz(ctx context.Context, tx *gorm.DB, res *TestResult, pool *Pool) error {
+// A passed quiz completes the unit, unless the learner marks chapters complete themselves.
+func (s *TestScoreService) recordUnitQuiz(ctx context.Context, tx *gorm.DB, res *TestResult, pool *Pool, completeOnPass bool) error {
 	unit, ok := pool.UnitBySlug(res.Scope)
 	if !ok {
 		return fmt.Errorf("record unit quiz: unit %s left the %s track", res.Scope, res.Track)
@@ -139,7 +167,7 @@ func (s *TestScoreService) recordUnitQuiz(ctx context.Context, tx *gorm.DB, res 
 		pct = res.Score * int(common.PERCENT) / res.Total
 	}
 	p := UnitProgress{UserID: res.UserID, UnitType: unit.Type, UnitID: unit.ID, QuizBestPct: &pct}
-	if res.Passed {
+	if res.Passed && completeOnPass {
 		completed := res.TakenAt
 		p.CompletedAt = &completed
 	}
@@ -179,8 +207,8 @@ func (s *TestScoreService) createKnownCards(ctx context.Context, tx *gorm.DB, re
 	return nil
 }
 
-func toTestScore(r *TestResult) *TestScore {
+func toTestScore(r *TestResult, mark float64) *TestScore {
 	return &TestScore{
-		Kind: string(r.Kind), Score: r.Score, Total: r.Total, Passed: r.Passed, PassMark: passMark(r.Kind, r.Track),
+		Kind: string(r.Kind), Score: r.Score, Total: r.Total, Passed: r.Passed, PassMark: mark,
 	}
 }

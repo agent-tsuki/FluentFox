@@ -81,9 +81,11 @@ var studyLogStyles = map[common.SessionKind]studyLogStyle{
 }
 
 var trackTitles = map[common.LearningTrack]string{
-	common.LearningTrackHiragana: "Hiragana",
-	common.LearningTrackKatakana: "Katakana",
-	common.LearningTrackKanjiN5:  "N5 kanji",
+	common.LearningTrackHiragana:  "Hiragana",
+	common.LearningTrackKatakana:  "Katakana",
+	common.LearningTrackKanjiN5:   "N5 kanji",
+	common.LearningTrackVocabN5:   "N5 vocabulary",
+	common.LearningTrackGrammarN5: "N5 grammar",
 }
 
 const (

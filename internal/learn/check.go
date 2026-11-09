@@ -57,6 +57,10 @@ func matchesItem(kind answerKind, item *Item, given string) bool {
 		return slices.Contains(meaningSet(item), normalizeMeaningAnswer(given))
 	case kindReading:
 		return slices.Contains(readingSet(item), normalizeReading(given))
+	case kindGap:
+		return item.Sentence != nil && item.Sentence.matchesGap(given)
+	case kindTranslation:
+		return strings.TrimSpace(given) == itemValue(item, kind)
 	default:
 		return false
 	}

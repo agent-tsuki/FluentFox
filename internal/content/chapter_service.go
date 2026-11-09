@@ -1,0 +1,115 @@
+package content
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"go.uber.org/zap"
+
+	"github.com/fluentfox/api/internal/common"
+	"github.com/fluentfox/api/pkg/exceptions"
+)
+
+// ChapterContentReader is what ChapterContentService needs.
+type ChapterContentReader interface {
+	ListGrammarChapters(ctx context.Context, level common.JLPTLevel) ([]GrammarChapter, error)
+	ListChapterWords(ctx context.Context, level common.JLPTLevel) ([]ChapterWord, error)
+	ListGrammarSentences(ctx context.Context, level common.JLPTLevel) ([]GrammarSentence, error)
+}
+
+var _ ChapterContentReader = (*Repository)(nil)
+
+type ChapterContentInput struct {
+	Level   string `path:"level"   example:"n5"  doc:"Lower-case JLPT level id"`
+	Chapter string `path:"chapter" example:"ch5" doc:"Chapter slug"`
+}
+
+type ChapterContentResponse struct {
+	Slug      string                `json:"slug"`
+	Number    int                   `json:"number"`
+	Title     string                `json:"title"`
+	Words     []ChapterWordDTO      `json:"words"`
+	Sentences []ChapterSentenceText `json:"sentences" doc:"The practice sentences read in full, for listening and reading"`
+}
+
+type ChapterWordDTO struct {
+	Word    string  `json:"word"`
+	Kana    string  `json:"kana"`
+	Romaji  string  `json:"romaji"`
+	Meaning string  `json:"meaning"`
+	Hint    *string `json:"hint,omitempty"`
+}
+
+type ChapterSentenceText struct {
+	Text        string `json:"text"`
+	Translation string `json:"translation"`
+}
+
+// ChapterContentService serves one chapter's words and sentences to the
+// Vocabulary and Listening tabs.
+type ChapterContentService struct {
+	repo   ChapterContentReader
+	logger *zap.Logger
+}
+
+func NewChapterContentService(repo ChapterContentReader, log *zap.Logger) *ChapterContentService {
+	return &ChapterContentService{repo: repo, logger: log}
+}
+
+func (s *ChapterContentService) Get(ctx context.Context, rawLevel, slug string) (ChapterContentResponse, error) {
+	level := common.JLPTLevel(strings.ToUpper(rawLevel))
+	chapters, err := s.repo.ListGrammarChapters(ctx, level)
+	if err != nil {
+		return ChapterContentResponse{}, fmt.Errorf("get chapter content: %w", err)
+	}
+	var chapter *GrammarChapter
+	for i := range chapters {
+		if chapters[i].Slug == slug {
+			chapter = &chapters[i]
+		}
+	}
+	if chapter == nil {
+		return ChapterContentResponse{}, exceptions.ErrGrammarChapterNotFound
+	}
+	out := ChapterContentResponse{
+		Slug: chapter.Slug, Number: chapter.Number, Title: chapter.Title,
+		Words: []ChapterWordDTO{}, Sentences: []ChapterSentenceText{},
+	}
+	if err := s.addWords(ctx, level, chapter, &out); err != nil {
+		return ChapterContentResponse{}, err
+	}
+	if err := s.addSentences(ctx, level, chapter, &out); err != nil {
+		return ChapterContentResponse{}, err
+	}
+	return out, nil
+}
+
+func (s *ChapterContentService) addWords(ctx context.Context, level common.JLPTLevel, chapter *GrammarChapter, out *ChapterContentResponse) error {
+	words, err := s.repo.ListChapterWords(ctx, level)
+	if err != nil {
+		return fmt.Errorf("get chapter words: %w", err)
+	}
+	for i := range words {
+		w := &words[i]
+		if w.ChapterID == chapter.ID {
+			out.Words = append(out.Words, ChapterWordDTO{Word: w.Word, Kana: w.Kana, Romaji: w.Romaji, Meaning: w.Meaning, Hint: w.Hint})
+		}
+	}
+	return nil
+}
+
+func (s *ChapterContentService) addSentences(ctx context.Context, level common.JLPTLevel, chapter *GrammarChapter, out *ChapterContentResponse) error {
+	sentences, err := s.repo.ListGrammarSentences(ctx, level)
+	if err != nil {
+		return fmt.Errorf("get chapter sentences: %w", err)
+	}
+	for i := range sentences {
+		st := &sentences[i]
+		if st.ChapterID == chapter.ID {
+			text := strings.Replace(st.Sentence, "{}", st.Answer, 1)
+			out.Sentences = append(out.Sentences, ChapterSentenceText{Text: text, Translation: st.Translation})
+		}
+	}
+	return nil
+}

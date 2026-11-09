@@ -154,3 +154,16 @@ func (r *Repository) DeleteKanjiNote(ctx context.Context, userID, kanjiID uuid.U
 	}
 	return nil
 }
+
+// SetUnitCompleted sets or clears a unit's completion, keeping its scores.
+func (r *Repository) SetUnitCompleted(ctx context.Context, tx *gorm.DB, p *UnitProgress) error {
+	err := tx.WithContext(ctx).Exec(`
+		INSERT INTO unit_progress (user_id, unit_type, unit_id, completed_at)
+		VALUES (?, ?, ?, ?)
+		ON CONFLICT (user_id, unit_type, unit_id) DO UPDATE SET completed_at = EXCLUDED.completed_at`,
+		p.UserID, p.UnitType, p.UnitID, p.CompletedAt).Error
+	if err != nil {
+		return fmt.Errorf("set unit completed for %s: %w", p.UserID, err)
+	}
+	return nil
+}

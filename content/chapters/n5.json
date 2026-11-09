@@ -1,0 +1,5922 @@
+{
+  "level": "N5",
+  "chapters": [
+    {
+      "slug": "ch1",
+      "number": 1,
+      "title": "Identity & Basic Particles",
+      "position": 1,
+      "words": [
+        {
+          "word": "私",
+          "kana": "わたし",
+          "romaji": "watashi",
+          "meaning": "I, me",
+          "hint": null
+        },
+        {
+          "word": "あなた",
+          "kana": "あなた",
+          "romaji": "anata",
+          "meaning": "you",
+          "hint": "Sounds cold if used to someone you know; say their name + さん instead."
+        },
+        {
+          "word": "あの人",
+          "kana": "あのひと",
+          "romaji": "ano hito",
+          "meaning": "that person",
+          "hint": "あの (that over there) + 人 (person)."
+        },
+        {
+          "word": "あの方",
+          "kana": "あのかた",
+          "romaji": "ano kata",
+          "meaning": "that person (polite)",
+          "hint": null
+        },
+        {
+          "word": "皆さん",
+          "kana": "みなさん",
+          "romaji": "minasan",
+          "meaning": "everyone (ladies and gentlemen)",
+          "hint": null
+        },
+        {
+          "word": "～さん",
+          "kana": "さん",
+          "romaji": "san",
+          "meaning": "Mr / Ms (after a name)",
+          "hint": "Never use it after your own name."
+        },
+        {
+          "word": "～人",
+          "kana": "じん",
+          "romaji": "jin",
+          "meaning": "-ian (nationality)",
+          "hint": "Country + 人: 日本人 Japanese, アメリカ人 American."
+        },
+        {
+          "word": "先生",
+          "kana": "せんせい",
+          "romaji": "sensei",
+          "meaning": "teacher, doctor",
+          "hint": "先 (ahead) + 生 (born): someone born before you."
+        },
+        {
+          "word": "学生",
+          "kana": "がくせい",
+          "romaji": "gakusei",
+          "meaning": "student",
+          "hint": "学 (study) + 生 (life)."
+        },
+        {
+          "word": "会社員",
+          "kana": "かいしゃいん",
+          "romaji": "kaishain",
+          "meaning": "company employee",
+          "hint": "会社 (company) + 員 (member)."
+        },
+        {
+          "word": "社員",
+          "kana": "しゃいん",
+          "romaji": "shain",
+          "meaning": "employee of (a company)",
+          "hint": "Used with a company name: IMCの社員."
+        },
+        {
+          "word": "医者",
+          "kana": "いしゃ",
+          "romaji": "isha",
+          "meaning": "doctor",
+          "hint": null
+        },
+        {
+          "word": "銀行員",
+          "kana": "ぎんこういん",
+          "romaji": "ginkouin",
+          "meaning": "bank employee",
+          "hint": "銀行 (bank) + 員 (member)."
+        },
+        {
+          "word": "研究者",
+          "kana": "けんきゅうしゃ",
+          "romaji": "kenkyuusha",
+          "meaning": "researcher",
+          "hint": null
+        },
+        {
+          "word": "大学",
+          "kana": "だいがく",
+          "romaji": "daigaku",
+          "meaning": "university",
+          "hint": "大 (big) + 学 (study)."
+        },
+        {
+          "word": "病院",
+          "kana": "びょういん",
+          "romaji": "byouin",
+          "meaning": "hospital",
+          "hint": "Not びよういん (beauty salon): keep びょう short."
+        },
+        {
+          "word": "だれ",
+          "kana": "だれ",
+          "romaji": "dare",
+          "meaning": "who",
+          "hint": null
+        },
+        {
+          "word": "何歳",
+          "kana": "なんさい",
+          "romaji": "nansai",
+          "meaning": "how old",
+          "hint": "Polite form: おいくつ."
+        },
+        {
+          "word": "はい",
+          "kana": "はい",
+          "romaji": "hai",
+          "meaning": "yes",
+          "hint": null
+        },
+        {
+          "word": "いいえ",
+          "kana": "いいえ",
+          "romaji": "iie",
+          "meaning": "no",
+          "hint": null
+        },
+        {
+          "word": "初めまして",
+          "kana": "はじめまして",
+          "romaji": "hajimemashite",
+          "meaning": "nice to meet you",
+          "hint": "From 初め (first time): said only at a first meeting."
+        },
+        {
+          "word": "よろしくお願いします",
+          "kana": "よろしくおねがいします",
+          "romaji": "yoroshiku onegaishimasu",
+          "meaning": "please treat me well",
+          "hint": "Said after introducing yourself."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "わたし{}マイク・ミラーです。",
+          "answer": "は",
+          "distractors": [
+            "を",
+            "へ",
+            "で"
+          ],
+          "also_accept": [],
+          "romaji": [
+            "wa"
+          ],
+          "translation": "I am Mike Miller.",
+          "explanation": "は marks the topic; as a particle it is read “wa”."
+        },
+        {
+          "sentence": "サントスさんは学生{}。",
+          "answer": "じゃありません",
+          "distractors": [
+            "です",
+            "ですか",
+            "でした"
+          ],
+          "also_accept": [
+            "ではありません"
+          ],
+          "romaji": [],
+          "translation": "Mr Santos is not a student.",
+          "explanation": "じゃありません is the polite “is not”."
+        },
+        {
+          "sentence": "ミラーさんはアメリカ人です{}。",
+          "answer": "か",
+          "distractors": [
+            "も",
+            "の",
+            "を"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Is Mr Miller American?",
+          "explanation": "か at the end turns a sentence into a question."
+        },
+        {
+          "sentence": "グプタさん{}会社員です。",
+          "answer": "も",
+          "distractors": [
+            "を",
+            "へ",
+            "か"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Mr Gupta is also a company employee.",
+          "explanation": "も (“also”) replaces は when the same applies again."
+        },
+        {
+          "sentence": "ミラーさんはＩＭＣ{}社員です。",
+          "answer": "の",
+          "distractors": [
+            "を",
+            "へ",
+            "か"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Mr Miller is an employee of IMC.",
+          "explanation": "N₁ の N₂: the N₂ that belongs to N₁."
+        }
+      ]
+    },
+    {
+      "slug": "ch2",
+      "number": 2,
+      "title": "Demonstratives & Possession",
+      "position": 2,
+      "words": [
+        {
+          "word": "これ",
+          "kana": "これ",
+          "romaji": "kore",
+          "meaning": "this (thing near me)",
+          "hint": "こ = near me, そ = near you, あ = over there, ど = which."
+        },
+        {
+          "word": "それ",
+          "kana": "それ",
+          "romaji": "sore",
+          "meaning": "that (thing near you)",
+          "hint": null
+        },
+        {
+          "word": "あれ",
+          "kana": "あれ",
+          "romaji": "are",
+          "meaning": "that (thing over there)",
+          "hint": null
+        },
+        {
+          "word": "この～",
+          "kana": "この",
+          "romaji": "kono",
+          "meaning": "this ~ (before a noun)",
+          "hint": "この needs a noun after it; これ stands alone."
+        },
+        {
+          "word": "本",
+          "kana": "ほん",
+          "romaji": "hon",
+          "meaning": "book",
+          "hint": "A tree (木) with a line at its root: the origin, a book."
+        },
+        {
+          "word": "辞書",
+          "kana": "じしょ",
+          "romaji": "jisho",
+          "meaning": "dictionary",
+          "hint": null
+        },
+        {
+          "word": "雑誌",
+          "kana": "ざっし",
+          "romaji": "zasshi",
+          "meaning": "magazine",
+          "hint": null
+        },
+        {
+          "word": "新聞",
+          "kana": "しんぶん",
+          "romaji": "shinbun",
+          "meaning": "newspaper",
+          "hint": "新 (new) + 聞 (hear): new things heard."
+        },
+        {
+          "word": "ノート",
+          "kana": "ノート",
+          "romaji": "nooto",
+          "meaning": "notebook",
+          "hint": "From English \"note\"."
+        },
+        {
+          "word": "手帳",
+          "kana": "てちょう",
+          "romaji": "techou",
+          "meaning": "pocket diary",
+          "hint": null
+        },
+        {
+          "word": "名刺",
+          "kana": "めいし",
+          "romaji": "meishi",
+          "meaning": "business card",
+          "hint": null
+        },
+        {
+          "word": "鉛筆",
+          "kana": "えんぴつ",
+          "romaji": "enpitsu",
+          "meaning": "pencil",
+          "hint": null
+        },
+        {
+          "word": "ボールペン",
+          "kana": "ボールペン",
+          "romaji": "boorupen",
+          "meaning": "ballpoint pen",
+          "hint": null
+        },
+        {
+          "word": "鍵",
+          "kana": "かぎ",
+          "romaji": "kagi",
+          "meaning": "key",
+          "hint": null
+        },
+        {
+          "word": "時計",
+          "kana": "とけい",
+          "romaji": "tokei",
+          "meaning": "watch, clock",
+          "hint": null
+        },
+        {
+          "word": "傘",
+          "kana": "かさ",
+          "romaji": "kasa",
+          "meaning": "umbrella",
+          "hint": "The kanji looks like an open umbrella."
+        },
+        {
+          "word": "かばん",
+          "kana": "かばん",
+          "romaji": "kaban",
+          "meaning": "bag",
+          "hint": null
+        },
+        {
+          "word": "車",
+          "kana": "くるま",
+          "romaji": "kuruma",
+          "meaning": "car",
+          "hint": "The kanji is a cart seen from above: body and two axles."
+        },
+        {
+          "word": "机",
+          "kana": "つくえ",
+          "romaji": "tsukue",
+          "meaning": "desk",
+          "hint": null
+        },
+        {
+          "word": "いす",
+          "kana": "いす",
+          "romaji": "isu",
+          "meaning": "chair",
+          "hint": null
+        },
+        {
+          "word": "チョコレート",
+          "kana": "チョコレート",
+          "romaji": "chokoreeto",
+          "meaning": "chocolate",
+          "hint": null
+        },
+        {
+          "word": "お土産",
+          "kana": "おみやげ",
+          "romaji": "omiyage",
+          "meaning": "souvenir, gift from a trip",
+          "hint": null
+        },
+        {
+          "word": "何",
+          "kana": "なん",
+          "romaji": "nan",
+          "meaning": "what",
+          "hint": "なん before です; なに before を and most other words."
+        },
+        {
+          "word": "そうです",
+          "kana": "そうです",
+          "romaji": "sou desu",
+          "meaning": "that’s right",
+          "hint": null
+        },
+        {
+          "word": "違います",
+          "kana": "ちがいます",
+          "romaji": "chigaimasu",
+          "meaning": "no, that’s wrong",
+          "hint": "Literally \"it differs\"."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "{}は辞書です。",
+          "answer": "これ",
+          "distractors": [
+            "この",
+            "ここ",
+            "どの"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "This is a dictionary.",
+          "explanation": "これ stands alone as “this (thing)”; この needs a noun after it."
+        },
+        {
+          "sentence": "{}本はわたしのです。",
+          "answer": "この",
+          "distractors": [
+            "これ",
+            "ここ",
+            "どれ"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "This book is mine.",
+          "explanation": "この comes before a noun: この本 “this book”."
+        },
+        {
+          "sentence": "それはボールペンです{}、シャープペンシルですか。",
+          "answer": "か",
+          "distractors": [
+            "も",
+            "の",
+            "は"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Is that a ballpoint pen or a mechanical pencil?",
+          "explanation": "〜か、〜か asks which of two."
+        },
+        {
+          "sentence": "この傘はだれ{}ですか。",
+          "answer": "の",
+          "distractors": [
+            "を",
+            "に",
+            "へ"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Whose umbrella is this?",
+          "explanation": "だれの “whose”: の can stand for the thing owned."
+        },
+        {
+          "sentence": "これは本ですか。…いいえ、{}。",
+          "answer": "違います",
+          "distractors": [
+            "そうです",
+            "はい",
+            "これです"
+          ],
+          "also_accept": [
+            "ちがいます"
+          ],
+          "romaji": [],
+          "translation": "Is this a book? …No, it isn’t.",
+          "explanation": "違います “that’s wrong / it isn’t” answers a yes/no question with no."
+        }
+      ]
+    },
+    {
+      "slug": "ch3",
+      "number": 3,
+      "title": "Locations & Directions",
+      "position": 3,
+      "words": [
+        {
+          "word": "ここ",
+          "kana": "ここ",
+          "romaji": "koko",
+          "meaning": "here",
+          "hint": null
+        },
+        {
+          "word": "そこ",
+          "kana": "そこ",
+          "romaji": "soko",
+          "meaning": "there (near you)",
+          "hint": null
+        },
+        {
+          "word": "あそこ",
+          "kana": "あそこ",
+          "romaji": "asoko",
+          "meaning": "over there",
+          "hint": null
+        },
+        {
+          "word": "どこ",
+          "kana": "どこ",
+          "romaji": "doko",
+          "meaning": "where",
+          "hint": null
+        },
+        {
+          "word": "こちら",
+          "kana": "こちら",
+          "romaji": "kochira",
+          "meaning": "this way, here (polite)",
+          "hint": "Polite ここ; also \"this person\" in introductions."
+        },
+        {
+          "word": "どちら",
+          "kana": "どちら",
+          "romaji": "dochira",
+          "meaning": "where, which way (polite)",
+          "hint": null
+        },
+        {
+          "word": "教室",
+          "kana": "きょうしつ",
+          "romaji": "kyoushitsu",
+          "meaning": "classroom",
+          "hint": "教 (teach) + 室 (room)."
+        },
+        {
+          "word": "食堂",
+          "kana": "しょくどう",
+          "romaji": "shokudou",
+          "meaning": "cafeteria, dining hall",
+          "hint": "食 (eat) + 堂 (hall)."
+        },
+        {
+          "word": "事務所",
+          "kana": "じむしょ",
+          "romaji": "jimusho",
+          "meaning": "office",
+          "hint": null
+        },
+        {
+          "word": "会議室",
+          "kana": "かいぎしつ",
+          "romaji": "kaigishitsu",
+          "meaning": "meeting room",
+          "hint": "会議 (meeting) + 室 (room)."
+        },
+        {
+          "word": "受付",
+          "kana": "うけつけ",
+          "romaji": "uketsuke",
+          "meaning": "reception desk",
+          "hint": "From 受け付ける, to accept (visitors)."
+        },
+        {
+          "word": "お手洗い",
+          "kana": "おてあらい",
+          "romaji": "otearai",
+          "meaning": "toilet, restroom",
+          "hint": "Literally \"hand-washing place\"."
+        },
+        {
+          "word": "部屋",
+          "kana": "へや",
+          "romaji": "heya",
+          "meaning": "room",
+          "hint": null
+        },
+        {
+          "word": "階段",
+          "kana": "かいだん",
+          "romaji": "kaidan",
+          "meaning": "stairs",
+          "hint": null
+        },
+        {
+          "word": "エレベーター",
+          "kana": "エレベーター",
+          "romaji": "erebeetaa",
+          "meaning": "lift, elevator",
+          "hint": null
+        },
+        {
+          "word": "会社",
+          "kana": "かいしゃ",
+          "romaji": "kaisha",
+          "meaning": "company",
+          "hint": null
+        },
+        {
+          "word": "家",
+          "kana": "うち",
+          "romaji": "uchi",
+          "meaning": "house, home",
+          "hint": "Also read いえ. The kanji: a pig (豕) under a roof (宀)."
+        },
+        {
+          "word": "国",
+          "kana": "くに",
+          "romaji": "kuni",
+          "meaning": "country",
+          "hint": null
+        },
+        {
+          "word": "売り場",
+          "kana": "うりば",
+          "romaji": "uriba",
+          "meaning": "department / counter (in a shop)",
+          "hint": "売り (selling) + 場 (place)."
+        },
+        {
+          "word": "地下",
+          "kana": "ちか",
+          "romaji": "chika",
+          "meaning": "basement",
+          "hint": "地 (ground) + 下 (below)."
+        },
+        {
+          "word": "～階",
+          "kana": "かい",
+          "romaji": "kai",
+          "meaning": "~th floor",
+          "hint": "3階 is さんがい, not さんかい."
+        },
+        {
+          "word": "いくら",
+          "kana": "いくら",
+          "romaji": "ikura",
+          "meaning": "how much (price)",
+          "hint": null
+        },
+        {
+          "word": "～円",
+          "kana": "えん",
+          "romaji": "en",
+          "meaning": "~ yen",
+          "hint": null
+        },
+        {
+          "word": "百",
+          "kana": "ひゃく",
+          "romaji": "hyaku",
+          "meaning": "hundred",
+          "hint": null
+        },
+        {
+          "word": "千",
+          "kana": "せん",
+          "romaji": "sen",
+          "meaning": "thousand",
+          "hint": null
+        },
+        {
+          "word": "万",
+          "kana": "まん",
+          "romaji": "man",
+          "meaning": "ten thousand",
+          "hint": "Japanese counts in 万: 10,000 is 一万, 100,000 is 十万."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "トイレは{}ですか。",
+          "answer": "どこ",
+          "distractors": [
+            "だれ",
+            "なに",
+            "いつ"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Where is the toilet?",
+          "explanation": "どこ asks “where”."
+        },
+        {
+          "sentence": "{}は食堂です。",
+          "answer": "ここ",
+          "distractors": [
+            "これ",
+            "この",
+            "どこ"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "This place is the cafeteria.",
+          "explanation": "ここ is “here / this place”; これ is “this thing”."
+        },
+        {
+          "sentence": "これはどこ{}車ですか。",
+          "answer": "の",
+          "distractors": [
+            "を",
+            "へ",
+            "で"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Where is this car made?",
+          "explanation": "Country の product: where something comes from."
+        },
+        {
+          "sentence": "会社は{}ですか。",
+          "answer": "どちら",
+          "distractors": [
+            "だれ",
+            "いつ",
+            "いくら"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Which company do you work for? (polite)",
+          "explanation": "どちら is the polite どこ."
+        }
+      ]
+    },
+    {
+      "slug": "ch4",
+      "number": 4,
+      "title": "Time & Basic Verbs",
+      "position": 4,
+      "words": [
+        {
+          "word": "起きます",
+          "kana": "おきます",
+          "romaji": "okimasu",
+          "meaning": "to get up",
+          "hint": null
+        },
+        {
+          "word": "寝ます",
+          "kana": "ねます",
+          "romaji": "nemasu",
+          "meaning": "to sleep, go to bed",
+          "hint": null
+        },
+        {
+          "word": "働きます",
+          "kana": "はたらきます",
+          "romaji": "hatarakimasu",
+          "meaning": "to work",
+          "hint": "人 (person) + 動 (move): a person in motion."
+        },
+        {
+          "word": "休みます",
+          "kana": "やすみます",
+          "romaji": "yasumimasu",
+          "meaning": "to rest, take time off",
+          "hint": "A person (亻) leaning on a tree (木)."
+        },
+        {
+          "word": "勉強します",
+          "kana": "べんきょうします",
+          "romaji": "benkyou shimasu",
+          "meaning": "to study",
+          "hint": null
+        },
+        {
+          "word": "終わります",
+          "kana": "おわります",
+          "romaji": "owarimasu",
+          "meaning": "to finish, end",
+          "hint": null
+        },
+        {
+          "word": "今",
+          "kana": "いま",
+          "romaji": "ima",
+          "meaning": "now",
+          "hint": null
+        },
+        {
+          "word": "～時",
+          "kana": "じ",
+          "romaji": "ji",
+          "meaning": "~ o’clock",
+          "hint": "4時 is よじ, 7時 is しちじ, 9時 is くじ."
+        },
+        {
+          "word": "～分",
+          "kana": "ふん",
+          "romaji": "fun",
+          "meaning": "~ minutes",
+          "hint": "ふん or ぷん: 1分 いっぷん, 5分 ごふん, 10分 じゅっぷん."
+        },
+        {
+          "word": "半",
+          "kana": "はん",
+          "romaji": "han",
+          "meaning": "half (past)",
+          "hint": "3時半 = 3:30."
+        },
+        {
+          "word": "午前",
+          "kana": "ごぜん",
+          "romaji": "gozen",
+          "meaning": "a.m.",
+          "hint": "午 (noon) + 前 (before)."
+        },
+        {
+          "word": "午後",
+          "kana": "ごご",
+          "romaji": "gogo",
+          "meaning": "p.m.",
+          "hint": "午 (noon) + 後 (after)."
+        },
+        {
+          "word": "朝",
+          "kana": "あさ",
+          "romaji": "asa",
+          "meaning": "morning",
+          "hint": null
+        },
+        {
+          "word": "昼",
+          "kana": "ひる",
+          "romaji": "hiru",
+          "meaning": "midday, noon",
+          "hint": null
+        },
+        {
+          "word": "晩",
+          "kana": "ばん",
+          "romaji": "ban",
+          "meaning": "evening",
+          "hint": null
+        },
+        {
+          "word": "昨日",
+          "kana": "きのう",
+          "romaji": "kinou",
+          "meaning": "yesterday",
+          "hint": null
+        },
+        {
+          "word": "今日",
+          "kana": "きょう",
+          "romaji": "kyou",
+          "meaning": "today",
+          "hint": null
+        },
+        {
+          "word": "明日",
+          "kana": "あした",
+          "romaji": "ashita",
+          "meaning": "tomorrow",
+          "hint": null
+        },
+        {
+          "word": "毎朝",
+          "kana": "まいあさ",
+          "romaji": "maiasa",
+          "meaning": "every morning",
+          "hint": "毎 (every) + 朝 (morning); same with 毎日, 毎晩."
+        },
+        {
+          "word": "休み",
+          "kana": "やすみ",
+          "romaji": "yasumi",
+          "meaning": "holiday, day off, break",
+          "hint": null
+        },
+        {
+          "word": "銀行",
+          "kana": "ぎんこう",
+          "romaji": "ginkou",
+          "meaning": "bank",
+          "hint": "銀 (silver) + 行 (go): where money goes."
+        },
+        {
+          "word": "郵便局",
+          "kana": "ゆうびんきょく",
+          "romaji": "yuubinkyoku",
+          "meaning": "post office",
+          "hint": null
+        },
+        {
+          "word": "図書館",
+          "kana": "としょかん",
+          "romaji": "toshokan",
+          "meaning": "library",
+          "hint": "図書 (books) + 館 (building)."
+        },
+        {
+          "word": "何曜日",
+          "kana": "なんようび",
+          "romaji": "nan'youbi",
+          "meaning": "what day of the week",
+          "hint": null
+        },
+        {
+          "word": "月曜日",
+          "kana": "げつようび",
+          "romaji": "getsuyoubi",
+          "meaning": "Monday",
+          "hint": "Moon day; 火 fire Tue, 水 water Wed, 木 wood Thu, 金 gold Fri, 土 earth Sat, 日 sun Sun."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "毎朝６時{}起きます。",
+          "answer": "に",
+          "distractors": [
+            "を",
+            "へ",
+            "の"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I get up at six every morning.",
+          "explanation": "に marks a clock time."
+        },
+        {
+          "sentence": "９時{}５時まで働きます。",
+          "answer": "から",
+          "distractors": [
+            "まで",
+            "に",
+            "と"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I work from nine to five.",
+          "explanation": "から “from”, まで “until”."
+        },
+        {
+          "sentence": "きのうは勉強し{}。",
+          "answer": "ませんでした",
+          "distractors": [
+            "ます",
+            "ました",
+            "ません"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I didn’t study yesterday.",
+          "explanation": "〜ませんでした is the polite past negative."
+        },
+        {
+          "sentence": "銀行の休みは土曜日{}日曜日です。",
+          "answer": "と",
+          "distractors": [
+            "を",
+            "へ",
+            "で"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "The bank is closed on Saturdays and Sundays.",
+          "explanation": "と joins nouns: “A and B”."
+        }
+      ]
+    },
+    {
+      "slug": "ch5",
+      "number": 5,
+      "title": "Movement & Transportation",
+      "position": 5,
+      "words": [
+        {
+          "word": "行きます",
+          "kana": "いきます",
+          "romaji": "ikimasu",
+          "meaning": "to go",
+          "hint": null
+        },
+        {
+          "word": "来ます",
+          "kana": "きます",
+          "romaji": "kimasu",
+          "meaning": "to come",
+          "hint": null
+        },
+        {
+          "word": "帰ります",
+          "kana": "かえります",
+          "romaji": "kaerimasu",
+          "meaning": "to go home, return",
+          "hint": "Only for going back to where you belong (home, your country)."
+        },
+        {
+          "word": "学校",
+          "kana": "がっこう",
+          "romaji": "gakkou",
+          "meaning": "school",
+          "hint": null
+        },
+        {
+          "word": "駅",
+          "kana": "えき",
+          "romaji": "eki",
+          "meaning": "station",
+          "hint": "Has 馬 (horse): once a post-horse station."
+        },
+        {
+          "word": "スーパー",
+          "kana": "スーパー",
+          "romaji": "suupaa",
+          "meaning": "supermarket",
+          "hint": null
+        },
+        {
+          "word": "飛行機",
+          "kana": "ひこうき",
+          "romaji": "hikouki",
+          "meaning": "aeroplane",
+          "hint": "飛 (fly) + 行 (go) + 機 (machine)."
+        },
+        {
+          "word": "電車",
+          "kana": "でんしゃ",
+          "romaji": "densha",
+          "meaning": "train",
+          "hint": "電 (electric) + 車 (vehicle)."
+        },
+        {
+          "word": "地下鉄",
+          "kana": "ちかてつ",
+          "romaji": "chikatetsu",
+          "meaning": "underground, subway",
+          "hint": "地下 (underground) + 鉄 (iron)."
+        },
+        {
+          "word": "新幹線",
+          "kana": "しんかんせん",
+          "romaji": "shinkansen",
+          "meaning": "bullet train",
+          "hint": null
+        },
+        {
+          "word": "バス",
+          "kana": "バス",
+          "romaji": "basu",
+          "meaning": "bus",
+          "hint": null
+        },
+        {
+          "word": "タクシー",
+          "kana": "タクシー",
+          "romaji": "takushii",
+          "meaning": "taxi",
+          "hint": null
+        },
+        {
+          "word": "自転車",
+          "kana": "じてんしゃ",
+          "romaji": "jitensha",
+          "meaning": "bicycle",
+          "hint": "自 (self) + 転 (turn) + 車: a vehicle you turn yourself."
+        },
+        {
+          "word": "歩いて",
+          "kana": "あるいて",
+          "romaji": "aruite",
+          "meaning": "on foot",
+          "hint": "No で: 歩いて行きます."
+        },
+        {
+          "word": "友達",
+          "kana": "ともだち",
+          "romaji": "tomodachi",
+          "meaning": "friend",
+          "hint": null
+        },
+        {
+          "word": "家族",
+          "kana": "かぞく",
+          "romaji": "kazoku",
+          "meaning": "family",
+          "hint": null
+        },
+        {
+          "word": "一人で",
+          "kana": "ひとりで",
+          "romaji": "hitori de",
+          "meaning": "alone, by yourself",
+          "hint": null
+        },
+        {
+          "word": "先週",
+          "kana": "せんしゅう",
+          "romaji": "senshuu",
+          "meaning": "last week",
+          "hint": "先 last, 今 this, 来 next: 先週, 今週, 来週."
+        },
+        {
+          "word": "今週",
+          "kana": "こんしゅう",
+          "romaji": "konshuu",
+          "meaning": "this week",
+          "hint": null
+        },
+        {
+          "word": "来週",
+          "kana": "らいしゅう",
+          "romaji": "raishuu",
+          "meaning": "next week",
+          "hint": null
+        },
+        {
+          "word": "来月",
+          "kana": "らいげつ",
+          "romaji": "raigetsu",
+          "meaning": "next month",
+          "hint": null
+        },
+        {
+          "word": "去年",
+          "kana": "きょねん",
+          "romaji": "kyonen",
+          "meaning": "last year",
+          "hint": "去 (gone) + 年 (year)."
+        },
+        {
+          "word": "来年",
+          "kana": "らいねん",
+          "romaji": "rainen",
+          "meaning": "next year",
+          "hint": null
+        },
+        {
+          "word": "いつ",
+          "kana": "いつ",
+          "romaji": "itsu",
+          "meaning": "when",
+          "hint": null
+        },
+        {
+          "word": "誕生日",
+          "kana": "たんじょうび",
+          "romaji": "tanjoubi",
+          "meaning": "birthday",
+          "hint": "誕生 (birth) + 日 (day)."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "来月、日本{}行きます。",
+          "answer": "へ",
+          "distractors": [
+            "を",
+            "で",
+            "と"
+          ],
+          "also_accept": [
+            "に"
+          ],
+          "romaji": [
+            "e"
+          ],
+          "translation": "I’m going to Japan next month.",
+          "explanation": "へ (read “e”) marks where you go. に works too."
+        },
+        {
+          "sentence": "日曜日はどこへ{}行きません。",
+          "answer": "も",
+          "distractors": [
+            "を",
+            "が",
+            "の"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I don’t go anywhere on Sundays.",
+          "explanation": "Question word + も + negative: “not anywhere / nothing / nobody”."
+        },
+        {
+          "sentence": "電車{}会社へ行きます。",
+          "answer": "で",
+          "distractors": [
+            "を",
+            "が",
+            "の"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I go to work by train.",
+          "explanation": "で marks the means of transport."
+        },
+        {
+          "sentence": "家族{}日本へ来ました。",
+          "answer": "と",
+          "distractors": [
+            "を",
+            "が",
+            "へ"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I came to Japan with my family.",
+          "explanation": "Person と: “together with”."
+        },
+        {
+          "sentence": "{}日本へ来ましたか。",
+          "answer": "いつ",
+          "distractors": [
+            "どこ",
+            "だれ",
+            "なに"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "When did you come to Japan?",
+          "explanation": "いつ asks “when” and needs no particle."
+        }
+      ]
+    },
+    {
+      "slug": "ch6",
+      "number": 6,
+      "title": "Direct Objects & Invitations",
+      "position": 6,
+      "words": [
+        {
+          "word": "食べます",
+          "kana": "たべます",
+          "romaji": "tabemasu",
+          "meaning": "to eat",
+          "hint": null
+        },
+        {
+          "word": "飲みます",
+          "kana": "のみます",
+          "romaji": "nomimasu",
+          "meaning": "to drink",
+          "hint": "Also for taking medicine: 薬を飲みます."
+        },
+        {
+          "word": "見ます",
+          "kana": "みます",
+          "romaji": "mimasu",
+          "meaning": "to see, watch",
+          "hint": "The kanji: an eye (目) on legs."
+        },
+        {
+          "word": "聞きます",
+          "kana": "ききます",
+          "romaji": "kikimasu",
+          "meaning": "to listen, hear; to ask",
+          "hint": "An ear (耳) at the gate (門)."
+        },
+        {
+          "word": "読みます",
+          "kana": "よみます",
+          "romaji": "yomimasu",
+          "meaning": "to read",
+          "hint": null
+        },
+        {
+          "word": "書きます",
+          "kana": "かきます",
+          "romaji": "kakimasu",
+          "meaning": "to write, draw",
+          "hint": null
+        },
+        {
+          "word": "買います",
+          "kana": "かいます",
+          "romaji": "kaimasu",
+          "meaning": "to buy",
+          "hint": null
+        },
+        {
+          "word": "撮ります",
+          "kana": "とります",
+          "romaji": "torimasu",
+          "meaning": "to take (a photo)",
+          "hint": null
+        },
+        {
+          "word": "します",
+          "kana": "します",
+          "romaji": "shimasu",
+          "meaning": "to do, play",
+          "hint": null
+        },
+        {
+          "word": "会います",
+          "kana": "あいます",
+          "romaji": "aimasu",
+          "meaning": "to meet",
+          "hint": "Takes に: 友達に会います."
+        },
+        {
+          "word": "ご飯",
+          "kana": "ごはん",
+          "romaji": "gohan",
+          "meaning": "meal; cooked rice",
+          "hint": "朝ごはん, 昼ごはん, 晩ごはん: breakfast, lunch, dinner."
+        },
+        {
+          "word": "パン",
+          "kana": "パン",
+          "romaji": "pan",
+          "meaning": "bread",
+          "hint": "From Portuguese \"pão\"."
+        },
+        {
+          "word": "卵",
+          "kana": "たまご",
+          "romaji": "tamago",
+          "meaning": "egg",
+          "hint": null
+        },
+        {
+          "word": "肉",
+          "kana": "にく",
+          "romaji": "niku",
+          "meaning": "meat",
+          "hint": null
+        },
+        {
+          "word": "魚",
+          "kana": "さかな",
+          "romaji": "sakana",
+          "meaning": "fish",
+          "hint": "The kanji: head, body with scales, and a tail (灬)."
+        },
+        {
+          "word": "野菜",
+          "kana": "やさい",
+          "romaji": "yasai",
+          "meaning": "vegetables",
+          "hint": null
+        },
+        {
+          "word": "果物",
+          "kana": "くだもの",
+          "romaji": "kudamono",
+          "meaning": "fruit",
+          "hint": null
+        },
+        {
+          "word": "水",
+          "kana": "みず",
+          "romaji": "mizu",
+          "meaning": "water",
+          "hint": null
+        },
+        {
+          "word": "お茶",
+          "kana": "おちゃ",
+          "romaji": "ocha",
+          "meaning": "tea (green tea)",
+          "hint": null
+        },
+        {
+          "word": "牛乳",
+          "kana": "ぎゅうにゅう",
+          "romaji": "gyuunyuu",
+          "meaning": "milk",
+          "hint": "牛 (cow) + 乳 (milk)."
+        },
+        {
+          "word": "映画",
+          "kana": "えいが",
+          "romaji": "eiga",
+          "meaning": "film, movie",
+          "hint": null
+        },
+        {
+          "word": "写真",
+          "kana": "しゃしん",
+          "romaji": "shashin",
+          "meaning": "photograph",
+          "hint": "写 (copy) + 真 (truth): a true copy."
+        },
+        {
+          "word": "店",
+          "kana": "みせ",
+          "romaji": "mise",
+          "meaning": "shop",
+          "hint": null
+        },
+        {
+          "word": "公園",
+          "kana": "こうえん",
+          "romaji": "kouen",
+          "meaning": "park",
+          "hint": null
+        },
+        {
+          "word": "一緒に",
+          "kana": "いっしょに",
+          "romaji": "issho ni",
+          "meaning": "together",
+          "hint": null
+        },
+        {
+          "word": "時々",
+          "kana": "ときどき",
+          "romaji": "tokidoki",
+          "meaning": "sometimes",
+          "hint": "々 repeats the kanji before it: 時々 = 時時."
+        },
+        {
+          "word": "いつも",
+          "kana": "いつも",
+          "romaji": "itsumo",
+          "meaning": "always, usually",
+          "hint": null
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "ジュース{}飲みます。",
+          "answer": "を",
+          "distractors": [
+            "へ",
+            "で",
+            "に"
+          ],
+          "also_accept": [],
+          "romaji": [
+            "o",
+            "wo"
+          ],
+          "translation": "I drink juice.",
+          "explanation": "を (read “o”) marks the object of the verb."
+        },
+        {
+          "sentence": "駅{}新聞を買います。",
+          "answer": "で",
+          "distractors": [
+            "を",
+            "へ",
+            "が"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I buy a newspaper at the station.",
+          "explanation": "Place で verb: where the action happens."
+        },
+        {
+          "sentence": "いっしょに京都へ行き{}。",
+          "answer": "ませんか",
+          "distractors": [
+            "ましょう",
+            "ました",
+            "ます"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Won’t you go to Kyoto with me?",
+          "explanation": "〜ませんか politely invites."
+        },
+        {
+          "sentence": "ええ、行き{}。",
+          "answer": "ましょう",
+          "distractors": [
+            "ませんか",
+            "ません",
+            "ませんでした"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Yes, let’s go.",
+          "explanation": "〜ましょう “let’s”."
+        },
+        {
+          "sentence": "日曜日、{}をしますか。",
+          "answer": "なに",
+          "distractors": [
+            "なん",
+            "どこ",
+            "だれ"
+          ],
+          "also_accept": [
+            "何"
+          ],
+          "romaji": [],
+          "translation": "What do you do on Sundays?",
+          "explanation": "Before を, “what” is なに (なん comes before d-, t-, n- sounds)."
+        }
+      ]
+    },
+    {
+      "slug": "ch7",
+      "number": 7,
+      "title": "Giving, Receiving & Methods",
+      "position": 7,
+      "words": [
+        {
+          "word": "切ります",
+          "kana": "きります",
+          "romaji": "kirimasu",
+          "meaning": "to cut",
+          "hint": null
+        },
+        {
+          "word": "送ります",
+          "kana": "おくります",
+          "romaji": "okurimasu",
+          "meaning": "to send",
+          "hint": null
+        },
+        {
+          "word": "あげます",
+          "kana": "あげます",
+          "romaji": "agemasu",
+          "meaning": "to give",
+          "hint": "Giving away from you (or your side)."
+        },
+        {
+          "word": "もらいます",
+          "kana": "もらいます",
+          "romaji": "moraimasu",
+          "meaning": "to receive",
+          "hint": "The giver takes に or から."
+        },
+        {
+          "word": "貸します",
+          "kana": "かします",
+          "romaji": "kashimasu",
+          "meaning": "to lend",
+          "hint": "Lend = かします; borrow = かります. Easy to mix up: か\"し\" goes out."
+        },
+        {
+          "word": "借ります",
+          "kana": "かります",
+          "romaji": "karimasu",
+          "meaning": "to borrow",
+          "hint": null
+        },
+        {
+          "word": "教えます",
+          "kana": "おしえます",
+          "romaji": "oshiemasu",
+          "meaning": "to teach; to tell",
+          "hint": null
+        },
+        {
+          "word": "習います",
+          "kana": "ならいます",
+          "romaji": "naraimasu",
+          "meaning": "to learn (from someone)",
+          "hint": "The kanji: wings (羽) over white (白): a chick practising to fly."
+        },
+        {
+          "word": "電話をかけます",
+          "kana": "でんわをかけます",
+          "romaji": "denwa o kakemasu",
+          "meaning": "to make a phone call",
+          "hint": null
+        },
+        {
+          "word": "手",
+          "kana": "て",
+          "romaji": "te",
+          "meaning": "hand",
+          "hint": null
+        },
+        {
+          "word": "箸",
+          "kana": "はし",
+          "romaji": "hashi",
+          "meaning": "chopsticks",
+          "hint": "Same sound as 橋 (bridge); context tells them apart."
+        },
+        {
+          "word": "スプーン",
+          "kana": "スプーン",
+          "romaji": "supuun",
+          "meaning": "spoon",
+          "hint": null
+        },
+        {
+          "word": "ナイフ",
+          "kana": "ナイフ",
+          "romaji": "naifu",
+          "meaning": "knife",
+          "hint": null
+        },
+        {
+          "word": "はさみ",
+          "kana": "はさみ",
+          "romaji": "hasami",
+          "meaning": "scissors",
+          "hint": null
+        },
+        {
+          "word": "パソコン",
+          "kana": "パソコン",
+          "romaji": "pasokon",
+          "meaning": "personal computer",
+          "hint": "Short for パーソナル・コンピューター."
+        },
+        {
+          "word": "紙",
+          "kana": "かみ",
+          "romaji": "kami",
+          "meaning": "paper",
+          "hint": null
+        },
+        {
+          "word": "花",
+          "kana": "はな",
+          "romaji": "hana",
+          "meaning": "flower",
+          "hint": "艹 (grass) + 化 (change): a plant that changes into bloom."
+        },
+        {
+          "word": "プレゼント",
+          "kana": "プレゼント",
+          "romaji": "purezento",
+          "meaning": "present, gift",
+          "hint": null
+        },
+        {
+          "word": "荷物",
+          "kana": "にもつ",
+          "romaji": "nimotsu",
+          "meaning": "luggage, parcel",
+          "hint": null
+        },
+        {
+          "word": "お金",
+          "kana": "おかね",
+          "romaji": "okane",
+          "meaning": "money",
+          "hint": "金 alone is gold or metal."
+        },
+        {
+          "word": "切符",
+          "kana": "きっぷ",
+          "romaji": "kippu",
+          "meaning": "ticket",
+          "hint": null
+        },
+        {
+          "word": "父",
+          "kana": "ちち",
+          "romaji": "chichi",
+          "meaning": "(my) father",
+          "hint": "Someone else’s father: お父さん."
+        },
+        {
+          "word": "母",
+          "kana": "はは",
+          "romaji": "haha",
+          "meaning": "(my) mother",
+          "hint": "Someone else’s mother: お母さん."
+        },
+        {
+          "word": "もう",
+          "kana": "もう",
+          "romaji": "mou",
+          "meaning": "already",
+          "hint": null
+        },
+        {
+          "word": "まだ",
+          "kana": "まだ",
+          "romaji": "mada",
+          "meaning": "not yet",
+          "hint": "まだです answers \"Have you … yet?\" with no."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "はし{}ごはんを食べます。",
+          "answer": "で",
+          "distractors": [
+            "を",
+            "へ",
+            "が"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I eat with chopsticks.",
+          "explanation": "で marks the tool or means."
+        },
+        {
+          "sentence": "「Thank you」は日本語{}何ですか。",
+          "answer": "で",
+          "distractors": [
+            "を",
+            "へ",
+            "が"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "What is “Thank you” in Japanese?",
+          "explanation": "Language で: “in (a language)”."
+        },
+        {
+          "sentence": "わたしは木村さんに花を{}。",
+          "answer": "あげました",
+          "distractors": [
+            "もらいました",
+            "ありました",
+            "いました"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I gave Ms Kimura flowers.",
+          "explanation": "あげます: the giver is the subject, the receiver takes に."
+        },
+        {
+          "sentence": "わたしは父{}ネクタイをもらいました。",
+          "answer": "に",
+          "distractors": [
+            "を",
+            "へ",
+            "で"
+          ],
+          "also_accept": [
+            "から"
+          ],
+          "romaji": [],
+          "translation": "I received a tie from my father.",
+          "explanation": "With もらいます, the giver takes に (or から)."
+        },
+        {
+          "sentence": "もう昼ごはんを食べましたか。…いいえ、{}です。",
+          "answer": "まだ",
+          "distractors": [
+            "もう",
+            "よく",
+            "とても"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Have you had lunch yet? …No, not yet.",
+          "explanation": "まだです “not yet”."
+        }
+      ]
+    },
+    {
+      "slug": "ch8",
+      "number": 8,
+      "title": "Adjectives: Describing the World",
+      "position": 8,
+      "words": [
+        {
+          "word": "きれい",
+          "kana": "きれい",
+          "romaji": "kirei",
+          "meaning": "beautiful; clean",
+          "hint": "A な-adjective even though it ends in い."
+        },
+        {
+          "word": "静か",
+          "kana": "しずか",
+          "romaji": "shizuka",
+          "meaning": "quiet",
+          "hint": null
+        },
+        {
+          "word": "にぎやか",
+          "kana": "にぎやか",
+          "romaji": "nigiyaka",
+          "meaning": "lively, busy (place)",
+          "hint": null
+        },
+        {
+          "word": "有名",
+          "kana": "ゆうめい",
+          "romaji": "yuumei",
+          "meaning": "famous",
+          "hint": "有 (have) + 名 (name)."
+        },
+        {
+          "word": "親切",
+          "kana": "しんせつ",
+          "romaji": "shinsetsu",
+          "meaning": "kind",
+          "hint": null
+        },
+        {
+          "word": "元気",
+          "kana": "げんき",
+          "romaji": "genki",
+          "meaning": "healthy, energetic",
+          "hint": null
+        },
+        {
+          "word": "暇",
+          "kana": "ひま",
+          "romaji": "hima",
+          "meaning": "free (time)",
+          "hint": null
+        },
+        {
+          "word": "便利",
+          "kana": "べんり",
+          "romaji": "benri",
+          "meaning": "convenient",
+          "hint": null
+        },
+        {
+          "word": "大きい",
+          "kana": "おおきい",
+          "romaji": "ookii",
+          "meaning": "big",
+          "hint": null
+        },
+        {
+          "word": "小さい",
+          "kana": "ちいさい",
+          "romaji": "chiisai",
+          "meaning": "small",
+          "hint": null
+        },
+        {
+          "word": "新しい",
+          "kana": "あたらしい",
+          "romaji": "atarashii",
+          "meaning": "new",
+          "hint": null
+        },
+        {
+          "word": "古い",
+          "kana": "ふるい",
+          "romaji": "furui",
+          "meaning": "old (things, not people)",
+          "hint": "For people use 年を取った."
+        },
+        {
+          "word": "いい",
+          "kana": "いい",
+          "romaji": "ii",
+          "meaning": "good",
+          "hint": "Past and negative come from よい: よかった, よくない."
+        },
+        {
+          "word": "悪い",
+          "kana": "わるい",
+          "romaji": "warui",
+          "meaning": "bad",
+          "hint": null
+        },
+        {
+          "word": "暑い",
+          "kana": "あつい",
+          "romaji": "atsui",
+          "meaning": "hot (weather)",
+          "hint": "Hot to the touch is 熱い; same sound."
+        },
+        {
+          "word": "寒い",
+          "kana": "さむい",
+          "romaji": "samui",
+          "meaning": "cold (weather)",
+          "hint": "Cold to the touch is 冷たい."
+        },
+        {
+          "word": "難しい",
+          "kana": "むずかしい",
+          "romaji": "muzukashii",
+          "meaning": "difficult",
+          "hint": null
+        },
+        {
+          "word": "易しい",
+          "kana": "やさしい",
+          "romaji": "yasashii",
+          "meaning": "easy",
+          "hint": "やさしい also means kind (優しい)."
+        },
+        {
+          "word": "高い",
+          "kana": "たかい",
+          "romaji": "takai",
+          "meaning": "expensive; tall, high",
+          "hint": "Opposites: 安い (cheap), 低い (low)."
+        },
+        {
+          "word": "安い",
+          "kana": "やすい",
+          "romaji": "yasui",
+          "meaning": "cheap",
+          "hint": null
+        },
+        {
+          "word": "面白い",
+          "kana": "おもしろい",
+          "romaji": "omoshiroi",
+          "meaning": "interesting, funny",
+          "hint": null
+        },
+        {
+          "word": "美味しい",
+          "kana": "おいしい",
+          "romaji": "oishii",
+          "meaning": "delicious",
+          "hint": "Usually written in kana."
+        },
+        {
+          "word": "忙しい",
+          "kana": "いそがしい",
+          "romaji": "isogashii",
+          "meaning": "busy (person)",
+          "hint": "忄 (heart) + 亡 (lost): so busy you lose your heart."
+        },
+        {
+          "word": "楽しい",
+          "kana": "たのしい",
+          "romaji": "tanoshii",
+          "meaning": "fun, enjoyable",
+          "hint": null
+        },
+        {
+          "word": "とても",
+          "kana": "とても",
+          "romaji": "totemo",
+          "meaning": "very",
+          "hint": null
+        },
+        {
+          "word": "あまり",
+          "kana": "あまり",
+          "romaji": "amari",
+          "meaning": "not very (with a negative)",
+          "hint": "Always followed by a negative."
+        },
+        {
+          "word": "どんな",
+          "kana": "どんな",
+          "romaji": "donna",
+          "meaning": "what kind of",
+          "hint": null
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "ここは静か{}町です。",
+          "answer": "な",
+          "distractors": [
+            "い",
+            "の",
+            "を"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "This is a quiet town.",
+          "explanation": "A な-adjective takes な before a noun."
+        },
+        {
+          "sentence": "この本はあまりおもしろく{}。",
+          "answer": "ないです",
+          "distractors": [
+            "です",
+            "いです",
+            "なです"
+          ],
+          "also_accept": [
+            "ありません"
+          ],
+          "romaji": [],
+          "translation": "This book isn’t very interesting.",
+          "explanation": "い-adjective negative: drop い, add くないです."
+        },
+        {
+          "sentence": "日本の食べ物はおいしいです{}、高いです。",
+          "answer": "が",
+          "distractors": [
+            "を",
+            "へ",
+            "の"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Japanese food is tasty, but expensive.",
+          "explanation": "Sentence が sentence: “…, but …”."
+        },
+        {
+          "sentence": "奈良は{}町ですか。",
+          "answer": "どんな",
+          "distractors": [
+            "どう",
+            "どこ",
+            "だれ"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "What kind of town is Nara?",
+          "explanation": "どんな + noun asks “what kind of”."
+        },
+        {
+          "sentence": "この料理は{}おいしいです。",
+          "answer": "とても",
+          "distractors": [
+            "あまり",
+            "まだ",
+            "もう"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "This dish is very tasty.",
+          "explanation": "とても “very” goes with positives; あまり needs a negative."
+        }
+      ]
+    },
+    {
+      "slug": "ch9",
+      "number": 9,
+      "title": "Preferences, Abilities & Reasons",
+      "position": 9,
+      "words": [
+        {
+          "word": "分かります",
+          "kana": "わかります",
+          "romaji": "wakarimasu",
+          "meaning": "to understand",
+          "hint": "Takes が: 日本語が分かります."
+        },
+        {
+          "word": "あります",
+          "kana": "あります",
+          "romaji": "arimasu",
+          "meaning": "to have (things)",
+          "hint": null
+        },
+        {
+          "word": "好き",
+          "kana": "すき",
+          "romaji": "suki",
+          "meaning": "liked",
+          "hint": "女 (woman) + 子 (child): what you love."
+        },
+        {
+          "word": "嫌い",
+          "kana": "きらい",
+          "romaji": "kirai",
+          "meaning": "disliked",
+          "hint": null
+        },
+        {
+          "word": "上手",
+          "kana": "じょうず",
+          "romaji": "jouzu",
+          "meaning": "good at",
+          "hint": "Don’t say it about yourself; say 得意 instead."
+        },
+        {
+          "word": "下手",
+          "kana": "へた",
+          "romaji": "heta",
+          "meaning": "bad at",
+          "hint": null
+        },
+        {
+          "word": "料理",
+          "kana": "りょうり",
+          "romaji": "ryouri",
+          "meaning": "cooking; dish",
+          "hint": null
+        },
+        {
+          "word": "飲み物",
+          "kana": "のみもの",
+          "romaji": "nomimono",
+          "meaning": "drink",
+          "hint": "飲み (drink) + 物 (thing); 食べ物 is food."
+        },
+        {
+          "word": "スポーツ",
+          "kana": "スポーツ",
+          "romaji": "supootsu",
+          "meaning": "sport",
+          "hint": null
+        },
+        {
+          "word": "野球",
+          "kana": "やきゅう",
+          "romaji": "yakyuu",
+          "meaning": "baseball",
+          "hint": "野 (field) + 球 (ball)."
+        },
+        {
+          "word": "音楽",
+          "kana": "おんがく",
+          "romaji": "ongaku",
+          "meaning": "music",
+          "hint": "音 (sound) + 楽 (enjoy)."
+        },
+        {
+          "word": "歌",
+          "kana": "うた",
+          "romaji": "uta",
+          "meaning": "song",
+          "hint": null
+        },
+        {
+          "word": "絵",
+          "kana": "え",
+          "romaji": "e",
+          "meaning": "picture, painting",
+          "hint": null
+        },
+        {
+          "word": "漢字",
+          "kana": "かんじ",
+          "romaji": "kanji",
+          "meaning": "kanji",
+          "hint": "漢 (Han China) + 字 (character)."
+        },
+        {
+          "word": "平仮名",
+          "kana": "ひらがな",
+          "romaji": "hiragana",
+          "meaning": "hiragana",
+          "hint": null
+        },
+        {
+          "word": "時間",
+          "kana": "じかん",
+          "romaji": "jikan",
+          "meaning": "time",
+          "hint": null
+        },
+        {
+          "word": "約束",
+          "kana": "やくそく",
+          "romaji": "yakusoku",
+          "meaning": "appointment, promise",
+          "hint": null
+        },
+        {
+          "word": "用事",
+          "kana": "ようじ",
+          "romaji": "youji",
+          "meaning": "something to do, errand",
+          "hint": null
+        },
+        {
+          "word": "子供",
+          "kana": "こども",
+          "romaji": "kodomo",
+          "meaning": "child",
+          "hint": null
+        },
+        {
+          "word": "よく",
+          "kana": "よく",
+          "romaji": "yoku",
+          "meaning": "well; often",
+          "hint": null
+        },
+        {
+          "word": "大体",
+          "kana": "だいたい",
+          "romaji": "daitai",
+          "meaning": "mostly, roughly",
+          "hint": null
+        },
+        {
+          "word": "沢山",
+          "kana": "たくさん",
+          "romaji": "takusan",
+          "meaning": "many, a lot",
+          "hint": "Usually written in kana."
+        },
+        {
+          "word": "少し",
+          "kana": "すこし",
+          "romaji": "sukoshi",
+          "meaning": "a little",
+          "hint": null
+        },
+        {
+          "word": "全然",
+          "kana": "ぜんぜん",
+          "romaji": "zenzen",
+          "meaning": "not at all (with a negative)",
+          "hint": null
+        },
+        {
+          "word": "どうして",
+          "kana": "どうして",
+          "romaji": "doushite",
+          "meaning": "why",
+          "hint": "Formal: なぜ; casual: なんで."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "わたしはイタリア料理{}好きです。",
+          "answer": "が",
+          "distractors": [
+            "を",
+            "へ",
+            "で"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I like Italian food.",
+          "explanation": "好き takes が for what you like."
+        },
+        {
+          "sentence": "日本語{}少しわかります。",
+          "answer": "が",
+          "distractors": [
+            "を",
+            "へ",
+            "で"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I understand a little Japanese.",
+          "explanation": "わかります takes が for what you understand."
+        },
+        {
+          "sentence": "時間がありません{}、新聞を読みません。",
+          "answer": "から",
+          "distractors": [
+            "まで",
+            "を",
+            "へ"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I don’t read the paper because I have no time.",
+          "explanation": "Reason から, result: “because …, …”."
+        },
+        {
+          "sentence": "{}早く帰りますか。",
+          "answer": "どうして",
+          "distractors": [
+            "どこ",
+            "だれ",
+            "なに"
+          ],
+          "also_accept": [
+            "なぜ"
+          ],
+          "romaji": [],
+          "translation": "Why are you going home early?",
+          "explanation": "どうして asks “why”."
+        }
+      ]
+    },
+    {
+      "slug": "ch10",
+      "number": 10,
+      "title": "Existence & Location",
+      "position": 10,
+      "words": [
+        {
+          "word": "います",
+          "kana": "います",
+          "romaji": "imasu",
+          "meaning": "to be, exist (people, animals)",
+          "hint": "Living, moving things います; objects あります."
+        },
+        {
+          "word": "男の人",
+          "kana": "おとこのひと",
+          "romaji": "otoko no hito",
+          "meaning": "man",
+          "hint": "男: a field (田) + strength (力): the one working the field."
+        },
+        {
+          "word": "女の人",
+          "kana": "おんなのひと",
+          "romaji": "onna no hito",
+          "meaning": "woman",
+          "hint": null
+        },
+        {
+          "word": "男の子",
+          "kana": "おとこのこ",
+          "romaji": "otoko no ko",
+          "meaning": "boy",
+          "hint": null
+        },
+        {
+          "word": "女の子",
+          "kana": "おんなのこ",
+          "romaji": "onna no ko",
+          "meaning": "girl",
+          "hint": null
+        },
+        {
+          "word": "犬",
+          "kana": "いぬ",
+          "romaji": "inu",
+          "meaning": "dog",
+          "hint": "大 with a dot: a big dog’s ear."
+        },
+        {
+          "word": "猫",
+          "kana": "ねこ",
+          "romaji": "neko",
+          "meaning": "cat",
+          "hint": null
+        },
+        {
+          "word": "木",
+          "kana": "き",
+          "romaji": "ki",
+          "meaning": "tree",
+          "hint": "Looks like a tree: trunk, branches, roots."
+        },
+        {
+          "word": "物",
+          "kana": "もの",
+          "romaji": "mono",
+          "meaning": "thing",
+          "hint": null
+        },
+        {
+          "word": "箱",
+          "kana": "はこ",
+          "romaji": "hako",
+          "meaning": "box",
+          "hint": null
+        },
+        {
+          "word": "冷蔵庫",
+          "kana": "れいぞうこ",
+          "romaji": "reizouko",
+          "meaning": "fridge",
+          "hint": "冷 (cold) + 蔵 (store) + 庫 (warehouse)."
+        },
+        {
+          "word": "ベッド",
+          "kana": "ベッド",
+          "romaji": "beddo",
+          "meaning": "bed",
+          "hint": null
+        },
+        {
+          "word": "棚",
+          "kana": "たな",
+          "romaji": "tana",
+          "meaning": "shelf",
+          "hint": null
+        },
+        {
+          "word": "ドア",
+          "kana": "ドア",
+          "romaji": "doa",
+          "meaning": "door",
+          "hint": null
+        },
+        {
+          "word": "窓",
+          "kana": "まど",
+          "romaji": "mado",
+          "meaning": "window",
+          "hint": null
+        },
+        {
+          "word": "ビル",
+          "kana": "ビル",
+          "romaji": "biru",
+          "meaning": "building",
+          "hint": "From \"building\", not \"bill\"."
+        },
+        {
+          "word": "コンビニ",
+          "kana": "コンビニ",
+          "romaji": "konbini",
+          "meaning": "convenience store",
+          "hint": null
+        },
+        {
+          "word": "喫茶店",
+          "kana": "きっさてん",
+          "romaji": "kissaten",
+          "meaning": "café",
+          "hint": null
+        },
+        {
+          "word": "本屋",
+          "kana": "ほんや",
+          "romaji": "hon'ya",
+          "meaning": "bookshop",
+          "hint": "Thing + 屋 = a shop selling it: パン屋, 花屋."
+        },
+        {
+          "word": "上",
+          "kana": "うえ",
+          "romaji": "ue",
+          "meaning": "on, above",
+          "hint": "The line sits above the base."
+        },
+        {
+          "word": "下",
+          "kana": "した",
+          "romaji": "shita",
+          "meaning": "under, below",
+          "hint": null
+        },
+        {
+          "word": "前",
+          "kana": "まえ",
+          "romaji": "mae",
+          "meaning": "in front",
+          "hint": null
+        },
+        {
+          "word": "後ろ",
+          "kana": "うしろ",
+          "romaji": "ushiro",
+          "meaning": "behind",
+          "hint": null
+        },
+        {
+          "word": "右",
+          "kana": "みぎ",
+          "romaji": "migi",
+          "meaning": "right",
+          "hint": null
+        },
+        {
+          "word": "左",
+          "kana": "ひだり",
+          "romaji": "hidari",
+          "meaning": "left",
+          "hint": "右 has a mouth (口): the hand you eat with. 左 has 工 (work)."
+        },
+        {
+          "word": "中",
+          "kana": "なか",
+          "romaji": "naka",
+          "meaning": "inside",
+          "hint": "A line through the middle of a box."
+        },
+        {
+          "word": "外",
+          "kana": "そと",
+          "romaji": "soto",
+          "meaning": "outside",
+          "hint": null
+        },
+        {
+          "word": "隣",
+          "kana": "となり",
+          "romaji": "tonari",
+          "meaning": "next to (side by side)",
+          "hint": null
+        },
+        {
+          "word": "近く",
+          "kana": "ちかく",
+          "romaji": "chikaku",
+          "meaning": "near, nearby",
+          "hint": null
+        },
+        {
+          "word": "間",
+          "kana": "あいだ",
+          "romaji": "aida",
+          "meaning": "between",
+          "hint": "Sun (日) seen between the gate doors (門)."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "あそこに男の人が{}。",
+          "answer": "います",
+          "distractors": [
+            "あります",
+            "します",
+            "きます"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "There is a man over there.",
+          "explanation": "います for people and animals; あります for things."
+        },
+        {
+          "sentence": "机の上に本が{}。",
+          "answer": "あります",
+          "distractors": [
+            "います",
+            "します",
+            "きます"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "There is a book on the desk.",
+          "explanation": "あります for things that don’t move by themselves."
+        },
+        {
+          "sentence": "郵便局は銀行の{}にあります。",
+          "answer": "となり",
+          "distractors": [
+            "うえ",
+            "した",
+            "なか"
+          ],
+          "also_accept": [
+            "隣"
+          ],
+          "romaji": [],
+          "translation": "The post office is next to the bank.",
+          "explanation": "N の となり “next to N”."
+        },
+        {
+          "sentence": "箱の中に手紙{}写真があります。",
+          "answer": "や",
+          "distractors": [
+            "を",
+            "へ",
+            "で"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "In the box there are letters, photos and so on.",
+          "explanation": "や lists a few examples (“A, B and so on”)."
+        },
+        {
+          "sentence": "ミラーさんは会議室{}います。",
+          "answer": "に",
+          "distractors": [
+            "を",
+            "へ",
+            "が"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Mr Miller is in the meeting room.",
+          "explanation": "Place に います/あります: where someone or something is."
+        }
+      ]
+    },
+    {
+      "slug": "ch11",
+      "number": 11,
+      "title": "Counting & Quantities",
+      "position": 11,
+      "words": [
+        {
+          "word": "一つ",
+          "kana": "ひとつ",
+          "romaji": "hitotsu",
+          "meaning": "one (thing)",
+          "hint": "ひとつ, ふたつ, みっつ, よっつ, いつつ, むっつ, ななつ, やっつ, ここのつ, とお."
+        },
+        {
+          "word": "二つ",
+          "kana": "ふたつ",
+          "romaji": "futatsu",
+          "meaning": "two (things)",
+          "hint": null
+        },
+        {
+          "word": "三つ",
+          "kana": "みっつ",
+          "romaji": "mittsu",
+          "meaning": "three (things)",
+          "hint": null
+        },
+        {
+          "word": "四つ",
+          "kana": "よっつ",
+          "romaji": "yottsu",
+          "meaning": "four (things)",
+          "hint": null
+        },
+        {
+          "word": "五つ",
+          "kana": "いつつ",
+          "romaji": "itsutsu",
+          "meaning": "five (things)",
+          "hint": null
+        },
+        {
+          "word": "十",
+          "kana": "とお",
+          "romaji": "too",
+          "meaning": "ten (things)",
+          "hint": "The only one with no つ."
+        },
+        {
+          "word": "幾つ",
+          "kana": "いくつ",
+          "romaji": "ikutsu",
+          "meaning": "how many (things); how old",
+          "hint": null
+        },
+        {
+          "word": "一人",
+          "kana": "ひとり",
+          "romaji": "hitori",
+          "meaning": "one person",
+          "hint": "ひとり, ふたり, then さんにん, よにん…"
+        },
+        {
+          "word": "二人",
+          "kana": "ふたり",
+          "romaji": "futari",
+          "meaning": "two people",
+          "hint": null
+        },
+        {
+          "word": "～人",
+          "kana": "にん",
+          "romaji": "nin",
+          "meaning": "~ people (counter)",
+          "hint": null
+        },
+        {
+          "word": "～台",
+          "kana": "だい",
+          "romaji": "dai",
+          "meaning": "~ machines, cars (counter)",
+          "hint": null
+        },
+        {
+          "word": "～枚",
+          "kana": "まい",
+          "romaji": "mai",
+          "meaning": "~ flat things (counter)",
+          "hint": "Paper, shirts, stamps, tickets."
+        },
+        {
+          "word": "～回",
+          "kana": "かい",
+          "romaji": "kai",
+          "meaning": "~ times",
+          "hint": null
+        },
+        {
+          "word": "林檎",
+          "kana": "りんご",
+          "romaji": "ringo",
+          "meaning": "apple",
+          "hint": "Usually written in kana."
+        },
+        {
+          "word": "切手",
+          "kana": "きって",
+          "romaji": "kitte",
+          "meaning": "postage stamp",
+          "hint": "切 (cut) + 手: a small cut-out piece."
+        },
+        {
+          "word": "葉書",
+          "kana": "はがき",
+          "romaji": "hagaki",
+          "meaning": "postcard",
+          "hint": null
+        },
+        {
+          "word": "封筒",
+          "kana": "ふうとう",
+          "romaji": "fuutou",
+          "meaning": "envelope",
+          "hint": null
+        },
+        {
+          "word": "両親",
+          "kana": "りょうしん",
+          "romaji": "ryoushin",
+          "meaning": "parents",
+          "hint": "両 (both) + 親 (parent)."
+        },
+        {
+          "word": "兄弟",
+          "kana": "きょうだい",
+          "romaji": "kyoudai",
+          "meaning": "brothers and sisters",
+          "hint": null
+        },
+        {
+          "word": "兄",
+          "kana": "あに",
+          "romaji": "ani",
+          "meaning": "(my) older brother",
+          "hint": "Someone else’s: お兄さん."
+        },
+        {
+          "word": "姉",
+          "kana": "あね",
+          "romaji": "ane",
+          "meaning": "(my) older sister",
+          "hint": "Someone else’s: お姉さん."
+        },
+        {
+          "word": "弟",
+          "kana": "おとうと",
+          "romaji": "otouto",
+          "meaning": "(my) younger brother",
+          "hint": null
+        },
+        {
+          "word": "妹",
+          "kana": "いもうと",
+          "romaji": "imouto",
+          "meaning": "(my) younger sister",
+          "hint": null
+        },
+        {
+          "word": "外国",
+          "kana": "がいこく",
+          "romaji": "gaikoku",
+          "meaning": "foreign country",
+          "hint": "外 (outside) + 国 (country)."
+        },
+        {
+          "word": "～時間",
+          "kana": "じかん",
+          "romaji": "jikan",
+          "meaning": "~ hours",
+          "hint": null
+        },
+        {
+          "word": "～週間",
+          "kana": "しゅうかん",
+          "romaji": "shuukan",
+          "meaning": "~ weeks",
+          "hint": null
+        },
+        {
+          "word": "～か月",
+          "kana": "かげつ",
+          "romaji": "kagetsu",
+          "meaning": "~ months",
+          "hint": "Without か: 2月 is February, 2か月 is two months."
+        },
+        {
+          "word": "どのくらい",
+          "kana": "どのくらい",
+          "romaji": "dono kurai",
+          "meaning": "how long, how much",
+          "hint": null
+        },
+        {
+          "word": "全部で",
+          "kana": "ぜんぶで",
+          "romaji": "zenbu de",
+          "meaning": "in total",
+          "hint": null
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "りんごを{}買いました。",
+          "answer": "四つ",
+          "distractors": [
+            "四人",
+            "四枚",
+            "四台"
+          ],
+          "also_accept": [
+            "よっつ"
+          ],
+          "romaji": [],
+          "translation": "I bought four apples.",
+          "explanation": "〜つ counts general things; 人 people, 枚 flat things, 台 machines."
+        },
+        {
+          "sentence": "この会社に外国人が{}います。",
+          "answer": "三人",
+          "distractors": [
+            "三つ",
+            "三枚",
+            "三台"
+          ],
+          "also_accept": [
+            "さんにん"
+          ],
+          "romaji": [],
+          "translation": "There are three foreigners at this company.",
+          "explanation": "〜人 counts people."
+        },
+        {
+          "sentence": "国で２か月{}日本語を勉強しました。",
+          "answer": "ぐらい",
+          "distractors": [
+            "しか",
+            "を",
+            "に"
+          ],
+          "also_accept": [
+            "くらい"
+          ],
+          "romaji": [],
+          "translation": "I studied Japanese for about two months in my country.",
+          "explanation": "Amount + ぐらい “about”."
+        },
+        {
+          "sentence": "休みは日曜日{}です。",
+          "answer": "だけ",
+          "distractors": [
+            "しか",
+            "ぐらい",
+            "を"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "My only day off is Sunday.",
+          "explanation": "だけ “only” works with a positive; しか needs a negative verb."
+        },
+        {
+          "sentence": "１時間{}寝ませんでした。",
+          "answer": "しか",
+          "distractors": [
+            "だけ",
+            "ぐらい",
+            "も"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I only slept for an hour.",
+          "explanation": "しか + negative: “nothing but”."
+        }
+      ]
+    },
+    {
+      "slug": "ch12",
+      "number": 12,
+      "title": "Past Tense & Comparisons",
+      "position": 12,
+      "words": [
+        {
+          "word": "簡単",
+          "kana": "かんたん",
+          "romaji": "kantan",
+          "meaning": "easy, simple",
+          "hint": null
+        },
+        {
+          "word": "近い",
+          "kana": "ちかい",
+          "romaji": "chikai",
+          "meaning": "near",
+          "hint": null
+        },
+        {
+          "word": "遠い",
+          "kana": "とおい",
+          "romaji": "tooi",
+          "meaning": "far",
+          "hint": null
+        },
+        {
+          "word": "速い",
+          "kana": "はやい",
+          "romaji": "hayai",
+          "meaning": "fast",
+          "hint": "Early is 早い; same sound."
+        },
+        {
+          "word": "遅い",
+          "kana": "おそい",
+          "romaji": "osoi",
+          "meaning": "slow; late",
+          "hint": null
+        },
+        {
+          "word": "多い",
+          "kana": "おおい",
+          "romaji": "ooi",
+          "meaning": "many, much",
+          "hint": "Used as a predicate: 人が多いです (not 多い人)."
+        },
+        {
+          "word": "少ない",
+          "kana": "すくない",
+          "romaji": "sukunai",
+          "meaning": "few, little",
+          "hint": null
+        },
+        {
+          "word": "暖かい",
+          "kana": "あたたかい",
+          "romaji": "atatakai",
+          "meaning": "warm (weather)",
+          "hint": null
+        },
+        {
+          "word": "涼しい",
+          "kana": "すずしい",
+          "romaji": "suzushii",
+          "meaning": "cool (weather)",
+          "hint": null
+        },
+        {
+          "word": "甘い",
+          "kana": "あまい",
+          "romaji": "amai",
+          "meaning": "sweet",
+          "hint": null
+        },
+        {
+          "word": "辛い",
+          "kana": "からい",
+          "romaji": "karai",
+          "meaning": "spicy, hot",
+          "hint": null
+        },
+        {
+          "word": "重い",
+          "kana": "おもい",
+          "romaji": "omoi",
+          "meaning": "heavy",
+          "hint": null
+        },
+        {
+          "word": "軽い",
+          "kana": "かるい",
+          "romaji": "karui",
+          "meaning": "light (weight)",
+          "hint": null
+        },
+        {
+          "word": "季節",
+          "kana": "きせつ",
+          "romaji": "kisetsu",
+          "meaning": "season",
+          "hint": null
+        },
+        {
+          "word": "春",
+          "kana": "はる",
+          "romaji": "haru",
+          "meaning": "spring",
+          "hint": null
+        },
+        {
+          "word": "夏",
+          "kana": "なつ",
+          "romaji": "natsu",
+          "meaning": "summer",
+          "hint": null
+        },
+        {
+          "word": "秋",
+          "kana": "あき",
+          "romaji": "aki",
+          "meaning": "autumn",
+          "hint": "禾 (grain) + 火 (fire): burning the harvest stubble."
+        },
+        {
+          "word": "冬",
+          "kana": "ふゆ",
+          "romaji": "fuyu",
+          "meaning": "winter",
+          "hint": null
+        },
+        {
+          "word": "天気",
+          "kana": "てんき",
+          "romaji": "tenki",
+          "meaning": "weather",
+          "hint": "天 (sky) + 気 (spirit, air)."
+        },
+        {
+          "word": "雨",
+          "kana": "あめ",
+          "romaji": "ame",
+          "meaning": "rain",
+          "hint": "The kanji: drops falling from a cloud."
+        },
+        {
+          "word": "雪",
+          "kana": "ゆき",
+          "romaji": "yuki",
+          "meaning": "snow",
+          "hint": null
+        },
+        {
+          "word": "海",
+          "kana": "うみ",
+          "romaji": "umi",
+          "meaning": "sea",
+          "hint": null
+        },
+        {
+          "word": "世界",
+          "kana": "せかい",
+          "romaji": "sekai",
+          "meaning": "world",
+          "hint": null
+        },
+        {
+          "word": "パーティー",
+          "kana": "パーティー",
+          "romaji": "paatii",
+          "meaning": "party",
+          "hint": null
+        },
+        {
+          "word": "試験",
+          "kana": "しけん",
+          "romaji": "shiken",
+          "meaning": "exam",
+          "hint": null
+        },
+        {
+          "word": "一番",
+          "kana": "いちばん",
+          "romaji": "ichiban",
+          "meaning": "most, number one",
+          "hint": null
+        },
+        {
+          "word": "ずっと",
+          "kana": "ずっと",
+          "romaji": "zutto",
+          "meaning": "by far; all the time",
+          "hint": null
+        },
+        {
+          "word": "初めて",
+          "kana": "はじめて",
+          "romaji": "hajimete",
+          "meaning": "for the first time",
+          "hint": null
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "きのうは雨{}。",
+          "answer": "でした",
+          "distractors": [
+            "です",
+            "じゃありません",
+            "かったです"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "It was rainy yesterday.",
+          "explanation": "Noun + でした is the polite past."
+        },
+        {
+          "sentence": "旅行は楽し{}。",
+          "answer": "かったです",
+          "distractors": [
+            "いでした",
+            "でした",
+            "くないです"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "The trip was fun.",
+          "explanation": "い-adjective past: drop い, add かったです (never いでした)."
+        },
+        {
+          "sentence": "中国は日本{}大きいです。",
+          "answer": "より",
+          "distractors": [
+            "から",
+            "まで",
+            "ほう"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "China is bigger than Japan.",
+          "explanation": "A は B より …: “A is more … than B”."
+        },
+        {
+          "sentence": "スポーツの中で何が{}好きですか。",
+          "answer": "いちばん",
+          "distractors": [
+            "より",
+            "あまり",
+            "まだ"
+          ],
+          "also_accept": [
+            "一番"
+          ],
+          "romaji": [],
+          "translation": "Which sport do you like the most?",
+          "explanation": "いちばん “the most”."
+        },
+        {
+          "sentence": "きのうは寒く{}。",
+          "answer": "なかったです",
+          "distractors": [
+            "ないでした",
+            "なかったでした",
+            "ないです"
+          ],
+          "also_accept": [
+            "ありませんでした"
+          ],
+          "romaji": [],
+          "translation": "It wasn’t cold yesterday.",
+          "explanation": "い-adjective past negative: 〜くなかったです."
+        }
+      ]
+    },
+    {
+      "slug": "ch13",
+      "number": 13,
+      "title": "Desires & Purposes",
+      "position": 13,
+      "words": [
+        {
+          "word": "遊びます",
+          "kana": "あそびます",
+          "romaji": "asobimasu",
+          "meaning": "to play, have fun",
+          "hint": "Not for sports or instruments (those use します / 弾きます)."
+        },
+        {
+          "word": "泳ぎます",
+          "kana": "およぎます",
+          "romaji": "oyogimasu",
+          "meaning": "to swim",
+          "hint": null
+        },
+        {
+          "word": "迎えます",
+          "kana": "むかえます",
+          "romaji": "mukaemasu",
+          "meaning": "to meet, pick up (someone)",
+          "hint": null
+        },
+        {
+          "word": "疲れます",
+          "kana": "つかれます",
+          "romaji": "tsukaremasu",
+          "meaning": "to get tired",
+          "hint": "Say 疲れました: \"I’m tired\"."
+        },
+        {
+          "word": "結婚します",
+          "kana": "けっこんします",
+          "romaji": "kekkon shimasu",
+          "meaning": "to marry",
+          "hint": null
+        },
+        {
+          "word": "買い物します",
+          "kana": "かいものします",
+          "romaji": "kaimono shimasu",
+          "meaning": "to go shopping",
+          "hint": null
+        },
+        {
+          "word": "食事します",
+          "kana": "しょくじします",
+          "romaji": "shokuji shimasu",
+          "meaning": "to have a meal",
+          "hint": null
+        },
+        {
+          "word": "散歩します",
+          "kana": "さんぽします",
+          "romaji": "sanpo shimasu",
+          "meaning": "to take a walk",
+          "hint": "Takes を for where: 公園を散歩します."
+        },
+        {
+          "word": "大変",
+          "kana": "たいへん",
+          "romaji": "taihen",
+          "meaning": "hard, tough",
+          "hint": "Literally \"big change\"."
+        },
+        {
+          "word": "欲しい",
+          "kana": "ほしい",
+          "romaji": "hoshii",
+          "meaning": "want (a thing)",
+          "hint": "Takes が: 車が欲しいです."
+        },
+        {
+          "word": "広い",
+          "kana": "ひろい",
+          "romaji": "hiroi",
+          "meaning": "wide, spacious",
+          "hint": null
+        },
+        {
+          "word": "狭い",
+          "kana": "せまい",
+          "romaji": "semai",
+          "meaning": "narrow, cramped",
+          "hint": null
+        },
+        {
+          "word": "プール",
+          "kana": "プール",
+          "romaji": "puuru",
+          "meaning": "swimming pool",
+          "hint": null
+        },
+        {
+          "word": "川",
+          "kana": "かわ",
+          "romaji": "kawa",
+          "meaning": "river",
+          "hint": "Three lines of flowing water."
+        },
+        {
+          "word": "釣り",
+          "kana": "つり",
+          "romaji": "tsuri",
+          "meaning": "fishing",
+          "hint": null
+        },
+        {
+          "word": "スキー",
+          "kana": "スキー",
+          "romaji": "sukii",
+          "meaning": "skiing",
+          "hint": "Long スキー (ski) vs short すき (like)."
+        },
+        {
+          "word": "週末",
+          "kana": "しゅうまつ",
+          "romaji": "shuumatsu",
+          "meaning": "weekend",
+          "hint": "週 (week) + 末 (end)."
+        },
+        {
+          "word": "～頃",
+          "kana": "ごろ",
+          "romaji": "goro",
+          "meaning": "about (a point in time)",
+          "hint": "For times: 3時ごろ. For amounts use ぐらい."
+        },
+        {
+          "word": "何か",
+          "kana": "なにか",
+          "romaji": "nanika",
+          "meaning": "something",
+          "hint": null
+        },
+        {
+          "word": "どこか",
+          "kana": "どこか",
+          "romaji": "dokoka",
+          "meaning": "somewhere",
+          "hint": null
+        },
+        {
+          "word": "喉が渇きます",
+          "kana": "のどがかわきます",
+          "romaji": "nodo ga kawakimasu",
+          "meaning": "to get thirsty",
+          "hint": "Literally \"throat gets dry\"."
+        },
+        {
+          "word": "お腹が空きます",
+          "kana": "おなかがすきます",
+          "romaji": "onaka ga sukimasu",
+          "meaning": "to get hungry",
+          "hint": "Literally \"stomach gets empty\"."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "わたしは新しい車{}ほしいです。",
+          "answer": "が",
+          "distractors": [
+            "を",
+            "へ",
+            "で"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I want a new car.",
+          "explanation": "ほしい takes が for the thing wanted."
+        },
+        {
+          "sentence": "沖縄へ行き{}です。",
+          "answer": "たい",
+          "distractors": [
+            "ほしい",
+            "ます",
+            "ない"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I want to go to Okinawa.",
+          "explanation": "Verb stem + たいです “want to do”."
+        },
+        {
+          "sentence": "デパートへ靴を買い{}行きます。",
+          "answer": "に",
+          "distractors": [
+            "を",
+            "で",
+            "へ"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I’m going to the department store to buy shoes.",
+          "explanation": "Verb stem に 行きます: go in order to do."
+        },
+        {
+          "sentence": "のどがかわきましたから、{}飲みたいです。",
+          "answer": "何か",
+          "distractors": [
+            "何も",
+            "だれか",
+            "どこか"
+          ],
+          "also_accept": [
+            "なにか"
+          ],
+          "romaji": [],
+          "translation": "I’m thirsty, so I want to drink something.",
+          "explanation": "何か “something”; 何も + negative is “nothing”."
+        }
+      ]
+    },
+    {
+      "slug": "ch14",
+      "number": 14,
+      "title": "The Te-form & Polite Requests",
+      "position": 14,
+      "words": [
+        {
+          "word": "つけます",
+          "kana": "つけます",
+          "romaji": "tsukemasu",
+          "meaning": "to turn on",
+          "hint": null
+        },
+        {
+          "word": "消します",
+          "kana": "けします",
+          "romaji": "keshimasu",
+          "meaning": "to turn off; to erase",
+          "hint": null
+        },
+        {
+          "word": "開けます",
+          "kana": "あけます",
+          "romaji": "akemasu",
+          "meaning": "to open",
+          "hint": "Gate (門) with hands pulling the bar: open."
+        },
+        {
+          "word": "閉めます",
+          "kana": "しめます",
+          "romaji": "shimemasu",
+          "meaning": "to close, shut",
+          "hint": null
+        },
+        {
+          "word": "急ぎます",
+          "kana": "いそぎます",
+          "romaji": "isogimasu",
+          "meaning": "to hurry",
+          "hint": null
+        },
+        {
+          "word": "待ちます",
+          "kana": "まちます",
+          "romaji": "machimasu",
+          "meaning": "to wait",
+          "hint": "Te-form: 待って. ちょっと待ってください."
+        },
+        {
+          "word": "持ちます",
+          "kana": "もちます",
+          "romaji": "mochimasu",
+          "meaning": "to hold, carry",
+          "hint": null
+        },
+        {
+          "word": "取ります",
+          "kana": "とります",
+          "romaji": "torimasu",
+          "meaning": "to take, pass",
+          "hint": "An ear (耳) and a hand (又): soldiers took ears as trophies."
+        },
+        {
+          "word": "手伝います",
+          "kana": "てつだいます",
+          "romaji": "tetsudaimasu",
+          "meaning": "to help",
+          "hint": "From 手 (hand): to lend a hand."
+        },
+        {
+          "word": "呼びます",
+          "kana": "よびます",
+          "romaji": "yobimasu",
+          "meaning": "to call (someone)",
+          "hint": null
+        },
+        {
+          "word": "話します",
+          "kana": "はなします",
+          "romaji": "hanashimasu",
+          "meaning": "to speak, talk",
+          "hint": null
+        },
+        {
+          "word": "使います",
+          "kana": "つかいます",
+          "romaji": "tsukaimasu",
+          "meaning": "to use",
+          "hint": null
+        },
+        {
+          "word": "止めます",
+          "kana": "とめます",
+          "romaji": "tomemasu",
+          "meaning": "to stop, park",
+          "hint": null
+        },
+        {
+          "word": "見せます",
+          "kana": "みせます",
+          "romaji": "misemasu",
+          "meaning": "to show",
+          "hint": "From 見 (see): make someone see."
+        },
+        {
+          "word": "座ります",
+          "kana": "すわります",
+          "romaji": "suwarimasu",
+          "meaning": "to sit down",
+          "hint": null
+        },
+        {
+          "word": "立ちます",
+          "kana": "たちます",
+          "romaji": "tachimasu",
+          "meaning": "to stand up",
+          "hint": "The kanji: a person standing on the ground."
+        },
+        {
+          "word": "入ります",
+          "kana": "はいります",
+          "romaji": "hairimasu",
+          "meaning": "to enter",
+          "hint": "Takes に: 部屋に入ります."
+        },
+        {
+          "word": "出ます",
+          "kana": "でます",
+          "romaji": "demasu",
+          "meaning": "to go out, leave",
+          "hint": "Takes を: 部屋を出ます."
+        },
+        {
+          "word": "名前",
+          "kana": "なまえ",
+          "romaji": "namae",
+          "meaning": "name",
+          "hint": null
+        },
+        {
+          "word": "住所",
+          "kana": "じゅうしょ",
+          "romaji": "juusho",
+          "meaning": "address",
+          "hint": "住 (live) + 所 (place)."
+        },
+        {
+          "word": "地図",
+          "kana": "ちず",
+          "romaji": "chizu",
+          "meaning": "map",
+          "hint": null
+        },
+        {
+          "word": "塩",
+          "kana": "しお",
+          "romaji": "shio",
+          "meaning": "salt",
+          "hint": null
+        },
+        {
+          "word": "砂糖",
+          "kana": "さとう",
+          "romaji": "satou",
+          "meaning": "sugar",
+          "hint": null
+        },
+        {
+          "word": "読み方",
+          "kana": "よみかた",
+          "romaji": "yomikata",
+          "meaning": "way of reading",
+          "hint": "Verb stem + 方 = how to: 書き方, 使い方."
+        },
+        {
+          "word": "真っ直ぐ",
+          "kana": "まっすぐ",
+          "romaji": "massugu",
+          "meaning": "straight ahead",
+          "hint": null
+        },
+        {
+          "word": "ゆっくり",
+          "kana": "ゆっくり",
+          "romaji": "yukkuri",
+          "meaning": "slowly",
+          "hint": null
+        },
+        {
+          "word": "すぐ",
+          "kana": "すぐ",
+          "romaji": "sugu",
+          "meaning": "at once, soon",
+          "hint": null
+        },
+        {
+          "word": "後で",
+          "kana": "あとで",
+          "romaji": "ato de",
+          "meaning": "later",
+          "hint": null
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "ちょっと待っ{}ください。",
+          "answer": "て",
+          "distractors": [
+            "た",
+            "で",
+            "に"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Please wait a moment.",
+          "explanation": "待ちます → 待って: て-form + ください."
+        },
+        {
+          "sentence": "この漢字の読み方を教え{}。",
+          "answer": "てください",
+          "distractors": [
+            "てます",
+            "たいです",
+            "ました"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Please tell me how to read this kanji.",
+          "explanation": "て-form + ください: a polite request."
+        },
+        {
+          "sentence": "ミラーさんは今、電話をかけ{}。",
+          "answer": "ています",
+          "distractors": [
+            "てください",
+            "ません",
+            "たいです"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Mr Miller is making a phone call now.",
+          "explanation": "て-form + います: an action in progress."
+        },
+        {
+          "sentence": "暑いですね。窓を開け{}。",
+          "answer": "ましょうか",
+          "distractors": [
+            "ませんでした",
+            "ています",
+            "たいです"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "It’s hot, isn’t it? Shall I open the window?",
+          "explanation": "〜ましょうか offers help: “shall I …?”."
+        },
+        {
+          "sentence": "「飲みます」のて形は「{}」です。",
+          "answer": "飲んで",
+          "distractors": [
+            "飲みて",
+            "飲って",
+            "飲いて"
+          ],
+          "also_accept": [
+            "のんで"
+          ],
+          "romaji": [],
+          "translation": "The te-form of nomimasu is nonde.",
+          "explanation": "Group 1 verbs in み・び・に → んで."
+        }
+      ]
+    },
+    {
+      "slug": "ch15",
+      "number": 15,
+      "title": "Permission, Prohibition & States",
+      "position": 15,
+      "words": [
+        {
+          "word": "置きます",
+          "kana": "おきます",
+          "romaji": "okimasu",
+          "meaning": "to put, place",
+          "hint": "Same sound as 起きます (get up)."
+        },
+        {
+          "word": "作ります",
+          "kana": "つくります",
+          "romaji": "tsukurimasu",
+          "meaning": "to make",
+          "hint": null
+        },
+        {
+          "word": "売ります",
+          "kana": "うります",
+          "romaji": "urimasu",
+          "meaning": "to sell",
+          "hint": null
+        },
+        {
+          "word": "知ります",
+          "kana": "しります",
+          "romaji": "shirimasu",
+          "meaning": "to get to know",
+          "hint": "Know = 知っています; don’t know = 知りません."
+        },
+        {
+          "word": "住みます",
+          "kana": "すみます",
+          "romaji": "sumimasu",
+          "meaning": "to live (somewhere)",
+          "hint": "Live in = 住んでいます, with に."
+        },
+        {
+          "word": "研究します",
+          "kana": "けんきゅうします",
+          "romaji": "kenkyuu shimasu",
+          "meaning": "to do research",
+          "hint": null
+        },
+        {
+          "word": "資料",
+          "kana": "しりょう",
+          "romaji": "shiryou",
+          "meaning": "materials, documents",
+          "hint": null
+        },
+        {
+          "word": "時刻表",
+          "kana": "じこくひょう",
+          "romaji": "jikokuhyou",
+          "meaning": "timetable",
+          "hint": null
+        },
+        {
+          "word": "服",
+          "kana": "ふく",
+          "romaji": "fuku",
+          "meaning": "clothes",
+          "hint": null
+        },
+        {
+          "word": "製品",
+          "kana": "せいひん",
+          "romaji": "seihin",
+          "meaning": "product",
+          "hint": null
+        },
+        {
+          "word": "専門",
+          "kana": "せんもん",
+          "romaji": "senmon",
+          "meaning": "speciality, field of study",
+          "hint": null
+        },
+        {
+          "word": "歯医者",
+          "kana": "はいしゃ",
+          "romaji": "haisha",
+          "meaning": "dentist",
+          "hint": "歯 (tooth) + 医者 (doctor)."
+        },
+        {
+          "word": "床屋",
+          "kana": "とこや",
+          "romaji": "tokoya",
+          "meaning": "barber’s",
+          "hint": null
+        },
+        {
+          "word": "独身",
+          "kana": "どくしん",
+          "romaji": "dokushin",
+          "meaning": "single, unmarried",
+          "hint": "独 (alone) + 身 (body)."
+        },
+        {
+          "word": "写真",
+          "kana": "しゃしん",
+          "romaji": "shashin",
+          "meaning": "photo",
+          "hint": "Asking to take one: 写真を撮ってもいいですか."
+        },
+        {
+          "word": "たばこ",
+          "kana": "たばこ",
+          "romaji": "tabako",
+          "meaning": "cigarette, tobacco",
+          "hint": "Smoke one: たばこを吸います."
+        },
+        {
+          "word": "吸います",
+          "kana": "すいます",
+          "romaji": "suimasu",
+          "meaning": "to smoke; breathe in",
+          "hint": null
+        },
+        {
+          "word": "結婚しています",
+          "kana": "けっこんしています",
+          "romaji": "kekkon shite imasu",
+          "meaning": "to be married",
+          "hint": "A state, so ています."
+        },
+        {
+          "word": "皆さん",
+          "kana": "みなさん",
+          "romaji": "minasan",
+          "meaning": "everyone",
+          "hint": null
+        },
+        {
+          "word": "思い出します",
+          "kana": "おもいだします",
+          "romaji": "omoidashimasu",
+          "meaning": "to remember, recall",
+          "hint": "思い (thought) + 出します (take out)."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "写真を撮っ{}いいですか。",
+          "answer": "ても",
+          "distractors": [
+            "ては",
+            "て",
+            "たら"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "May I take a photo?",
+          "explanation": "〜てもいいですか asks permission."
+        },
+        {
+          "sentence": "ここでたばこを吸っ{}いけません。",
+          "answer": "ては",
+          "distractors": [
+            "ても",
+            "て",
+            "ないで"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "You must not smoke here.",
+          "explanation": "〜てはいけません: “must not”."
+        },
+        {
+          "sentence": "わたしは大阪に住ん{}。",
+          "answer": "でいます",
+          "distractors": [
+            "ています",
+            "でください",
+            "だいます"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I live in Osaka.",
+          "explanation": "住みます → 住んで; 〜ています for a lasting state."
+        },
+        {
+          "sentence": "わたしは結婚し{}。",
+          "answer": "ています",
+          "distractors": [
+            "てください",
+            "てもいいです",
+            "ましょう"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I am married.",
+          "explanation": "結婚しています: the state that results from marrying."
+        }
+      ]
+    },
+    {
+      "slug": "ch16",
+      "number": 16,
+      "title": "The Nai-form & Obligations",
+      "position": 16,
+      "words": [
+        {
+          "word": "覚えます",
+          "kana": "おぼえます",
+          "romaji": "oboemasu",
+          "meaning": "to memorise, remember",
+          "hint": null
+        },
+        {
+          "word": "忘れます",
+          "kana": "わすれます",
+          "romaji": "wasuremasu",
+          "meaning": "to forget",
+          "hint": "亡 (lost) over 心 (heart): lost from the mind."
+        },
+        {
+          "word": "無くします",
+          "kana": "なくします",
+          "romaji": "nakushimasu",
+          "meaning": "to lose (something)",
+          "hint": null
+        },
+        {
+          "word": "払います",
+          "kana": "はらいます",
+          "romaji": "haraimasu",
+          "meaning": "to pay",
+          "hint": null
+        },
+        {
+          "word": "返します",
+          "kana": "かえします",
+          "romaji": "kaeshimasu",
+          "meaning": "to give back",
+          "hint": null
+        },
+        {
+          "word": "出かけます",
+          "kana": "でかけます",
+          "romaji": "dekakemasu",
+          "meaning": "to go out",
+          "hint": null
+        },
+        {
+          "word": "脱ぎます",
+          "kana": "ぬぎます",
+          "romaji": "nugimasu",
+          "meaning": "to take off (clothes, shoes)",
+          "hint": null
+        },
+        {
+          "word": "心配します",
+          "kana": "しんぱいします",
+          "romaji": "shinpai shimasu",
+          "meaning": "to worry",
+          "hint": "心 (heart) + 配 (distribute)."
+        },
+        {
+          "word": "残業します",
+          "kana": "ざんぎょうします",
+          "romaji": "zangyou shimasu",
+          "meaning": "to work overtime",
+          "hint": "残 (remain) + 業 (work)."
+        },
+        {
+          "word": "出張します",
+          "kana": "しゅっちょうします",
+          "romaji": "shucchou shimasu",
+          "meaning": "to go on a business trip",
+          "hint": null
+        },
+        {
+          "word": "大切",
+          "kana": "たいせつ",
+          "romaji": "taisetsu",
+          "meaning": "important, precious",
+          "hint": null
+        },
+        {
+          "word": "大丈夫",
+          "kana": "だいじょうぶ",
+          "romaji": "daijoubu",
+          "meaning": "all right, OK",
+          "hint": null
+        },
+        {
+          "word": "危ない",
+          "kana": "あぶない",
+          "romaji": "abunai",
+          "meaning": "dangerous; Watch out!",
+          "hint": null
+        },
+        {
+          "word": "禁煙",
+          "kana": "きんえん",
+          "romaji": "kin'en",
+          "meaning": "no smoking",
+          "hint": "禁 (forbid) + 煙 (smoke)."
+        },
+        {
+          "word": "熱",
+          "kana": "ねつ",
+          "romaji": "netsu",
+          "meaning": "fever, heat",
+          "hint": null
+        },
+        {
+          "word": "病気",
+          "kana": "びょうき",
+          "romaji": "byouki",
+          "meaning": "illness",
+          "hint": null
+        },
+        {
+          "word": "薬",
+          "kana": "くすり",
+          "romaji": "kusuri",
+          "meaning": "medicine",
+          "hint": "艹 (plants) + 楽 (comfort): healing herbs."
+        },
+        {
+          "word": "お風呂",
+          "kana": "おふろ",
+          "romaji": "ofuro",
+          "meaning": "bath",
+          "hint": "Take a bath: お風呂に入ります."
+        },
+        {
+          "word": "上着",
+          "kana": "うわぎ",
+          "romaji": "uwagi",
+          "meaning": "jacket",
+          "hint": "上 (over) + 着 (wear)."
+        },
+        {
+          "word": "～までに",
+          "kana": "までに",
+          "romaji": "made ni",
+          "meaning": "by (a deadline)",
+          "hint": "まで = until (keeps going); までに = by (done before)."
+        },
+        {
+          "word": "ですから",
+          "kana": "ですから",
+          "romaji": "desu kara",
+          "meaning": "so, therefore",
+          "hint": null
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "「行きます」のない形は「{}」です。",
+          "answer": "行かない",
+          "distractors": [
+            "行きない",
+            "行くない",
+            "行けない"
+          ],
+          "also_accept": [
+            "いかない"
+          ],
+          "romaji": [],
+          "translation": "The nai-form of ikimasu is ikanai.",
+          "explanation": "Group 1: change the い-sound before ます to あ, add ない."
+        },
+        {
+          "sentence": "ここに車を止め{}ください。",
+          "answer": "ないで",
+          "distractors": [
+            "て",
+            "なくて",
+            "ても"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Please don’t park your car here.",
+          "explanation": "ない-form + で ください: “please don’t”."
+        },
+        {
+          "sentence": "薬を飲ま{}なりません。",
+          "answer": "なければ",
+          "distractors": [
+            "なくても",
+            "ないで",
+            "ては"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I have to take medicine.",
+          "explanation": "〜なければなりません: “must”."
+        },
+        {
+          "sentence": "あしたは来{}いいです。",
+          "answer": "なくても",
+          "distractors": [
+            "なければ",
+            "ないで",
+            "ては"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "You don’t have to come tomorrow.",
+          "explanation": "〜なくてもいいです: “don’t have to”."
+        },
+        {
+          "sentence": "荷物はここ{}置かないでください。",
+          "answer": "に",
+          "distractors": [
+            "を",
+            "が",
+            "の"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Please don’t put your luggage here.",
+          "explanation": "Place に 置きます: where something is put."
+        }
+      ]
+    },
+    {
+      "slug": "ch17",
+      "number": 17,
+      "title": "Dictionary Form & Potential",
+      "position": 17,
+      "words": [
+        {
+          "word": "できます",
+          "kana": "できます",
+          "romaji": "dekimasu",
+          "meaning": "to be able to, can",
+          "hint": null
+        },
+        {
+          "word": "洗います",
+          "kana": "あらいます",
+          "romaji": "araimasu",
+          "meaning": "to wash",
+          "hint": null
+        },
+        {
+          "word": "弾きます",
+          "kana": "ひきます",
+          "romaji": "hikimasu",
+          "meaning": "to play (a stringed instrument, piano)",
+          "hint": "Has 弓 (bow): plucking a string."
+        },
+        {
+          "word": "歌います",
+          "kana": "うたいます",
+          "romaji": "utaimasu",
+          "meaning": "to sing",
+          "hint": null
+        },
+        {
+          "word": "集めます",
+          "kana": "あつめます",
+          "romaji": "atsumemasu",
+          "meaning": "to collect",
+          "hint": null
+        },
+        {
+          "word": "捨てます",
+          "kana": "すてます",
+          "romaji": "sutemasu",
+          "meaning": "to throw away",
+          "hint": null
+        },
+        {
+          "word": "換えます",
+          "kana": "かえます",
+          "romaji": "kaemasu",
+          "meaning": "to exchange",
+          "hint": null
+        },
+        {
+          "word": "運転します",
+          "kana": "うんてんします",
+          "romaji": "unten shimasu",
+          "meaning": "to drive",
+          "hint": null
+        },
+        {
+          "word": "予約します",
+          "kana": "よやくします",
+          "romaji": "yoyaku shimasu",
+          "meaning": "to book, reserve",
+          "hint": "予 (in advance) + 約 (promise)."
+        },
+        {
+          "word": "ピアノ",
+          "kana": "ピアノ",
+          "romaji": "piano",
+          "meaning": "piano",
+          "hint": null
+        },
+        {
+          "word": "現金",
+          "kana": "げんきん",
+          "romaji": "genkin",
+          "meaning": "cash",
+          "hint": "現 (present) + 金 (money)."
+        },
+        {
+          "word": "趣味",
+          "kana": "しゅみ",
+          "romaji": "shumi",
+          "meaning": "hobby",
+          "hint": null
+        },
+        {
+          "word": "日記",
+          "kana": "にっき",
+          "romaji": "nikki",
+          "meaning": "diary",
+          "hint": "日 (day) + 記 (record)."
+        },
+        {
+          "word": "動物",
+          "kana": "どうぶつ",
+          "romaji": "doubutsu",
+          "meaning": "animal",
+          "hint": "動 (move) + 物 (thing)."
+        },
+        {
+          "word": "馬",
+          "kana": "うま",
+          "romaji": "uma",
+          "meaning": "horse",
+          "hint": "The kanji: mane, legs (灬) and tail."
+        },
+        {
+          "word": "～メートル",
+          "kana": "メートル",
+          "romaji": "meetoru",
+          "meaning": "~ metres",
+          "hint": null
+        },
+        {
+          "word": "なかなか",
+          "kana": "なかなか",
+          "romaji": "nakanaka",
+          "meaning": "not easily (with a negative); quite",
+          "hint": "With a negative: なかなか覚えられません."
+        },
+        {
+          "word": "是非",
+          "kana": "ぜひ",
+          "romaji": "zehi",
+          "meaning": "by all means",
+          "hint": "Usually written in kana."
+        },
+        {
+          "word": "本当",
+          "kana": "ほんとう",
+          "romaji": "hontou",
+          "meaning": "true, real",
+          "hint": "本当ですか: Really?"
+        },
+        {
+          "word": "前",
+          "kana": "まえ",
+          "romaji": "mae",
+          "meaning": "before",
+          "hint": "Dictionary form + 前に: 寝る前に."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "わたしはピアノを弾く{}ができます。",
+          "answer": "こと",
+          "distractors": [
+            "もの",
+            "ところ",
+            "とき"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I can play the piano.",
+          "explanation": "Dictionary form + ことができます: “can do”."
+        },
+        {
+          "sentence": "わたしの趣味は写真を撮る{}です。",
+          "answer": "こと",
+          "distractors": [
+            "もの",
+            "ところ",
+            "とき"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "My hobby is taking photos.",
+          "explanation": "Dictionary form + こと makes an action a noun."
+        },
+        {
+          "sentence": "寝る{}、歯をみがきます。",
+          "answer": "まえに",
+          "distractors": [
+            "あとで",
+            "から",
+            "まで"
+          ],
+          "also_accept": [
+            "前に"
+          ],
+          "romaji": [],
+          "translation": "I brush my teeth before I go to bed.",
+          "explanation": "Dictionary form + まえに: “before doing”."
+        },
+        {
+          "sentence": "「書きます」の辞書形は「{}」です。",
+          "answer": "書く",
+          "distractors": [
+            "書る",
+            "書きる",
+            "書いる"
+          ],
+          "also_accept": [
+            "かく"
+          ],
+          "romaji": [],
+          "translation": "The dictionary form of kakimasu is kaku.",
+          "explanation": "Group 1: change the い-sound before ます to う."
+        },
+        {
+          "sentence": "食事の{}、手を洗います。",
+          "answer": "まえに",
+          "distractors": [
+            "あとで",
+            "から",
+            "まで"
+          ],
+          "also_accept": [
+            "前に"
+          ],
+          "romaji": [],
+          "translation": "I wash my hands before meals.",
+          "explanation": "Noun の まえに: “before (a meal, a meeting…)”."
+        }
+      ]
+    },
+    {
+      "slug": "ch18",
+      "number": 18,
+      "title": "The Ta-form & Past Experience",
+      "position": 18,
+      "words": [
+        {
+          "word": "登ります",
+          "kana": "のぼります",
+          "romaji": "noborimasu",
+          "meaning": "to climb",
+          "hint": "Takes に: 山に登ります."
+        },
+        {
+          "word": "泊まります",
+          "kana": "とまります",
+          "romaji": "tomarimasu",
+          "meaning": "to stay overnight",
+          "hint": "Has 氵 (water): boats moored for the night."
+        },
+        {
+          "word": "掃除します",
+          "kana": "そうじします",
+          "romaji": "souji shimasu",
+          "meaning": "to clean (a room)",
+          "hint": null
+        },
+        {
+          "word": "洗濯します",
+          "kana": "せんたくします",
+          "romaji": "sentaku shimasu",
+          "meaning": "to do the laundry",
+          "hint": null
+        },
+        {
+          "word": "練習します",
+          "kana": "れんしゅうします",
+          "romaji": "renshuu shimasu",
+          "meaning": "to practise",
+          "hint": null
+        },
+        {
+          "word": "なります",
+          "kana": "なります",
+          "romaji": "narimasu",
+          "meaning": "to become",
+          "hint": "い-adj → く: 寒くなります. な-adj / noun → に: 元気になります."
+        },
+        {
+          "word": "眠い",
+          "kana": "ねむい",
+          "romaji": "nemui",
+          "meaning": "sleepy",
+          "hint": null
+        },
+        {
+          "word": "強い",
+          "kana": "つよい",
+          "romaji": "tsuyoi",
+          "meaning": "strong",
+          "hint": null
+        },
+        {
+          "word": "弱い",
+          "kana": "よわい",
+          "romaji": "yowai",
+          "meaning": "weak",
+          "hint": null
+        },
+        {
+          "word": "調子",
+          "kana": "ちょうし",
+          "romaji": "choushi",
+          "meaning": "condition",
+          "hint": "調子がいい / 悪い: feeling well / unwell."
+        },
+        {
+          "word": "ゴルフ",
+          "kana": "ゴルフ",
+          "romaji": "gorufu",
+          "meaning": "golf",
+          "hint": null
+        },
+        {
+          "word": "相撲",
+          "kana": "すもう",
+          "romaji": "sumou",
+          "meaning": "sumo wrestling",
+          "hint": null
+        },
+        {
+          "word": "一度",
+          "kana": "いちど",
+          "romaji": "ichido",
+          "meaning": "once",
+          "hint": "一度も + negative: never once."
+        },
+        {
+          "word": "段々",
+          "kana": "だんだん",
+          "romaji": "dandan",
+          "meaning": "gradually",
+          "hint": null
+        },
+        {
+          "word": "もうすぐ",
+          "kana": "もうすぐ",
+          "romaji": "mousugu",
+          "meaning": "soon",
+          "hint": null
+        },
+        {
+          "word": "山",
+          "kana": "やま",
+          "romaji": "yama",
+          "meaning": "mountain",
+          "hint": "Three peaks."
+        },
+        {
+          "word": "富士山",
+          "kana": "ふじさん",
+          "romaji": "fujisan",
+          "meaning": "Mt Fuji",
+          "hint": "さん here is 山 (mountain), not Mr."
+        },
+        {
+          "word": "お陰様で",
+          "kana": "おかげさまで",
+          "romaji": "okagesama de",
+          "meaning": "thanks to you (I’m fine)",
+          "hint": "Said when asked how you are."
+        },
+        {
+          "word": "でも",
+          "kana": "でも",
+          "romaji": "demo",
+          "meaning": "but",
+          "hint": null
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "わたしは北海道へ行った{}があります。",
+          "answer": "こと",
+          "distractors": [
+            "もの",
+            "ところ",
+            "とき"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I have been to Hokkaido.",
+          "explanation": "た-form + ことがあります: “have done (before)”."
+        },
+        {
+          "sentence": "日曜日はテニスをし{}、映画を見たりします。",
+          "answer": "たり",
+          "distractors": [
+            "ても",
+            "たら",
+            "ないで"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "On Sundays I do things like play tennis and watch films.",
+          "explanation": "〜たり、〜たりします lists some of the things you do."
+        },
+        {
+          "sentence": "だんだん寒{}なりました。",
+          "answer": "く",
+          "distractors": [
+            "い",
+            "に",
+            "な"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "It has gradually got colder.",
+          "explanation": "い-adjective: drop い, add くなります (“become”)."
+        },
+        {
+          "sentence": "元気{}なりました。",
+          "answer": "に",
+          "distractors": [
+            "く",
+            "な",
+            "の"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I got well again.",
+          "explanation": "な-adjective or noun + になります."
+        },
+        {
+          "sentence": "「飲みます」のた形は「{}」です。",
+          "answer": "飲んだ",
+          "distractors": [
+            "飲みた",
+            "飲った",
+            "飲いた"
+          ],
+          "also_accept": [
+            "のんだ"
+          ],
+          "romaji": [],
+          "translation": "The ta-form of nomimasu is nonda.",
+          "explanation": "The た-form follows the て-form: 飲んで → 飲んだ."
+        }
+      ]
+    },
+    {
+      "slug": "ch19",
+      "number": 19,
+      "title": "Upcoming Lesson 19",
+      "position": 19,
+      "words": [
+        {
+          "word": "思います",
+          "kana": "おもいます",
+          "romaji": "omoimasu",
+          "meaning": "to think",
+          "hint": "Plain form + と思います."
+        },
+        {
+          "word": "言います",
+          "kana": "いいます",
+          "romaji": "iimasu",
+          "meaning": "to say",
+          "hint": "Spelled いいます; said ゆいます in casual speech."
+        },
+        {
+          "word": "要ります",
+          "kana": "いります",
+          "romaji": "irimasu",
+          "meaning": "to need",
+          "hint": "Takes が: ビザが要ります."
+        },
+        {
+          "word": "調べます",
+          "kana": "しらべます",
+          "romaji": "shirabemasu",
+          "meaning": "to check, look up",
+          "hint": null
+        },
+        {
+          "word": "足ります",
+          "kana": "たります",
+          "romaji": "tarimasu",
+          "meaning": "to be enough",
+          "hint": "From 足 (foot, also \"add\")."
+        },
+        {
+          "word": "勝ちます",
+          "kana": "かちます",
+          "romaji": "kachimasu",
+          "meaning": "to win",
+          "hint": null
+        },
+        {
+          "word": "負けます",
+          "kana": "まけます",
+          "romaji": "makemasu",
+          "meaning": "to lose (a game)",
+          "hint": "Losing an item is なくします."
+        },
+        {
+          "word": "僕",
+          "kana": "ぼく",
+          "romaji": "boku",
+          "meaning": "I (casual, mostly men)",
+          "hint": null
+        },
+        {
+          "word": "君",
+          "kana": "きみ",
+          "romaji": "kimi",
+          "meaning": "you (casual, to equals or juniors)",
+          "hint": null
+        },
+        {
+          "word": "うん",
+          "kana": "うん",
+          "romaji": "un",
+          "meaning": "yeah (casual はい)",
+          "hint": null
+        },
+        {
+          "word": "ううん",
+          "kana": "ううん",
+          "romaji": "uun",
+          "meaning": "nope (casual いいえ)",
+          "hint": "Falling tone: no. Rising うん: yes."
+        },
+        {
+          "word": "言葉",
+          "kana": "ことば",
+          "romaji": "kotoba",
+          "meaning": "word, language",
+          "hint": "言 (say) + 葉 (leaf): leaves of speech."
+        },
+        {
+          "word": "物価",
+          "kana": "ぶっか",
+          "romaji": "bukka",
+          "meaning": "prices, cost of living",
+          "hint": null
+        },
+        {
+          "word": "着物",
+          "kana": "きもの",
+          "romaji": "kimono",
+          "meaning": "kimono",
+          "hint": "着 (wear) + 物 (thing)."
+        },
+        {
+          "word": "ニュース",
+          "kana": "ニュース",
+          "romaji": "nyuusu",
+          "meaning": "news",
+          "hint": null
+        },
+        {
+          "word": "試合",
+          "kana": "しあい",
+          "romaji": "shiai",
+          "meaning": "match, game",
+          "hint": null
+        },
+        {
+          "word": "意見",
+          "kana": "いけん",
+          "romaji": "iken",
+          "meaning": "opinion",
+          "hint": null
+        },
+        {
+          "word": "話",
+          "kana": "はなし",
+          "romaji": "hanashi",
+          "meaning": "talk, story",
+          "hint": null
+        },
+        {
+          "word": "多分",
+          "kana": "たぶん",
+          "romaji": "tabun",
+          "meaning": "probably",
+          "hint": "Pairs with と思います / でしょう."
+        },
+        {
+          "word": "きっと",
+          "kana": "きっと",
+          "romaji": "kitto",
+          "meaning": "surely",
+          "hint": null
+        },
+        {
+          "word": "本当に",
+          "kana": "ほんとうに",
+          "romaji": "hontou ni",
+          "meaning": "really",
+          "hint": null
+        },
+        {
+          "word": "～について",
+          "kana": "について",
+          "romaji": "ni tsuite",
+          "meaning": "about ~",
+          "hint": null
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "あしたは雨が降る{}思います。",
+          "answer": "と",
+          "distractors": [
+            "を",
+            "が",
+            "に"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I think it will rain tomorrow.",
+          "explanation": "Plain form + と思います: “I think …”."
+        },
+        {
+          "sentence": "「行きます」の普通形は「{}」です。",
+          "answer": "行く",
+          "distractors": [
+            "行き",
+            "行きる",
+            "行かる"
+          ],
+          "also_accept": [
+            "いく"
+          ],
+          "romaji": [],
+          "translation": "The plain form of ikimasu is iku.",
+          "explanation": "The plain present is the dictionary form."
+        },
+        {
+          "sentence": "ミラーさんは来週東京へ行く{}言いました。",
+          "answer": "と",
+          "distractors": [
+            "を",
+            "が",
+            "で"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Mr Miller said he will go to Tokyo next week.",
+          "explanation": "Plain form + と言いました reports what someone said."
+        },
+        {
+          "sentence": "日本は物価が高い{}思います。",
+          "answer": "と",
+          "distractors": [
+            "を",
+            "が",
+            "へ"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I think prices in Japan are high.",
+          "explanation": "An い-adjective is already plain: 高い + と思います."
+        }
+      ]
+    },
+    {
+      "slug": "ch20",
+      "number": 20,
+      "title": "Noun Modification (Relative Clauses)",
+      "position": 20,
+      "words": [
+        {
+          "word": "着ます",
+          "kana": "きます",
+          "romaji": "kimasu",
+          "meaning": "to put on (shirts, coats)",
+          "hint": "Above the waist 着ます, below はきます, hats かぶります."
+        },
+        {
+          "word": "履きます",
+          "kana": "はきます",
+          "romaji": "hakimasu",
+          "meaning": "to put on (shoes, trousers)",
+          "hint": null
+        },
+        {
+          "word": "被ります",
+          "kana": "かぶります",
+          "romaji": "kaburimasu",
+          "meaning": "to put on (a hat)",
+          "hint": null
+        },
+        {
+          "word": "掛けます",
+          "kana": "かけます",
+          "romaji": "kakemasu",
+          "meaning": "to put on (glasses)",
+          "hint": null
+        },
+        {
+          "word": "生まれます",
+          "kana": "うまれます",
+          "romaji": "umaremasu",
+          "meaning": "to be born",
+          "hint": null
+        },
+        {
+          "word": "私たち",
+          "kana": "わたしたち",
+          "romaji": "watashitachi",
+          "meaning": "we",
+          "hint": "たち makes a plural for people."
+        },
+        {
+          "word": "コート",
+          "kana": "コート",
+          "romaji": "kooto",
+          "meaning": "coat",
+          "hint": null
+        },
+        {
+          "word": "セーター",
+          "kana": "セーター",
+          "romaji": "seetaa",
+          "meaning": "jumper, sweater",
+          "hint": null
+        },
+        {
+          "word": "スーツ",
+          "kana": "スーツ",
+          "romaji": "suutsu",
+          "meaning": "suit",
+          "hint": null
+        },
+        {
+          "word": "帽子",
+          "kana": "ぼうし",
+          "romaji": "boushi",
+          "meaning": "hat, cap",
+          "hint": null
+        },
+        {
+          "word": "眼鏡",
+          "kana": "めがね",
+          "romaji": "megane",
+          "meaning": "glasses",
+          "hint": "目 (eye) + 鏡 (mirror, lens)."
+        },
+        {
+          "word": "靴",
+          "kana": "くつ",
+          "romaji": "kutsu",
+          "meaning": "shoes",
+          "hint": null
+        },
+        {
+          "word": "アパート",
+          "kana": "アパート",
+          "romaji": "apaato",
+          "meaning": "flat, apartment",
+          "hint": null
+        },
+        {
+          "word": "家賃",
+          "kana": "やちん",
+          "romaji": "yachin",
+          "meaning": "rent",
+          "hint": null
+        },
+        {
+          "word": "台所",
+          "kana": "だいどころ",
+          "romaji": "daidokoro",
+          "meaning": "kitchen",
+          "hint": null
+        },
+        {
+          "word": "和室",
+          "kana": "わしつ",
+          "romaji": "washitsu",
+          "meaning": "Japanese-style room",
+          "hint": "和 (Japan) + 室 (room)."
+        },
+        {
+          "word": "布団",
+          "kana": "ふとん",
+          "romaji": "futon",
+          "meaning": "futon",
+          "hint": null
+        },
+        {
+          "word": "予定",
+          "kana": "よてい",
+          "romaji": "yotei",
+          "meaning": "plan, schedule",
+          "hint": null
+        },
+        {
+          "word": "約束",
+          "kana": "やくそく",
+          "romaji": "yakusoku",
+          "meaning": "appointment, promise",
+          "hint": null
+        },
+        {
+          "word": "用事",
+          "kana": "ようじ",
+          "romaji": "youji",
+          "meaning": "errand, something to do",
+          "hint": null
+        },
+        {
+          "word": "お目出度うございます",
+          "kana": "おめでとうございます",
+          "romaji": "omedetou gozaimasu",
+          "meaning": "congratulations",
+          "hint": "Usually written in kana."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "めがねをかけている{}はミラーさんです。",
+          "answer": "人",
+          "distractors": [
+            "を",
+            "が",
+            "に"
+          ],
+          "also_accept": [
+            "ひと"
+          ],
+          "romaji": [],
+          "translation": "The person wearing glasses is Mr Miller.",
+          "explanation": "A plain-form clause comes straight before the noun it describes."
+        },
+        {
+          "sentence": "これはわたし{}作ったケーキです。",
+          "answer": "が",
+          "distractors": [
+            "を",
+            "へ",
+            "で"
+          ],
+          "also_accept": [
+            "の"
+          ],
+          "romaji": [],
+          "translation": "This is a cake I made.",
+          "explanation": "Inside a noun-describing clause, the subject takes が (or の), not は."
+        },
+        {
+          "sentence": "ミラーさんが住んでいる{}はどこですか。",
+          "answer": "うち",
+          "distractors": [
+            "を",
+            "が",
+            "に"
+          ],
+          "also_accept": [
+            "家",
+            "いえ"
+          ],
+          "romaji": [],
+          "translation": "Where is the house Mr Miller lives in?",
+          "explanation": "The clause 住んでいる describes うち."
+        },
+        {
+          "sentence": "わたしは朝ごはんを食べる{}がありません。",
+          "answer": "時間",
+          "distractors": [
+            "を",
+            "に",
+            "へ"
+          ],
+          "also_accept": [
+            "じかん"
+          ],
+          "romaji": [],
+          "translation": "I have no time to eat breakfast.",
+          "explanation": "Dictionary form + 時間: “time to do”."
+        }
+      ]
+    },
+    {
+      "slug": "ch21",
+      "number": 21,
+      "title": "Time, Conditionals & Consequences",
+      "position": 21,
+      "words": [
+        {
+          "word": "回します",
+          "kana": "まわします",
+          "romaji": "mawashimasu",
+          "meaning": "to turn (a knob)",
+          "hint": null
+        },
+        {
+          "word": "引きます",
+          "kana": "ひきます",
+          "romaji": "hikimasu",
+          "meaning": "to pull",
+          "hint": "Push is 押します."
+        },
+        {
+          "word": "押します",
+          "kana": "おします",
+          "romaji": "oshimasu",
+          "meaning": "to push, press",
+          "hint": null
+        },
+        {
+          "word": "変えます",
+          "kana": "かえます",
+          "romaji": "kaemasu",
+          "meaning": "to change",
+          "hint": null
+        },
+        {
+          "word": "触ります",
+          "kana": "さわります",
+          "romaji": "sawarimasu",
+          "meaning": "to touch",
+          "hint": "Takes に: ドアに触ります."
+        },
+        {
+          "word": "歩きます",
+          "kana": "あるきます",
+          "romaji": "arukimasu",
+          "meaning": "to walk",
+          "hint": "止 (stop) over 少: little steps."
+        },
+        {
+          "word": "渡ります",
+          "kana": "わたります",
+          "romaji": "watarimasu",
+          "meaning": "to cross (a road, bridge)",
+          "hint": "Takes を: 道を渡ります."
+        },
+        {
+          "word": "曲がります",
+          "kana": "まがります",
+          "romaji": "magarimasu",
+          "meaning": "to turn (left, right)",
+          "hint": null
+        },
+        {
+          "word": "気を付けます",
+          "kana": "きをつけます",
+          "romaji": "ki o tsukemasu",
+          "meaning": "to be careful",
+          "hint": "気を付けて: Take care."
+        },
+        {
+          "word": "引っ越しします",
+          "kana": "ひっこしします",
+          "romaji": "hikkoshi shimasu",
+          "meaning": "to move house",
+          "hint": null
+        },
+        {
+          "word": "音",
+          "kana": "おと",
+          "romaji": "oto",
+          "meaning": "sound",
+          "hint": null
+        },
+        {
+          "word": "機械",
+          "kana": "きかい",
+          "romaji": "kikai",
+          "meaning": "machine",
+          "hint": null
+        },
+        {
+          "word": "故障",
+          "kana": "こしょう",
+          "romaji": "koshou",
+          "meaning": "breakdown, out of order",
+          "hint": null
+        },
+        {
+          "word": "道",
+          "kana": "みち",
+          "romaji": "michi",
+          "meaning": "road, way",
+          "hint": null
+        },
+        {
+          "word": "交差点",
+          "kana": "こうさてん",
+          "romaji": "kousaten",
+          "meaning": "crossroads, intersection",
+          "hint": "交差 (crossing) + 点 (point)."
+        },
+        {
+          "word": "信号",
+          "kana": "しんごう",
+          "romaji": "shingou",
+          "meaning": "traffic lights",
+          "hint": null
+        },
+        {
+          "word": "角",
+          "kana": "かど",
+          "romaji": "kado",
+          "meaning": "corner",
+          "hint": null
+        },
+        {
+          "word": "橋",
+          "kana": "はし",
+          "romaji": "hashi",
+          "meaning": "bridge",
+          "hint": "木 (wood) on the left: wooden bridges."
+        },
+        {
+          "word": "駐車場",
+          "kana": "ちゅうしゃじょう",
+          "romaji": "chuushajou",
+          "meaning": "car park",
+          "hint": "駐車 (parking) + 場 (place)."
+        },
+        {
+          "word": "お釣り",
+          "kana": "おつり",
+          "romaji": "otsuri",
+          "meaning": "change (money)",
+          "hint": null
+        },
+        {
+          "word": "時",
+          "kana": "とき",
+          "romaji": "toki",
+          "meaning": "when, time",
+          "hint": "As とき in sentences: 暇なとき."
+        },
+        {
+          "word": "～目",
+          "kana": "め",
+          "romaji": "me",
+          "meaning": "-th (ordinal)",
+          "hint": "二つ目の角: the second corner."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "図書館で本を借りる{}、カードが要ります。",
+          "answer": "とき",
+          "distractors": [
+            "から",
+            "まで",
+            "より"
+          ],
+          "also_accept": [
+            "時"
+          ],
+          "romaji": [],
+          "translation": "When you borrow books at the library, you need a card.",
+          "explanation": "〜とき: “when …”."
+        },
+        {
+          "sentence": "このボタンを押す{}、お釣りが出ます。",
+          "answer": "と",
+          "distractors": [
+            "を",
+            "が",
+            "へ"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "If you press this button, your change comes out.",
+          "explanation": "Dictionary form + と: a result that always follows."
+        },
+        {
+          "sentence": "道{}渡って、右へ曲がってください。",
+          "answer": "を",
+          "distractors": [
+            "に",
+            "へ",
+            "で"
+          ],
+          "also_accept": [],
+          "romaji": [
+            "o",
+            "wo"
+          ],
+          "translation": "Cross the road and turn right, please.",
+          "explanation": "を marks the place you move through or across."
+        },
+        {
+          "sentence": "暇な{}、何をしますか。",
+          "answer": "とき",
+          "distractors": [
+            "から",
+            "まで",
+            "より"
+          ],
+          "also_accept": [
+            "時"
+          ],
+          "romaji": [],
+          "translation": "What do you do when you’re free?",
+          "explanation": "な-adjective + な + とき."
+        }
+      ]
+    },
+    {
+      "slug": "ch22",
+      "number": 22,
+      "title": "Conditionals & Giving Advice",
+      "position": 22,
+      "words": [
+        {
+          "word": "考えます",
+          "kana": "かんがえます",
+          "romaji": "kangaemasu",
+          "meaning": "to think about, consider",
+          "hint": null
+        },
+        {
+          "word": "着きます",
+          "kana": "つきます",
+          "romaji": "tsukimasu",
+          "meaning": "to arrive",
+          "hint": "Takes に: 駅に着きます."
+        },
+        {
+          "word": "留学します",
+          "kana": "りゅうがくします",
+          "romaji": "ryuugaku shimasu",
+          "meaning": "to study abroad",
+          "hint": "留 (stay) + 学 (study)."
+        },
+        {
+          "word": "年を取ります",
+          "kana": "としをとります",
+          "romaji": "toshi o torimasu",
+          "meaning": "to grow old",
+          "hint": null
+        },
+        {
+          "word": "頑張ります",
+          "kana": "がんばります",
+          "romaji": "ganbarimasu",
+          "meaning": "to do your best",
+          "hint": "頑張って: Good luck!"
+        },
+        {
+          "word": "足ります",
+          "kana": "たります",
+          "romaji": "tarimasu",
+          "meaning": "to be enough",
+          "hint": null
+        },
+        {
+          "word": "田舎",
+          "kana": "いなか",
+          "romaji": "inaka",
+          "meaning": "countryside; hometown",
+          "hint": "A special reading: no kanji reads い or なか here."
+        },
+        {
+          "word": "大使館",
+          "kana": "たいしかん",
+          "romaji": "taishikan",
+          "meaning": "embassy",
+          "hint": null
+        },
+        {
+          "word": "グループ",
+          "kana": "グループ",
+          "romaji": "guruupu",
+          "meaning": "group",
+          "hint": null
+        },
+        {
+          "word": "チャンス",
+          "kana": "チャンス",
+          "romaji": "chansu",
+          "meaning": "chance",
+          "hint": null
+        },
+        {
+          "word": "億",
+          "kana": "おく",
+          "romaji": "oku",
+          "meaning": "hundred million",
+          "hint": null
+        },
+        {
+          "word": "もし",
+          "kana": "もし",
+          "romaji": "moshi",
+          "meaning": "if",
+          "hint": "Pairs with たら: もし雨が降ったら."
+        },
+        {
+          "word": "幾ら",
+          "kana": "いくら",
+          "romaji": "ikura",
+          "meaning": "however (much)",
+          "hint": "With ても: いくら考えても… however much I think."
+        },
+        {
+          "word": "転勤",
+          "kana": "てんきん",
+          "romaji": "tenkin",
+          "meaning": "job transfer",
+          "hint": null
+        },
+        {
+          "word": "こと",
+          "kana": "こと",
+          "romaji": "koto",
+          "meaning": "thing, matter (abstract)",
+          "hint": "もの is a physical thing; こと an idea or event."
+        },
+        {
+          "word": "最近",
+          "kana": "さいきん",
+          "romaji": "saikin",
+          "meaning": "recently",
+          "hint": null
+        },
+        {
+          "word": "お世話になりました",
+          "kana": "おせわになりました",
+          "romaji": "osewa ni narimashita",
+          "meaning": "thank you for all your help",
+          "hint": "Said when leaving a job, a home stay or a class."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "雨が降っ{}、行きません。",
+          "answer": "たら",
+          "distractors": [
+            "ないで",
+            "ては",
+            "たり"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "If it rains, I won’t go.",
+          "explanation": "た-form + ら: “if / when …”."
+        },
+        {
+          "sentence": "雨が降っ{}、行きます。",
+          "answer": "ても",
+          "distractors": [
+            "たら",
+            "ては",
+            "ないで"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Even if it rains, I’ll go.",
+          "explanation": "て-form + も: “even if …”."
+        },
+        {
+          "sentence": "どうし{}いいですか。",
+          "answer": "たら",
+          "distractors": [
+            "ても",
+            "ては",
+            "て"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "What should I do?",
+          "explanation": "Question word + 〜たらいいですか asks for advice."
+        },
+        {
+          "sentence": "パーティーに学生が２００人{}来ました。",
+          "answer": "も",
+          "distractors": [
+            "しか",
+            "を",
+            "が"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "As many as 200 students came to the party.",
+          "explanation": "Amount + も: “as many as”."
+        },
+        {
+          "sentence": "お金が５００円{}ありません。",
+          "answer": "しか",
+          "distractors": [
+            "だけ",
+            "も",
+            "ぐらい"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I only have 500 yen.",
+          "explanation": "Amount + しか + negative: “only”."
+        }
+      ]
+    },
+    {
+      "slug": "ch23",
+      "number": 23,
+      "title": "Giving & Receiving",
+      "position": 23,
+      "words": [
+        {
+          "word": "くれます",
+          "kana": "くれます",
+          "romaji": "kuremasu",
+          "meaning": "to give (to me)",
+          "hint": "Toward you or your side; あげます goes away from you."
+        },
+        {
+          "word": "連れて行きます",
+          "kana": "つれていきます",
+          "romaji": "tsurete ikimasu",
+          "meaning": "to take (someone) along",
+          "hint": null
+        },
+        {
+          "word": "連れて来ます",
+          "kana": "つれてきます",
+          "romaji": "tsurete kimasu",
+          "meaning": "to bring (someone) along",
+          "hint": null
+        },
+        {
+          "word": "送ります",
+          "kana": "おくります",
+          "romaji": "okurimasu",
+          "meaning": "to see off, take (someone home)",
+          "hint": "Also \"to send\"; with a person it means see them off."
+        },
+        {
+          "word": "紹介します",
+          "kana": "しょうかいします",
+          "romaji": "shoukai shimasu",
+          "meaning": "to introduce",
+          "hint": null
+        },
+        {
+          "word": "案内します",
+          "kana": "あんないします",
+          "romaji": "annai shimasu",
+          "meaning": "to show around, guide",
+          "hint": null
+        },
+        {
+          "word": "説明します",
+          "kana": "せつめいします",
+          "romaji": "setsumei shimasu",
+          "meaning": "to explain",
+          "hint": null
+        },
+        {
+          "word": "入れます",
+          "kana": "いれます",
+          "romaji": "iremasu",
+          "meaning": "to make (coffee, tea); put in",
+          "hint": null
+        },
+        {
+          "word": "お祖父さん",
+          "kana": "おじいさん",
+          "romaji": "ojiisan",
+          "meaning": "grandfather; old man",
+          "hint": "Long い: おじいさん. Short おじさん is uncle."
+        },
+        {
+          "word": "お祖母さん",
+          "kana": "おばあさん",
+          "romaji": "obaasan",
+          "meaning": "grandmother; old woman",
+          "hint": "Long あ: おばあさん. Short おばさん is aunt."
+        },
+        {
+          "word": "準備",
+          "kana": "じゅんび",
+          "romaji": "junbi",
+          "meaning": "preparation",
+          "hint": null
+        },
+        {
+          "word": "意味",
+          "kana": "いみ",
+          "romaji": "imi",
+          "meaning": "meaning",
+          "hint": null
+        },
+        {
+          "word": "お菓子",
+          "kana": "おかし",
+          "romaji": "okashi",
+          "meaning": "sweets, snacks",
+          "hint": null
+        },
+        {
+          "word": "全部",
+          "kana": "ぜんぶ",
+          "romaji": "zenbu",
+          "meaning": "all",
+          "hint": null
+        },
+        {
+          "word": "自分で",
+          "kana": "じぶんで",
+          "romaji": "jibun de",
+          "meaning": "by yourself",
+          "hint": null
+        },
+        {
+          "word": "他に",
+          "kana": "ほかに",
+          "romaji": "hoka ni",
+          "meaning": "besides, anything else",
+          "hint": null
+        },
+        {
+          "word": "お弁当",
+          "kana": "おべんとう",
+          "romaji": "obentou",
+          "meaning": "boxed lunch",
+          "hint": null
+        },
+        {
+          "word": "引っ越し",
+          "kana": "ひっこし",
+          "romaji": "hikkoshi",
+          "meaning": "moving house",
+          "hint": null
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "佐藤さんがわたしにチョコレートを{}。",
+          "answer": "くれました",
+          "distractors": [
+            "あげました",
+            "もらいました",
+            "ありました"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Ms Sato gave me chocolate.",
+          "explanation": "くれます: someone gives to me (or my side)."
+        },
+        {
+          "sentence": "わたしは木村さんに本を貸して{}。",
+          "answer": "あげました",
+          "distractors": [
+            "くれました",
+            "もらいました",
+            "ください"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I lent Ms Kimura a book (as a favour).",
+          "explanation": "て-form + あげます: I do something for someone."
+        },
+        {
+          "sentence": "わたしは母に料理を教えて{}。",
+          "answer": "もらいました",
+          "distractors": [
+            "あげました",
+            "くれました",
+            "ください"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "My mother taught me how to cook.",
+          "explanation": "て-form + もらいます: I receive a favour from someone (に)."
+        },
+        {
+          "sentence": "{}がその時計をくれましたか。",
+          "answer": "だれ",
+          "distractors": [
+            "どこ",
+            "なに",
+            "いつ"
+          ],
+          "also_accept": [
+            "誰"
+          ],
+          "romaji": [],
+          "translation": "Who gave you that watch?",
+          "explanation": "だれが asks who did it."
+        }
+      ]
+    },
+    {
+      "slug": "ch24",
+      "number": 24,
+      "title": "Potential Form & State Transitions",
+      "position": 24,
+      "words": [
+        {
+          "word": "見えます",
+          "kana": "みえます",
+          "romaji": "miemasu",
+          "meaning": "can be seen, be visible",
+          "hint": "Something comes into view; 見られます is \"able to see\" by choice."
+        },
+        {
+          "word": "聞こえます",
+          "kana": "きこえます",
+          "romaji": "kikoemasu",
+          "meaning": "can be heard",
+          "hint": null
+        },
+        {
+          "word": "飼います",
+          "kana": "かいます",
+          "romaji": "kaimasu",
+          "meaning": "to keep (a pet)",
+          "hint": "Same sound as 買います (buy); 飼 has 食 (feed)."
+        },
+        {
+          "word": "建てます",
+          "kana": "たてます",
+          "romaji": "tatemasu",
+          "meaning": "to build",
+          "hint": null
+        },
+        {
+          "word": "走ります",
+          "kana": "はしります",
+          "romaji": "hashirimasu",
+          "meaning": "to run",
+          "hint": null
+        },
+        {
+          "word": "なくします",
+          "kana": "なくします",
+          "romaji": "nakushimasu",
+          "meaning": "to lose (something)",
+          "hint": "Often with てしまいました: なくしてしまいました."
+        },
+        {
+          "word": "忘れ物",
+          "kana": "わすれもの",
+          "romaji": "wasuremono",
+          "meaning": "thing left behind",
+          "hint": null
+        },
+        {
+          "word": "ペット",
+          "kana": "ペット",
+          "romaji": "petto",
+          "meaning": "pet",
+          "hint": null
+        },
+        {
+          "word": "鳥",
+          "kana": "とり",
+          "romaji": "tori",
+          "meaning": "bird",
+          "hint": "The kanji: head, eye, body and tail feathers."
+        },
+        {
+          "word": "声",
+          "kana": "こえ",
+          "romaji": "koe",
+          "meaning": "voice",
+          "hint": null
+        },
+        {
+          "word": "波",
+          "kana": "なみ",
+          "romaji": "nami",
+          "meaning": "wave",
+          "hint": null
+        },
+        {
+          "word": "花火",
+          "kana": "はなび",
+          "romaji": "hanabi",
+          "meaning": "fireworks",
+          "hint": "花 (flower) + 火 (fire): fire flowers."
+        },
+        {
+          "word": "景色",
+          "kana": "けしき",
+          "romaji": "keshiki",
+          "meaning": "scenery, view",
+          "hint": null
+        },
+        {
+          "word": "昼間",
+          "kana": "ひるま",
+          "romaji": "hiruma",
+          "meaning": "daytime",
+          "hint": null
+        },
+        {
+          "word": "昔",
+          "kana": "むかし",
+          "romaji": "mukashi",
+          "meaning": "long ago",
+          "hint": null
+        },
+        {
+          "word": "道具",
+          "kana": "どうぐ",
+          "romaji": "dougu",
+          "meaning": "tool",
+          "hint": null
+        },
+        {
+          "word": "自動販売機",
+          "kana": "じどうはんばいき",
+          "romaji": "jidouhanbaiki",
+          "meaning": "vending machine",
+          "hint": "自動 (automatic) + 販売 (sales) + 機 (machine)."
+        },
+        {
+          "word": "台所",
+          "kana": "だいどころ",
+          "romaji": "daidokoro",
+          "meaning": "kitchen",
+          "hint": null
+        },
+        {
+          "word": "殆ど",
+          "kana": "ほとんど",
+          "romaji": "hotondo",
+          "meaning": "almost all; hardly (with a negative)",
+          "hint": "Usually written in kana."
+        },
+        {
+          "word": "はっきり",
+          "kana": "はっきり",
+          "romaji": "hakkiri",
+          "meaning": "clearly",
+          "hint": null
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "わたしは日本語{}話せます。",
+          "answer": "が",
+          "distractors": [
+            "に",
+            "で",
+            "へ"
+          ],
+          "also_accept": [
+            "を"
+          ],
+          "romaji": [],
+          "translation": "I can speak Japanese.",
+          "explanation": "A potential verb usually takes が for its object."
+        },
+        {
+          "sentence": "「泳ぎます」の可能形は「{}」です。",
+          "answer": "泳げます",
+          "distractors": [
+            "泳ぎます",
+            "泳がます",
+            "泳ぎれます"
+          ],
+          "also_accept": [
+            "およげます"
+          ],
+          "romaji": [],
+          "translation": "The potential form of oyogimasu is oyogemasu.",
+          "explanation": "Group 1: change the い-sound before ます to え."
+        },
+        {
+          "sentence": "部屋の窓から海が{}。",
+          "answer": "見えます",
+          "distractors": [
+            "見ます",
+            "聞こえます",
+            "見せます"
+          ],
+          "also_accept": [
+            "みえます"
+          ],
+          "romaji": [],
+          "translation": "You can see the sea from my room’s window.",
+          "explanation": "見えます: something is visible (no effort)."
+        },
+        {
+          "sentence": "宿題を忘れて{}。",
+          "answer": "しまいました",
+          "distractors": [
+            "いました",
+            "みました",
+            "おきました"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I (regrettably) forgot my homework.",
+          "explanation": "て-form + しまいました: done completely, often with regret."
+        },
+        {
+          "sentence": "ひらがな{}書けません。",
+          "answer": "しか",
+          "distractors": [
+            "だけ",
+            "も",
+            "を"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "I can only write hiragana.",
+          "explanation": "しか + negative potential: “can only”."
+        }
+      ]
+    },
+    {
+      "slug": "ch25",
+      "number": 25,
+      "title": "Advanced Timing & Noun Clauses",
+      "position": 25,
+      "words": [
+        {
+          "word": "間に合います",
+          "kana": "まにあいます",
+          "romaji": "maniaimasu",
+          "meaning": "to be in time",
+          "hint": "間 (gap) + 合 (fit): the gap fits."
+        },
+        {
+          "word": "拾います",
+          "kana": "ひろいます",
+          "romaji": "hiroimasu",
+          "meaning": "to pick up",
+          "hint": "Opposite of 捨てます (throw away)."
+        },
+        {
+          "word": "連絡します",
+          "kana": "れんらくします",
+          "romaji": "renraku shimasu",
+          "meaning": "to contact, get in touch",
+          "hint": null
+        },
+        {
+          "word": "気分",
+          "kana": "きぶん",
+          "romaji": "kibun",
+          "meaning": "feeling, mood",
+          "hint": "気分が悪い: feel unwell."
+        },
+        {
+          "word": "場所",
+          "kana": "ばしょ",
+          "romaji": "basho",
+          "meaning": "place",
+          "hint": null
+        },
+        {
+          "word": "財布",
+          "kana": "さいふ",
+          "romaji": "saifu",
+          "meaning": "wallet, purse",
+          "hint": "財 (wealth) + 布 (cloth)."
+        },
+        {
+          "word": "ごみ",
+          "kana": "ごみ",
+          "romaji": "gomi",
+          "meaning": "rubbish",
+          "hint": null
+        },
+        {
+          "word": "平日",
+          "kana": "へいじつ",
+          "romaji": "heijitsu",
+          "meaning": "weekday",
+          "hint": null
+        },
+        {
+          "word": "今度",
+          "kana": "こんど",
+          "romaji": "kondo",
+          "meaning": "next time; this time",
+          "hint": null
+        },
+        {
+          "word": "随分",
+          "kana": "ずいぶん",
+          "romaji": "zuibun",
+          "meaning": "quite, very",
+          "hint": "Usually written in kana."
+        },
+        {
+          "word": "直接",
+          "kana": "ちょくせつ",
+          "romaji": "chokusetsu",
+          "meaning": "directly",
+          "hint": null
+        },
+        {
+          "word": "いつでも",
+          "kana": "いつでも",
+          "romaji": "itsudemo",
+          "meaning": "any time",
+          "hint": "Question word + でも = any: どこでも anywhere, だれでも anyone."
+        },
+        {
+          "word": "どこでも",
+          "kana": "どこでも",
+          "romaji": "dokodemo",
+          "meaning": "anywhere",
+          "hint": null
+        },
+        {
+          "word": "誰でも",
+          "kana": "だれでも",
+          "romaji": "daredemo",
+          "meaning": "anyone",
+          "hint": null
+        },
+        {
+          "word": "何でも",
+          "kana": "なんでも",
+          "romaji": "nandemo",
+          "meaning": "anything",
+          "hint": null
+        },
+        {
+          "word": "こんな",
+          "kana": "こんな",
+          "romaji": "konna",
+          "meaning": "this kind of",
+          "hint": "こんな / そんな / あんな follow こ・そ・あ."
+        },
+        {
+          "word": "そんな",
+          "kana": "そんな",
+          "romaji": "sonna",
+          "meaning": "that kind of",
+          "hint": null
+        },
+        {
+          "word": "瓶",
+          "kana": "びん",
+          "romaji": "bin",
+          "meaning": "bottle",
+          "hint": null
+        },
+        {
+          "word": "缶",
+          "kana": "かん",
+          "romaji": "kan",
+          "meaning": "can, tin",
+          "hint": null
+        },
+        {
+          "word": "お湯",
+          "kana": "おゆ",
+          "romaji": "oyu",
+          "meaning": "hot water",
+          "hint": "Cold water is 水; hot water has its own word."
+        },
+        {
+          "word": "後",
+          "kana": "あと",
+          "romaji": "ato",
+          "meaning": "after",
+          "hint": "た-form + 後で: 食べた後で."
+        }
+      ],
+      "sentences": [
+        {
+          "sentence": "頭が痛い{}、早く帰ります。",
+          "answer": "ので",
+          "distractors": [
+            "のに",
+            "まで",
+            "より"
+          ],
+          "also_accept": [
+            "から"
+          ],
+          "romaji": [],
+          "translation": "I have a headache, so I’ll go home early.",
+          "explanation": "〜ので gives a reason, a little softer than から."
+        },
+        {
+          "sentence": "これは「すし」{}食べ物です。",
+          "answer": "という",
+          "distractors": [
+            "といって",
+            "とした",
+            "をいう"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "This is a food called sushi.",
+          "explanation": "N₁ という N₂: “an N₂ called N₁”."
+        },
+        {
+          "sentence": "ごはんを食べた{}、歯をみがきます。",
+          "answer": "あとで",
+          "distractors": [
+            "まえに",
+            "まで",
+            "より"
+          ],
+          "also_accept": [
+            "後で"
+          ],
+          "romaji": [],
+          "translation": "I brush my teeth after eating.",
+          "explanation": "た-form + あとで: “after doing”."
+        },
+        {
+          "sentence": "どこで切符を買っ{}いいですか。",
+          "answer": "たら",
+          "distractors": [
+            "ても",
+            "ては",
+            "て"
+          ],
+          "also_accept": [],
+          "romaji": [],
+          "translation": "Where should I buy the ticket?",
+          "explanation": "Question word + 〜たらいいですか asks what to do."
+        }
+      ]
+    }
+  ]
+}

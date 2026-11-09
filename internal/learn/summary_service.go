@@ -3,6 +3,7 @@ package learn
 import (
 	"context"
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/google/uuid"
@@ -69,8 +70,11 @@ func (s *SummaryService) Get(ctx context.Context, userID uuid.UUID, rawTrack str
 // Hiragana and katakana share the daily kana limit, so the budget left by
 // one track carries over to the next.
 func (s *SummaryService) newItems(ctx context.Context, l *learner, track *common.LearningTrack) (int, *LearnNextUnit, error) {
-	tracks := common.LEARNING_TRACKS
+	tracks := common.LESSON_TRACKS
 	if track != nil {
+		if !slices.Contains(common.LESSON_TRACKS, *track) {
+			return 0, nil, nil
+		}
 		tracks = []common.LearningTrack{*track}
 	}
 	budgets := map[common.SRSItemType]int{}

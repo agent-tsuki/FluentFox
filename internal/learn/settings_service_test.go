@@ -89,6 +89,19 @@ func TestLearningSettingsServiceUpdate(t *testing.T) {
 			wantErr: exceptions.ErrLearningSettingsInvalid},
 		{name: "an unknown answer mode is rejected", req: UpdateLearningSettingsRequest{AnswerMode: ptr("voice")},
 			wantErr: exceptions.ErrLearningSettingsInvalid},
+		{
+			name: "chapter pass mark and completion can be changed",
+			req:  UpdateLearningSettingsRequest{ChapterPassPct: ptr(80), ChapterCompletion: ptr("manual")},
+			check: func(t *testing.T, s *LearningSettings) {
+				if s.ChapterPassPct != 80 || s.ChapterCompletion != common.ChapterCompletionManual {
+					t.Errorf("chapter settings = %d %s, want 80 manual", s.ChapterPassPct, s.ChapterCompletion)
+				}
+			},
+		},
+		{name: "a chapter pass mark below the range is rejected", req: UpdateLearningSettingsRequest{ChapterPassPct: ptr(40)},
+			wantErr: exceptions.ErrLearningSettingsInvalid},
+		{name: "an unknown chapter completion is rejected", req: UpdateLearningSettingsRequest{ChapterCompletion: ptr("never")},
+			wantErr: exceptions.ErrLearningSettingsInvalid},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {

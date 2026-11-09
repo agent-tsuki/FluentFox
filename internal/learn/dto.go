@@ -9,34 +9,38 @@ import (
 // Field names are snake_case: they are the frontend's src/types/learn.ts.
 
 type LearningSettingsResponse struct {
-	DesiredRetention float64 `json:"desired_retention"   doc:"Target recall chance, 0.70 to 0.97"`
-	NewKanaPerDay    int     `json:"new_kana_per_day"    doc:"New kana per day, 0 to 100"`
-	NewKanjiPerDay   int     `json:"new_kanji_per_day"   doc:"New kanji per day, 0 to 50"`
-	MaxReviewsPerDay int     `json:"max_reviews_per_day" doc:"Review answers per day, 10 to 1000"`
-	SessionSize      int     `json:"session_size"        doc:"Cards per review session, 5 to 100"`
-	LessonSize       int     `json:"lesson_size"         doc:"New items per lesson, 1 to 20"`
-	DailyGoalAnswers int     `json:"daily_goal_answers"  doc:"Answers that meet the daily goal, 5 to 200"`
-	DayStartsAtHour  int     `json:"day_starts_at_hour"  doc:"Local hour the study day starts, 0 to 23"`
-	AnswerMode       string  `json:"answer_mode"         doc:"choice, typed or mixed"`
-	ShowRetention    bool    `json:"show_retention"      doc:"Show recall vs target on the dashboard"`
+	DesiredRetention  float64 `json:"desired_retention"   doc:"Target recall chance, 0.70 to 0.97"`
+	NewKanaPerDay     int     `json:"new_kana_per_day"    doc:"New kana per day, 0 to 100"`
+	NewKanjiPerDay    int     `json:"new_kanji_per_day"   doc:"New kanji per day, 0 to 50"`
+	MaxReviewsPerDay  int     `json:"max_reviews_per_day" doc:"Review answers per day, 10 to 1000"`
+	SessionSize       int     `json:"session_size"        doc:"Cards per review session, 5 to 100"`
+	LessonSize        int     `json:"lesson_size"         doc:"New items per lesson, 1 to 20"`
+	DailyGoalAnswers  int     `json:"daily_goal_answers"  doc:"Answers that meet the daily goal, 5 to 200"`
+	DayStartsAtHour   int     `json:"day_starts_at_hour"  doc:"Local hour the study day starts, 0 to 23"`
+	AnswerMode        string  `json:"answer_mode"         doc:"choice, typed or mixed"`
+	ShowRetention     bool    `json:"show_retention"      doc:"Show recall vs target on the dashboard"`
+	ChapterPassPct    int     `json:"chapter_pass_pct"   doc:"Percent a chapter's vocab quiz or exercise needs to pass, 50 to 100"`
+	ChapterCompletion string  `json:"chapter_completion" doc:"auto: passing the exercise completes the chapter; manual: the learner marks it"`
 }
 
 // Only the fields present are changed.
 type UpdateLearningSettingsRequest struct {
-	DesiredRetention *float64 `json:"desired_retention,omitempty"   minimum:"0.7" maximum:"0.97"`
-	NewKanaPerDay    *int     `json:"new_kana_per_day,omitempty"    minimum:"0"   maximum:"100"`
-	NewKanjiPerDay   *int     `json:"new_kanji_per_day,omitempty"   minimum:"0"   maximum:"50"`
-	MaxReviewsPerDay *int     `json:"max_reviews_per_day,omitempty" minimum:"10"  maximum:"1000"`
-	SessionSize      *int     `json:"session_size,omitempty"        minimum:"5"   maximum:"100"`
-	LessonSize       *int     `json:"lesson_size,omitempty"         minimum:"1"   maximum:"20"`
-	DailyGoalAnswers *int     `json:"daily_goal_answers,omitempty"  minimum:"5"   maximum:"200"`
-	DayStartsAtHour  *int     `json:"day_starts_at_hour,omitempty"  minimum:"0"   maximum:"23"`
-	AnswerMode       *string  `json:"answer_mode,omitempty"         enum:"choice,typed,mixed"`
-	ShowRetention    *bool    `json:"show_retention,omitempty"`
+	DesiredRetention  *float64 `json:"desired_retention,omitempty"   minimum:"0.7" maximum:"0.97"`
+	NewKanaPerDay     *int     `json:"new_kana_per_day,omitempty"    minimum:"0"   maximum:"100"`
+	NewKanjiPerDay    *int     `json:"new_kanji_per_day,omitempty"   minimum:"0"   maximum:"50"`
+	MaxReviewsPerDay  *int     `json:"max_reviews_per_day,omitempty" minimum:"10"  maximum:"1000"`
+	SessionSize       *int     `json:"session_size,omitempty"        minimum:"5"   maximum:"100"`
+	LessonSize        *int     `json:"lesson_size,omitempty"         minimum:"1"   maximum:"20"`
+	DailyGoalAnswers  *int     `json:"daily_goal_answers,omitempty"  minimum:"5"   maximum:"200"`
+	DayStartsAtHour   *int     `json:"day_starts_at_hour,omitempty"  minimum:"0"   maximum:"23"`
+	AnswerMode        *string  `json:"answer_mode,omitempty"         enum:"choice,typed,mixed"`
+	ShowRetention     *bool    `json:"show_retention,omitempty"`
+	ChapterPassPct    *int     `json:"chapter_pass_pct,omitempty"   minimum:"50" maximum:"100"`
+	ChapterCompletion *string  `json:"chapter_completion,omitempty" enum:"auto,manual"`
 }
 
 type SummaryInput struct {
-	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5" doc:"Limit to one track; all tracks when omitted"`
+	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5,vocab_n5,grammar_n5" doc:"Limit to one track; all tracks when omitted"`
 }
 
 type LearnSummary struct {
@@ -66,7 +70,7 @@ type StartLessonRequest struct {
 }
 
 type StartReviewRequest struct {
-	Track string `json:"track,omitempty" enum:"hiragana,katakana,kanji_n5" doc:"Limit to one track; all tracks when omitted"`
+	Track string `json:"track,omitempty" enum:"hiragana,katakana,kanji_n5,vocab_n5,grammar_n5" doc:"Limit to one track; all tracks when omitted"`
 }
 
 type StudySessionDTO struct {
@@ -93,6 +97,14 @@ type Question struct {
 	CardState       int       `json:"card_state"                 doc:"0 new, 1 learning, 2 review, 3 relearning"`
 	Char            string    `json:"char"                       doc:"The kana or kanji the card is about"`
 	IsLeech         bool      `json:"is_leech"`
+	// Grammar sentences only.
+	Sentence *SentenceQuestion `json:"sentence,omitempty" doc:"Grammar sentence questions only"`
+}
+
+type SentenceQuestion struct {
+	Filled      string `json:"filled"                doc:"The sentence with the gap filled in (shown after answering, or spoken)"`
+	Translation string `json:"translation,omitempty" doc:"The English, for gap questions (absent when it is the answer)"`
+	Explanation string `json:"explanation"           doc:"One line on why, shown after answering"`
 }
 
 type LessonItem struct {
@@ -199,7 +211,7 @@ type StartPracticeRequest struct {
 
 type StartTestRequest struct {
 	Kind  string `json:"kind"            enum:"unit_quiz,skip,final"`
-	Track string `json:"track"           enum:"hiragana,katakana,kanji_n5"`
+	Track string `json:"track"           enum:"hiragana,katakana,kanji_n5,vocab_n5,grammar_n5"`
 	Scope string `json:"scope,omitempty" maxLength:"64" doc:"unit_quiz: unit slug; skip: group (kana group key or kanji group slug) or all; final: ignored"`
 }
 
@@ -223,7 +235,7 @@ type UnitProgressRequest struct {
 }
 
 type UnitProgressListInput struct {
-	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5" doc:"Limit to one track; all tracks when omitted"`
+	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5,vocab_n5,grammar_n5" doc:"Limit to one track; all tracks when omitted"`
 }
 
 type UnitProgressData struct {
@@ -262,7 +274,7 @@ type KanjiNoteResponse struct {
 }
 
 type TestHistoryInput struct {
-	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5" doc:"Limit to one track; all tracks when omitted"`
+	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5,vocab_n5,grammar_n5" doc:"Limit to one track; all tracks when omitted"`
 }
 
 type TestHistoryEntry struct {

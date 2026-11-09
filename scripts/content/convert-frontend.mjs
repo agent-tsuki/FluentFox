@@ -210,5 +210,49 @@ function convertKanji(levelId) {
   })
 }
 
+// Grammar chapters: titles from the chapter notes' frontmatter, words from
+// chapterVocab.ts and practice sentences from questionBank.ts.
+function convertChapters(levelId) {
+  const { CHAPTER_VOCAB } = loadTs(path.join(uiSrc, 'lib', 'content', 'grammar', 'chapterVocab.ts'))
+  const { GRAMMAR_QUESTION_BANK } = loadTs(path.join(uiSrc, 'lib', 'content', 'grammar', 'questionBank.ts'))
+  const words = CHAPTER_VOCAB[levelId] ?? {}
+  const sentences = GRAMMAR_QUESTION_BANK[levelId] ?? []
+  const notesDir = path.join(uiSrc, 'assets', 'grammar', levelId)
+  const chapters = fs
+    .readdirSync(notesDir)
+    .filter((f) => f.endsWith('.mdx'))
+    .map((f) => {
+      const front = fs.readFileSync(path.join(notesDir, f), 'utf8').match(/^---\n([\s\S]*?)\n---/)?.[1] ?? ''
+      const number = Number(front.match(/^chapter:\s*(\d+)/m)?.[1])
+      const title = front.match(/^title:\s*"(.*)"/m)?.[1]
+      if (!number || !title) throw new Error(`${f}: missing chapter or title`)
+      return { number, title }
+    })
+    .sort((a, b) => a.number - b.number)
+
+  writeJson(`chapters/${levelId}.json`, {
+    level: levelId.toUpperCase(),
+    chapters: chapters.map((c, i) => ({
+      slug: `ch${c.number}`,
+      number: c.number,
+      title: c.title,
+      position: i + 1,
+      words: (words[c.number] ?? []).map((w) => ({ word: w.word, kana: w.kana, romaji: w.romaji, meaning: w.meaning, hint: w.hint ?? null })),
+      sentences: sentences
+        .filter((s) => s.chapter === c.number)
+        .map((s) => ({
+          sentence: s.sentence,
+          answer: s.answer,
+          distractors: s.distractors,
+          also_accept: s.alsoAccept ?? [],
+          romaji: s.romaji ?? [],
+          translation: s.translation,
+          explanation: s.explanation,
+        })),
+    })),
+  })
+}
+
 convertKana()
 convertKanji('n5')
+convertChapters('n5')

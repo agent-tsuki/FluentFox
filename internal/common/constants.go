@@ -161,24 +161,33 @@ const (
 	USUAL_KANJI_MCQ          time.Duration = 3 * time.Second
 	USUAL_MEANING_TYPED      time.Duration = 2 * time.Second
 	USUAL_READING_TYPED      time.Duration = 2500 * time.Millisecond
+	// A sentence takes longer to read than a single item.
+	USUAL_SENTENCE_MCQ   time.Duration = 6 * time.Second
+	USUAL_SENTENCE_TYPED time.Duration = 5 * time.Second
+	USUAL_TRANSLATE_MCQ  time.Duration = 8 * time.Second
 )
 
 var QUESTION_TYPE_RULES = map[QuestionType]QuestionTypeRule{
-	QuestionKanaMCQRomaji:     {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANA_MCQ},
-	QuestionKanaMCQKana:       {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANA_MCQ},
-	QuestionKanaTyped:         {UpdatesSchedule: true, MaxRating: srs.RatingEasy, UsualTime: USUAL_KANA_TYPED, Typed: true},
-	QuestionKanaListen:        {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LISTEN_AFTER_AUDIO},
-	QuestionKanaBuild:         {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTimePerTile: USUAL_BUILD_PER_TILE},
-	QuestionKanaLookalike:     {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LOOKALIKE},
-	QuestionKanaSpeed:         {},
-	QuestionKanaMatch:         {},
-	QuestionKanaTrace:         {},
-	QuestionKanjiMeaningMCQ:   {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANJI_MCQ},
-	QuestionKanjiMeaningTyped: {UpdatesSchedule: true, MaxRating: srs.RatingEasy, UsualTime: USUAL_MEANING_TYPED, Typed: true},
-	QuestionKanjiReadingMCQ:   {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANJI_MCQ},
-	QuestionKanjiReadingTyped: {UpdatesSchedule: true, MaxRating: srs.RatingEasy, UsualTime: USUAL_READING_TYPED, Typed: true},
-	QuestionKanjiListen:       {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LISTEN_AFTER_AUDIO},
-	QuestionKanjiLookalike:    {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LOOKALIKE},
+	QuestionKanaMCQRomaji:       {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANA_MCQ},
+	QuestionKanaMCQKana:         {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANA_MCQ},
+	QuestionKanaTyped:           {UpdatesSchedule: true, MaxRating: srs.RatingEasy, UsualTime: USUAL_KANA_TYPED, Typed: true},
+	QuestionKanaListen:          {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LISTEN_AFTER_AUDIO},
+	QuestionKanaBuild:           {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTimePerTile: USUAL_BUILD_PER_TILE},
+	QuestionKanaLookalike:       {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LOOKALIKE},
+	QuestionKanaSpeed:           {},
+	QuestionKanaMatch:           {},
+	QuestionKanaTrace:           {},
+	QuestionKanjiMeaningMCQ:     {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANJI_MCQ},
+	QuestionKanjiMeaningTyped:   {UpdatesSchedule: true, MaxRating: srs.RatingEasy, UsualTime: USUAL_MEANING_TYPED, Typed: true},
+	QuestionKanjiReadingMCQ:     {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANJI_MCQ},
+	QuestionKanjiReadingTyped:   {UpdatesSchedule: true, MaxRating: srs.RatingEasy, UsualTime: USUAL_READING_TYPED, Typed: true},
+	QuestionKanjiListen:         {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LISTEN_AFTER_AUDIO},
+	QuestionKanjiLookalike:      {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_LOOKALIKE},
+	QuestionVocabMeaningMCQ:     {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_KANJI_MCQ},
+	QuestionVocabMeaningTyped:   {UpdatesSchedule: true, MaxRating: srs.RatingEasy, UsualTime: USUAL_MEANING_TYPED, Typed: true},
+	QuestionGrammarGapMCQ:       {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_SENTENCE_MCQ},
+	QuestionGrammarGapTyped:     {UpdatesSchedule: true, MaxRating: srs.RatingEasy, UsualTime: USUAL_SENTENCE_TYPED, Typed: true},
+	QuestionGrammarTranslateMCQ: {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_TRANSLATE_MCQ},
 }
 
 // Only N5 kanji content ships in v1; other levels answer 404 until they are synced.
@@ -237,18 +246,42 @@ var (
 	LESSON_SIZE_RANGE         = IntRange{Min: MIN_LESSON_SIZE, Max: MAX_LESSON_SIZE}
 	DAILY_GOAL_ANSWERS_RANGE  = IntRange{Min: MIN_DAILY_GOAL_ANSWERS, Max: MAX_DAILY_GOAL_ANSWERS}
 	DAY_STARTS_AT_HOUR_RANGE  = IntRange{Min: 0, Max: MAX_DAY_STARTS_AT_HOUR}
+	CHAPTER_PASS_PCT_RANGE    = IntRange{Min: MIN_CHAPTER_PASS_PCT, Max: MAX_CHAPTER_PASS_PCT}
+)
+
+// A chapter's vocab quiz and exercise pass at the learner's chapter_pass_pct
+// (migrations/000023_grammar_chapters.sql); this is its default.
+const (
+	DEFAULT_CHAPTER_PASS_PCT int = 70
+	MIN_CHAPTER_PASS_PCT     int = 50
+	MAX_CHAPTER_PASS_PCT     int = 100
 )
 
 // desired_retention is numeric(3,2).
 const DESIRED_RETENTION_DECIMALS int = 2
 
 // Path order of the tracks: the next unit is looked for in this order.
-var LEARNING_TRACKS = []LearningTrack{LearningTrackHiragana, LearningTrackKatakana, LearningTrackKanjiN5}
+var LEARNING_TRACKS = []LearningTrack{
+	LearningTrackHiragana, LearningTrackKatakana, LearningTrackKanjiN5, LearningTrackVocabN5, LearningTrackGrammarN5,
+}
+
+// LESSON_TRACKS are the tracks taught by lessons with a daily new-item
+// budget. Chapter tracks are not: their cards come from the chapter's vocab
+// quiz, exercise or completion.
+var LESSON_TRACKS = []LearningTrack{LearningTrackHiragana, LearningTrackKatakana, LearningTrackKanjiN5}
 
 var LEARNING_TRACK_ITEM_TYPE = map[LearningTrack]SRSItemType{
-	LearningTrackHiragana: SRSItemKana,
-	LearningTrackKatakana: SRSItemKana,
-	LearningTrackKanjiN5:  SRSItemKanji,
+	LearningTrackHiragana:  SRSItemKana,
+	LearningTrackKatakana:  SRSItemKana,
+	LearningTrackKanjiN5:   SRSItemKanji,
+	LearningTrackVocabN5:   SRSItemVocab,
+	LearningTrackGrammarN5: SRSItemGrammarSentence,
+}
+
+// The grammar chapter level each chapter track draws from.
+var LEARNING_TRACK_CHAPTER_LEVEL = map[LearningTrack]JLPTLevel{
+	LearningTrackVocabN5:   JLPTLevelN5,
+	LearningTrackGrammarN5: JLPTLevelN5,
 }
 
 var LEARNING_TRACK_KANA_SCRIPT = map[LearningTrack]KanaScript{
@@ -263,26 +296,33 @@ var LEARNING_TRACK_KANJI_LEVEL = map[LearningTrack]JLPTLevel{
 // The first facet of an item is its primary one: creating that card counts
 // the item as newly learned.
 var SRS_ITEM_FACETS = map[SRSItemType][]CardFacet{
-	SRSItemKana:  {CardFacetRecognition},
-	SRSItemKanji: {CardFacetMeaning, CardFacetReading},
+	SRSItemKana:            {CardFacetRecognition},
+	SRSItemKanji:           {CardFacetMeaning, CardFacetReading},
+	SRSItemVocab:           {CardFacetMeaning},
+	SRSItemGrammarSentence: {CardFacetRecognition, CardFacetMeaning},
 }
 
 var QUESTION_TYPE_FACET = map[QuestionType]CardFacet{
-	QuestionKanaMCQRomaji:     CardFacetRecognition,
-	QuestionKanaMCQKana:       CardFacetRecognition,
-	QuestionKanaTyped:         CardFacetRecognition,
-	QuestionKanaListen:        CardFacetRecognition,
-	QuestionKanaBuild:         CardFacetRecognition,
-	QuestionKanaLookalike:     CardFacetRecognition,
-	QuestionKanaSpeed:         CardFacetRecognition,
-	QuestionKanaMatch:         CardFacetRecognition,
-	QuestionKanaTrace:         CardFacetRecognition,
-	QuestionKanjiMeaningMCQ:   CardFacetMeaning,
-	QuestionKanjiMeaningTyped: CardFacetMeaning,
-	QuestionKanjiLookalike:    CardFacetMeaning,
-	QuestionKanjiReadingMCQ:   CardFacetReading,
-	QuestionKanjiReadingTyped: CardFacetReading,
-	QuestionKanjiListen:       CardFacetReading,
+	QuestionKanaMCQRomaji:       CardFacetRecognition,
+	QuestionKanaMCQKana:         CardFacetRecognition,
+	QuestionKanaTyped:           CardFacetRecognition,
+	QuestionKanaListen:          CardFacetRecognition,
+	QuestionKanaBuild:           CardFacetRecognition,
+	QuestionKanaLookalike:       CardFacetRecognition,
+	QuestionKanaSpeed:           CardFacetRecognition,
+	QuestionKanaMatch:           CardFacetRecognition,
+	QuestionKanaTrace:           CardFacetRecognition,
+	QuestionKanjiMeaningMCQ:     CardFacetMeaning,
+	QuestionKanjiMeaningTyped:   CardFacetMeaning,
+	QuestionKanjiLookalike:      CardFacetMeaning,
+	QuestionKanjiReadingMCQ:     CardFacetReading,
+	QuestionKanjiReadingTyped:   CardFacetReading,
+	QuestionKanjiListen:         CardFacetReading,
+	QuestionVocabMeaningMCQ:     CardFacetMeaning,
+	QuestionVocabMeaningTyped:   CardFacetMeaning,
+	QuestionGrammarGapMCQ:       CardFacetRecognition,
+	QuestionGrammarGapTyped:     CardFacetRecognition,
+	QuestionGrammarTranslateMCQ: CardFacetMeaning,
 }
 
 // Card ids are derived from (user, item, facet) so a lesson can hand out the
@@ -321,12 +361,17 @@ const (
 	KANJI_UNIT_QUIZ_PASS_MARK float64 = 0.9
 	SKIP_TEST_PASS_MARK       float64 = 0.9
 	FINAL_TEST_PASS_MARK      float64 = 0.8
+	// Chapter quizzes pass at the learner's own mark; this is the default.
+	CHAPTER_QUIZ_PASS_MARK float64 = float64(DEFAULT_CHAPTER_PASS_PCT) / PERCENT
 )
 
 var TEST_PASS_MARKS = map[TestKind]map[SRSItemType]float64{
-	TestKindUnitQuiz: {SRSItemKana: KANA_UNIT_QUIZ_PASS_MARK, SRSItemKanji: KANJI_UNIT_QUIZ_PASS_MARK},
-	TestKindSkip:     {SRSItemKana: SKIP_TEST_PASS_MARK, SRSItemKanji: SKIP_TEST_PASS_MARK},
-	TestKindFinal:    {SRSItemKana: FINAL_TEST_PASS_MARK, SRSItemKanji: FINAL_TEST_PASS_MARK},
+	TestKindUnitQuiz: {
+		SRSItemKana: KANA_UNIT_QUIZ_PASS_MARK, SRSItemKanji: KANJI_UNIT_QUIZ_PASS_MARK,
+		SRSItemVocab: CHAPTER_QUIZ_PASS_MARK, SRSItemGrammarSentence: CHAPTER_QUIZ_PASS_MARK,
+	},
+	TestKindSkip:  {SRSItemKana: SKIP_TEST_PASS_MARK, SRSItemKanji: SKIP_TEST_PASS_MARK},
+	TestKindFinal: {SRSItemKana: FINAL_TEST_PASS_MARK, SRSItemKanji: FINAL_TEST_PASS_MARK},
 }
 
 // TEST_SCOPE_ALL is the scope of a final test, and of a skip test over the
@@ -349,9 +394,11 @@ const PRACTICE_PAIR_SEPARATOR string = ":"
 const KANJI_NOTE_MAX_CHARS int = 1000
 
 var LEARNING_TRACK_UNIT_TYPE = map[LearningTrack]UnitType{
-	LearningTrackHiragana: UnitTypeKana,
-	LearningTrackKatakana: UnitTypeKana,
-	LearningTrackKanjiN5:  UnitTypeKanji,
+	LearningTrackHiragana:  UnitTypeKana,
+	LearningTrackKatakana:  UnitTypeKana,
+	LearningTrackKanjiN5:   UnitTypeKanji,
+	LearningTrackVocabN5:   UnitTypeVocabChapter,
+	LearningTrackGrammarN5: UnitTypeGrammarChapter,
 }
 
 // Speed and match practice ask kana with these analytics-only types; kanji
@@ -418,20 +465,25 @@ const (
 var WEAK_KANA_GROUPS = []KanaGroup{KanaGroupDakuten, KanaGroupCombo, KanaGroupForeign}
 
 var QUESTION_TYPE_SKILL = map[QuestionType]Skill{
-	QuestionKanaMCQRomaji:     SkillKanaReading,
-	QuestionKanaMCQKana:       SkillKanaReading,
-	QuestionKanaTyped:         SkillKanaReading,
-	QuestionKanaBuild:         SkillKanaReading,
-	QuestionKanaLookalike:     SkillKanaReading,
-	QuestionKanaSpeed:         SkillKanaReading,
-	QuestionKanaMatch:         SkillKanaReading,
-	QuestionKanjiMeaningMCQ:   SkillKanjiMeaning,
-	QuestionKanjiMeaningTyped: SkillKanjiMeaning,
-	QuestionKanjiLookalike:    SkillKanjiMeaning,
-	QuestionKanjiReadingMCQ:   SkillKanjiReading,
-	QuestionKanjiReadingTyped: SkillKanjiReading,
-	QuestionKanaListen:        SkillListening,
-	QuestionKanjiListen:       SkillListening,
+	QuestionKanaMCQRomaji:       SkillKanaReading,
+	QuestionKanaMCQKana:         SkillKanaReading,
+	QuestionKanaTyped:           SkillKanaReading,
+	QuestionKanaBuild:           SkillKanaReading,
+	QuestionKanaLookalike:       SkillKanaReading,
+	QuestionKanaSpeed:           SkillKanaReading,
+	QuestionKanaMatch:           SkillKanaReading,
+	QuestionKanjiMeaningMCQ:     SkillKanjiMeaning,
+	QuestionKanjiMeaningTyped:   SkillKanjiMeaning,
+	QuestionKanjiLookalike:      SkillKanjiMeaning,
+	QuestionKanjiReadingMCQ:     SkillKanjiReading,
+	QuestionKanjiReadingTyped:   SkillKanjiReading,
+	QuestionKanaListen:          SkillListening,
+	QuestionKanjiListen:         SkillListening,
+	QuestionVocabMeaningMCQ:     SkillVocabulary,
+	QuestionVocabMeaningTyped:   SkillVocabulary,
+	QuestionGrammarGapMCQ:       SkillGrammar,
+	QuestionGrammarGapTyped:     SkillGrammar,
+	QuestionGrammarTranslateMCQ: SkillGrammar,
 }
 
 // Dashboard (frontend DashboardData). v1 teaches N5, so that is the target

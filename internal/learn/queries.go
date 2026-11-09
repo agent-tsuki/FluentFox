@@ -44,7 +44,8 @@ func (r *Repository) EnsureSettings(ctx context.Context, userID uuid.UUID) (Lear
 func (r *Repository) UpdateSettings(ctx context.Context, s *LearningSettings) error {
 	err := r.db.WithContext(ctx).Model(&LearningSettings{}).Where("user_id = ?", s.UserID).
 		Select("desired_retention", "new_kana_per_day", "new_kanji_per_day", "max_reviews_per_day", "session_size",
-			"lesson_size", "daily_goal_answers", "day_starts_at_hour", "answer_mode", "show_retention", "updated_at").
+			"lesson_size", "daily_goal_answers", "day_starts_at_hour", "answer_mode", "show_retention",
+			"chapter_pass_pct", "chapter_completion", "updated_at").
 		Updates(s).Error
 	if err != nil {
 		return fmt.Errorf("update learning settings for %s: %w", s.UserID, err)
@@ -212,9 +213,14 @@ func (r *Repository) ListItemChars(ctx context.Context, itemType common.SRSItemT
 		return rows, nil
 	}
 	q := r.db.WithContext(ctx)
-	if itemType == common.SRSItemKana {
+	switch itemType {
+	case common.SRSItemKana:
 		q = q.Table("kana").Select("id, character AS char")
-	} else {
+	case common.SRSItemVocab:
+		q = q.Table("chapter_word").Select("id, word AS char")
+	case common.SRSItemGrammarSentence:
+		q = q.Table("grammar_sentence").Select("id, sentence AS char")
+	default:
 		q = q.Table("kanji").Select("id, char")
 	}
 	if err := q.Where("id IN ?", ids).Scan(&rows).Error; err != nil {
@@ -223,12 +229,23 @@ func (r *Repository) ListItemChars(ctx context.Context, itemType common.SRSItemT
 	return rows, nil
 }
 
+// Table names are fixed here, never taken from input.
+var chapterItemTables = map[common.SRSItemType]string{
+	common.SRSItemVocab:           "chapter_word",
+	common.SRSItemGrammarSentence: "grammar_sentence",
+}
+
 func withTrack(q *gorm.DB, track *common.LearningTrack) *gorm.DB {
 	if track == nil {
 		return q
 	}
 	if script, ok := common.LEARNING_TRACK_KANA_SCRIPT[*track]; ok {
 		return q.Where("item_type = ? AND item_id IN (SELECT id FROM kana WHERE script = ?)", common.SRSItemKana, script)
+	}
+	if level, ok := common.LEARNING_TRACK_CHAPTER_LEVEL[*track]; ok {
+		table := chapterItemTables[common.LEARNING_TRACK_ITEM_TYPE[*track]]
+		return q.Where("item_type = ? AND item_id IN (SELECT t.id FROM "+table+" t JOIN grammar_chapter c ON c.id = t.chapter_id WHERE c.level = ?)",
+			common.LEARNING_TRACK_ITEM_TYPE[*track], level)
 	}
 	return q.Where("item_type = ? AND item_id IN (SELECT id FROM kanji WHERE level = ?)",
 		common.SRSItemKanji, common.LEARNING_TRACK_KANJI_LEVEL[*track])

@@ -15,8 +15,9 @@ import (
 )
 
 const (
-	kanaContentDir  = "kana"
-	kanjiContentDir = "kanji"
+	kanaContentDir    = "kana"
+	kanjiContentDir   = "kanji"
+	chapterContentDir = "chapters"
 )
 
 // syncContent upserts the embedded course content after the schema is up.
@@ -29,7 +30,10 @@ func syncContent(ctx context.Context, db *gorm.DB, log *zap.Logger) error {
 	if err := syncFiles(ctx, kanaContentDir, content.NewKanaSyncService(repo, log).Sync); err != nil {
 		return err
 	}
-	return syncFiles(ctx, kanjiContentDir, content.NewKanjiSyncService(repo, log).Sync)
+	if err := syncFiles(ctx, kanjiContentDir, content.NewKanjiSyncService(repo, log).Sync); err != nil {
+		return err
+	}
+	return syncFiles(ctx, chapterContentDir, content.NewChapterSyncService(repo, log).Sync)
 }
 
 func syncFiles[T any](ctx context.Context, dir string, sync func(context.Context, *T) error) error {

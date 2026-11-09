@@ -98,11 +98,11 @@ type ProgressCalendar struct {
 }
 
 type TrackInput struct {
-	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5" doc:"Limit to one track; all tracks when omitted"`
+	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5,vocab_n5,grammar_n5" doc:"Limit to one track; all tracks when omitted"`
 }
 
 type WeakItemsInput struct {
-	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5" doc:"Limit to one track; all tracks when omitted"`
+	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5,vocab_n5,grammar_n5" doc:"Limit to one track; all tracks when omitted"`
 	Limit int    `query:"limit" default:"20" minimum:"1" maximum:"100"`
 }
 
@@ -152,7 +152,7 @@ type WeakGroupsResponse struct {
 }
 
 type ConfusionsInput struct {
-	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5" doc:"Limit to one track; all tracks when omitted"`
+	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5,vocab_n5,grammar_n5" doc:"Limit to one track; all tracks when omitted"`
 	Limit int    `query:"limit" default:"10" minimum:"1" maximum:"50"`
 }
 
@@ -175,9 +175,9 @@ type ConfusionsResponse struct {
 }
 
 type ItemHistoryInput struct {
-	Type  string `path:"type"   enum:"kana,kanji"`
+	Type  string `path:"type"   enum:"kana,kanji,vocab,grammar_sentence"`
 	ID    string `path:"id"     maxLength:"64" doc:"Kana slug or character, kanji character, or item id"`
-	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5" doc:"Needed for a kana slug that both scripts have"`
+	Track string `query:"track" required:"false" enum:"hiragana,katakana,kanji_n5,vocab_n5,grammar_n5" doc:"Needed for a kana slug that both scripts have"`
 }
 
 type ItemCardProgress struct {
@@ -234,9 +234,9 @@ type DashboardStats struct {
 	TargetLevel   string  `json:"targetLevel"`
 }
 
-// SkillBalance keeps the frontend keys. Kanji, reading and listening hold
-// accuracy (0–100) from the question types; grammar, vocabulary and speaking
-// have no questions yet and stay 0.
+// SkillBalance keeps the frontend keys. Kanji, reading, listening, grammar
+// and vocabulary hold accuracy (0–100) from the question types; speaking has
+// no questions yet and stays 0.
 type SkillBalance struct {
 	Kanji        float64 `json:"kanji"        doc:"Kanji meaning and reading answers"`
 	Grammar      float64 `json:"grammar"`

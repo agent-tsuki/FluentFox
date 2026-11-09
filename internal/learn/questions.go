@@ -80,12 +80,27 @@ func (b *QuestionBuilder) BuildAs(in *QuestionInput, qt common.QuestionType) Que
 	if !common.QUESTION_TYPE_RULES[qt].Typed {
 		q.Options = b.options(in, answer, q.CorrectAnswer)
 	}
+	if in.Item.Sentence != nil {
+		q.Sentence = sentenceQuestion(in.Item, answer)
+	}
 	return q
+}
+
+// The English helps with a gap but would give away a translation question.
+func sentenceQuestion(item *Item, answer answerKind) *SentenceQuestion {
+	out := &SentenceQuestion{Explanation: item.Sentence.Explanation, Filled: item.Sentence.Filled(item.Char)}
+	if answer != kindTranslation {
+		out.Translation = item.Sentence.Translation
+	}
+	return out
 }
 
 // New cards always get plain multiple choice; the variety types come in once
 // the card has been seen.
 func (b *QuestionBuilder) chooseType(in *QuestionInput) common.QuestionType {
+	if qt, ok := chapterQuestionType(in); ok {
+		return qt
+	}
 	if in.Card.State != srs.StateNew && b.rnd.IntN(common.VARIETY_QUESTION_ONE_IN) == 0 {
 		if qt, ok := b.varietyType(in); ok {
 			return qt
@@ -111,6 +126,25 @@ func (b *QuestionBuilder) chooseType(in *QuestionInput) common.QuestionType {
 			return common.QuestionKanaMCQRomaji
 		}
 		return common.QuestionKanaMCQKana
+	}
+}
+
+// Chapter words and sentences have no listening or look-alike variety.
+func chapterQuestionType(in *QuestionInput) (common.QuestionType, bool) {
+	typed := allowsTyped(&in.Card, in.Mode)
+	switch {
+	case in.Item.Type == common.SRSItemVocab && typed:
+		return common.QuestionVocabMeaningTyped, true
+	case in.Item.Type == common.SRSItemVocab:
+		return common.QuestionVocabMeaningMCQ, true
+	case in.Item.Type != common.SRSItemGrammarSentence:
+		return "", false
+	case in.Card.Facet == common.CardFacetMeaning:
+		return common.QuestionGrammarTranslateMCQ, true
+	case typed:
+		return common.QuestionGrammarGapTyped, true
+	default:
+		return common.QuestionGrammarGapMCQ, true
 	}
 }
 
@@ -142,8 +176,12 @@ func allowsTyped(card *QuestionCard, mode common.AnswerMode) bool {
 
 func (b *QuestionBuilder) options(in *QuestionInput, kind answerKind, correct string) []string {
 	options := []string{correct}
-	for _, d := range b.distractors(in, kind, correct) {
-		options = append(options, itemValue(d, kind))
+	if kind == kindGap && in.Item.Sentence != nil {
+		options = in.Item.Sentence.gapOptions()
+	} else {
+		for _, d := range b.distractors(in, kind, correct) {
+			options = append(options, itemValue(d, kind))
+		}
 	}
 	b.rnd.Shuffle(len(options), func(i, j int) { options[i], options[j] = options[j], options[i] })
 	return options

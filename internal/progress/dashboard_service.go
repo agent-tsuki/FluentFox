@@ -141,6 +141,8 @@ func skillBalance(rows []learn.CardAnswerStats) SkillBalance {
 		Kanji:        pct(common.SkillKanjiMeaning, common.SkillKanjiReading),
 		Reading:      pct(common.SkillKanaReading),
 		Listening:    pct(common.SkillListening),
+		Grammar:      pct(common.SkillGrammar),
+		Vocabulary:   pct(common.SkillVocabulary),
 		KanaReading:  pct(common.SkillKanaReading),
 		KanjiMeaning: pct(common.SkillKanjiMeaning),
 		KanjiReading: pct(common.SkillKanjiReading),

@@ -23,6 +23,10 @@ type LearningSettings struct {
 	AnswerMode       common.AnswerMode     `gorm:"column:answer_mode;type:answer_mode;not null"`
 	ShowRetention    bool                  `gorm:"column:show_retention;not null"`
 	FSRSWeights      database.Float64Array `gorm:"column:fsrs_weights;type:double precision[]"`
+	// Chapter quizzes pass at this percent; ChapterCompletion says whether
+	// passing the exercise completes the chapter.
+	ChapterPassPct    int                      `gorm:"column:chapter_pass_pct;not null"`
+	ChapterCompletion common.ChapterCompletion `gorm:"column:chapter_completion;type:chapter_completion;not null"`
 
 	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
 }

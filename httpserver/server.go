@@ -149,6 +149,7 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 		content.NewKanjiContentService(contentRepo, cfg.StrokesBaseURL, log),
 		log,
 	))
+	content.RegisterChapterRoutes(api, content.NewChapterHandler(content.NewChapterContentService(contentRepo, log), log))
 
 	learnRepo := learn.NewRepository(db)
 	learnCatalog := learn.NewCatalog(contentRepo)
@@ -171,6 +172,7 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 		learn.NewTestHistoryService(learnRepo, log),
 		log,
 	))
+	learn.RegisterChapterRoutes(api, learn.NewChapterHandler(learn.NewChapterCompletionService(learnRepo, learnCatalog, log), log))
 	progress.RegisterRoutes(api, progress.NewHandler(
 		progress.NewOverviewService(learnRepo, learnCatalog, log),
 		progress.NewForecastService(learnRepo, log),

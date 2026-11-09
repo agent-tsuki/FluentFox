@@ -28,7 +28,7 @@ func (s *SubmitAnswersService) answer(ctx context.Context, tx *gorm.DB, b *answe
 	}
 	check := checkAnswer(qt, item, pool, a)
 	grade := Grade(gradeInput(qt, a, &check), b.baselines[qt])
-	if !common.SESSION_KIND_RULES[b.session.Kind].Schedules {
+	if !sessionSchedules(&b.session) {
 		grade = GradeResult{Reason: common.GradeReasonAnalyticsOnly, Active: grade.Active, Usual: grade.Usual}
 	}
 	log := newReviewLog(b, card, a, &check, &grade)
@@ -256,4 +256,17 @@ func (b *answerBatch) result(log *ReviewLog) AnswerResult {
 		}
 	}
 	return res
+}
+
+// A chapter's vocab quiz and exercise schedule their answers, unlike other
+// tests: taking them is how a chapter's words and sentences enter reviews.
+func sessionSchedules(session *StudySession) bool {
+	if common.SESSION_KIND_RULES[session.Kind].Schedules {
+		return true
+	}
+	if session.Kind != common.SessionKindUnitQuiz || session.Track == nil {
+		return false
+	}
+	_, chapter := common.LEARNING_TRACK_CHAPTER_LEVEL[*session.Track]
+	return chapter
 }

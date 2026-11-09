@@ -18,44 +18,59 @@ const (
 	kindChar
 	kindMeaning
 	kindReading
+	// Grammar sentences: the word in the gap, the sentence with the gap
+	// filled, and its English.
+	kindGap
+	kindSentence
+	kindTranslation
 )
 
 var questionAnswerKinds = map[common.QuestionType]answerKind{
-	common.QuestionKanaMCQRomaji:     kindRomaji,
-	common.QuestionKanaMCQKana:       kindChar,
-	common.QuestionKanaTyped:         kindRomaji,
-	common.QuestionKanaListen:        kindChar,
-	common.QuestionKanaBuild:         kindChar,
-	common.QuestionKanaLookalike:     kindChar,
-	common.QuestionKanaSpeed:         kindRomaji,
-	common.QuestionKanaMatch:         kindChar,
-	common.QuestionKanaTrace:         kindNone,
-	common.QuestionKanjiMeaningMCQ:   kindMeaning,
-	common.QuestionKanjiMeaningTyped: kindMeaning,
-	common.QuestionKanjiReadingMCQ:   kindReading,
-	common.QuestionKanjiReadingTyped: kindReading,
-	common.QuestionKanjiListen:       kindChar,
-	common.QuestionKanjiLookalike:    kindChar,
+	common.QuestionKanaMCQRomaji:       kindRomaji,
+	common.QuestionKanaMCQKana:         kindChar,
+	common.QuestionKanaTyped:           kindRomaji,
+	common.QuestionKanaListen:          kindChar,
+	common.QuestionKanaBuild:           kindChar,
+	common.QuestionKanaLookalike:       kindChar,
+	common.QuestionKanaSpeed:           kindRomaji,
+	common.QuestionKanaMatch:           kindChar,
+	common.QuestionKanaTrace:           kindNone,
+	common.QuestionKanjiMeaningMCQ:     kindMeaning,
+	common.QuestionKanjiMeaningTyped:   kindMeaning,
+	common.QuestionKanjiReadingMCQ:     kindReading,
+	common.QuestionKanjiReadingTyped:   kindReading,
+	common.QuestionKanjiListen:         kindChar,
+	common.QuestionKanjiLookalike:      kindChar,
+	common.QuestionVocabMeaningMCQ:     kindMeaning,
+	common.QuestionVocabMeaningTyped:   kindMeaning,
+	common.QuestionGrammarGapMCQ:       kindGap,
+	common.QuestionGrammarGapTyped:     kindGap,
+	common.QuestionGrammarTranslateMCQ: kindTranslation,
 }
 
 // Listening prompts are spoken by the client: the kana itself, or the
 // kanji's key reading.
 var questionPromptKinds = map[common.QuestionType]answerKind{
-	common.QuestionKanaMCQRomaji:     kindChar,
-	common.QuestionKanaMCQKana:       kindRomaji,
-	common.QuestionKanaTyped:         kindChar,
-	common.QuestionKanaListen:        kindChar,
-	common.QuestionKanaBuild:         kindRomaji,
-	common.QuestionKanaLookalike:     kindRomaji,
-	common.QuestionKanaSpeed:         kindChar,
-	common.QuestionKanaMatch:         kindRomaji,
-	common.QuestionKanaTrace:         kindChar,
-	common.QuestionKanjiMeaningMCQ:   kindChar,
-	common.QuestionKanjiMeaningTyped: kindChar,
-	common.QuestionKanjiReadingMCQ:   kindChar,
-	common.QuestionKanjiReadingTyped: kindChar,
-	common.QuestionKanjiListen:       kindReading,
-	common.QuestionKanjiLookalike:    kindMeaning,
+	common.QuestionKanaMCQRomaji:       kindChar,
+	common.QuestionKanaMCQKana:         kindRomaji,
+	common.QuestionKanaTyped:           kindChar,
+	common.QuestionKanaListen:          kindChar,
+	common.QuestionKanaBuild:           kindRomaji,
+	common.QuestionKanaLookalike:       kindRomaji,
+	common.QuestionKanaSpeed:           kindChar,
+	common.QuestionKanaMatch:           kindRomaji,
+	common.QuestionKanaTrace:           kindChar,
+	common.QuestionKanjiMeaningMCQ:     kindChar,
+	common.QuestionKanjiMeaningTyped:   kindChar,
+	common.QuestionKanjiReadingMCQ:     kindChar,
+	common.QuestionKanjiReadingTyped:   kindChar,
+	common.QuestionKanjiListen:         kindReading,
+	common.QuestionKanjiLookalike:      kindMeaning,
+	common.QuestionVocabMeaningMCQ:     kindChar,
+	common.QuestionVocabMeaningTyped:   kindChar,
+	common.QuestionGrammarGapMCQ:       kindChar,
+	common.QuestionGrammarGapTyped:     kindChar,
+	common.QuestionGrammarTranslateMCQ: kindSentence,
 }
 
 func itemValue(item *Item, kind answerKind) string {
@@ -71,8 +86,24 @@ func itemValue(item *Item, kind answerKind) string {
 		return ""
 	case kindReading:
 		return item.KeyReading
+	case kindGap, kindSentence, kindTranslation:
+		return sentenceValue(item, kind)
 	default:
 		return ""
+	}
+}
+
+func sentenceValue(item *Item, kind answerKind) string {
+	if item.Sentence == nil {
+		return ""
+	}
+	switch kind {
+	case kindGap:
+		return item.Sentence.Answer
+	case kindSentence:
+		return item.Sentence.Filled(item.Char)
+	default:
+		return item.Sentence.Translation
 	}
 }
 
@@ -87,6 +118,11 @@ func acceptedValues(item *Item, kind answerKind) []string {
 		all = slices.Concat(item.Meanings, item.Synonyms)
 	case kindReading:
 		all = item.Readings
+	case kindGap:
+		if item.Sentence == nil {
+			return nil
+		}
+		all = item.Sentence.AlsoAccept
 	default:
 		return nil
 	}

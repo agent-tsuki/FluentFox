@@ -101,7 +101,8 @@ func TestUnitProgressList(t *testing.T) {
 		wantErr   error
 	}{
 		{name: "one track in path order", track: "kanji_n5", wantUnits: []uuid.UUID{unitK1, unitK2}},
-		{name: "every track when none is given", wantUnits: []uuid.UUID{unitZa, unitA, unitKA, unitK1, unitK2}},
+		// Both chapter tracks list the same chapter, under their own unit types.
+		{name: "every track when none is given", wantUnits: []uuid.UUID{unitZa, unitA, unitKA, unitK1, unitK2, chapterOne, chapterOne}},
 		{name: "an unknown track is rejected", track: "kanji_n1", wantErr: exceptions.ErrLearningTrackInvalid},
 	}
 	for _, tc := range tests {
