@@ -45,6 +45,7 @@ type ChapterPassageLine struct {
 	Speaker     *int      `gorm:"column:speaker"`
 	Text        string    `gorm:"column:text;not null"`
 	Translation string    `gorm:"column:translation;not null"`
+	Say         *string   `gorm:"column:say"`
 
 	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime"`
 	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
@@ -81,4 +82,6 @@ type ListeningFileLine struct {
 	Speaker     *int   `json:"speaker"`
 	Text        string `json:"text"`
 	Translation string `json:"translation"`
+	// Say is what to speak where the engine misreads Text (plain text, no readings).
+	Say *string `json:"say,omitempty"`
 }

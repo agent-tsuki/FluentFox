@@ -100,7 +100,7 @@ func (s *ListeningSyncService) syncChapter(ctx context.Context, tx *gorm.DB, lev
 		}
 		for j := range p.Lines {
 			l := &p.Lines[j]
-			line := ChapterPassageLine{PassageID: passageID, Position: j + 1, Speaker: l.Speaker, Text: l.Text, Translation: l.Translation}
+			line := ChapterPassageLine{PassageID: passageID, Position: j + 1, Speaker: l.Speaker, Text: l.Text, Translation: l.Translation, Say: l.Say}
 			if err := s.repo.UpsertPassageLine(ctx, tx, &line); err != nil {
 				return 0, err //nolint:wrapcheck // already wrapped by the repository
 			}

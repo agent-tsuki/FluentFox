@@ -63,9 +63,24 @@ type SpeechService struct {
 	downUntil []atomic.Int64
 	log       *zap.Logger
 
-	// synthTimeout and slotWait bound one generation (see WithTimeouts).
+	// synthTimeout is how long a request waits for a new clip, and slotWait
+	// how long that clip waits for a free engine slot (see WithTimeouts).
 	synthTimeout time.Duration
 	slotWait     time.Duration
+	renders      *renderSet
+}
+
+// render is one clip being made. Requests that need it while it runs wait on
+// the same render, so a sentence is never made twice at once.
+type render struct {
+	done chan struct{}
+	url  string
+	err  error
+}
+
+type renderSet struct {
+	mu    sync.Mutex
+	byKey map[string]*render
 }
 
 // NewSpeechService takes the voices in order of preference. A nil store or no
@@ -84,6 +99,7 @@ func NewSpeechService(store ObjectStore, publicURL string, voices []Voice, encod
 
 		synthTimeout: common.AUDIO_SYNTH_TIMEOUT,
 		slotWait:     common.AUDIO_SLOT_WAIT,
+		renders:      &renderSet{byKey: map[string]*render{}},
 	}
 }
 
@@ -112,6 +128,7 @@ func (s *SpeechService) WithVoices(voices []Voice) *SpeechService {
 
 		synthTimeout: s.synthTimeout,
 		slotWait:     s.slotWait,
+		renders:      s.renders,
 	}
 }
 
@@ -288,6 +305,47 @@ func (s *SpeechService) findOrCreate(
 	if who.LookupOnly || budget.Add(-1) < 0 || (!who.Admin && !s.limiter.take(who.UserID)) {
 		return "", errDeferred
 	}
+	return s.awaitRender(s.startRender(ctx, who, voice, key, sentence))
+}
+
+// startRender makes the clip in the background, or joins the render already
+// making it. The render outlives the request: a clip the learner stopped
+// waiting for is still stored, so the engine's work is never thrown away and
+// the next request finds the clip.
+func (s *SpeechService) startRender(ctx context.Context, who Requester, voice Voice, key, sentence string) *render {
+	s.renders.mu.Lock()
+	defer s.renders.mu.Unlock()
+	if r, ok := s.renders.byKey[key]; ok {
+		return r
+	}
+	r := &render{done: make(chan struct{})}
+	s.renders.byKey[key] = r
+	renderCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), common.AUDIO_RENDER_LIMIT)
+	go func() {
+		defer cancel()
+		r.url, r.err = s.makeClip(renderCtx, who, voice, key, sentence)
+		s.renders.mu.Lock()
+		delete(s.renders.byKey, key)
+		s.renders.mu.Unlock()
+		close(r.done)
+	}()
+	return r
+}
+
+// awaitRender waits up to synthTimeout; a render still running then is
+// deferred (the client asks again and finds the stored clip).
+func (s *SpeechService) awaitRender(r *render) (string, error) {
+	wait := time.NewTimer(s.synthTimeout)
+	defer wait.Stop()
+	select {
+	case <-r.done:
+		return r.url, r.err
+	case <-wait.C:
+		return "", fmt.Errorf("audio: still rendering: %w", errDeferred)
+	}
+}
+
+func (s *SpeechService) makeClip(ctx context.Context, who Requester, voice Voice, key, sentence string) (string, error) {
 	clip, err := s.generate(ctx, voice, sentence)
 	if err != nil {
 		return "", err
@@ -314,13 +372,12 @@ func (s *SpeechService) generate(ctx context.Context, voice Voice, sentence stri
 	case <-waitCtx.Done():
 		return nil, fmt.Errorf("audio: all voices busy: %w", errDeferred)
 	}
-	synthCtx, cancel := context.WithTimeout(ctx, s.synthTimeout)
-	defer cancel()
-	wav, err := voice.Synth.Synthesize(synthCtx, sentence)
+	// ctx is the render's own deadline (common.AUDIO_RENDER_LIMIT), not a request's.
+	wav, err := voice.Synth.Synthesize(ctx, sentence)
 	if err != nil {
 		return nil, fmt.Errorf("audio: synthesize with %s: %w", voice.Profile, err)
 	}
-	clip, err := s.encoder.Encode(synthCtx, normalizePeak(wav))
+	clip, err := s.encoder.Encode(ctx, normalizePeak(wav))
 	if err != nil {
 		return nil, fmt.Errorf("audio: encode: %w", err)
 	}

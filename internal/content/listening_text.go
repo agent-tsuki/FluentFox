@@ -90,6 +90,7 @@ var (
 	errPassageNoLines  = errors.New("no lines")
 	errLineSpeaker     = errors.New("line speaker must be one of the dialogue's speakers, and absent in a monologue")
 	errLineTranslation = errors.New("line has no translation")
+	errLineSay         = errors.New("say must be plain text (no readings) with the line's sentences")
 	errPassageTitle    = errors.New("no title")
 )
 
@@ -151,5 +152,22 @@ func checkLine(kind ListeningPassageKind, speakers int, line *ListeningFileLine)
 	if strings.TrimSpace(line.Translation) == "" {
 		return errLineTranslation
 	}
+	return checkSay(line)
+}
+
+// checkSay keeps a line's say speakable the way the line is: plain text, and
+// as many sentences (one clip each, which the highlight follows).
+func checkSay(line *ListeningFileLine) error {
+	if line.Say == nil {
+		return nil
+	}
+	say := *line.Say
+	if strings.TrimSpace(say) == "" || strings.ContainsAny(say, "[] ") || sentenceEnds(say) != sentenceEnds(line.Text) {
+		return fmt.Errorf("%q: %w", say, errLineSay)
+	}
 	return nil
+}
+
+func sentenceEnds(s string) int {
+	return strings.Count(s, "。") + strings.Count(s, "？") + strings.Count(s, "！") + strings.Count(s, "?") + strings.Count(s, "!")
 }

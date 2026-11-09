@@ -1655,7 +1655,8 @@
           "kana": "はは",
           "romaji": "haha",
           "meaning": "(my) mother",
-          "hint": "Someone else’s mother: お母さん."
+          "hint": "Someone else’s mother: お母さん.",
+          "say": "母"
         },
         {
           "word": "もう",

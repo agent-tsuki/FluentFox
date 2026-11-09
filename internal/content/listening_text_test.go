@@ -39,6 +39,10 @@ func TestCheckPassage(t *testing.T) {
 	line := func(speaker *int) ListeningFileLine {
 		return ListeningFileLine{Speaker: speaker, Text: "はい。", Translation: "Yes."}
 	}
+	withSay := func(l ListeningFileLine, say string) ListeningFileLine {
+		l.Say = &say
+		return l
+	}
 	sp := func(names ...string) []ListeningFileSpeaker {
 		out := make([]ListeningFileSpeaker, len(names))
 		for i, n := range names {
@@ -62,6 +66,9 @@ func TestCheckPassage(t *testing.T) {
 		{"a bad voice key", ListeningFilePassage{Kind: ListeningDialogue, Title: "t", Speakers: []ListeningFileSpeaker{{Name: "アナ", Voice: "F 1"}, {Name: "ケン", Voice: "m1"}}, Lines: []ListeningFileLine{line(&zero)}}, errSpeakerVoice},
 		{"no lines", ListeningFilePassage{Kind: ListeningMonologue, Title: "t"}, errPassageNoLines},
 		{"an unknown kind", ListeningFilePassage{Kind: "song", Title: "t", Lines: []ListeningFileLine{line(nil)}}, errPassageKind},
+		{"a line with what to say instead", ListeningFilePassage{Kind: ListeningMonologue, Title: "t", Lines: []ListeningFileLine{withSay(line(nil), "はい。")}}, nil},
+		{"a say written with readings", ListeningFilePassage{Kind: ListeningMonologue, Title: "t", Lines: []ListeningFileLine{withSay(line(nil), "家[うち]。")}}, errLineSay},
+		{"a say with other sentences", ListeningFilePassage{Kind: ListeningMonologue, Title: "t", Lines: []ListeningFileLine{withSay(line(nil), "はい。はい。")}}, errLineSay},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {

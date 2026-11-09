@@ -59,7 +59,7 @@ func (s *ChapterSyncService) syncChapter(ctx context.Context, tx *gorm.DB, level
 	}
 	for i, w := range c.Words {
 		word := ChapterWord{
-			ChapterID: chapter.ID, Position: i + 1, Word: w.Word, Kana: w.Kana, Romaji: w.Romaji, Meaning: w.Meaning, Hint: w.Hint,
+			ChapterID: chapter.ID, Position: i + 1, Word: w.Word, Kana: w.Kana, Romaji: w.Romaji, Meaning: w.Meaning, Hint: w.Hint, Say: w.Say,
 		}
 		if err := s.repo.UpsertChapterWord(ctx, tx, &word); err != nil {
 			return 0, 0, fmt.Errorf("chapter %s word %s: %w", c.Slug, w.Word, err)

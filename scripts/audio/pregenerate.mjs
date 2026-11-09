@@ -5,7 +5,8 @@
  * (guests can only play clips that already exist).
  *
  * It asks the API (POST /audio/speech) exactly as the app does, with the same
- * texts: listening lines as written (readings and spaces removed), each in its
+ * texts: listening lines as written (readings and spaces removed; or the line's
+ * say, where the engine misreads it), each in its
  * character's voice (the passage's speakers name a cast key), and chapter
  * words as kana in the main voice. The
  * API makes a few new clips per request, so batches are repeated until every
@@ -58,7 +59,7 @@ if (ONLY === 'all' || ONLY === 'listening') {
         for (const line of passage.lines) {
           // A dialogue line is said by its speaker; a monologue by its reader.
           const speaker = passage.speakers[line.speaker ?? 0]
-          add(speaker?.voice ?? 'main', spoken(line.text))
+          add(speaker?.voice ?? 'main', line.say ?? spoken(line.text))
         }
       }
     }
@@ -66,7 +67,7 @@ if (ONLY === 'all' || ONLY === 'listening') {
 }
 if (ONLY === 'all' || ONLY === 'words') {
   for (const file of readAll('chapters')) {
-    for (const chapter of file.chapters) for (const word of chapter.words) add('main', word.kana)
+    for (const chapter of file.chapters) for (const word of chapter.words) add('main', word.say ?? word.kana)
   }
 }
 

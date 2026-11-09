@@ -32,12 +32,12 @@ func (r *Repository) UpsertGrammarChapter(ctx context.Context, tx *gorm.DB, c *G
 
 func (r *Repository) UpsertChapterWord(ctx context.Context, tx *gorm.DB, w *ChapterWord) error {
 	err := tx.WithContext(ctx).Exec(`
-		INSERT INTO chapter_word (id, chapter_id, position, word, kana, romaji, meaning, hint, created_at, updated_at)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, now(), now())
+		INSERT INTO chapter_word (id, chapter_id, position, word, kana, romaji, meaning, hint, say, created_at, updated_at)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now())
 		ON CONFLICT (chapter_id, word) DO UPDATE SET
 			position = EXCLUDED.position, kana = EXCLUDED.kana, romaji = EXCLUDED.romaji,
-			meaning = EXCLUDED.meaning, hint = EXCLUDED.hint, updated_at = now()`,
-		uuid.New(), w.ChapterID, w.Position, w.Word, w.Kana, w.Romaji, w.Meaning, w.Hint).Error
+			meaning = EXCLUDED.meaning, hint = EXCLUDED.hint, say = EXCLUDED.say, updated_at = now()`,
+		uuid.New(), w.ChapterID, w.Position, w.Word, w.Kana, w.Romaji, w.Meaning, w.Hint, w.Say).Error
 	if err != nil {
 		return fmt.Errorf("upsert chapter word %s: %w", w.Word, err)
 	}

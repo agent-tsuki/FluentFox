@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -302,14 +303,26 @@ func TestWithTimeouts(t *testing.T) {
 	admin := Requester{UserID: uuid.New(), Admin: true}
 	slow := Voice{Profile: "aivisspeech-1", Synth: delayedSynth{delay: 50 * time.Millisecond}}
 
-	t.Run("a render longer than the timeout makes no clip", func(t *testing.T) {
-		svc := newTestService(newFakeStore(), slow).WithTimeouts(10*time.Millisecond, time.Second)
-		resp, err := svc.Speak(ctx, admin, []string{"はい"})
+	t.Run("a render longer than the wait still finishes, is stored, and is made once", func(t *testing.T) {
+		store := newFakeStore()
+		calls := &countingSynth{inner: delayedSynth{delay: 50 * time.Millisecond}}
+		svc := newTestService(store, Voice{Profile: "aivisspeech-1", Synth: calls}).WithTimeouts(10*time.Millisecond, time.Second)
+		for range 2 {
+			resp, err := svc.Speak(ctx, admin, []string{"はい"})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !resp.Pending {
+				t.Fatal("want the request answered before the slow render ends")
+			}
+		}
+		time.Sleep(150 * time.Millisecond)
+		resp, err := svc.Find(ctx, []string{"はい"})
 		if err != nil {
 			t.Fatal(err)
 		}
-		if !resp.Pending {
-			t.Fatal("want no clip when the engine is slower than the timeout")
+		if resp.Items[0].Segments[0].URL == "" || calls.count() != 1 {
+			t.Fatalf("url %q, renders %d; want the clip stored from a single render", resp.Items[0].Segments[0].URL, calls.count())
 		}
 	})
 
@@ -324,4 +337,23 @@ func TestWithTimeouts(t *testing.T) {
 			t.Fatal("want the clip made within the longer timeout")
 		}
 	})
+}
+
+type countingSynth struct {
+	mu    sync.Mutex
+	n     int
+	inner Synthesizer
+}
+
+func (c *countingSynth) Synthesize(ctx context.Context, text string) ([]byte, error) {
+	c.mu.Lock()
+	c.n++
+	c.mu.Unlock()
+	return c.inner.Synthesize(ctx, text) //nolint:wrapcheck // a test double
+}
+
+func (c *countingSynth) count() int {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	return c.n
 }

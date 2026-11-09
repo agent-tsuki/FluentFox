@@ -559,7 +559,7 @@ const (
 // CPU (AivisSpeech takes 7-11s a sentence on Railway's CPU); the rest come
 // back without a URL and the client asks again.
 const (
-	AUDIO_OBJECT_PREFIX        string        = "audio/v2/"
+	AUDIO_OBJECT_PREFIX        string        = "audio/v3/"
 	AUDIO_CACHE_CONTROL        string        = "public, max-age=31536000, immutable"
 	AUDIO_INFO_CACHE_CONTROL   string        = "public, max-age=3600"
 	AUDIO_MAX_TEXTS            int           = 20
@@ -574,12 +574,12 @@ const (
 	AUDIO_STORE_TIMEOUT        time.Duration = 5 * time.Second
 	AUDIO_KNOWN_CLIPS_TTL      time.Duration = 24 * time.Hour
 	AUDIO_KNOWN_CLIPS_MAX      int           = 50000
-	AUDIO_SAMPLE_RATE          int           = 24000
+	AUDIO_SAMPLE_RATE          int           = 44100
 	AUDIO_MP3_BITRATE          string        = "48k"
 )
 
 // How clips are rendered. Changing any of these changes how a stored clip
-// sounds, so bump AUDIO_OBJECT_PREFIX (audio/v2/ -> v3) with them: clips are
+// sounds, so bump AUDIO_OBJECT_PREFIX (audio/v3/ -> v4) with them: clips are
 // then generated afresh instead of mixing old and new. A lone kana is spoken
 // slower, or its vowel is too short to hear clearly; every clip is scaled so
 // its loudest point sits at AUDIO_TARGET_PEAK_DBFS, as VOICEVOX renders short
@@ -660,6 +660,9 @@ const (
 	AUDIO_WORKER_SYNTH_TIMEOUT time.Duration = 90 * time.Second
 	AUDIO_WORKER_SLOT_WAIT     time.Duration = 5 * time.Minute
 	AUDIO_ENGINE_CALL_LIMIT    time.Duration = 2 * time.Minute
+	// AUDIO_RENDER_LIMIT bounds one clip's render, which runs on after the
+	// request that started it stops waiting (AUDIO_SYNTH_TIMEOUT), so it is stored.
+	AUDIO_RENDER_LIMIT time.Duration = 90 * time.Second
 )
 
 const (

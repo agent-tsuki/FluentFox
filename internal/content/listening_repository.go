@@ -43,11 +43,12 @@ func (r *Repository) UpsertChapterPassage(ctx context.Context, tx *gorm.DB, p *C
 
 func (r *Repository) UpsertPassageLine(ctx context.Context, tx *gorm.DB, l *ChapterPassageLine) error {
 	err := tx.WithContext(ctx).Exec(`
-		INSERT INTO chapter_passage_line (id, passage_id, position, speaker, text, translation, created_at, updated_at)
-		VALUES (?, ?, ?, ?, ?, ?, now(), now())
+		INSERT INTO chapter_passage_line (id, passage_id, position, speaker, text, translation, say, created_at, updated_at)
+		VALUES (?, ?, ?, ?, ?, ?, ?, now(), now())
 		ON CONFLICT (passage_id, position) DO UPDATE SET
-			speaker = EXCLUDED.speaker, text = EXCLUDED.text, translation = EXCLUDED.translation, updated_at = now()`,
-		uuid.New(), l.PassageID, l.Position, l.Speaker, l.Text, l.Translation).Error
+			speaker = EXCLUDED.speaker, text = EXCLUDED.text, translation = EXCLUDED.translation,
+			say = EXCLUDED.say, updated_at = now()`,
+		uuid.New(), l.PassageID, l.Position, l.Speaker, l.Text, l.Translation, l.Say).Error
 	if err != nil {
 		return fmt.Errorf("upsert passage line %d: %w", l.Position, err)
 	}

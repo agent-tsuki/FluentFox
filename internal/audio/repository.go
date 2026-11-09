@@ -83,23 +83,26 @@ func spokenText(markup string) string {
 	return whitespace.ReplaceAllString(readingMarkup.ReplaceAllString(markup, ""), "")
 }
 
-// CourseTexts lists what the course speaks: each listening line in its
-// speaker's voice key (a monologue's reader is speaker 0; a passage with no
-// voices uses main), and each chapter word's kana in the main voice.
+// CourseTexts lists what the course speaks, exactly as clients send it: each
+// listening line in its speaker's voice key (a monologue's reader is speaker
+// 0; a passage with no voices uses main), and each chapter word's kana in the
+// main voice. A line or word with a say (the engine misreads the text) is
+// spoken as its say.
 func (r *Repository) CourseTexts(ctx context.Context) ([]CourseText, error) {
 	var lines []struct {
 		Voice *string
 		Text  string
+		Say   *string
 	}
 	err := r.db.WithContext(ctx).Raw(`
-		SELECT p.speaker_voices[COALESCE(l.speaker, 0) + 1] AS voice, l.text
+		SELECT p.speaker_voices[COALESCE(l.speaker, 0) + 1] AS voice, l.text, l.say
 		FROM chapter_passage_line l JOIN chapter_passage p ON p.id = l.passage_id
 		ORDER BY p.chapter_id, p.position, l.position`).Scan(&lines).Error
 	if err != nil {
 		return nil, fmt.Errorf("list listening lines: %w", err)
 	}
 	var words []string
-	if err := r.db.WithContext(ctx).Table("chapter_word").Order("chapter_id, position").Pluck("kana", &words).Error; err != nil {
+	if err := r.db.WithContext(ctx).Raw(`SELECT COALESCE(say, kana) FROM chapter_word ORDER BY chapter_id, position`).Scan(&words).Error; err != nil {
 		return nil, fmt.Errorf("list chapter words: %w", err)
 	}
 	texts := make([]CourseText, 0, len(lines)+len(words))
@@ -108,7 +111,11 @@ func (r *Repository) CourseTexts(ctx context.Context) ([]CourseText, error) {
 		if l.Voice != nil && *l.Voice != "" {
 			voice = *l.Voice
 		}
-		texts = append(texts, CourseText{Voice: voice, Text: spokenText(l.Text)})
+		text := spokenText(l.Text)
+		if l.Say != nil && *l.Say != "" {
+			text = *l.Say
+		}
+		texts = append(texts, CourseText{Voice: voice, Text: text})
 	}
 	for _, w := range words {
 		texts = append(texts, CourseText{Voice: common.AUDIO_VOICE_MAIN, Text: w})

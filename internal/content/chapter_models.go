@@ -32,6 +32,7 @@ type ChapterWord struct {
 	Romaji    string    `gorm:"column:romaji;not null"`
 	Meaning   string    `gorm:"column:meaning;not null"`
 	Hint      *string   `gorm:"column:hint"`
+	Say       *string   `gorm:"column:say"`
 
 	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime"`
 	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime"`
@@ -80,6 +81,8 @@ type ChapterFileWord struct {
 	Romaji  string  `json:"romaji"`
 	Meaning string  `json:"meaning"`
 	Hint    *string `json:"hint"`
+	// Say is what to speak where the engine misreads the kana alone (e.g. はは).
+	Say *string `json:"say,omitempty"`
 }
 
 type ChapterFileSentence struct {

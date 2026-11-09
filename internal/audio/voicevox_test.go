@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/fluentfox/api/internal/common"
 )
 
 func TestVoicevoxSynthesize(t *testing.T) {
@@ -36,8 +38,8 @@ func TestVoicevoxSynthesize(t *testing.T) {
 	if !isWAV(wav) {
 		t.Errorf("result is not WAV: %q", wav)
 	}
-	if synthesisBody["outputSamplingRate"] != float64(24000) || synthesisBody["outputStereo"] != false || synthesisBody["speedScale"] != 0.75 {
-		t.Errorf("synthesis query = %v, want 24 kHz mono at the short-text speed", synthesisBody)
+	if synthesisBody["outputSamplingRate"] != float64(common.AUDIO_SAMPLE_RATE) || synthesisBody["outputStereo"] != false || synthesisBody["speedScale"] != 0.75 {
+		t.Errorf("synthesis query = %v, want %d Hz mono at the short-text speed", synthesisBody, common.AUDIO_SAMPLE_RATE)
 	}
 	if _, ok := synthesisBody["accent_phrases"]; !ok {
 		t.Error("engine fields were dropped from the query")

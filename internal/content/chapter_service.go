@@ -50,9 +50,10 @@ type ChapterPassageDTO struct {
 }
 
 type ChapterLineDTO struct {
-	Speaker     *int   `json:"speaker,omitempty" doc:"In a dialogue, which speaker (index into speakers); missing in a monologue"`
-	Text        string `json:"text"`
-	Translation string `json:"translation"`
+	Speaker     *int    `json:"speaker,omitempty" doc:"In a dialogue, which speaker (index into speakers); missing in a monologue"`
+	Text        string  `json:"text"`
+	Translation string  `json:"translation"`
+	Say         *string `json:"say,omitempty" doc:"Text to speak instead, where the voice engine misreads the line as written"`
 }
 
 type ChapterWordDTO struct {
@@ -61,6 +62,7 @@ type ChapterWordDTO struct {
 	Romaji  string  `json:"romaji"`
 	Meaning string  `json:"meaning"`
 	Hint    *string `json:"hint,omitempty"`
+	Say     *string `json:"say,omitempty" doc:"Text to speak instead of kana, where the voice engine misreads the kana alone"`
 }
 
 type ChapterSentenceText struct {
@@ -118,7 +120,7 @@ func (s *ChapterContentService) addWords(ctx context.Context, level common.JLPTL
 	for i := range words {
 		w := &words[i]
 		if w.ChapterID == chapter.ID {
-			out.Words = append(out.Words, ChapterWordDTO{Word: w.Word, Kana: w.Kana, Romaji: w.Romaji, Meaning: w.Meaning, Hint: w.Hint})
+			out.Words = append(out.Words, ChapterWordDTO{Word: w.Word, Kana: w.Kana, Romaji: w.Romaji, Meaning: w.Meaning, Hint: w.Hint, Say: w.Say})
 		}
 	}
 	return nil
@@ -151,7 +153,7 @@ func (s *ChapterContentService) addPassages(ctx context.Context, chapter *Gramma
 	byPassage := make(map[uuid.UUID][]ChapterLineDTO, len(passages))
 	for i := range lines {
 		l := &lines[i]
-		byPassage[l.PassageID] = append(byPassage[l.PassageID], ChapterLineDTO{Speaker: l.Speaker, Text: l.Text, Translation: l.Translation})
+		byPassage[l.PassageID] = append(byPassage[l.PassageID], ChapterLineDTO{Speaker: l.Speaker, Text: l.Text, Translation: l.Translation, Say: l.Say})
 	}
 	for i := range passages {
 		p := &passages[i]
