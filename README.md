@@ -179,7 +179,8 @@ See `.env.example` for all required variables with descriptions.
   - The audio worker (`cmd/audioworker`) runs the jobs queued on the Audio
     page: generate a voice's (or every voice's) missing clips, or install an
     AivisHub model. Run it on Railway next to the engine: add a service from
-    this repo with config file `railway.audioworker.json`, and give it
+    this repo with Dockerfile path `docker/Dockerfile.audioworker`, start
+    command `/app/audioworker` and restart policy "always", and give it
     `DATABASE_URL`, `DB_MAX_CONNS`, `DB_MIN_CONNS`, the `R2_*` values and
     `VOICEVOX_URL` (the engine's private URL). `VOICEVOX_ENGINE`,
     `VOICEVOX_SPEAKER_ID`, `VOICEVOX_CREDIT` and `FFMPEG_BIN` must be the
@@ -244,5 +245,9 @@ until the migration runs.
 
 ## Deployment
 
-Railway detects `railway.json` and builds with `docker/Dockerfile.prod`.
+Railway builds the API with `docker/Dockerfile.prod` (start command
+`/app/server`, healthcheck `/health` with a 30 s timeout, restart on failure
+up to 5 times). These are set on the Railway service itself: Railway's
+`railway.json` (Config as Code) applied to every service built from the repo
+and stops being read on 2026-12-01, so the repo has none.
 The `/health` endpoint checks DB connectivity — Railway uses it to confirm deployment.
