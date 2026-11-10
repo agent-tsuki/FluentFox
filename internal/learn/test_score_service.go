@@ -148,7 +148,13 @@ func passMark(kind common.TestKind, track common.LearningTrack) float64 {
 func (s *TestScoreService) unlock(ctx context.Context, tx *gorm.DB, res *TestResult, pool *Pool, items []*Item, rules testRules) error {
 	switch {
 	case res.Kind == common.TestKindUnitQuiz:
-		return s.recordUnitQuiz(ctx, tx, res, pool, rules.completeOnPass)
+		if err := s.recordUnitQuiz(ctx, tx, res, pool, rules.completeOnPass); err != nil {
+			return err
+		}
+		if res.Passed && rules.completeOnPass {
+			return s.createLearnedCards(ctx, tx, res, items)
+		}
+		return nil
 	case res.Kind == common.TestKindSkip && res.Passed:
 		return s.createKnownCards(ctx, tx, res, items)
 	default:
@@ -203,6 +209,43 @@ func (s *TestScoreService) createKnownCards(ctx context.Context, tx *gorm.DB, re
 	}
 	if err := s.repo.UpsertKnownCards(ctx, tx, cards); err != nil {
 		return fmt.Errorf("create known cards: %w", err)
+	}
+	return nil
+}
+
+// createLearnedCards puts a passed unit quiz's items into reviews as just
+// learned (first answer rated Good), as completing a chapter does. Quiz
+// answers only create unscheduled cards, so without this a learner who
+// passed a unit still had every item "new" and nothing due. Cards already
+// being reviewed keep their schedule (see UpsertKnownCards).
+func (s *TestScoreService) createLearnedCards(ctx context.Context, tx *gorm.DB, res *TestResult, items []*Item) error {
+	settings, err := s.repo.EnsureSettings(ctx, res.UserID)
+	if err != nil {
+		return fmt.Errorf("create learned cards: %w", err)
+	}
+	sched, err := newScheduler(&settings)
+	if err != nil {
+		return fmt.Errorf("create learned cards: %w", err)
+	}
+	cards := make([]SRSCard, 0, testTotal(items))
+	for _, item := range items {
+		for _, facet := range common.SRS_ITEM_FACETS[item.Type] {
+			fresh := srs.NewCard(res.TakenAt)
+			learned, _, err := sched.Next(&fresh, res.TakenAt, srs.RatingGood)
+			if err != nil {
+				return fmt.Errorf("create learned cards: %w", err)
+			}
+			cards = append(cards, SRSCard{
+				ID: cardID(res.UserID, item.Type, item.ID, facet), UserID: res.UserID,
+				ItemType: item.Type, ItemID: item.ID, Facet: facet,
+				State: learned.State, Due: learned.Due, Stability: learned.Stability, Difficulty: learned.Difficulty,
+				Reps: learned.Reps, Lapses: learned.Lapses, LearningStep: learned.LearningStep,
+				ScheduledDays: learned.ScheduledDays, LastReviewAt: learned.LastReview, IntroducedAt: res.TakenAt,
+			})
+		}
+	}
+	if err := s.repo.UpsertKnownCards(ctx, tx, cards); err != nil {
+		return fmt.Errorf("create learned cards: %w", err)
 	}
 	return nil
 }

@@ -172,6 +172,27 @@ func TestCompleteTestSession(t *testing.T) {
 				if len(r.unitQuizzes) != 1 || r.unitQuizzes[0].UnitID != unitA || *r.unitQuizzes[0].QuizBestPct != 100 || r.unitQuizzes[0].CompletedAt == nil {
 					t.Errorf("unit quizzes = %+v, want あ row at 100 %% and completed", r.unitQuizzes)
 				}
+				for _, item := range []uuid.UUID{kanaA, kanaI, kanaO} {
+					if c := r.cardFor(item, common.CardFacetRecognition); c == nil || c.State == srs.StateNew || c.IntroducedAt.IsZero() {
+						t.Errorf("%s card = %+v, want it learned and in reviews", testChars[item], c)
+					}
+				}
+			},
+		},
+		{
+			name: "a passed unit quiz leaves cards already being reviewed on their schedule",
+			setup: func(r *fakeRepo) uuid.UUID {
+				id := answeredTimes(r, testSession(r, common.SessionKindUnitQuiz, common.LearningTrackHiragana, "a", []uuid.UUID{kanaA, kanaI, kanaO}, nil), 4)
+				review := newCard(common.SRSItemKana, kanaA, common.CardFacetRecognition)
+				review.State, review.Due = srs.StateReview, testNow.Add(10*24*time.Hour)
+				r.addCard(review)
+				return id
+			},
+			want: &TestScore{Kind: "unit_quiz", Score: 12, Total: 12, Passed: true, PassMark: common.KANA_UNIT_QUIZ_PASS_MARK},
+			check: func(t *testing.T, r *fakeRepo) {
+				if c := r.cardFor(kanaA, common.CardFacetRecognition); !c.Due.Equal(testNow.Add(10 * 24 * time.Hour)) {
+					t.Errorf("あ card = %+v, want its review schedule kept", c)
+				}
 			},
 		},
 		{
@@ -183,6 +204,11 @@ func TestCompleteTestSession(t *testing.T) {
 			check: func(t *testing.T, r *fakeRepo) {
 				if len(r.unitQuizzes) != 1 || *r.unitQuizzes[0].QuizBestPct != 66 || r.unitQuizzes[0].CompletedAt != nil {
 					t.Errorf("unit quizzes = %+v, want 66 %% and not completed", r.unitQuizzes)
+				}
+				for _, c := range r.cards {
+					if c.State != srs.StateNew {
+						t.Errorf("a failed unit quiz scheduled %s", testChars[c.ItemID])
+					}
 				}
 			},
 		},
