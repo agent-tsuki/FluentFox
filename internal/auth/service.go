@@ -68,6 +68,8 @@ type IPLocator interface {
 type LoginChallenger interface {
 	Start(ctx context.Context, user *users.User, loc *users.SessionLocation) (LoginChallengeResponse, error)
 	Consume(ctx context.Context, challengeID uuid.UUID, code string) (uuid.UUID, users.SessionLocation, error)
+	IsTrustedNetwork(ctx context.Context, userID uuid.UUID) (bool, error)
+	RememberNetwork(ctx context.Context, userID uuid.UUID) error
 }
 
 func NewTokenVerificationService(userRepo UserRepo, log *zap.Logger) *TokenVerificationService {
@@ -416,7 +418,7 @@ func (t *LoginService) Login(ctx context.Context, loginReq LoginRequest) (LoginR
 	loc := t.locate(ctx)
 	// Someone on a VPN may be hiding where they are, so a password alone is
 	// not enough: they must also prove they can read the account's email.
-	if loc.IsVPN != nil && *loc.IsVPN && t.challenges != nil {
+	if loc.IsVPN != nil && *loc.IsVPN && t.challenges != nil && !t.onTrustedNetwork(ctx, userData.ID) {
 		challenge, err := t.challenges.Start(ctx, &userData, &loc)
 		if err != nil {
 			return LoginResponse{}, fmt.Errorf("login: %w", err)
@@ -460,8 +462,27 @@ func (t *LoginService) VerifyLoginCode(ctx context.Context, req VerifyLoginCodeR
 	if err != nil {
 		return LoginResponse{}, err
 	}
+	// The user is already signed in; failing here only means the next VPN
+	// login from this network asks for a code again.
+	if err := t.challenges.RememberNetwork(ctx, userData.ID); err != nil {
+		t.logger.Warn("Remember trusted network failed", zap.Stringer("user_id", userData.ID), zap.Error(err))
+	}
 	t.logger.Info("User logged in with email code", zap.Stringer("user_id", userData.ID))
 	return resp, nil
+}
+
+// A failed lookup counts as untrusted, so an outage sends a code rather than
+// letting a VPN login through on the password alone.
+func (t *LoginService) onTrustedNetwork(ctx context.Context, userID uuid.UUID) bool {
+	trusted, err := t.challenges.IsTrustedNetwork(ctx, userID)
+	if err != nil {
+		t.logger.Warn("Trusted network lookup failed, sending login code", zap.Stringer("user_id", userID), zap.Error(err))
+		return false
+	}
+	if trusted {
+		t.logger.Info("Login code skipped: trusted network", zap.Stringer("user_id", userID))
+	}
+	return trusted
 }
 
 // A failed lookup must never block a login, so it only costs the location.

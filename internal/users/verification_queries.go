@@ -241,6 +241,11 @@ func (r *Repository) ConsumePasswordReset(
 	if err := r.RevokeRefreshTokens(ctx, tx, userID); err != nil {
 		return false, err
 	}
+	// Whoever knew the old password may have trusted their own network with
+	// it; after a reset every VPN login needs the email code again.
+	if err := r.DeleteTrustedNetworks(ctx, tx, userID); err != nil {
+		return false, err
+	}
 	return true, nil
 }
 

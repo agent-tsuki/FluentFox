@@ -21,6 +21,7 @@ import (
 	"github.com/fluentfox/api/internal/common"
 	"github.com/fluentfox/api/internal/users"
 	"github.com/fluentfox/api/pkg/exceptions"
+	"github.com/fluentfox/api/pkg/middleware"
 )
 
 const (
@@ -153,6 +154,44 @@ func (s *LoginChallengeService) Consume(ctx context.Context, challengeID uuid.UU
 		return uuid.Nil, users.SessionLocation{}, exceptions.ErrLoginCodeInvalid
 	}
 	return userID, loc, nil
+}
+
+// An unknown address is never trusted, so it always gets a code.
+func (s *LoginChallengeService) IsTrustedNetwork(ctx context.Context, userID uuid.UUID) (bool, error) {
+	prefix := middleware.RequestInfoFromContext(ctx).IPPrefix()
+	if prefix == "" {
+		return false, nil
+	}
+	since := time.Now().UTC().Add(-common.LOGIN_TRUSTED_NETWORK_TTL)
+	trusted, err := s.userRepo.HasTrustedNetwork(ctx, userID, prefix, since)
+	if err != nil {
+		return false, fmt.Errorf("trusted network: %w", err)
+	}
+	return trusted, nil
+}
+
+// RememberNetwork trusts the network the code was entered from, since that
+// request is the one that proved access to the inbox.
+func (s *LoginChallengeService) RememberNetwork(ctx context.Context, userID uuid.UUID) error {
+	prefix := middleware.RequestInfoFromContext(ctx).IPPrefix()
+	if prefix == "" {
+		return nil
+	}
+	now := time.Now().UTC()
+	// Expired rows are pruned here because nothing else cleans this table.
+	err := s.userRepo.Transaction(ctx, func(tx *gorm.DB) error {
+		if err := s.userRepo.DeleteExpiredTrustedNetworks(ctx, tx, userID, now.Add(-common.LOGIN_TRUSTED_NETWORK_TTL)); err != nil {
+			return fmt.Errorf("prune trusted networks: %w", err)
+		}
+		if err := s.userRepo.UpsertTrustedNetwork(ctx, tx, userID, prefix, now); err != nil {
+			return fmt.Errorf("save trusted network: %w", err)
+		}
+		return nil
+	})
+	if err != nil {
+		return fmt.Errorf("remember network: %w", err)
+	}
+	return nil
 }
 
 func challengeUsable(c *users.LoginChallenge, now time.Time) bool {

@@ -67,6 +67,13 @@ const (
 	LOGIN_CODE_DAILY_LIMIT   int64         = 10
 )
 
+// After a code is entered on a network, password logins from it skip the code
+// for this long; the window is not extended by skipped logins, so the user
+// proves email access again at least once per window. Trust is per /24 (or
+// /48), so others on the same VPN exit range who also know the password skip
+// the code too; accepted to avoid a code on every login from shared networks.
+const LOGIN_TRUSTED_NETWORK_TTL time.Duration = 30 * 24 * time.Hour
+
 // Uploaded avatars are re-encoded to a square JPEG. The browser shrinks photos
 // before upload, so the byte cap only has to cover an already-small image.
 const (

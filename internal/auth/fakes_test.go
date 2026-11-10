@@ -90,6 +90,40 @@ type fakeUserRepo struct {
 	challengeErr      error
 	challengeAttempts int
 	challengeConsumed bool
+
+	trustedFound    bool
+	trustedErr      error
+	hasTrustedCalls int
+	trustedUserID   uuid.UUID
+	trustedPrefix   string
+	trustedSince    time.Time
+
+	pruneTrustedErr     error
+	prunedTrustedCalls  int
+	prunedTrustedBefore time.Time
+
+	upsertTrustedErr    error
+	upsertTrustedCalls  int
+	upsertTrustedPrefix string
+	upsertTrustedAt     time.Time
+}
+
+func (f *fakeUserRepo) HasTrustedNetwork(_ context.Context, userID uuid.UUID, prefix string, since time.Time) (bool, error) {
+	f.hasTrustedCalls++
+	f.trustedUserID, f.trustedPrefix, f.trustedSince = userID, prefix, since
+	return f.trustedFound, f.trustedErr
+}
+
+func (f *fakeUserRepo) UpsertTrustedNetwork(_ context.Context, _ *gorm.DB, userID uuid.UUID, prefix string, verifiedAt time.Time) error {
+	f.upsertTrustedCalls++
+	f.trustedUserID, f.upsertTrustedPrefix, f.upsertTrustedAt = userID, prefix, verifiedAt
+	return f.upsertTrustedErr
+}
+
+func (f *fakeUserRepo) DeleteExpiredTrustedNetworks(_ context.Context, _ *gorm.DB, _ uuid.UUID, before time.Time) error {
+	f.prunedTrustedCalls++
+	f.prunedTrustedBefore = before
+	return f.pruneTrustedErr
 }
 
 func (f *fakeUserRepo) GetLoginChallengeStats(context.Context, *gorm.DB, uuid.UUID, time.Time) (users.LoginChallengeStats, error) {

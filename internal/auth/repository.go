@@ -39,6 +39,9 @@ type UserRepo interface {
 	RecordLoginChallengeAttempt(ctx context.Context, tx *gorm.DB, id uuid.UUID, attempts int) error
 	ConsumeLoginChallenge(ctx context.Context, tx *gorm.DB, id uuid.UUID, now time.Time) error
 	DeleteOldLoginChallenges(ctx context.Context, tx *gorm.DB, userID uuid.UUID, before time.Time) error
+	HasTrustedNetwork(ctx context.Context, userID uuid.UUID, ipPrefix string, since time.Time) (bool, error)
+	UpsertTrustedNetwork(ctx context.Context, tx *gorm.DB, userID uuid.UUID, ipPrefix string, verifiedAt time.Time) error
+	DeleteExpiredTrustedNetworks(ctx context.Context, tx *gorm.DB, userID uuid.UUID, before time.Time) error
 
 	GetUserForUsername(ctx context.Context, username string) (users.User, error)
 	LockUserForUpdate(ctx context.Context, tx *gorm.DB, userID uuid.UUID) (users.User, error)
