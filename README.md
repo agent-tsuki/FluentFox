@@ -133,8 +133,10 @@ See `.env.example` for all required variables with descriptions.
 - `VPNAPI_API_KEY` (optional) is a vpnapi.io key (free: 1,000 lookups a day). At login the API looks up
   the client's city and whether it is a VPN; a password login from a VPN must
   then also enter a code sent by email. Empty turns both off. The client IP is
-  only right when `TRUSTED_PROXIES` covers the host's proxy (Railway:
-  `100.64.0.0/10`). On Vercel, the API reads the platform-controlled
+  only right when `TRUSTED_PROXIES` covers the host's proxy. On Railway, the
+  edge adds its own address to `X-Forwarded-For`, so the API reads Railway's
+  `X-Real-IP` header instead when the automatic `RAILWAY_ENVIRONMENT` variable
+  is set. On Vercel, the API reads the platform-controlled
   `X-Vercel-Forwarded-For` header when the automatically exposed `VERCEL=1`
   system variable is available; enable **Automatically expose System
   Environment Variables** in the Vercel project if it is not already on.

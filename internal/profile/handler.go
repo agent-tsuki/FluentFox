@@ -125,3 +125,38 @@ func (h *SessionHandler) UpdateCurrentLocation(ctx context.Context, input *humau
 	}
 	return humautil.OK(resp), nil
 }
+
+type TutorialHandler struct {
+	tutorials *TutorialService
+	logger    *zap.Logger
+}
+
+func NewTutorialHandler(tutorials *TutorialService, log *zap.Logger) *TutorialHandler {
+	return &TutorialHandler{tutorials: tutorials, logger: log}
+}
+
+type (
+	tutorialsOutput = humautil.Output[humautil.APIResponse[TutorialsResponse]]
+	tutorialOutput  = humautil.Output[humautil.APIResponse[TutorialResponse]]
+)
+
+type UpdateTutorialInput struct {
+	Key  string `path:"key" maxLength:"40" doc:"Tutorial id, e.g. welcome"`
+	Body UpdateTutorialRequest
+}
+
+func (h *TutorialHandler) ListTutorials(ctx context.Context, _ *EmptyInput) (*tutorialsOutput, error) {
+	resp, err := h.tutorials.List(ctx, middleware.ContextUserID(ctx))
+	if err != nil {
+		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
+	}
+	return humautil.OK(resp), nil
+}
+
+func (h *TutorialHandler) UpdateTutorial(ctx context.Context, input *UpdateTutorialInput) (*tutorialOutput, error) {
+	resp, err := h.tutorials.Update(ctx, middleware.ContextUserID(ctx), input.Key, &input.Body)
+	if err != nil {
+		return nil, humautil.MapErr(err, middleware.LoggerFromContext(ctx, h.logger))
+	}
+	return humautil.OK(resp), nil
+}

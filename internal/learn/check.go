@@ -28,7 +28,7 @@ func checkAnswer(qt common.QuestionType, item *Item, pool *Pool, ans *AnswerRequ
 	if matchesItem(kind, item, given) {
 		return answerCheck{Correct: true}
 	}
-	if ans.ChosenOption == nil {
+	if ans.ChosenOption == nil || item.Exercise != nil {
 		return answerCheck{}
 	}
 	return answerCheck{Chosen: findChosen(pool, kind, item, given)}

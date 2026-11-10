@@ -99,6 +99,19 @@ type Question struct {
 	IsLeech         bool      `json:"is_leech"`
 	// Grammar sentences only.
 	Sentence *SentenceQuestion `json:"sentence,omitempty" doc:"Grammar sentence questions only"`
+	Exercise *ExerciseQuestion `json:"exercise,omitempty" doc:"Chapter exercise questions only"`
+}
+
+// ExerciseQuestion is what a chapter exercise shows besides its prompt.
+type ExerciseQuestion struct {
+	Lines  []string `json:"lines,omitempty"  doc:"True/false and reading: the text to read"`
+	Source string   `json:"source,omitempty" doc:"Change the form: the sentence to change"`
+	Task   string   `json:"task,omitempty"   doc:"Change the form: what to do, in English"`
+	Image  string   `json:"image,omitempty"  doc:"Picture questions: path of the picture in the web app"`
+	Alt    string   `json:"alt,omitempty"    doc:"Picture questions: what the picture shows"`
+	Tiles  []string `json:"tiles,omitempty"  doc:"Put in order: the words, scrambled"`
+	Voice  string   `json:"voice,omitempty"  doc:"Listening: cast key for the speech engine"`
+	Say    string   `json:"say,omitempty"    doc:"Listening: what to speak where the engine misreads the prompt"`
 }
 
 type SentenceQuestion struct {

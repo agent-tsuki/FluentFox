@@ -81,6 +81,9 @@ func NewHandler(cfg *config.Config, log *zap.Logger) (http.Handler, func(), erro
 		cleanup()
 		return nil, nil, fmt.Errorf("invalid TRUSTED_PROXIES: %w", err)
 	}
+	if cfg.RailwayDeployment {
+		r.TrustedPlatform = common.RAILWAY_CLIENT_IP_HEADER
+	}
 	r.Use(gin.CustomRecovery(recoverPanic(log)))
 	r.Use(middleware.CORS(cfg.AllowedOrigins))
 	r.Use(middleware.Logger(log))
@@ -260,6 +263,7 @@ func registerProfileRoutes(api huma.API, cfg *config.Config, userRepo *users.Rep
 			profile.NewSessionLocationService(userRepo, log),
 			log,
 		),
+		profile.NewTutorialHandler(profile.NewTutorialService(userRepo, log), log),
 	)
 }
 

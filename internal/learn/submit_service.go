@@ -265,8 +265,7 @@ func (b *answerBatch) newLessonCards(ids []uuid.UUID) ([]SRSCard, error) {
 	userID := b.learner.UserID
 	byID := make(map[uuid.UUID]SRSCard)
 	pool := b.pools[0]
-	for i := range pool.Items {
-		item := &pool.Items[i]
+	for _, item := range slices.Concat(pool.Items, pool.exercises) {
 		for _, facet := range common.SRS_ITEM_FACETS[item.Type] {
 			id := cardID(userID, item.Type, item.ID, facet)
 			byID[id] = SRSCard{

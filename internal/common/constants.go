@@ -48,6 +48,10 @@ const (
 // on timeout the login goes ahead without a location.
 const IP_LOOKUP_TIMEOUT time.Duration = 1500 * time.Millisecond
 
+// Railway's edge appends its own public address to X-Forwarded-For and
+// publishes no ranges to trust, so the client address comes from this header.
+const RAILWAY_CLIENT_IP_HEADER = "X-Real-IP"
+
 // Coordinates are rounded to 3 decimals (about 110 m): enough for a map pin,
 // without storing the exact spot a person logged in from.
 const LOCATION_COORD_SCALE float64 = 1000
@@ -188,7 +192,22 @@ var QUESTION_TYPE_RULES = map[QuestionType]QuestionTypeRule{
 	QuestionGrammarGapMCQ:       {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_SENTENCE_MCQ},
 	QuestionGrammarGapTyped:     {UpdatesSchedule: true, MaxRating: srs.RatingEasy, UsualTime: USUAL_SENTENCE_TYPED, Typed: true},
 	QuestionGrammarTranslateMCQ: {UpdatesSchedule: true, MaxRating: srs.RatingGood, UsualTime: USUAL_TRANSLATE_MCQ},
+	QuestionExerciseTrueFalse:   {UsualTime: USUAL_TRANSLATE_MCQ},
+	QuestionExerciseTransform:   {UsualTime: USUAL_SENTENCE_TYPED, Typed: true},
+	QuestionExerciseWordChoice:  {UsualTime: USUAL_SENTENCE_MCQ},
+	QuestionExercisePicture:     {UsualTime: USUAL_SENTENCE_MCQ},
+	QuestionExerciseOrder:       {UsualTime: USUAL_SENTENCE_TYPED, Typed: true},
+	QuestionExerciseListen:      {UsualTime: USUAL_TRANSLATE_MCQ},
+	QuestionExerciseReply:       {UsualTime: USUAL_TRANSLATE_MCQ},
+	QuestionExerciseReading:     {UsualTime: USUAL_TRANSLATE_MCQ},
 }
+
+// A chapter's exercise asks this many questions of each kind, then tops up
+// from whatever is left to the maximum.
+const (
+	CHAPTER_EXERCISE_PER_TYPE      int = 2
+	CHAPTER_EXERCISE_MAX_QUESTIONS int = 20
+)
 
 // Only N5 kanji content ships in v1; other levels answer 404 until they are synced.
 var KANJI_CONTENT_LEVELS = []JLPTLevel{JLPTLevelN5}
@@ -300,6 +319,7 @@ var SRS_ITEM_FACETS = map[SRSItemType][]CardFacet{
 	SRSItemKanji:           {CardFacetMeaning, CardFacetReading},
 	SRSItemVocab:           {CardFacetMeaning},
 	SRSItemGrammarSentence: {CardFacetRecognition, CardFacetMeaning},
+	SRSItemGrammarExercise: {CardFacetRecognition},
 }
 
 var QUESTION_TYPE_FACET = map[QuestionType]CardFacet{
@@ -323,6 +343,14 @@ var QUESTION_TYPE_FACET = map[QuestionType]CardFacet{
 	QuestionGrammarGapMCQ:       CardFacetRecognition,
 	QuestionGrammarGapTyped:     CardFacetRecognition,
 	QuestionGrammarTranslateMCQ: CardFacetMeaning,
+	QuestionExerciseTrueFalse:   CardFacetRecognition,
+	QuestionExerciseTransform:   CardFacetRecognition,
+	QuestionExerciseWordChoice:  CardFacetRecognition,
+	QuestionExercisePicture:     CardFacetRecognition,
+	QuestionExerciseOrder:       CardFacetRecognition,
+	QuestionExerciseListen:      CardFacetRecognition,
+	QuestionExerciseReply:       CardFacetRecognition,
+	QuestionExerciseReading:     CardFacetRecognition,
 }
 
 // Card ids are derived from (user, item, facet) so a lesson can hand out the
@@ -484,6 +512,14 @@ var QUESTION_TYPE_SKILL = map[QuestionType]Skill{
 	QuestionGrammarGapMCQ:       SkillGrammar,
 	QuestionGrammarGapTyped:     SkillGrammar,
 	QuestionGrammarTranslateMCQ: SkillGrammar,
+	QuestionExerciseTrueFalse:   SkillGrammar,
+	QuestionExerciseTransform:   SkillGrammar,
+	QuestionExerciseWordChoice:  SkillGrammar,
+	QuestionExercisePicture:     SkillGrammar,
+	QuestionExerciseOrder:       SkillGrammar,
+	QuestionExerciseListen:      SkillListening,
+	QuestionExerciseReply:       SkillGrammar,
+	QuestionExerciseReading:     SkillGrammar,
 }
 
 // Dashboard (frontend DashboardData). v1 teaches N5, so that is the target
@@ -690,3 +726,12 @@ const (
 )
 
 var KANA_UNIT_QUIZ_DIRECTIONS = []QuestionType{QuestionKanaMCQRomaji, QuestionKanaMCQKana}
+
+// In-app tutorials the frontend may record (PUT /profile/tutorials/{key}).
+// Add a key here before shipping a new tour.
+const (
+	TUTORIAL_WELCOME  string = "welcome"
+	TUTORIAL_MAX_STEP int    = 50
+)
+
+var TUTORIAL_KEYS = []string{TUTORIAL_WELCOME}

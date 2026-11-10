@@ -82,6 +82,7 @@ var (
 	// 404 Not Found
 	ErrUserNotFound = New(http.StatusNotFound, "USER_NOT_FOUND", "user not found")
 	ErrUserEmailNotFound = New(http.StatusNotFound, "USER_NOT_FOUND", "user not found with email")
+	ErrTutorialNotFound  = New(http.StatusNotFound, "TUTORIAL_NOT_FOUND", "no tutorial with this key")
 
 	// 400 Bad Request
 	ErrBadRequest = New(http.StatusBadRequest, "BAD_REQUEST", "invalid request")

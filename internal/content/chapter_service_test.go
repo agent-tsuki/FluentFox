@@ -18,6 +18,7 @@ type fakeChapters struct {
 	sentences []GrammarSentence
 	passages  []ChapterPassage
 	lines     []ChapterPassageLine
+	exercises []ChapterExercise
 }
 
 func (f *fakeChapters) ListChapterPassages(_ context.Context, chapterID uuid.UUID) ([]ChapterPassage, error) {
@@ -121,4 +122,8 @@ func TestChapterContentServicePassages(t *testing.T) {
 	if m := got.Passages[1]; len(m.Lines) != 1 || m.Lines[0].Speaker != nil || m.Speakers == nil || m.SpeakerVoices == nil {
 		t.Fatalf("monologue = %+v (speakers must be [] not null)", m)
 	}
+}
+
+func (f *fakeChapters) ListChapterExercises(context.Context, uuid.UUID) ([]ChapterExercise, error) {
+	return f.exercises, nil
 }

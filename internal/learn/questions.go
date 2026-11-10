@@ -83,6 +83,10 @@ func (b *QuestionBuilder) BuildAs(in *QuestionInput, qt common.QuestionType) Que
 	if in.Item.Sentence != nil {
 		q.Sentence = sentenceQuestion(in.Item, answer)
 	}
+	if in.Item.Exercise != nil {
+		q.Exercise = in.Item.Exercise.question()
+		b.rnd.Shuffle(len(q.Exercise.Tiles), func(i, j int) { q.Exercise.Tiles[i], q.Exercise.Tiles[j] = q.Exercise.Tiles[j], q.Exercise.Tiles[i] })
+	}
 	return q
 }
 
@@ -131,6 +135,9 @@ func (b *QuestionBuilder) chooseType(in *QuestionInput) common.QuestionType {
 
 // Chapter words and sentences have no listening or look-alike variety.
 func chapterQuestionType(in *QuestionInput) (common.QuestionType, bool) {
+	if in.Item.Exercise != nil {
+		return in.Item.Exercise.QuestionType, true
+	}
 	typed := allowsTyped(&in.Card, in.Mode)
 	switch {
 	case in.Item.Type == common.SRSItemVocab && typed:

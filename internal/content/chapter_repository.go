@@ -82,6 +82,20 @@ func (r *Repository) ListChapterWords(ctx context.Context, level common.JLPTLeve
 	return words, nil
 }
 
+// ListLevelExercises lists every chapter's exercises for a level, in chapter order.
+func (r *Repository) ListLevelExercises(ctx context.Context, level common.JLPTLevel) ([]ChapterExercise, error) {
+	var items []ChapterExercise
+	err := r.db.WithContext(ctx).
+		Joins("JOIN grammar_chapter c ON c.id = chapter_exercise.chapter_id").
+		Where("c.level = ?", level).
+		Order("c.position, chapter_exercise.position").
+		Find(&items).Error
+	if err != nil {
+		return nil, fmt.Errorf("list exercises %s: %w", level, err)
+	}
+	return items, nil
+}
+
 func (r *Repository) ListGrammarSentences(ctx context.Context, level common.JLPTLevel) ([]GrammarSentence, error) {
 	var sentences []GrammarSentence
 	err := r.db.WithContext(ctx).

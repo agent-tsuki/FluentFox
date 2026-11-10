@@ -220,6 +220,8 @@ func (r *Repository) ListItemChars(ctx context.Context, itemType common.SRSItemT
 		q = q.Table("chapter_word").Select("id, word AS char")
 	case common.SRSItemGrammarSentence:
 		q = q.Table("grammar_sentence").Select("id, sentence AS char")
+	case common.SRSItemGrammarExercise:
+		q = q.Table("chapter_exercise").Select("id, COALESCE(data->>'sentence', data->>'statement') AS char")
 	default:
 		q = q.Table("kanji").Select("id, char")
 	}

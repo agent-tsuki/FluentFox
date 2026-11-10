@@ -1,0 +1,7121 @@
+{
+  "level": "N5",
+  "chapters": [
+    {
+      "slug": "ch1",
+      "true_false": [
+        {
+          "lines": [
+            "A: ミラーさんは学生ですか。",
+            "B: いいえ、学生じゃありません。会社員です。"
+          ],
+          "statement": "Mr Miller is a student.",
+          "answer": false,
+          "explanation": "じゃありません means “is not”; he is a company employee."
+        },
+        {
+          "lines": [
+            "A: 初めまして。田中です。",
+            "B: 初めまして。アナです。学生です。"
+          ],
+          "statement": "Ana is a student.",
+          "answer": true,
+          "explanation": "アナです。学生です。: Ana says she is a student."
+        },
+        {
+          "lines": [
+            "A: あの人はだれですか。",
+            "B: 木村さんです。医者です。"
+          ],
+          "statement": "That person is a doctor.",
+          "answer": true,
+          "explanation": "医者 means doctor."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "わたしは学生です。",
+          "task": "Make it negative.",
+          "sentence": "わたしは学生{}。",
+          "answer": "じゃありません",
+          "also_accept": [
+            "ではありません"
+          ],
+          "explanation": "じゃありません is the polite “is not”."
+        },
+        {
+          "source": "あの人は先生です。",
+          "task": "Turn it into a question.",
+          "sentence": "あの人は先生です{}。",
+          "answer": "か",
+          "also_accept": [],
+          "explanation": "か at the end makes a question."
+        },
+        {
+          "source": "ミラーさんは会社員です。",
+          "task": "Say Ms Tanaka is one too.",
+          "sentence": "田中さん{}会社員です。",
+          "answer": "も",
+          "also_accept": [],
+          "explanation": "も means “also”."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_one.webp",
+          "alt": "Sentence builder board: わたし (topic) → は (topic marker) → 学生 (identity) → です (polite close), with Fox Sensei pointing at は.",
+          "sentence": "{}",
+          "answer": "わたし",
+          "options": [
+            "わたし",
+            "学生",
+            "です",
+            "は"
+          ],
+          "translation": "topic"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_one.webp",
+          "alt": "Sentence builder board: わたし (topic) → は (topic marker) → 学生 (identity) → です (polite close), with Fox Sensei pointing at は.",
+          "sentence": "{}",
+          "answer": "は",
+          "options": [
+            "わたし",
+            "です",
+            "は",
+            "学生"
+          ],
+          "translation": "topic marker"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_one.webp",
+          "alt": "Sentence builder board: わたし (topic) → は (topic marker) → 学生 (identity) → です (polite close), with Fox Sensei pointing at は.",
+          "sentence": "{}",
+          "answer": "学生",
+          "options": [
+            "学生",
+            "です",
+            "は",
+            "わたし"
+          ],
+          "translation": "identity"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "{}は田中です。",
+          "answer": "私",
+          "translation": "I am Tanaka."
+        },
+        {
+          "sentence": "{}は学生ですか。",
+          "answer": "あなた",
+          "translation": "Are you a student?"
+        },
+        {
+          "sentence": "{}は学生です。",
+          "answer": "あの人",
+          "translation": "That person is a student."
+        },
+        {
+          "sentence": "木村さんは{}です。",
+          "answer": "医者",
+          "translation": "Ms Kimura is a doctor."
+        },
+        {
+          "sentence": "さくら{}の学生です。",
+          "answer": "大学",
+          "translation": "I am a student at Sakura University."
+        },
+        {
+          "sentence": "山本さんは{}です。",
+          "answer": "銀行員",
+          "translation": "Mr Yamamoto is a bank employee."
+        },
+        {
+          "sentence": "あの人は{}ですか。",
+          "answer": "だれ",
+          "translation": "Who is that person?"
+        },
+        {
+          "sentence": "ミラーさんはＩＭＣの{}です。",
+          "answer": "社員",
+          "translation": "Mr Miller is an employee of IMC."
+        },
+        {
+          "sentence": "{}。ミラーです。",
+          "answer": "初めまして",
+          "translation": "Nice to meet you. I am Miller."
+        },
+        {
+          "sentence": "どうぞ{}。",
+          "answer": "よろしくお願いします",
+          "translation": "Pleased to meet you."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "私",
+            "は",
+            "リン",
+            "です"
+          ],
+          "translation": "I am Lin."
+        },
+        {
+          "words": [
+            "さくら",
+            "大学",
+            "の",
+            "学生",
+            "です"
+          ],
+          "translation": "I am a student at Sakura University."
+        },
+        {
+          "words": [
+            "どうぞ",
+            "よろしく",
+            "お願いします"
+          ],
+          "translation": "Pleased to meet you."
+        },
+        {
+          "words": [
+            "佐藤",
+            "さん",
+            "は",
+            "学生",
+            "です",
+            "か"
+          ],
+          "translation": "Are you a student, Mr Sato?"
+        }
+      ],
+      "listen": [
+        {
+          "text": "佐藤[さとう] さん は 学生[がくせい] です か。",
+          "translation": "Are you a student, Mr Sato?",
+          "wrong": [
+            "Ana, which country are you from?",
+            "Yes, that person is a student too. It is Ken.",
+            "Pleased to meet you all. Now, let’s begin."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "初[はじ]めまして。 アナ です。 学生[がくせい] です。 どうぞ よろしく お願[ねが]いします。",
+          "translation": "Nice to meet you. I am Ana. I am a student. Pleased to meet you.",
+          "wrong": [
+            "Ana, which country are you from?",
+            "Nice to meet you. I am Ana.",
+            "I am Yamamoto. I am this class’s teacher."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "どうぞ よろしく お願[ねが]いします。",
+          "translation": "Pleased to meet you.",
+          "wrong": [
+            "Nice to meet you. I am Ana. I am a student. Pleased to meet you.",
+            "Ana, which country are you from?",
+            "No, I am not a student. I am a company employee."
+          ],
+          "voice": "f3"
+        },
+        {
+          "text": "二十歳[はたち] です。",
+          "translation": "I am twenty years old.",
+          "wrong": [
+            "I am a student at Sakura University.",
+            "Nice to meet you. I am Sato. Pleased to meet you.",
+            "No, I am not a student. I am a company employee."
+          ],
+          "voice": "f3"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "佐藤さんは学生ですか。",
+          "answer": "いいえ、学生じゃありません。会社員です。",
+          "wrong": [
+            "はじめまして。",
+            "さようなら。",
+            "それは本です。"
+          ],
+          "explanation": "No, I am not a student. I am a company employee."
+        },
+        {
+          "prompt": "はじめまして。リンです。",
+          "answer": "はじめまして。田中です。どうぞよろしく。",
+          "wrong": [
+            "いいえ、そうじゃありません。",
+            "いくらですか。",
+            "また明日。"
+          ],
+          "explanation": "Nice to meet you. I am Tanaka. Pleased to meet you."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "初めまして。",
+            "私はリンです。",
+            "さくら大学の学生です。",
+            "二十歳です。",
+            "どうぞよろしくお願いします。"
+          ],
+          "question": "What does Lin do?",
+          "answer": "A student at Sakura University",
+          "wrong": [
+            "A teacher at Sakura University",
+            "A company employee",
+            "A doctor"
+          ]
+        },
+        {
+          "lines": [
+            "初めまして。",
+            "私はリンです。",
+            "さくら大学の学生です。",
+            "二十歳です。",
+            "どうぞよろしくお願いします。"
+          ],
+          "question": "How old is Lin?",
+          "answer": "Twenty",
+          "wrong": [
+            "Eighteen",
+            "Twenty-four",
+            "Thirty"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch2",
+      "true_false": [
+        {
+          "lines": [
+            "A: これはだれの傘ですか。",
+            "B: 佐藤さんのです。"
+          ],
+          "statement": "The umbrella is Sato’s.",
+          "answer": true,
+          "explanation": "佐藤さんの means “Sato’s”."
+        },
+        {
+          "lines": [
+            "A: それは辞書ですか。",
+            "B: いいえ、違います。雑誌です。"
+          ],
+          "statement": "It is a dictionary.",
+          "answer": false,
+          "explanation": "違います means “no, it isn’t”; it is a magazine."
+        },
+        {
+          "lines": [
+            "A: この時計はあなたのですか。",
+            "B: はい、わたしのです。"
+          ],
+          "statement": "The watch belongs to B.",
+          "answer": true,
+          "explanation": "わたしの means “mine”."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "これは辞書です。",
+          "task": "Say it about something near the listener.",
+          "sentence": "{}は辞書です。",
+          "answer": "それ",
+          "also_accept": [],
+          "explanation": "それ is a thing near the listener."
+        },
+        {
+          "source": "この本はわたしのです。",
+          "task": "Say it about a book far from you both.",
+          "sentence": "{}本はわたしのです。",
+          "answer": "あの",
+          "also_accept": [],
+          "explanation": "あの + noun is “that … over there”."
+        },
+        {
+          "source": "これは車の鍵です。",
+          "task": "Make it negative.",
+          "sentence": "これは車の鍵{}。",
+          "answer": "じゃありません",
+          "also_accept": [
+            "ではありません"
+          ],
+          "explanation": "じゃありません is the polite “is not”."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/scenes/demonstrative-distance-scene.webp",
+          "alt": "Two friends at a café with a red notebook near one person, a blue notebook near the other, and a yellow umbrella farther away.",
+          "sentence": "{}傘はだれのですか。",
+          "answer": "あの",
+          "options": [
+            "この",
+            "どの",
+            "その",
+            "あの"
+          ],
+          "translation": "Whose is that umbrella (far from both of them)?"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_two.webp",
+          "alt": "Distance map board: これ (near me), それ (near you), あれ (far from both), with a dotted line showing growing distance and Fox Sensei pointing at これ.",
+          "sentence": "{}",
+          "answer": "これ",
+          "options": [
+            "あれ",
+            "わたし",
+            "それ",
+            "これ"
+          ],
+          "translation": "near me"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_two.webp",
+          "alt": "Distance map board: これ (near me), それ (near you), あれ (far from both), with a dotted line showing growing distance and Fox Sensei pointing at これ.",
+          "sentence": "{}",
+          "answer": "それ",
+          "options": [
+            "わたし",
+            "これ",
+            "あれ",
+            "それ"
+          ],
+          "translation": "near you"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_two.webp",
+          "alt": "Distance map board: これ (near me), それ (near you), あれ (far from both), with a dotted line showing growing distance and Fox Sensei pointing at これ.",
+          "sentence": "{}",
+          "answer": "あれ",
+          "options": [
+            "それ",
+            "わたし",
+            "あれ",
+            "これ"
+          ],
+          "translation": "far from us both"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "これは{}です。",
+          "answer": "雑誌",
+          "translation": "This is a magazine."
+        },
+        {
+          "sentence": "それは{}ですか。",
+          "answer": "新聞",
+          "translation": "Is that a newspaper?"
+        },
+        {
+          "sentence": "あれは田中さんの{}です。",
+          "answer": "車",
+          "translation": "That is Tanaka’s car."
+        },
+        {
+          "sentence": "これは車の{}です。",
+          "answer": "鍵",
+          "translation": "This is a car key."
+        },
+        {
+          "sentence": "{}は机です。",
+          "answer": "あれ",
+          "translation": "That over there is a desk."
+        },
+        {
+          "sentence": "この{}はわたしのです。",
+          "answer": "時計",
+          "translation": "This watch is mine."
+        },
+        {
+          "sentence": "これは日本の{}です。",
+          "answer": "お土産",
+          "translation": "This is a souvenir from Japan."
+        },
+        {
+          "sentence": "それは{}ですか。…いいえ、ボールペンです。",
+          "answer": "鉛筆",
+          "translation": "Is that a pencil? …No, a ballpoint pen."
+        },
+        {
+          "sentence": "これは本ですか。…はい、{}。",
+          "answer": "そうです",
+          "translation": "Is this a book? …Yes, it is."
+        },
+        {
+          "sentence": "これは{}ですか。",
+          "answer": "何",
+          "translation": "What is this?"
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "これ",
+            "は",
+            "私",
+            "の",
+            "かばん",
+            "です"
+          ],
+          "translation": "This is my bag."
+        },
+        {
+          "words": [
+            "それ",
+            "は",
+            "辞書",
+            "です"
+          ],
+          "translation": "That is a dictionary."
+        },
+        {
+          "words": [
+            "この",
+            "ボールペン",
+            "も",
+            "私",
+            "の",
+            "です"
+          ],
+          "translation": "This ballpoint pen is mine too."
+        },
+        {
+          "words": [
+            "あれ",
+            "は",
+            "私",
+            "の",
+            "です"
+          ],
+          "translation": "That one is mine."
+        }
+      ],
+      "listen": [
+        {
+          "text": "この ボールペン も 私[わたし] の です。",
+          "translation": "This ballpoint pen is mine too.",
+          "wrong": [
+            "Then whose is that umbrella?",
+            "This is my bag.",
+            "This book is a Japanese book."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "いいえ、 違[ちが]います。 それ は 先生[せんせい] の です。",
+          "translation": "No, it is not. That is the teacher’s.",
+          "wrong": [
+            "This is my bag.",
+            "Then whose is that umbrella?",
+            "That one is mine."
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "これ は 私[わたし] の かばん です。",
+          "translation": "This is my bag.",
+          "wrong": [
+            "This ballpoint pen is mine too.",
+            "That is a souvenir from Japan. It is chocolate.",
+            "Excuse me, what is this?"
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "すみません、 これ は 何[なん] です か。",
+          "translation": "Excuse me, what is this?",
+          "wrong": [
+            "I see. Is this bag yours, Ms Tanaka?",
+            "Then whose is that umbrella?",
+            "That is a souvenir from Japan. It is chocolate."
+          ],
+          "voice": "m2"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "これは何ですか。",
+          "answer": "それは辞書です。",
+          "wrong": [
+            "はい、そうです。",
+            "いいえ、いません。",
+            "三時です。"
+          ],
+          "explanation": "That is a dictionary."
+        },
+        {
+          "prompt": "あの傘はだれのですか。",
+          "answer": "あれは私のです。",
+          "wrong": [
+            "あれは傘です。",
+            "はい、傘です。",
+            "ここは駅です。"
+          ],
+          "explanation": "That one is mine."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "これは私のかばんです。",
+            "この本は日本語の本です。",
+            "それは辞書です。",
+            "このボールペンも私のです。"
+          ],
+          "question": "Whose bag is it?",
+          "answer": "The speaker’s",
+          "wrong": [
+            "The teacher’s",
+            "A friend’s",
+            "Ms Tanaka’s"
+          ]
+        },
+        {
+          "lines": [
+            "これは私のかばんです。",
+            "この本は日本語の本です。",
+            "それは辞書です。",
+            "このボールペンも私のです。"
+          ],
+          "question": "What kind of book is this?",
+          "answer": "A Japanese book",
+          "wrong": [
+            "A dictionary",
+            "A magazine",
+            "An English book"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch3",
+      "true_false": [
+        {
+          "lines": [
+            "A: すみません、お手洗いはどこですか。",
+            "B: あそこです。"
+          ],
+          "statement": "The toilet is over there.",
+          "answer": true,
+          "explanation": "あそこ is “over there”."
+        },
+        {
+          "lines": [
+            "A: 食堂は何階ですか。",
+            "B: 地下1階です。"
+          ],
+          "statement": "The cafeteria is on the second floor.",
+          "answer": false,
+          "explanation": "地下1階 is the first basement floor."
+        },
+        {
+          "lines": [
+            "A: この時計はいくらですか。",
+            "B: 三千円です。"
+          ],
+          "statement": "The watch costs 3,000 yen.",
+          "answer": true,
+          "explanation": "三千円 is 3,000 yen."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "ここは教室です。",
+          "task": "Say it about a place near the listener.",
+          "sentence": "{}は教室です。",
+          "answer": "そこ",
+          "also_accept": [],
+          "explanation": "そこ is a place near the listener."
+        },
+        {
+          "source": "お手洗いはどこですか。",
+          "task": "Ask more politely.",
+          "sentence": "お手洗いは{}ですか。",
+          "answer": "どちら",
+          "also_accept": [],
+          "explanation": "どちら is the polite どこ."
+        },
+        {
+          "source": "ここは受付です。",
+          "task": "Say it about a place far from you both.",
+          "sentence": "{}は受付です。",
+          "answer": "あそこ",
+          "also_accept": [],
+          "explanation": "あそこ is “over there”."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_three.webp",
+          "alt": "Illustrated board showing ここ (here · near me), そこ (there · near you), あそこ (over there)",
+          "sentence": "{}",
+          "answer": "ここ",
+          "options": [
+            "あそこ",
+            "ここ",
+            "そこ",
+            "食べない"
+          ],
+          "translation": "here · near me"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_three.webp",
+          "alt": "Illustrated board showing ここ (here · near me), そこ (there · near you), あそこ (over there)",
+          "sentence": "{}",
+          "answer": "そこ",
+          "options": [
+            "そこ",
+            "食べない",
+            "あそこ",
+            "ここ"
+          ],
+          "translation": "there · near you"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_three.webp",
+          "alt": "Illustrated board showing ここ (here · near me), そこ (there · near you), あそこ (over there)",
+          "sentence": "{}",
+          "answer": "あそこ",
+          "options": [
+            "ここ",
+            "そこ",
+            "あそこ",
+            "食べない"
+          ],
+          "translation": "over there"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "{}は教室です。",
+          "answer": "そこ",
+          "translation": "That place near you is the classroom."
+        },
+        {
+          "sentence": "お手洗いは{}です。",
+          "answer": "あそこ",
+          "translation": "The toilet is over there."
+        },
+        {
+          "sentence": "ここは{}です。",
+          "answer": "事務所",
+          "translation": "This is the office."
+        },
+        {
+          "sentence": "あそこは{}です。",
+          "answer": "会議室",
+          "translation": "Over there is the meeting room."
+        },
+        {
+          "sentence": "すみません、{}はどこですか。",
+          "answer": "受付",
+          "translation": "Excuse me, where is reception?"
+        },
+        {
+          "sentence": "わたしの{}はここです。",
+          "answer": "部屋",
+          "translation": "My room is here."
+        },
+        {
+          "sentence": "{}はあそこです。",
+          "answer": "階段",
+          "translation": "The stairs are over there."
+        },
+        {
+          "sentence": "ミラーさんの{}はどちらですか。",
+          "answer": "会社",
+          "translation": "Which is Mr Miller’s company?"
+        },
+        {
+          "sentence": "{}はどちらですか。",
+          "answer": "国",
+          "translation": "Which country are you from?"
+        },
+        {
+          "sentence": "この時計は{}ですか。",
+          "answer": "いくら",
+          "translation": "How much is this watch?"
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "時計",
+            "売り場",
+            "は",
+            "5階",
+            "です"
+          ],
+          "translation": "The watch counter is on the fifth floor."
+        },
+        {
+          "words": [
+            "ここ",
+            "は",
+            "さくら",
+            "大学",
+            "です"
+          ],
+          "translation": "This is Sakura University."
+        },
+        {
+          "words": [
+            "食堂",
+            "は",
+            "1階",
+            "です"
+          ],
+          "translation": "The cafeteria is on the first floor."
+        },
+        {
+          "words": [
+            "お手洗い",
+            "は",
+            "あちら",
+            "です"
+          ],
+          "translation": "The toilets are over there."
+        }
+      ],
+      "listen": [
+        {
+          "text": "じゃ、 これ を ください。",
+          "translation": "Then I will take this one.",
+          "wrong": [
+            "This is Sakura University.",
+            "The cafeteria is on the first floor.",
+            "The toilets are over there."
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "ここ は さくら 大学[だいがく] です。",
+          "translation": "This is Sakura University.",
+          "wrong": [
+            "Thanks. How much is this watch?",
+            "It is eighteen thousand yen.",
+            "The toilets are over there."
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "教室[きょうしつ] は 3階[さんがい] です。",
+          "translation": "The classroom is on the third floor.",
+          "wrong": [
+            "Thanks. How much is this watch?",
+            "Then I will take this one.",
+            "The toilets are over there."
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "お手洗[てあら]い は あちら です。",
+          "translation": "The toilets are over there.",
+          "wrong": [
+            "Then I will take this one.",
+            "The watch counter is on the fifth floor.",
+            "Excuse me, where is the watch counter?"
+          ],
+          "voice": "m2"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "時計売り場はどこですか。",
+          "answer": "5階です。",
+          "wrong": [
+            "一万円です。",
+            "時計です。",
+            "はい、どうぞ。"
+          ],
+          "explanation": "It is on the fifth floor."
+        },
+        {
+          "prompt": "この時計はいくらですか。",
+          "answer": "一万八千円です。",
+          "wrong": [
+            "時計売り場です。",
+            "5階です。",
+            "いいえ、違います。"
+          ],
+          "explanation": "It is 18,000 yen."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "ここはさくら大学です。",
+            "食堂は1階です。",
+            "教室は3階です。",
+            "お手洗いはあちらです。"
+          ],
+          "question": "Which floor is the cafeteria on?",
+          "answer": "The first floor",
+          "wrong": [
+            "The second floor",
+            "The third floor",
+            "The fifth floor"
+          ]
+        },
+        {
+          "lines": [
+            "ここはさくら大学です。",
+            "食堂は1階です。",
+            "教室は3階です。",
+            "お手洗いはあちらです。"
+          ],
+          "question": "Where is the classroom?",
+          "answer": "On the third floor",
+          "wrong": [
+            "On the first floor",
+            "Over there, by the toilets",
+            "Outside the university"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch4",
+      "true_false": [
+        {
+          "lines": [
+            "A: 毎朝何時に起きますか。",
+            "B: 6時に起きます。"
+          ],
+          "statement": "B gets up at six.",
+          "answer": true,
+          "explanation": "6時に起きます: gets up at six."
+        },
+        {
+          "lines": [
+            "A: 昨日勉強しましたか。",
+            "B: いいえ、勉強しませんでした。"
+          ],
+          "statement": "B studied yesterday.",
+          "answer": false,
+          "explanation": "ませんでした is the past negative."
+        },
+        {
+          "lines": [
+            "A: 銀行は何時までですか。",
+            "B: 3時までです。"
+          ],
+          "statement": "The bank is open until three.",
+          "answer": true,
+          "explanation": "3時まで means “until three”."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "今日働きます。",
+          "task": "Change it to the past.",
+          "sentence": "昨日{}。",
+          "answer": "働きました",
+          "also_accept": [
+            "はたらきました"
+          ],
+          "explanation": "ます becomes ました in the past."
+        },
+        {
+          "source": "毎朝勉強します。",
+          "task": "Make it negative.",
+          "sentence": "毎朝{}。",
+          "answer": "勉強しません",
+          "also_accept": [
+            "べんきょうしません"
+          ],
+          "explanation": "ます becomes ません in the negative."
+        },
+        {
+          "source": "昨日寝ました。",
+          "task": "Change it to the past negative.",
+          "sentence": "昨日{}。",
+          "answer": "寝ませんでした",
+          "also_accept": [
+            "ねませんでした"
+          ],
+          "explanation": "ました becomes ませんでした."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_four.webp",
+          "alt": "Illustrated board showing 7時に (at seven), おきます (wake up), 8時に (at eight), 行きます (go)",
+          "sentence": "{}",
+          "answer": "7時に",
+          "options": [
+            "おきます",
+            "7時に",
+            "行きます",
+            "8時に"
+          ],
+          "translation": "at seven"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_four.webp",
+          "alt": "Illustrated board showing 7時に (at seven), おきます (wake up), 8時に (at eight), 行きます (go)",
+          "sentence": "{}",
+          "answer": "おきます",
+          "options": [
+            "7時に",
+            "おきます",
+            "行きます",
+            "8時に"
+          ],
+          "translation": "wake up"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_four.webp",
+          "alt": "Illustrated board showing 7時に (at seven), おきます (wake up), 8時に (at eight), 行きます (go)",
+          "sentence": "{}",
+          "answer": "8時に",
+          "options": [
+            "行きます",
+            "8時に",
+            "おきます",
+            "7時に"
+          ],
+          "translation": "at eight"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "毎日{}。",
+          "answer": "勉強します",
+          "translation": "I study every day."
+        },
+        {
+          "sentence": "勉強は9時に{}。",
+          "answer": "終わります",
+          "translation": "Studying finishes at nine."
+        },
+        {
+          "sentence": "今、{}9時です。",
+          "answer": "午前",
+          "translation": "It is now 9 a.m."
+        },
+        {
+          "sentence": "昨日の{}、勉強しました。",
+          "answer": "午後",
+          "translation": "I studied yesterday afternoon."
+        },
+        {
+          "sentence": "{}6時に起きます。",
+          "answer": "朝",
+          "translation": "I get up at six in the morning."
+        },
+        {
+          "sentence": "{}は日曜日です。",
+          "answer": "今日",
+          "translation": "Today is Sunday."
+        },
+        {
+          "sentence": "{}は休みです。",
+          "answer": "明日",
+          "translation": "Tomorrow is a day off."
+        },
+        {
+          "sentence": "{}は9時からです。",
+          "answer": "銀行",
+          "translation": "The bank opens at nine."
+        },
+        {
+          "sentence": "{}は5時までです。",
+          "answer": "郵便局",
+          "translation": "The post office is open until five."
+        },
+        {
+          "sentence": "{}の休みは月曜日です。",
+          "answer": "図書館",
+          "translation": "The library is closed on Mondays."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "9時",
+            "10分",
+            "です"
+          ],
+          "translation": "It is ten past nine."
+        },
+        {
+          "words": [
+            "夜",
+            "11時",
+            "まで",
+            "勉強",
+            "しました"
+          ],
+          "translation": "I studied until eleven at night."
+        },
+        {
+          "words": [
+            "私",
+            "は",
+            "7時",
+            "半",
+            "に",
+            "起きます"
+          ],
+          "translation": "I get up at half past seven."
+        },
+        {
+          "words": [
+            "晩",
+            "11時",
+            "に",
+            "寝ます"
+          ],
+          "translation": "At night I go to bed at eleven."
+        }
+      ],
+      "listen": [
+        {
+          "text": "私[わたし] は 毎朝[まいあさ] 6時[ろくじ] に 起[お]きます。",
+          "translation": "I get up at six every morning.",
+          "wrong": [
+            "I work from nine to five.",
+            "Where is Sato?",
+            "Mr Sato, what time do you get up every morning?"
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "そう です か。 会議[かいぎ] は 10時[じゅうじ] から です よ。",
+          "translation": "I see. The meeting is from ten, you know.",
+          "wrong": [
+            "Good morning. Sorry, the train was late.",
+            "It is ten past nine.",
+            "Not here yet. Sato comes at half past nine every morning."
+          ],
+          "voice": "m3"
+        },
+        {
+          "text": "9時[くじ] 10分[じゅっぷん] です。",
+          "translation": "It is ten past nine.",
+          "wrong": [
+            "Until what time did you study yesterday?",
+            "I see. The meeting is from ten, you know.",
+            "I get up at six every morning."
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "9時[くじ] から 5時[ごじ] まで 働[はたら]きます。",
+          "translation": "I work from nine to five.",
+          "wrong": [
+            "I see. The meeting is from ten, you know.",
+            "Understood. What time does the lunch break start?",
+            "I studied until eleven at night."
+          ],
+          "voice": "m1"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "毎朝何時に起きますか。",
+          "answer": "6時に起きます。",
+          "wrong": [
+            "毎朝です。",
+            "はい、起きます。",
+            "学校です。"
+          ],
+          "explanation": "I get up at six."
+        },
+        {
+          "prompt": "昨日は何時まで勉強しましたか。",
+          "answer": "夜11時まで勉強しました。",
+          "wrong": [
+            "明日勉強します。",
+            "日本語を勉強しました。",
+            "図書館です。"
+          ],
+          "explanation": "I studied until eleven at night."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "私は毎朝6時に起きます。",
+            "9時から5時まで働きます。",
+            "12時から1時まで休みます。",
+            "晩11時に寝ます。"
+          ],
+          "question": "What time does the speaker get up?",
+          "answer": "At six",
+          "wrong": [
+            "At five",
+            "At nine",
+            "At eleven"
+          ]
+        },
+        {
+          "lines": [
+            "私は毎朝6時に起きます。",
+            "9時から5時まで働きます。",
+            "12時から1時まで休みます。",
+            "晩11時に寝ます。"
+          ],
+          "question": "When does the speaker take a break?",
+          "answer": "From twelve to one",
+          "wrong": [
+            "From nine to five",
+            "From six to nine",
+            "From eleven to twelve"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch5",
+      "true_false": [
+        {
+          "lines": [
+            "A: 来週どこへ行きますか。",
+            "B: 友達と京都へ行きます。"
+          ],
+          "statement": "B is going alone.",
+          "answer": false,
+          "explanation": "友達と means “with a friend”."
+        },
+        {
+          "lines": [
+            "A: 何で学校へ来ましたか。",
+            "B: 自転車で来ました。"
+          ],
+          "statement": "B came by bicycle.",
+          "answer": true,
+          "explanation": "で marks the means of transport."
+        },
+        {
+          "lines": [
+            "A: いつ日本へ来ましたか。",
+            "B: 去年来ました。"
+          ],
+          "statement": "B came to Japan last year.",
+          "answer": true,
+          "explanation": "去年 is last year."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "駅へ行きます。",
+          "task": "Change it to the past negative.",
+          "sentence": "駅へ{}。",
+          "answer": "行きませんでした",
+          "also_accept": [
+            "いきませんでした"
+          ],
+          "explanation": "ます becomes ませんでした."
+        },
+        {
+          "source": "電車で行きます。",
+          "task": "Say you go on foot.",
+          "sentence": "{}行きます。",
+          "answer": "歩いて",
+          "also_accept": [
+            "あるいて"
+          ],
+          "explanation": "歩いて means “on foot”, with no で."
+        },
+        {
+          "source": "友達と来ました。",
+          "task": "Say you came alone.",
+          "sentence": "{}来ました。",
+          "answer": "一人で",
+          "also_accept": [
+            "ひとりで"
+          ],
+          "explanation": "一人で means “alone”."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_five.webp",
+          "alt": "Illustrated board showing 家から (from home), 電車で (by train), 学校へ (to school)",
+          "sentence": "{}",
+          "answer": "家から",
+          "options": [
+            "家から",
+            "学校へ",
+            "電車で",
+            "です"
+          ],
+          "translation": "from home"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_five.webp",
+          "alt": "Illustrated board showing 家から (from home), 電車で (by train), 学校へ (to school)",
+          "sentence": "{}",
+          "answer": "電車で",
+          "options": [
+            "です",
+            "家から",
+            "電車で",
+            "学校へ"
+          ],
+          "translation": "by train"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_five.webp",
+          "alt": "Illustrated board showing 家から (from home), 電車で (by train), 学校へ (to school)",
+          "sentence": "{}",
+          "answer": "学校へ",
+          "options": [
+            "です",
+            "家から",
+            "電車で",
+            "学校へ"
+          ],
+          "translation": "to school"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "友達が日本へ{}。",
+          "answer": "来ます",
+          "translation": "My friend is coming to Japan."
+        },
+        {
+          "sentence": "毎日{}へ行きます。",
+          "answer": "学校",
+          "translation": "I go to school every day."
+        },
+        {
+          "sentence": "{}へ行きます。",
+          "answer": "駅",
+          "translation": "I am going to the station."
+        },
+        {
+          "sentence": "{}で東京へ行きます。",
+          "answer": "飛行機",
+          "translation": "I am going to Tokyo by plane."
+        },
+        {
+          "sentence": "{}で駅へ行きます。",
+          "answer": "バス",
+          "translation": "I go to the station by bus."
+        },
+        {
+          "sentence": "{}で帰ります。",
+          "answer": "タクシー",
+          "translation": "I will go home by taxi."
+        },
+        {
+          "sentence": "{}で学校へ来ます。",
+          "answer": "自転車",
+          "translation": "I come to school by bicycle."
+        },
+        {
+          "sentence": "駅まで{}行きます。",
+          "answer": "歩いて",
+          "translation": "I walk to the station."
+        },
+        {
+          "sentence": "{}、日本へ来ました。",
+          "answer": "去年",
+          "translation": "I came to Japan last year."
+        },
+        {
+          "sentence": "{}はいつですか。",
+          "answer": "誕生日",
+          "translation": "When is your birthday?"
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "新幹線",
+            "で",
+            "行きます"
+          ],
+          "translation": "I am going by shinkansen."
+        },
+        {
+          "words": [
+            "だれ",
+            "と",
+            "行きます",
+            "か"
+          ],
+          "translation": "Who are you going with?"
+        },
+        {
+          "words": [
+            "何",
+            "で",
+            "行きます",
+            "か"
+          ],
+          "translation": "How are you going?"
+        },
+        {
+          "words": [
+            "京都",
+            "へ",
+            "行きます"
+          ],
+          "translation": "I am going to Kyoto."
+        }
+      ],
+      "listen": [
+        {
+          "text": "だれ と 行[い]きます か。",
+          "translation": "Who are you going with?",
+          "wrong": [
+            "We went by train.",
+            "I am going with my family. And you, Ken?",
+            "How are you going?"
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "夜[よる] 10時[じゅうじ] に 家[うち] へ 帰[かえ]りました。",
+          "translation": "I got home at ten at night.",
+          "wrong": [
+            "I am going with my family. And you, Ken?",
+            "Ms Tanaka, where are you going on Sunday?",
+            "I am not going anywhere."
+          ],
+          "voice": "f1",
+          "say": "夜10時にうちへ帰りました。"
+        },
+        {
+          "text": "私[わたし] は どこ へ も 行[い]きません。",
+          "translation": "I am not going anywhere.",
+          "wrong": [
+            "I am going to Kyoto.",
+            "Ms Tanaka, where are you going on Sunday?",
+            "Who are you going with?"
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "家族[かぞく] と 行[い]きます。 ケン さん は？",
+          "translation": "I am going with my family. And you, Ken?",
+          "wrong": [
+            "I am going by shinkansen.",
+            "I am going to Kyoto.",
+            "Next month I am going back to my country."
+          ],
+          "voice": "f2"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "日曜日どこへ行きますか。",
+          "answer": "京都へ行きます。",
+          "wrong": [
+            "新幹線で行きます。",
+            "家族と行きます。",
+            "日曜日に行きます。"
+          ],
+          "explanation": "I am going to Kyoto."
+        },
+        {
+          "prompt": "何で行きますか。",
+          "answer": "新幹線で行きます。",
+          "wrong": [
+            "京都へ行きます。",
+            "友達と行きます。",
+            "来週行きます。"
+          ],
+          "explanation": "I am going by shinkansen."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "先週友達と大阪へ行きました。",
+            "電車で行きました。",
+            "夜10時に家へ帰りました。",
+            "来月国へ帰ります。"
+          ],
+          "question": "Where did the speaker go last week?",
+          "answer": "Osaka",
+          "wrong": [
+            "Kyoto",
+            "Tokyo",
+            "Their own country"
+          ]
+        },
+        {
+          "lines": [
+            "先週友達と大阪へ行きました。",
+            "電車で行きました。",
+            "夜10時に家へ帰りました。",
+            "来月国へ帰ります。"
+          ],
+          "question": "How did they travel?",
+          "answer": "By train",
+          "wrong": [
+            "By bus",
+            "By plane",
+            "On foot"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch6",
+      "true_false": [
+        {
+          "lines": [
+            "A: 一緒に映画を見ませんか。",
+            "B: いいですね。見ましょう。"
+          ],
+          "statement": "B accepts the invitation.",
+          "answer": true,
+          "explanation": "見ましょう means “let’s watch”."
+        },
+        {
+          "lines": [
+            "A: 朝ご飯を食べましたか。",
+            "B: いいえ、何も食べませんでした。"
+          ],
+          "statement": "B had breakfast.",
+          "answer": false,
+          "explanation": "何も + negative means “nothing”."
+        },
+        {
+          "lines": [
+            "A: どこで写真を撮りましたか。",
+            "B: 公園で撮りました。"
+          ],
+          "statement": "The photos were taken in a park.",
+          "answer": true,
+          "explanation": "で marks where an action happens."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "パンを食べます。",
+          "task": "Change it to the past.",
+          "sentence": "パンを{}。",
+          "answer": "食べました",
+          "also_accept": [
+            "たべました"
+          ],
+          "explanation": "ます becomes ました."
+        },
+        {
+          "source": "お茶を飲みます。",
+          "task": "Invite someone: “Won’t you…?”",
+          "sentence": "お茶を{}か。",
+          "answer": "飲みません",
+          "also_accept": [
+            "のみません"
+          ],
+          "explanation": "ませんか makes an invitation."
+        },
+        {
+          "source": "映画を見ます。",
+          "task": "Suggest it: “Let’s…”.",
+          "sentence": "映画を{}。",
+          "answer": "見ましょう",
+          "also_accept": [
+            "みましょう"
+          ],
+          "explanation": "ましょう means “let’s”."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_six.webp",
+          "alt": "Illustrated board showing わたしは (topic), りんごを (object), 食べます (action)",
+          "sentence": "{}",
+          "answer": "わたしは",
+          "options": [
+            "りんごを",
+            "食べます",
+            "わたしは",
+            "うえ"
+          ],
+          "translation": "topic"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_six.webp",
+          "alt": "Illustrated board showing わたしは (topic), りんごを (object), 食べます (action)",
+          "sentence": "{}",
+          "answer": "りんごを",
+          "options": [
+            "わたしは",
+            "うえ",
+            "りんごを",
+            "食べます"
+          ],
+          "translation": "object"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_six.webp",
+          "alt": "Illustrated board showing わたしは (topic), りんごを (object), 食べます (action)",
+          "sentence": "{}",
+          "answer": "食べます",
+          "options": [
+            "うえ",
+            "食べます",
+            "わたしは",
+            "りんごを"
+          ],
+          "translation": "action"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "水を{}。",
+          "answer": "飲みます",
+          "translation": "I drink water."
+        },
+        {
+          "sentence": "映画を{}。",
+          "answer": "見ます",
+          "translation": "I watch a film."
+        },
+        {
+          "sentence": "新聞を{}。",
+          "answer": "読みます",
+          "translation": "I read the newspaper."
+        },
+        {
+          "sentence": "名前を{}。",
+          "answer": "書きます",
+          "translation": "I write my name."
+        },
+        {
+          "sentence": "公園で写真を{}。",
+          "answer": "撮ります",
+          "translation": "I take photos in the park."
+        },
+        {
+          "sentence": "駅で友達に{}。",
+          "answer": "会います",
+          "translation": "I meet a friend at the station."
+        },
+        {
+          "sentence": "朝、{}を食べます。",
+          "answer": "卵",
+          "translation": "I eat eggs in the morning."
+        },
+        {
+          "sentence": "わたしは{}を食べません。",
+          "answer": "肉",
+          "translation": "I don’t eat meat."
+        },
+        {
+          "sentence": "{}を飲みませんか。",
+          "answer": "お茶",
+          "translation": "Would you like some tea?"
+        },
+        {
+          "sentence": "{}学校へ行きます。",
+          "answer": "いつも",
+          "translation": "I always go to school."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "私",
+            "は",
+            "何",
+            "も",
+            "しません"
+          ],
+          "translation": "I am not doing anything."
+        },
+        {
+          "words": [
+            "10時",
+            "に",
+            "駅",
+            "で",
+            "会いましょう"
+          ],
+          "translation": "Let’s meet at the station at ten."
+        },
+        {
+          "words": [
+            "晩",
+            "家",
+            "で",
+            "映画",
+            "を",
+            "見ました"
+          ],
+          "translation": "In the evening I watched a film at home."
+        },
+        {
+          "words": [
+            "時々",
+            "友達",
+            "と",
+            "ご飯",
+            "を",
+            "食べます"
+          ],
+          "translation": "Sometimes I eat with friends."
+        }
+      ],
+      "listen": [
+        {
+          "text": "それから 店[みせ] で パン と 牛乳[ぎゅうにゅう] を 買[か]いました。",
+          "translation": "After that I bought bread and milk at a shop.",
+          "wrong": [
+            "Got it. See you on Saturday, then.",
+            "Sometimes I eat with friends.",
+            "Sounds good. When?"
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "はい、 いい です よ。 じゃ、 また 土曜日[どようび] に。",
+          "translation": "Yes, that is fine. See you on Saturday, then.",
+          "wrong": [
+            "Let’s meet at the station. How about two o’clock?",
+            "Sounds good. When?",
+            "Got it. See you on Saturday, then."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "時々[ときどき] 友達[ともだち] と ご飯[はん] を 食[た]べます。",
+          "translation": "Sometimes I eat with friends.",
+          "wrong": [
+            "In the evening I watched a film at home.",
+            "Me neither.",
+            "Got it. See you on Saturday, then."
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "何時[なんじ] に 会[あ]いましょう か。",
+          "translation": "What time shall we meet?",
+          "wrong": [
+            "Ana, would you like to see a film together?",
+            "In the evening I watched a film at home.",
+            "Saturday afternoon."
+          ],
+          "voice": "m2"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "一緒に映画を見ませんか。",
+          "answer": "いいですね。見ましょう。",
+          "wrong": [
+            "はい、見ませんでした。",
+            "映画館は駅の前です。",
+            "いいえ、映画です。"
+          ],
+          "explanation": "Sounds good. Let’s watch it."
+        },
+        {
+          "prompt": "どこで会いましょうか。",
+          "answer": "駅で会いましょう。",
+          "wrong": [
+            "2時に会いましょう。",
+            "友達と会います。",
+            "映画を見ました。"
+          ],
+          "explanation": "Let’s meet at the station."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "日曜日公園で写真を撮りました。",
+            "それから店でパンと牛乳を買いました。",
+            "晩家で映画を見ました。",
+            "時々友達とご飯を食べます。"
+          ],
+          "question": "Where did the speaker take photos?",
+          "answer": "In the park",
+          "wrong": [
+            "At a shop",
+            "At home",
+            "At the station"
+          ]
+        },
+        {
+          "lines": [
+            "日曜日公園で写真を撮りました。",
+            "それから店でパンと牛乳を買いました。",
+            "晩家で映画を見ました。",
+            "時々友達とご飯を食べます。"
+          ],
+          "question": "What did the speaker buy?",
+          "answer": "Bread and milk",
+          "wrong": [
+            "Fish and rice",
+            "Flowers and bread",
+            "Tea and cake"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch7",
+      "true_false": [
+        {
+          "lines": [
+            "A: 誕生日に何をもらいましたか。",
+            "B: 父に時計をもらいました。"
+          ],
+          "statement": "B gave their father a watch.",
+          "answer": false,
+          "explanation": "に + もらいました means B received it from their father."
+        },
+        {
+          "lines": [
+            "A: もう切符を買いましたか。",
+            "B: いいえ、まだです。"
+          ],
+          "statement": "B has not bought the ticket yet.",
+          "answer": true,
+          "explanation": "まだです means “not yet”."
+        },
+        {
+          "lines": [
+            "A: 何で紙を切りますか。",
+            "B: はさみで切ります。"
+          ],
+          "statement": "B cuts the paper with scissors.",
+          "answer": true,
+          "explanation": "で marks the tool used."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "友達に本をあげます。",
+          "task": "Change it to the past.",
+          "sentence": "友達に本を{}。",
+          "answer": "あげました",
+          "also_accept": [],
+          "explanation": "ます becomes ました."
+        },
+        {
+          "source": "木村さんに英語を教えます。",
+          "task": "Change it to the past.",
+          "sentence": "木村さんに英語を{}。",
+          "answer": "教えました",
+          "also_accept": [
+            "おしえました"
+          ],
+          "explanation": "ます becomes ました."
+        },
+        {
+          "source": "もう食べましたか。",
+          "task": "Answer: “No, not yet.”",
+          "sentence": "いいえ、{}です。",
+          "answer": "まだ",
+          "also_accept": [],
+          "explanation": "まだです means “not yet”."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/scenes/giving-receiving-scene.webp",
+          "alt": "One friend gives a wrapped present to another friend in a park.",
+          "sentence": "友達{}プレゼントをあげます。",
+          "answer": "に",
+          "options": [
+            "を",
+            "で",
+            "が",
+            "に"
+          ],
+          "translation": "I give a present to my friend."
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_seven.webp",
+          "alt": "One friend gives a wrapped present to another friend in a park.",
+          "sentence": "{}",
+          "answer": "わたし",
+          "options": [
+            "わたし",
+            "プレゼント",
+            "三本",
+            "友だち"
+          ],
+          "translation": "giver"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_seven.webp",
+          "alt": "One friend gives a wrapped present to another friend in a park.",
+          "sentence": "{}",
+          "answer": "プレゼント",
+          "options": [
+            "わたし",
+            "プレゼント",
+            "友だち",
+            "三本"
+          ],
+          "translation": "gift"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_seven.webp",
+          "alt": "One friend gives a wrapped present to another friend in a park.",
+          "sentence": "{}",
+          "answer": "友だち",
+          "options": [
+            "友だち",
+            "プレゼント",
+            "三本",
+            "わたし"
+          ],
+          "translation": "receiver"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "はさみで紙を{}。",
+          "answer": "切ります",
+          "translation": "I cut paper with scissors."
+        },
+        {
+          "sentence": "友達に花を{}。",
+          "answer": "あげます",
+          "translation": "I give flowers to a friend."
+        },
+        {
+          "sentence": "母に時計を{}。",
+          "answer": "もらいます",
+          "translation": "I receive a watch from my mother."
+        },
+        {
+          "sentence": "友達に本を{}。",
+          "answer": "貸します",
+          "translation": "I lend a book to a friend."
+        },
+        {
+          "sentence": "図書館で本を{}。",
+          "answer": "借ります",
+          "translation": "I borrow books at the library."
+        },
+        {
+          "sentence": "学生に日本語を{}。",
+          "answer": "教えます",
+          "translation": "I teach Japanese to students."
+        },
+        {
+          "sentence": "木村さんに日本語を{}。",
+          "answer": "習います",
+          "translation": "I learn Japanese from Ms Kimura."
+        },
+        {
+          "sentence": "{}でご飯を食べます。",
+          "answer": "スプーン",
+          "translation": "I eat rice with a spoon."
+        },
+        {
+          "sentence": "{}で名前を書きます。",
+          "answer": "パソコン",
+          "translation": "I type my name on a computer."
+        },
+        {
+          "sentence": "駅で{}を買います。",
+          "answer": "切符",
+          "translation": "I buy a ticket at the station."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "来週",
+            "母",
+            "に",
+            "花",
+            "を",
+            "送ります"
+          ],
+          "translation": "Next week I will send my mother flowers."
+        },
+        {
+          "words": [
+            "先週",
+            "友達",
+            "に",
+            "箸",
+            "を",
+            "もらいました"
+          ],
+          "translation": "Last week I got chopsticks from a friend."
+        },
+        {
+          "words": [
+            "毎日",
+            "箸",
+            "で",
+            "食べます"
+          ],
+          "translation": "I eat with chopsticks every day."
+        }
+      ],
+      "listen": [
+        {
+          "text": "時計[とけい] です。 誕生日[たんじょうび] に 父[ちち] に もらいました。",
+          "translation": "It is a watch. I got it from my father for my birthday.",
+          "wrong": [
+            "Ms Tanaka, what is that?",
+            "I eat with chopsticks every day.",
+            "No, not yet."
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "日本人[にほんじん] は 箸[はし] で ご飯[はん] を 食[た]べます。",
+          "translation": "Japanese people eat with chopsticks.",
+          "wrong": [
+            "No, not yet.",
+            "Ms Tanaka, what is that?",
+            "I eat with chopsticks every day."
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "そう です か。 もう 読[よ]みました か。",
+          "translation": "Really? Have you read it yet?",
+          "wrong": [
+            "Last week I got chopsticks from a friend.",
+            "I eat with chopsticks every day.",
+            "Ms Tanaka, what is that?"
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "いい です ね。 私[わたし] は 友達[ともだち] に 本[ほん] を もらいました。",
+          "translation": "Nice. I got a book from a friend.",
+          "wrong": [
+            "No, not yet.",
+            "I eat with chopsticks every day.",
+            "Ms Tanaka, what is that?"
+          ],
+          "voice": "m1"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "それは何ですか。",
+          "answer": "時計です。父にもらいました。",
+          "wrong": [
+            "父に時計をあげませんか。",
+            "誕生日は五月です。",
+            "はい、そうしましょう。"
+          ],
+          "explanation": "It is a watch. I got it from my father."
+        },
+        {
+          "prompt": "もう昼ご飯を食べましたか。",
+          "answer": "いいえ、まだです。",
+          "wrong": [
+            "はい、まだです。",
+            "はい、食べません。",
+            "いいえ、もう食べました。"
+          ],
+          "explanation": "No, not yet."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "日本人は箸でご飯を食べます。",
+            "先週友達に箸をもらいました。",
+            "毎日箸で食べます。",
+            "来週母に花を送ります。"
+          ],
+          "question": "What did the speaker get from a friend?",
+          "answer": "Chopsticks",
+          "wrong": [
+            "Flowers",
+            "A watch",
+            "A letter"
+          ]
+        },
+        {
+          "lines": [
+            "日本人は箸でご飯を食べます。",
+            "先週友達に箸をもらいました。",
+            "毎日箸で食べます。",
+            "来週母に花を送ります。"
+          ],
+          "question": "Who will get flowers next week?",
+          "answer": "The speaker’s mother",
+          "wrong": [
+            "The speaker’s friend",
+            "The speaker’s father",
+            "The speaker’s teacher"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch8",
+      "true_false": [
+        {
+          "lines": [
+            "A: 東京はどんな町ですか。",
+            "B: にぎやかな町です。"
+          ],
+          "statement": "Tokyo is a quiet town.",
+          "answer": false,
+          "explanation": "にぎやか means lively; quiet is 静か."
+        },
+        {
+          "lines": [
+            "A: この本は面白いですか。",
+            "B: いいえ、あまり面白くないです。"
+          ],
+          "statement": "B doesn’t find the book very interesting.",
+          "answer": true,
+          "explanation": "あまり + negative means “not very”."
+        },
+        {
+          "lines": [
+            "A: 日本語の勉強はどうですか。",
+            "B: 難しいですが、楽しいです。"
+          ],
+          "statement": "B finds it hard but fun.",
+          "answer": true,
+          "explanation": "が joins two contrasting ideas."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "この時計は高いです。",
+          "task": "Make it negative.",
+          "sentence": "この時計は{}。",
+          "answer": "高くないです",
+          "also_accept": [
+            "たかくないです",
+            "高くありません",
+            "たかくありません"
+          ],
+          "explanation": "い adjectives: drop い, add くないです."
+        },
+        {
+          "source": "ここは静かです。",
+          "task": "Make it negative.",
+          "sentence": "ここは{}。",
+          "answer": "静かじゃありません",
+          "also_accept": [
+            "しずかじゃありません",
+            "静かではありません",
+            "しずかではありません"
+          ],
+          "explanation": "な adjectives take じゃありません."
+        },
+        {
+          "source": "あの人は親切です。",
+          "task": "Say: “a kind person”.",
+          "sentence": "あの人は親切{}人です。",
+          "answer": "な",
+          "also_accept": [],
+          "explanation": "な adjectives take な before a noun."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_eight.webp",
+          "alt": "Illustrated board showing 高い (i-adjective), 静か（な） (na-adjective)",
+          "sentence": "{}",
+          "answer": "高い",
+          "options": [
+            "あります",
+            "くつを買いに",
+            "静か（な）",
+            "高い"
+          ],
+          "translation": "i-adjective"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_eight.webp",
+          "alt": "Illustrated board showing 高い (i-adjective), 静か（な） (na-adjective)",
+          "sentence": "{}",
+          "answer": "静か（な）",
+          "options": [
+            "くつを買いに",
+            "高い",
+            "あります",
+            "静か（な）"
+          ],
+          "translation": "na-adjective"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "京都は{}です。",
+          "answer": "有名",
+          "translation": "Kyoto is famous."
+        },
+        {
+          "sentence": "田中さんは{}ですか。",
+          "answer": "元気",
+          "translation": "Is Mr Tanaka well?"
+        },
+        {
+          "sentence": "今日は{}です。",
+          "answer": "暇",
+          "translation": "I am free today."
+        },
+        {
+          "sentence": "この車は{}です。",
+          "answer": "小さい",
+          "translation": "This car is small."
+        },
+        {
+          "sentence": "わたしの時計は{}です。",
+          "answer": "新しい",
+          "translation": "My watch is new."
+        },
+        {
+          "sentence": "この本は{}です。",
+          "answer": "古い",
+          "translation": "This book is old."
+        },
+        {
+          "sentence": "今日は{}です。",
+          "answer": "暑い",
+          "translation": "It is hot today."
+        },
+        {
+          "sentence": "日本語は{}です。",
+          "answer": "難しい",
+          "translation": "Japanese is difficult."
+        },
+        {
+          "sentence": "このパンは{}です。",
+          "answer": "美味しい",
+          "translation": "This bread is delicious."
+        },
+        {
+          "sentence": "この映画は{}です。",
+          "answer": "面白い",
+          "translation": "This film is interesting."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "日本",
+            "の",
+            "人",
+            "は",
+            "とても",
+            "親切",
+            "です"
+          ],
+          "translation": "People in Japan are very kind."
+        },
+        {
+          "words": [
+            "とても",
+            "にぎやか",
+            "です"
+          ],
+          "translation": "It is very lively."
+        },
+        {
+          "words": [
+            "便利",
+            "です",
+            "か"
+          ],
+          "translation": "Is it convenient?"
+        },
+        {
+          "words": [
+            "東京",
+            "は",
+            "大きい",
+            "町",
+            "です"
+          ],
+          "translation": "Tokyo is a big city."
+        }
+      ],
+      "listen": [
+        {
+          "text": "とても おいしい です。",
+          "translation": "It is very good.",
+          "wrong": [
+            "The trains are convenient, but a little expensive.",
+            "Tokyo is a big city.",
+            "It is a quiet town. It is very pretty."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "日本[にほん] の 人[ひと] は とても 親切[しんせつ] です。",
+          "translation": "People in Japan are very kind.",
+          "wrong": [
+            "No, it is not very convenient.",
+            "The trains are convenient, but a little expensive.",
+            "It is very good."
+          ],
+          "voice": "f3",
+          "say": "にほんの人はとても親切です。"
+        },
+        {
+          "text": "とても にぎやか です。",
+          "translation": "It is very lively.",
+          "wrong": [
+            "It is a quiet town. It is very pretty.",
+            "People in Japan are very kind.",
+            "Ana, what kind of town is yours?"
+          ],
+          "voice": "f3"
+        },
+        {
+          "text": "いいえ、 あまり 便利[べんり] じゃ ありません。",
+          "translation": "No, it is not very convenient.",
+          "wrong": [
+            "The trains are convenient, but a little expensive.",
+            "It is a quiet town. It is very pretty.",
+            "People in Japan are very kind."
+          ],
+          "voice": "f1"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "アナさんの町はどんな町ですか。",
+          "answer": "静かな町です。",
+          "wrong": [
+            "はい、町です。",
+            "あの人は先生です。",
+            "三つです。"
+          ],
+          "explanation": "It is a quiet town."
+        },
+        {
+          "prompt": "食べ物はどうですか。",
+          "answer": "とてもおいしいです。",
+          "wrong": [
+            "レストランで食べます。",
+            "はい、食べました。",
+            "あまり飲みません。"
+          ],
+          "explanation": "It is very good."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "東京は大きい町です。",
+            "とてもにぎやかです。",
+            "電車は便利ですが、少し高いです。",
+            "日本の人はとても親切です。"
+          ],
+          "question": "What are the trains like?",
+          "answer": "Convenient, but a little expensive",
+          "wrong": [
+            "Cheap and convenient",
+            "Inconvenient and expensive",
+            "Quiet and slow"
+          ]
+        },
+        {
+          "lines": [
+            "東京は大きい町です。",
+            "とてもにぎやかです。",
+            "電車は便利ですが、少し高いです。",
+            "日本の人はとても親切です。"
+          ],
+          "question": "What are people in Japan like?",
+          "answer": "Very kind",
+          "wrong": [
+            "Very quiet",
+            "A little unfriendly",
+            "Always busy"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch9",
+      "true_false": [
+        {
+          "lines": [
+            "A: どうして昨日来ませんでしたか。",
+            "B: 用事がありましたから。"
+          ],
+          "statement": "B had something to do.",
+          "answer": true,
+          "explanation": "から gives the reason; 用事 is an errand."
+        },
+        {
+          "lines": [
+            "A: スポーツが好きですか。",
+            "B: いいえ、あまり好きじゃありません。"
+          ],
+          "statement": "B loves sports.",
+          "answer": false,
+          "explanation": "あまり好きじゃありません means “don’t like much”."
+        },
+        {
+          "lines": [
+            "A: 漢字が分かりますか。",
+            "B: はい、少し分かります。"
+          ],
+          "statement": "B understands a little kanji.",
+          "answer": true,
+          "explanation": "少し means “a little”."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "音楽が好きです。",
+          "task": "Make it negative.",
+          "sentence": "音楽が{}。",
+          "answer": "好きじゃありません",
+          "also_accept": [
+            "すきじゃありません",
+            "好きではありません",
+            "すきではありません"
+          ],
+          "explanation": "好き is a な adjective."
+        },
+        {
+          "source": "料理が上手です。",
+          "task": "Say the opposite.",
+          "sentence": "料理が{}です。",
+          "answer": "下手",
+          "also_accept": [
+            "へた"
+          ],
+          "explanation": "下手 is the opposite of 上手."
+        },
+        {
+          "source": "時間があります。",
+          "task": "Make it negative.",
+          "sentence": "時間が{}。",
+          "answer": "ありません",
+          "also_accept": [],
+          "explanation": "あります becomes ありません."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_nine.webp",
+          "alt": "Illustrated board showing 日本語が (Japanese), 好きです (I like it), から (because)",
+          "sentence": "{}",
+          "answer": "日本語が",
+          "options": [
+            "から",
+            "昨日 買った",
+            "好きです",
+            "日本語が"
+          ],
+          "translation": "Japanese"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_nine.webp",
+          "alt": "Illustrated board showing 日本語が (Japanese), 好きです (I like it), から (because)",
+          "sentence": "{}",
+          "answer": "好きです",
+          "options": [
+            "好きです",
+            "日本語が",
+            "昨日 買った",
+            "から"
+          ],
+          "translation": "I like it"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_nine.webp",
+          "alt": "Illustrated board showing 日本語が (Japanese), 好きです (I like it), から (because)",
+          "sentence": "{}",
+          "answer": "から",
+          "options": [
+            "昨日 買った",
+            "好きです",
+            "から",
+            "日本語が"
+          ],
+          "translation": "because"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "わたしは魚が{}です。",
+          "answer": "嫌い",
+          "translation": "I dislike fish."
+        },
+        {
+          "sentence": "田中さんは料理が{}です。",
+          "answer": "上手",
+          "translation": "Ms Tanaka is good at cooking."
+        },
+        {
+          "sentence": "わたしは歌が{}です。",
+          "answer": "下手",
+          "translation": "I am bad at singing."
+        },
+        {
+          "sentence": "母の{}は美味しいです。",
+          "answer": "料理",
+          "translation": "My mother’s cooking is delicious."
+        },
+        {
+          "sentence": "{}は何がいいですか。",
+          "answer": "飲み物",
+          "translation": "What would you like to drink?"
+        },
+        {
+          "sentence": "あの人の{}はきれいです。",
+          "answer": "絵",
+          "translation": "That person’s painting is beautiful."
+        },
+        {
+          "sentence": "{}がありません。",
+          "answer": "時間",
+          "translation": "I don’t have time."
+        },
+        {
+          "sentence": "今日は友達と{}があります。",
+          "answer": "約束",
+          "translation": "I have an appointment with a friend today."
+        },
+        {
+          "sentence": "{}が好きです。",
+          "answer": "子供",
+          "translation": "I like children."
+        },
+        {
+          "sentence": "{}行きませんでしたか。",
+          "answer": "どうして",
+          "translation": "Why didn’t you go?"
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "私",
+            "は",
+            "日本語",
+            "が",
+            "好き",
+            "です"
+          ],
+          "translation": "I like Japanese."
+        },
+        {
+          "words": [
+            "平仮名",
+            "は",
+            "大体",
+            "分かります"
+          ],
+          "translation": "I understand most hiragana."
+        }
+      ],
+      "listen": [
+        {
+          "text": "平仮名[ひらがな] は 大体[だいたい] 分[わ]かります。",
+          "translation": "I understand most hiragana.",
+          "wrong": [
+            "I like Japanese.",
+            "Kanji are difficult, so I study every day.",
+            "I see. That is a shame."
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "でも、 漢字[かんじ] は あまり 分[わ]かりません。",
+          "translation": "But I do not understand kanji very well.",
+          "wrong": [
+            "I like Japanese.",
+            "Ken, what kind of music do you like?",
+            "I like jazz. And you, Ms Tanaka?"
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "じゃ、 今晩[こんばん] 一緒[いっしょ] に 野球[やきゅう] を 見[み]ません か。",
+          "translation": "Then would you like to watch baseball together tonight?",
+          "wrong": [
+            "Ken, what kind of music do you like?",
+            "Kanji are difficult, so I study every day.",
+            "I like Japanese."
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "私[わたし] は スポーツ が 好[す]き です。 野球[やきゅう] が 大好[だいす]き です。",
+          "translation": "I like sport. I love baseball.",
+          "wrong": [
+            "I like jazz. And you, Ms Tanaka?",
+            "I see. That is a shame.",
+            "But I do not understand kanji very well."
+          ],
+          "voice": "f2"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "どんな音楽が好きですか。",
+          "answer": "ジャズが好きです。",
+          "wrong": [
+            "はい、好きです。",
+            "音楽を聞きます。",
+            "日曜日です。"
+          ],
+          "explanation": "I like jazz."
+        },
+        {
+          "prompt": "今晩一緒に野球を見ませんか。",
+          "answer": "すみません。今晩は用事がありますから。",
+          "wrong": [
+            "はい、今晩は見ませんでした。",
+            "野球は九人です。",
+            "いいえ、見てください。"
+          ],
+          "explanation": "Sorry. I have something to do tonight."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "私は日本語が好きです。",
+            "平仮名は大体分かります。",
+            "でも、漢字はあまり分かりません。",
+            "漢字は難しいですから、毎日勉強します。"
+          ],
+          "question": "What does the speaker find difficult?",
+          "answer": "Kanji",
+          "wrong": [
+            "Hiragana",
+            "Katakana",
+            "Japanese music"
+          ]
+        },
+        {
+          "lines": [
+            "私は日本語が好きです。",
+            "平仮名は大体分かります。",
+            "でも、漢字はあまり分かりません。",
+            "漢字は難しいですから、毎日勉強します。"
+          ],
+          "question": "Why does the speaker study every day?",
+          "answer": "Because kanji are difficult",
+          "wrong": [
+            "Because hiragana is easy",
+            "Because there is a test",
+            "Because a teacher said to"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch10",
+      "true_false": [
+        {
+          "lines": [
+            "A: 猫はどこにいますか。",
+            "B: 箱の中にいます。"
+          ],
+          "statement": "The cat is on top of the box.",
+          "answer": false,
+          "explanation": "中 means inside; on top is 上."
+        },
+        {
+          "lines": [
+            "A: 駅の前に何がありますか。",
+            "B: 本屋があります。"
+          ],
+          "statement": "There is a bookshop in front of the station.",
+          "answer": true,
+          "explanation": "前 means in front."
+        },
+        {
+          "lines": [
+            "A: 部屋にだれかいますか。",
+            "B: いいえ、だれもいません。"
+          ],
+          "statement": "There is nobody in the room.",
+          "answer": true,
+          "explanation": "だれも + negative means “nobody”."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "机の上に本があります。",
+          "task": "Say there is a cat instead.",
+          "sentence": "机の上に猫が{}。",
+          "answer": "います",
+          "also_accept": [],
+          "explanation": "Living things take います."
+        },
+        {
+          "source": "ここに犬がいます。",
+          "task": "Make it negative.",
+          "sentence": "ここに犬が{}。",
+          "answer": "いません",
+          "also_accept": [],
+          "explanation": "います becomes いません."
+        },
+        {
+          "source": "銀行は駅の前にあります。",
+          "task": "Say it is behind the station.",
+          "sentence": "銀行は駅の{}にあります。",
+          "answer": "後ろ",
+          "also_accept": [
+            "うしろ"
+          ],
+          "explanation": "後ろ means behind."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_ten.webp",
+          "alt": "Illustrated board showing つくえ (the reference), うえ (on top), した (under), となり (next to)",
+          "sentence": "{}",
+          "answer": "つくえ",
+          "options": [
+            "した",
+            "つくえ",
+            "うえ",
+            "となり"
+          ],
+          "translation": "the reference"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_ten.webp",
+          "alt": "Illustrated board showing つくえ (the reference), うえ (on top), した (under), となり (next to)",
+          "sentence": "{}",
+          "answer": "うえ",
+          "options": [
+            "した",
+            "となり",
+            "つくえ",
+            "うえ"
+          ],
+          "translation": "on top"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_ten.webp",
+          "alt": "Illustrated board showing つくえ (the reference), うえ (on top), した (under), となり (next to)",
+          "sentence": "{}",
+          "answer": "した",
+          "options": [
+            "つくえ",
+            "となり",
+            "うえ",
+            "した"
+          ],
+          "translation": "under"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "あそこに{}がいます。",
+          "answer": "男の人",
+          "translation": "There is a man over there."
+        },
+        {
+          "sentence": "公園に{}がいます。",
+          "answer": "女の子",
+          "translation": "There is a girl in the park."
+        },
+        {
+          "sentence": "家に{}がいます。",
+          "answer": "犬",
+          "translation": "There is a dog at home."
+        },
+        {
+          "sentence": "机の上に{}があります。",
+          "answer": "箱",
+          "translation": "There is a box on the desk."
+        },
+        {
+          "sentence": "{}の中に牛乳があります。",
+          "answer": "冷蔵庫",
+          "translation": "There is milk in the fridge."
+        },
+        {
+          "sentence": "{}の上に本があります。",
+          "answer": "棚",
+          "translation": "There is a book on the shelf."
+        },
+        {
+          "sentence": "駅の近くに{}があります。",
+          "answer": "コンビニ",
+          "translation": "There is a convenience store near the station."
+        },
+        {
+          "sentence": "{}でコーヒーを飲みます。",
+          "answer": "喫茶店",
+          "translation": "I drink coffee at a coffee shop."
+        },
+        {
+          "sentence": "駅の{}に銀行があります。",
+          "answer": "前",
+          "translation": "There is a bank in front of the station."
+        },
+        {
+          "sentence": "郵便局と銀行の{}に本屋があります。",
+          "answer": "間",
+          "translation": "There is a bookshop between the post office and the bank."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "机",
+            "の",
+            "上",
+            "に",
+            "ありません",
+            "か"
+          ],
+          "translation": "Aren’t they on the desk?"
+        },
+        {
+          "words": [
+            "ベッド",
+            "の",
+            "下",
+            "に",
+            "猫",
+            "が",
+            "います"
+          ],
+          "translation": "There is a cat under the bed."
+        },
+        {
+          "words": [
+            "机",
+            "の",
+            "上",
+            "に",
+            "パソコン",
+            "が",
+            "あります"
+          ],
+          "translation": "There is a computer on the desk."
+        },
+        {
+          "words": [
+            "机",
+            "の",
+            "下",
+            "に",
+            "います",
+            "よ"
+          ],
+          "translation": "It is under the desk."
+        }
+      ],
+      "listen": [
+        {
+          "text": "じゃ、 ベッド の 上[うえ] です か。",
+          "translation": "Then is it on the bed?",
+          "wrong": [
+            "Mr Sato, where is the cat?",
+            "Then how about near the door?",
+            "No. On the desk there are books and glasses."
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "ありません。 机[つくえ] の 上[うえ] に は 本[ほん] と 眼鏡[めがね] が あります。",
+          "translation": "No. On the desk there are books and glasses.",
+          "wrong": [
+            "They aren’t in the bag either.",
+            "Oh, there it is. It is near the window.",
+            "Mr Sato, where is the cat?"
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "私[わたし] の 部屋[へや] に ベッド と 机[つくえ] が あります。",
+          "translation": "In my room there is a bed and a desk.",
+          "wrong": [
+            "Then how about near the door?",
+            "Outside the window there is a big tree.",
+            "It is under the desk."
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "あ、 ありました！ 靴[くつ] の 隣[となり] に あります よ。",
+          "translation": "Oh, here they are! They are next to the shoes.",
+          "wrong": [
+            "Then is it on the bed?",
+            "There is a cat under the bed.",
+            "No. On the desk there are books and glasses."
+          ],
+          "voice": "m2",
+          "say": "あ、ありました！くつの隣にありますよ。"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "猫はどこにいますか。",
+          "answer": "机の下にいます。",
+          "wrong": [
+            "机があります。",
+            "猫です。",
+            "はい、猫がいます。"
+          ],
+          "explanation": "It is under the desk."
+        },
+        {
+          "prompt": "部屋に何がありますか。",
+          "answer": "ベッドと机があります。",
+          "wrong": [
+            "部屋にいます。",
+            "はい、あります。",
+            "部屋は二階です。"
+          ],
+          "explanation": "There is a bed and a desk."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "私の部屋にベッドと机があります。",
+            "机の上にパソコンがあります。",
+            "ベッドの下に猫がいます。",
+            "窓の外に大きい木があります。"
+          ],
+          "question": "Where is the computer?",
+          "answer": "On the desk",
+          "wrong": [
+            "Under the bed",
+            "On the bed",
+            "Outside the window"
+          ]
+        },
+        {
+          "lines": [
+            "私の部屋にベッドと机があります。",
+            "机の上にパソコンがあります。",
+            "ベッドの下に猫がいます。",
+            "窓の外に大きい木があります。"
+          ],
+          "question": "What is under the bed?",
+          "answer": "A cat",
+          "wrong": [
+            "A desk",
+            "A tree",
+            "A computer"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch11",
+      "true_false": [
+        {
+          "lines": [
+            "A: りんごをいくつ買いましたか。",
+            "B: 三つ買いました。"
+          ],
+          "statement": "B bought three apples.",
+          "answer": true,
+          "explanation": "三つ means three things."
+        },
+        {
+          "lines": [
+            "A: ご兄弟は何人ですか。",
+            "B: 二人です。兄と妹です。"
+          ],
+          "statement": "B has two sisters.",
+          "answer": false,
+          "explanation": "兄 is an older brother; 妹 is a younger sister."
+        },
+        {
+          "lines": [
+            "A: 毎日どのくらい勉強しますか。",
+            "B: 2時間ぐらい勉強します。"
+          ],
+          "statement": "B studies for about two hours.",
+          "answer": true,
+          "explanation": "ぐらい means “about”."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "切手を一枚買いました。",
+          "task": "Say you bought five.",
+          "sentence": "切手を{}買いました。",
+          "answer": "五枚",
+          "also_accept": [
+            "ごまい"
+          ],
+          "explanation": "枚 counts flat things."
+        },
+        {
+          "source": "りんごが一つあります。",
+          "task": "Say there are two.",
+          "sentence": "りんごが{}あります。",
+          "answer": "二つ",
+          "also_accept": [
+            "ふたつ"
+          ],
+          "explanation": "つ counts general things."
+        },
+        {
+          "source": "学生が一人います。",
+          "task": "Say there are three.",
+          "sentence": "学生が{}います。",
+          "answer": "三人",
+          "also_accept": [
+            "さんにん"
+          ],
+          "explanation": "人 counts people from three up."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_eleven.webp",
+          "alt": "Illustrated board showing 一つ (general things), 二人 (people), 三本 (long things)",
+          "sentence": "{}",
+          "answer": "一つ",
+          "options": [
+            "二人",
+            "三本",
+            "一つ",
+            "ここ"
+          ],
+          "translation": "general things"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_eleven.webp",
+          "alt": "Illustrated board showing 一つ (general things), 二人 (people), 三本 (long things)",
+          "sentence": "{}",
+          "answer": "二人",
+          "options": [
+            "二人",
+            "一つ",
+            "三本",
+            "ここ"
+          ],
+          "translation": "people"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_eleven.webp",
+          "alt": "Illustrated board showing 一つ (general things), 二人 (people), 三本 (long things)",
+          "sentence": "{}",
+          "answer": "三本",
+          "options": [
+            "一つ",
+            "三本",
+            "ここ",
+            "二人"
+          ],
+          "translation": "long things"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "りんごを{}買いました。",
+          "answer": "三つ",
+          "translation": "I bought three apples."
+        },
+        {
+          "sentence": "パンを{}食べました。",
+          "answer": "一つ",
+          "translation": "I ate one piece of bread."
+        },
+        {
+          "sentence": "卵が{}あります。",
+          "answer": "五つ",
+          "translation": "There are five eggs."
+        },
+        {
+          "sentence": "学生が{}います。",
+          "answer": "二人",
+          "translation": "There are two students."
+        },
+        {
+          "sentence": "部屋に{}います。",
+          "answer": "一人",
+          "translation": "There is one person in the room."
+        },
+        {
+          "sentence": "郵便局で{}を買います。",
+          "answer": "葉書",
+          "translation": "I buy postcards at the post office."
+        },
+        {
+          "sentence": "{}は大阪にいます。",
+          "answer": "両親",
+          "translation": "My parents are in Osaka."
+        },
+        {
+          "sentence": "わたしは{}が一人います。",
+          "answer": "弟",
+          "translation": "I have one younger brother."
+        },
+        {
+          "sentence": "わたしは{}が二人います。",
+          "answer": "姉",
+          "translation": "I have two older sisters."
+        },
+        {
+          "sentence": "{}いくらですか。",
+          "answer": "全部で",
+          "translation": "How much is it altogether?"
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "1週間",
+            "ぐらい",
+            "です"
+          ],
+          "translation": "About a week."
+        },
+        {
+          "words": [
+            "全部",
+            "で",
+            "600",
+            "円",
+            "です"
+          ],
+          "translation": "That is six hundred yen altogether."
+        },
+        {
+          "words": [
+            "アメリカ",
+            "まで",
+            "どの",
+            "くらい",
+            "かかります",
+            "か"
+          ],
+          "translation": "How long does it take to America?"
+        },
+        {
+          "words": [
+            "兄",
+            "は",
+            "会社員",
+            "です"
+          ],
+          "translation": "My brother is a company employee."
+        }
+      ],
+      "listen": [
+        {
+          "text": "全部[ぜんぶ] で 600[ろっぴゃく] 円[えん] です。",
+          "translation": "That is six hundred yen altogether.",
+          "wrong": [
+            "Excuse me, five of these stamps, please.",
+            "And two envelopes, please.",
+            "I study Japanese for two hours a day."
+          ],
+          "voice": "f3"
+        },
+        {
+          "text": "私[わたし] は 1日[いちにち] に 2時間[にじかん] 日本語[にほんご] を 勉強[べんきょう] します。",
+          "translation": "I study Japanese for two hours a day.",
+          "wrong": [
+            "About a week.",
+            "That is six hundred yen altogether.",
+            "How long does it take to America?"
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "私[わたし] の 家族[かぞく] は 4人[よにん] です。",
+          "translation": "There are four people in my family.",
+          "wrong": [
+            "Excuse me, five of these stamps, please.",
+            "About a week.",
+            "My father, my mother, my older brother and me."
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "すみません、 この 切手[きって] を 5枚[ごまい] ください。",
+          "translation": "Excuse me, five of these stamps, please.",
+          "wrong": [
+            "Yes, five.",
+            "And two envelopes, please.",
+            "About a week."
+          ],
+          "voice": "m2"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "アメリカまでどのくらいかかりますか。",
+          "answer": "1週間ぐらいです。",
+          "wrong": [
+            "三つです。",
+            "アメリカへ行きます。",
+            "はい、かかります。"
+          ],
+          "explanation": "About a week."
+        },
+        {
+          "prompt": "ご家族は何人ですか。",
+          "answer": "4人です。",
+          "wrong": [
+            "4時です。",
+            "家族です。",
+            "はい、います。"
+          ],
+          "explanation": "There are four of us."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "私の家族は4人です。",
+            "父と母と兄と私です。",
+            "兄は会社員です。",
+            "私は1日に2時間日本語を勉強します。"
+          ],
+          "question": "How many people are in the family?",
+          "answer": "Four",
+          "wrong": [
+            "Two",
+            "Three",
+            "Five"
+          ]
+        },
+        {
+          "lines": [
+            "私の家族は4人です。",
+            "父と母と兄と私です。",
+            "兄は会社員です。",
+            "私は1日に2時間日本語を勉強します。"
+          ],
+          "question": "How long does the speaker study each day?",
+          "answer": "Two hours",
+          "wrong": [
+            "Thirty minutes",
+            "One hour",
+            "Four hours"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch12",
+      "true_false": [
+        {
+          "lines": [
+            "A: 昨日は雨でしたか。",
+            "B: いいえ、雪でした。"
+          ],
+          "statement": "It rained yesterday.",
+          "answer": false,
+          "explanation": "雪でした means it snowed."
+        },
+        {
+          "lines": [
+            "A: 東京と大阪とどちらが暑いですか。",
+            "B: 大阪のほうが暑いです。"
+          ],
+          "statement": "Osaka is hotter.",
+          "answer": true,
+          "explanation": "のほうが marks the one that is more so."
+        },
+        {
+          "lines": [
+            "A: 季節の中でいつが一番好きですか。",
+            "B: 春が一番好きです。"
+          ],
+          "statement": "B likes spring best.",
+          "answer": true,
+          "explanation": "一番 means “the most”."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "今日は暑いです。",
+          "task": "Change it to the past.",
+          "sentence": "昨日は{}。",
+          "answer": "暑かったです",
+          "also_accept": [
+            "あつかったです"
+          ],
+          "explanation": "い adjectives: drop い, add かったです."
+        },
+        {
+          "source": "今日は雨です。",
+          "task": "Change it to the past.",
+          "sentence": "昨日は雨{}。",
+          "answer": "でした",
+          "also_accept": [],
+          "explanation": "です becomes でした."
+        },
+        {
+          "source": "試験は簡単です。",
+          "task": "Change it to the past negative.",
+          "sentence": "試験は{}。",
+          "answer": "簡単じゃありませんでした",
+          "also_accept": [
+            "かんたんじゃありませんでした",
+            "簡単ではありませんでした",
+            "かんたんではありませんでした"
+          ],
+          "explanation": "な adjectives take じゃありませんでした."
+        }
+      ],
+      "pictures": [],
+      "word_sentences": [
+        {
+          "sentence": "この試験は{}です。",
+          "answer": "簡単",
+          "translation": "This exam is easy."
+        },
+        {
+          "sentence": "駅は{}です。",
+          "answer": "近い",
+          "translation": "The station is close."
+        },
+        {
+          "sentence": "新幹線は{}です。",
+          "answer": "速い",
+          "translation": "The bullet train is fast."
+        },
+        {
+          "sentence": "東京は人が{}です。",
+          "answer": "多い",
+          "translation": "Tokyo has many people."
+        },
+        {
+          "sentence": "今日は{}です。",
+          "answer": "暖かい",
+          "translation": "It is warm today."
+        },
+        {
+          "sentence": "このチョコレートは{}です。",
+          "answer": "甘い",
+          "translation": "This chocolate is sweet."
+        },
+        {
+          "sentence": "この料理は{}です。",
+          "answer": "辛い",
+          "translation": "This dish is spicy."
+        },
+        {
+          "sentence": "この荷物は{}です。",
+          "answer": "重い",
+          "translation": "This luggage is heavy."
+        },
+        {
+          "sentence": "昨日は{}でした。",
+          "answer": "雨",
+          "translation": "It was rainy yesterday."
+        },
+        {
+          "sentence": "昨日{}へ行きました。",
+          "answer": "海",
+          "translation": "I went to the sea yesterday."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "天気",
+            "は",
+            "よかった",
+            "です",
+            "か"
+          ],
+          "translation": "Was the weather good?"
+        },
+        {
+          "words": [
+            "私",
+            "は",
+            "秋",
+            "が",
+            "一番",
+            "好き",
+            "です"
+          ],
+          "translation": "I like autumn best."
+        },
+        {
+          "words": [
+            "北海道",
+            "の",
+            "ほう",
+            "が",
+            "ずっと",
+            "寒い",
+            "です"
+          ],
+          "translation": "Hokkaido is much colder."
+        },
+        {
+          "words": [
+            "秋",
+            "は",
+            "夏",
+            "より",
+            "涼しい",
+            "です",
+            "から"
+          ],
+          "translation": "Because autumn is cooler than summer."
+        }
+      ],
+      "listen": [
+        {
+          "text": "とても 楽[たの]しかった です。 でも、 寒[さむ]かった です。",
+          "translation": "It was a lot of fun. But it was cold.",
+          "wrong": [
+            "Which is colder, Tokyo or Hokkaido?",
+            "Because autumn is cooler than summer.",
+            "Last winter there was little snow."
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "私[わたし] は 秋[あき] が 一番[いちばん] 好[す]き です。",
+          "translation": "I like autumn best.",
+          "wrong": [
+            "It was a lot of fun. But it was cold.",
+            "Was the weather good?",
+            "Which is colder, Tokyo or Hokkaido?"
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "東京[とうきょう] と 北海道[ほっかいどう] と どちら が 寒[さむ]い です か。",
+          "translation": "Which is colder, Tokyo or Hokkaido?",
+          "wrong": [
+            "I like autumn best.",
+            "Ken, how was Hokkaido?",
+            "Hokkaido is much colder."
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "北海道[ほっかいどう] の ほう が ずっと 寒[さむ]い です。",
+          "translation": "Hokkaido is much colder.",
+          "wrong": [
+            "Because autumn is cooler than summer.",
+            "Japan has four seasons.",
+            "Which is colder, Tokyo or Hokkaido?"
+          ],
+          "voice": "m2"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "北海道はどうでしたか。",
+          "answer": "とても楽しかったです。",
+          "wrong": [
+            "来週行きます。",
+            "飛行機で行きました。",
+            "はい、北海道です。"
+          ],
+          "explanation": "It was a lot of fun."
+        },
+        {
+          "prompt": "東京と北海道とどちらが寒いですか。",
+          "answer": "北海道のほうが寒いです。",
+          "wrong": [
+            "はい、寒いです。",
+            "東京へ行きました。",
+            "冬です。"
+          ],
+          "explanation": "Hokkaido is colder."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "日本には季節が四つあります。",
+            "私は秋が一番好きです。",
+            "秋は夏より涼しいですから。",
+            "去年の冬は雪が少なかったです。"
+          ],
+          "question": "Which season does the speaker like best?",
+          "answer": "Autumn",
+          "wrong": [
+            "Spring",
+            "Summer",
+            "Winter"
+          ]
+        },
+        {
+          "lines": [
+            "日本には季節が四つあります。",
+            "私は秋が一番好きです。",
+            "秋は夏より涼しいですから。",
+            "去年の冬は雪が少なかったです。"
+          ],
+          "question": "How was last winter?",
+          "answer": "There was little snow",
+          "wrong": [
+            "There was a lot of snow",
+            "It was very hot",
+            "There was a lot of rain"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch13",
+      "true_false": [
+        {
+          "lines": [
+            "A: 週末、何がしたいですか。",
+            "B: プールで泳ぎたいです。"
+          ],
+          "statement": "B wants to swim.",
+          "answer": true,
+          "explanation": "たいです means “want to”."
+        },
+        {
+          "lines": [
+            "A: 今、何が欲しいですか。",
+            "B: 何も欲しくないです。"
+          ],
+          "statement": "B wants something now.",
+          "answer": false,
+          "explanation": "何も + negative means “nothing”."
+        },
+        {
+          "lines": [
+            "A: 駅へ何をしに行きますか。",
+            "B: 友達を迎えに行きます。"
+          ],
+          "statement": "B is going to meet a friend.",
+          "answer": true,
+          "explanation": "に行きます gives the purpose of going."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "海で泳ぎます。",
+          "task": "Say you want to.",
+          "sentence": "海で{}です。",
+          "answer": "泳ぎたい",
+          "also_accept": [
+            "およぎたい"
+          ],
+          "explanation": "Replace ます with たい."
+        },
+        {
+          "source": "デパートへ行きます。買い物します。",
+          "task": "Join them: go there to shop.",
+          "sentence": "デパートへ買い物{}行きます。",
+          "answer": "に",
+          "also_accept": [],
+          "explanation": "に marks the purpose of going."
+        },
+        {
+          "source": "何か食べたいです。",
+          "task": "Say you don’t want to eat anything.",
+          "sentence": "何も{}です。",
+          "answer": "食べたくない",
+          "also_accept": [
+            "たべたくない"
+          ],
+          "explanation": "たい becomes たくない."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/scenes/travel-purpose-scene.webp",
+          "alt": "A person walks from a train platform toward a department store with shoes in the window.",
+          "sentence": "デパートへくつを{}に行きます。",
+          "answer": "買い",
+          "options": [
+            "買います",
+            "買い",
+            "買って",
+            "買う"
+          ],
+          "translation": "I go to the department store to buy shoes."
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_thirteen.webp",
+          "alt": "A person walks from a train platform toward a department store with shoes in the window.",
+          "sentence": "{}",
+          "answer": "デパートへ",
+          "options": [
+            "ないでください",
+            "行きます",
+            "デパートへ",
+            "くつを買いに"
+          ],
+          "translation": "destination"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_thirteen.webp",
+          "alt": "A person walks from a train platform toward a department store with shoes in the window.",
+          "sentence": "{}",
+          "answer": "くつを買いに",
+          "options": [
+            "ないでください",
+            "行きます",
+            "デパートへ",
+            "くつを買いに"
+          ],
+          "translation": "purpose"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_thirteen.webp",
+          "alt": "A person walks from a train platform toward a department store with shoes in the window.",
+          "sentence": "{}",
+          "answer": "行きます",
+          "options": [
+            "くつを買いに",
+            "デパートへ",
+            "行きます",
+            "ないでください"
+          ],
+          "translation": "movement"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "公園で友達と{}。",
+          "answer": "遊びます",
+          "translation": "I play with friends in the park."
+        },
+        {
+          "sentence": "プールで{}。",
+          "answer": "泳ぎます",
+          "translation": "I swim in the pool."
+        },
+        {
+          "sentence": "駅で友達を{}。",
+          "answer": "迎えます",
+          "translation": "I meet my friend at the station."
+        },
+        {
+          "sentence": "毎日公園を{}。",
+          "answer": "散歩します",
+          "translation": "I take a walk in the park every day."
+        },
+        {
+          "sentence": "来年{}。",
+          "answer": "結婚します",
+          "translation": "I am getting married next year."
+        },
+        {
+          "sentence": "デパートで{}。",
+          "answer": "買い物します",
+          "translation": "I shop at the department store."
+        },
+        {
+          "sentence": "車が{}です。",
+          "answer": "欲しい",
+          "translation": "I want a car."
+        },
+        {
+          "sentence": "わたしの部屋は{}です。",
+          "answer": "狭い",
+          "translation": "My room is small."
+        },
+        {
+          "sentence": "冬は{}をします。",
+          "answer": "スキー",
+          "translation": "I ski in winter."
+        },
+        {
+          "sentence": "{}は何をしますか。",
+          "answer": "週末",
+          "translation": "What do you do at the weekend?"
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "日曜日",
+            "は",
+            "家",
+            "で",
+            "ゆっくり",
+            "休みたい",
+            "です"
+          ],
+          "translation": "On Sunday I want to rest at home."
+        },
+        {
+          "words": [
+            "何",
+            "を",
+            "食べたい",
+            "です",
+            "か"
+          ],
+          "translation": "What would you like to eat?"
+        },
+        {
+          "words": [
+            "ビール",
+            "を",
+            "一つ",
+            "ください"
+          ],
+          "translation": "One beer, please."
+        },
+        {
+          "words": [
+            "私",
+            "は",
+            "冷たい",
+            "お茶",
+            "を",
+            "お願いします"
+          ],
+          "translation": "Cold tea for me, please."
+        }
+      ],
+      "listen": [
+        {
+          "text": "かしこまりました。 少々[しょうしょう] お待[ま]ち ください。",
+          "translation": "Certainly. Please wait a moment.",
+          "wrong": [
+            "I will have sushi.",
+            "Mr Sato, I’m hungry, aren’t you?",
+            "One beer, please."
+          ],
+          "voice": "f4"
+        },
+        {
+          "text": "ラーメン が 食[た]べたい です。",
+          "translation": "I would like ramen.",
+          "wrong": [
+            "Ken, what would you like to eat?",
+            "Two.",
+            "This way, please."
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "私[わたし] は 冷[つめ]たい お茶[ちゃ] を お願[ねが]いします。",
+          "translation": "Cold tea for me, please.",
+          "wrong": [
+            "One beer, please.",
+            "This way, please.",
+            "On Sunday I want to rest at home."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "いらっしゃいませ。 何名様[なんめいさま] です か。",
+          "translation": "Welcome. How many people?",
+          "wrong": [
+            "Good idea. Let’s go.",
+            "On Sunday I want to rest at home.",
+            "Ken, what would you like to eat?"
+          ],
+          "voice": "f4"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "何を食べたいですか。",
+          "answer": "ラーメンが食べたいです。",
+          "wrong": [
+            "はい、食べたいです。",
+            "レストランへ行きました。",
+            "七時に食べます。"
+          ],
+          "explanation": "I would like ramen."
+        },
+        {
+          "prompt": "週末どこへ行きたいですか。",
+          "answer": "海へ泳ぎに行きたいです。",
+          "wrong": [
+            "新しい水着が欲しいです。",
+            "土曜日です。",
+            "友達と行きました。"
+          ],
+          "explanation": "I want to go to the sea to swim."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "今週の週末は海へ泳ぎに行きます。",
+            "新しい水着が欲しいです。",
+            "土曜日にデパートへ買い物に行きます。",
+            "日曜日は家でゆっくり休みたいです。"
+          ],
+          "question": "Why is the speaker going to the sea?",
+          "answer": "To swim",
+          "wrong": [
+            "To fish",
+            "To take photos",
+            "To buy a swimsuit"
+          ]
+        },
+        {
+          "lines": [
+            "今週の週末は海へ泳ぎに行きます。",
+            "新しい水着が欲しいです。",
+            "土曜日にデパートへ買い物に行きます。",
+            "日曜日は家でゆっくり休みたいです。"
+          ],
+          "question": "What does the speaker want?",
+          "answer": "A new swimsuit",
+          "wrong": [
+            "A new bag",
+            "New shoes",
+            "A new camera"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch14",
+      "true_false": [
+        {
+          "lines": [
+            "A: すみません、窓を開けてください。",
+            "B: はい、分かりました。"
+          ],
+          "statement": "A asks B to open the window.",
+          "answer": true,
+          "explanation": "てください is a polite request."
+        },
+        {
+          "lines": [
+            "A: 田中さんは何をしていますか。",
+            "B: 電話で話しています。"
+          ],
+          "statement": "Tanaka is on the phone.",
+          "answer": true,
+          "explanation": "ています means happening now."
+        },
+        {
+          "lines": [
+            "A: 荷物を持ちましょうか。",
+            "B: すみません。お願いします。"
+          ],
+          "statement": "B refuses the help.",
+          "answer": false,
+          "explanation": "お願いします accepts the offer."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "ちょっと待ちます。",
+          "task": "Ask someone to do it.",
+          "sentence": "ちょっと{}ください。",
+          "answer": "待って",
+          "also_accept": [
+            "まって"
+          ],
+          "explanation": "待ちます becomes 待って."
+        },
+        {
+          "source": "ゆっくり話します。",
+          "task": "Ask someone to do it.",
+          "sentence": "ゆっくり{}ください。",
+          "answer": "話して",
+          "also_accept": [
+            "はなして"
+          ],
+          "explanation": "話します becomes 話して."
+        },
+        {
+          "source": "本を読みます。",
+          "task": "Say you are doing it now.",
+          "sentence": "本を{}います。",
+          "answer": "読んで",
+          "also_accept": [
+            "よんで"
+          ],
+          "explanation": "読みます becomes 読んで."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_fourteen.webp",
+          "alt": "Illustrated board showing 読みます (polite verb), 読んで (te-form), ください (please)",
+          "sentence": "{}",
+          "answer": "読みます",
+          "options": [
+            "ください",
+            "読んで",
+            "読みます",
+            "食べる"
+          ],
+          "translation": "polite verb"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_fourteen.webp",
+          "alt": "Illustrated board showing 読みます (polite verb), 読んで (te-form), ください (please)",
+          "sentence": "{}",
+          "answer": "読んで",
+          "options": [
+            "読んで",
+            "ください",
+            "読みます",
+            "食べる"
+          ],
+          "translation": "te-form"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_fourteen.webp",
+          "alt": "Illustrated board showing 読みます (polite verb), 読んで (te-form), ください (please)",
+          "sentence": "{}",
+          "answer": "ください",
+          "options": [
+            "読みます",
+            "読んで",
+            "ください",
+            "食べる"
+          ],
+          "translation": "please"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "窓を{}。",
+          "answer": "開けます",
+          "translation": "I open the window."
+        },
+        {
+          "sentence": "ドアを{}。",
+          "answer": "閉めます",
+          "translation": "I close the door."
+        },
+        {
+          "sentence": "ここで友達を{}。",
+          "answer": "待ちます",
+          "translation": "I wait for a friend here."
+        },
+        {
+          "sentence": "友達と日本語で{}。",
+          "answer": "話します",
+          "translation": "I talk with friends in Japanese."
+        },
+        {
+          "sentence": "パソコンを{}。",
+          "answer": "使います",
+          "translation": "I use a computer."
+        },
+        {
+          "sentence": "いすに{}。",
+          "answer": "座ります",
+          "translation": "I sit on a chair."
+        },
+        {
+          "sentence": "部屋に{}。",
+          "answer": "入ります",
+          "translation": "I enter the room."
+        },
+        {
+          "sentence": "ここに{}を書いてください。",
+          "answer": "名前",
+          "translation": "Please write your name here."
+        },
+        {
+          "sentence": "{}を見せてください。",
+          "answer": "地図",
+          "translation": "Please show me the map."
+        },
+        {
+          "sentence": "{}行ってください。",
+          "answer": "真っ直ぐ",
+          "translation": "Please go straight."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "1200",
+            "円",
+            "です"
+          ],
+          "translation": "That is one thousand two hundred yen."
+        },
+        {
+          "words": [
+            "今",
+            "雨",
+            "が",
+            "降って",
+            "います"
+          ],
+          "translation": "It is raining now."
+        },
+        {
+          "words": [
+            "さくら",
+            "病院",
+            "まで",
+            "お願いします"
+          ],
+          "translation": "To Sakura Hospital, please."
+        }
+      ],
+      "listen": [
+        {
+          "text": "今[いま] 雨[あめ] が 降[ふ]って います。",
+          "translation": "It is raining now.",
+          "wrong": [
+            "To Sakura Hospital, please.",
+            "I am phoning a friend.",
+            "My mother is cooking in the kitchen."
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "母[はは] は 台所[だいどころ] で 料理[りょうり] を 作[つく]って います。",
+          "translation": "My mother is cooking in the kitchen.",
+          "wrong": [
+            "My younger brother is reading a book in his room.",
+            "That is one thousand two hundred yen.",
+            "It is raining now."
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "はい、 分[わ]かりました。",
+          "translation": "Yes, certainly.",
+          "wrong": [
+            "My younger brother is reading a book in his room.",
+            "Please turn right at the next traffic light.",
+            "That is one thousand two hundred yen."
+          ],
+          "voice": "m3"
+        },
+        {
+          "text": "次[つぎ] の 信号[しんごう] を 右[みぎ] へ 曲[ま]がって ください。",
+          "translation": "Please turn right at the next traffic light.",
+          "wrong": [
+            "Yes.",
+            "It is raining now.",
+            "I am phoning a friend."
+          ],
+          "voice": "f1"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "今何をしていますか。",
+          "answer": "本を読んでいます。",
+          "wrong": [
+            "はい、しています。",
+            "本屋へ行きました。",
+            "今三時です。"
+          ],
+          "explanation": "I am reading a book."
+        },
+        {
+          "prompt": "すみません、塩を取ってください。",
+          "answer": "はい、どうぞ。",
+          "wrong": [
+            "はじめまして。",
+            "いいえ、塩を取りました。",
+            "おかげさまで。"
+          ],
+          "explanation": "Here you are."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "今雨が降っています。",
+            "母は台所で料理を作っています。",
+            "弟は部屋で本を読んでいます。",
+            "私は友達に電話をかけています。"
+          ],
+          "question": "What is the speaker’s mother doing?",
+          "answer": "Cooking in the kitchen",
+          "wrong": [
+            "Reading a book",
+            "Phoning a friend",
+            "Sleeping"
+          ]
+        },
+        {
+          "lines": [
+            "今雨が降っています。",
+            "母は台所で料理を作っています。",
+            "弟は部屋で本を読んでいます。",
+            "私は友達に電話をかけています。"
+          ],
+          "question": "What is the weather like now?",
+          "answer": "It is raining",
+          "wrong": [
+            "It is sunny",
+            "It is snowing",
+            "It is windy"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch15",
+      "true_false": [
+        {
+          "lines": [
+            "A: ここで写真を撮ってもいいですか。",
+            "B: いいえ、撮ってはいけません。"
+          ],
+          "statement": "Photos are allowed here.",
+          "answer": false,
+          "explanation": "てはいけません means “must not”."
+        },
+        {
+          "lines": [
+            "A: どこに住んでいますか。",
+            "B: 大阪に住んでいます。"
+          ],
+          "statement": "B lives in Osaka.",
+          "answer": true,
+          "explanation": "住んでいます means “lives”."
+        },
+        {
+          "lines": [
+            "A: 結婚していますか。",
+            "B: いいえ、独身です。"
+          ],
+          "statement": "B is single.",
+          "answer": true,
+          "explanation": "独身 means single."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "ここに座ります。",
+          "task": "Ask for permission.",
+          "sentence": "ここに{}もいいですか。",
+          "answer": "座って",
+          "also_accept": [
+            "すわって"
+          ],
+          "explanation": "てもいいですか asks “may I?”."
+        },
+        {
+          "source": "ここでたばこを吸います。",
+          "task": "Forbid it.",
+          "sentence": "ここでたばこを{}はいけません。",
+          "answer": "吸って",
+          "also_accept": [
+            "すって"
+          ],
+          "explanation": "てはいけません means “must not”."
+        },
+        {
+          "source": "東京に住みます。",
+          "task": "Say you live there now.",
+          "sentence": "東京に{}います。",
+          "answer": "住んで",
+          "also_accept": [
+            "すんで"
+          ],
+          "explanation": "住みます becomes 住んでいます."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_fifteen.webp",
+          "alt": "Illustrated board showing 見ても いい (permission), 見ては いけない (not allowed)",
+          "sentence": "{}",
+          "answer": "見ても いい",
+          "options": [
+            "行きます",
+            "見ては いけない",
+            "食べる とき",
+            "見ても いい"
+          ],
+          "translation": "permission"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_fifteen.webp",
+          "alt": "Illustrated board showing 見ても いい (permission), 見ては いけない (not allowed)",
+          "sentence": "{}",
+          "answer": "見ては いけない",
+          "options": [
+            "食べる とき",
+            "見ても いい",
+            "見ては いけない",
+            "行きます"
+          ],
+          "translation": "not allowed"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "机の上に本を{}。",
+          "answer": "置きます",
+          "translation": "I put a book on the desk."
+        },
+        {
+          "sentence": "母はケーキを{}。",
+          "answer": "作ります",
+          "translation": "My mother makes a cake."
+        },
+        {
+          "sentence": "あの店でパンを{}。",
+          "answer": "売ります",
+          "translation": "They sell bread at that shop."
+        },
+        {
+          "sentence": "大学で日本語を{}。",
+          "answer": "研究します",
+          "translation": "I do research on Japanese at university."
+        },
+        {
+          "sentence": "たばこを{}。",
+          "answer": "吸います",
+          "translation": "I smoke."
+        },
+        {
+          "sentence": "{}を見せてください。",
+          "answer": "資料",
+          "translation": "Please show me the materials."
+        },
+        {
+          "sentence": "駅で{}を見ます。",
+          "answer": "時刻表",
+          "translation": "I look at the timetable at the station."
+        },
+        {
+          "sentence": "新しい{}を買いました。",
+          "answer": "服",
+          "translation": "I bought new clothes."
+        },
+        {
+          "sentence": "{}へ行きます。",
+          "answer": "歯医者",
+          "translation": "I am going to the dentist."
+        },
+        {
+          "sentence": "田中さんは{}です。",
+          "answer": "独身",
+          "translation": "Mr Tanaka is single."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "結婚",
+            "して",
+            "います"
+          ],
+          "translation": "They are married."
+        },
+        {
+          "words": [
+            "子供",
+            "が",
+            "二人",
+            "います"
+          ],
+          "translation": "They have two children."
+        },
+        {
+          "words": [
+            "銀行",
+            "で",
+            "働いて",
+            "います"
+          ],
+          "translation": "They work at a bank."
+        }
+      ],
+      "listen": [
+        {
+          "text": "あの 人[ひと] を 知[し]って います か。 この 絵[え] の 人[ひと] です。",
+          "translation": "Do you know that person? The one in this painting.",
+          "wrong": [
+            "My friend lives in Osaka.",
+            "I see. May I take this leaflet?",
+            "I’m sorry. You must not take photos here."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "はい、 どうぞ。",
+          "translation": "Yes, please do.",
+          "wrong": [
+            "They work at a bank.",
+            "They are married.",
+            "I see. May I take this leaflet?"
+          ],
+          "voice": "m5"
+        },
+        {
+          "text": "銀行[ぎんこう] で 働[はたら]いて います。",
+          "translation": "They work at a bank.",
+          "wrong": [
+            "They have two children.",
+            "My friend lives in Osaka.",
+            "I see. May I take this leaflet?"
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "私[わたし] の 友達[ともだち] は 大阪[おおさか] に 住[す]んで います。",
+          "translation": "My friend lives in Osaka.",
+          "wrong": [
+            "I’m sorry. You must not take photos here.",
+            "Yes, they are very famous.",
+            "They work at a bank."
+          ],
+          "voice": "m1"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "ここで写真を撮ってもいいですか。",
+          "answer": "すみません。撮ってはいけません。",
+          "wrong": [
+            "はい、撮りませんでした。",
+            "写真は三枚です。",
+            "いいえ、どうぞ。"
+          ],
+          "explanation": "I’m sorry. You must not take photos."
+        },
+        {
+          "prompt": "どこに住んでいますか。",
+          "answer": "大阪に住んでいます。",
+          "wrong": [
+            "銀行で働いています。",
+            "結婚しています。",
+            "大阪へ行きました。"
+          ],
+          "explanation": "I live in Osaka."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "私の友達は大阪に住んでいます。",
+            "銀行で働いています。",
+            "結婚しています。",
+            "子供が二人います。"
+          ],
+          "question": "Where does the friend live?",
+          "answer": "Osaka",
+          "wrong": [
+            "Tokyo",
+            "Kyoto",
+            "Hokkaido"
+          ]
+        },
+        {
+          "lines": [
+            "私の友達は大阪に住んでいます。",
+            "銀行で働いています。",
+            "結婚しています。",
+            "子供が二人います。"
+          ],
+          "question": "How many children does the friend have?",
+          "answer": "Two",
+          "wrong": [
+            "None",
+            "One",
+            "Three"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch16",
+      "true_false": [
+        {
+          "lines": [
+            "A: 明日来なければなりませんか。",
+            "B: いいえ、来なくてもいいです。"
+          ],
+          "statement": "A has to come tomorrow.",
+          "answer": false,
+          "explanation": "なくてもいいです means “don’t have to”."
+        },
+        {
+          "lines": [
+            "A: 薬を飲みましたか。",
+            "B: はい。毎日飲まなければなりません。"
+          ],
+          "statement": "B has to take medicine every day.",
+          "answer": true,
+          "explanation": "なければなりません means “must”."
+        },
+        {
+          "lines": [
+            "A: ここに車を止めないでください。",
+            "B: すみません。"
+          ],
+          "statement": "A asks B not to park here.",
+          "answer": true,
+          "explanation": "ないでください means “please don’t”."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "傘を忘れます。",
+          "task": "Ask someone not to.",
+          "sentence": "傘を{}でください。",
+          "answer": "忘れない",
+          "also_accept": [
+            "わすれない"
+          ],
+          "explanation": "Use the ない form + でください."
+        },
+        {
+          "source": "お金を払います。",
+          "task": "Say you must.",
+          "sentence": "お金を払わ{}なりません。",
+          "answer": "なければ",
+          "also_accept": [],
+          "explanation": "なければなりません means “must”."
+        },
+        {
+          "source": "明日来ます。",
+          "task": "Say you don’t have to.",
+          "sentence": "明日{}もいいです。",
+          "answer": "来なくて",
+          "also_accept": [
+            "こなくて"
+          ],
+          "explanation": "なくてもいいです means “don’t have to”."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_sixteen.webp",
+          "alt": "Illustrated board showing 食べる (dictionary form), 食べない (nai-form), ないでください (please do not)",
+          "sentence": "{}",
+          "answer": "食べる",
+          "options": [
+            "食べない",
+            "りんご",
+            "ないでください",
+            "食べる"
+          ],
+          "translation": "dictionary form"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_sixteen.webp",
+          "alt": "Illustrated board showing 食べる (dictionary form), 食べない (nai-form), ないでください (please do not)",
+          "sentence": "{}",
+          "answer": "食べない",
+          "options": [
+            "食べない",
+            "ないでください",
+            "りんご",
+            "食べる"
+          ],
+          "translation": "nai-form"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_sixteen.webp",
+          "alt": "Illustrated board showing 食べる (dictionary form), 食べない (nai-form), ないでください (please do not)",
+          "sentence": "{}",
+          "answer": "ないでください",
+          "options": [
+            "食べない",
+            "食べる",
+            "ないでください",
+            "りんご"
+          ],
+          "translation": "please do not"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "漢字を{}。",
+          "answer": "覚えます",
+          "translation": "I memorise kanji."
+        },
+        {
+          "sentence": "傘を{}。",
+          "answer": "忘れます",
+          "translation": "I forget my umbrella."
+        },
+        {
+          "sentence": "お金を{}。",
+          "answer": "払います",
+          "translation": "I pay the money."
+        },
+        {
+          "sentence": "図書館に本を{}。",
+          "answer": "返します",
+          "translation": "I return books to the library."
+        },
+        {
+          "sentence": "ここで靴を{}。",
+          "answer": "脱ぎます",
+          "translation": "I take off my shoes here."
+        },
+        {
+          "sentence": "明日大阪へ{}。",
+          "answer": "出張します",
+          "translation": "I am going to Osaka on business tomorrow."
+        },
+        {
+          "sentence": "ここは{}です。",
+          "answer": "禁煙",
+          "translation": "Smoking is not allowed here."
+        },
+        {
+          "sentence": "{}がありますから、帰ります。",
+          "answer": "熱",
+          "translation": "I have a fever, so I am going home."
+        },
+        {
+          "sentence": "{}を飲んでください。",
+          "answer": "薬",
+          "translation": "Please take the medicine."
+        },
+        {
+          "sentence": "この道は{}です。",
+          "answer": "危ない",
+          "translation": "This road is dangerous."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "どう",
+            "しました",
+            "か"
+          ],
+          "translation": "What seems to be the matter?"
+        },
+        {
+          "words": [
+            "日曜日",
+            "は",
+            "早く",
+            "起きなくても",
+            "いい",
+            "です"
+          ],
+          "translation": "On Sundays I do not have to get up early."
+        },
+        {
+          "words": [
+            "お風呂",
+            "に",
+            "入って",
+            "も",
+            "いい",
+            "です",
+            "か"
+          ],
+          "translation": "May I take a bath?"
+        },
+        {
+          "words": [
+            "明日",
+            "会社",
+            "へ",
+            "行かなければ",
+            "なりません",
+            "か"
+          ],
+          "translation": "Do I have to go to work tomorrow?"
+        }
+      ],
+      "listen": [
+        {
+          "text": "日曜日[にちようび] は 早[はや]く 起[お]きなくても いい です。",
+          "translation": "On Sundays I do not have to get up early.",
+          "wrong": [
+            "After eating breakfast I go to work.",
+            "I have to get to the office by nine.",
+            "Please do not take one today."
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "朝[あさ] ご飯[はん] を 食[た]べて から、 会社[かいしゃ] へ 行[い]きます。",
+          "translation": "After eating breakfast I go to work.",
+          "wrong": [
+            "May I take a bath?",
+            "I have a fever. My head hurts too.",
+            "It is a cold. Please take this medicine."
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "今日[きょう] は 入[はい]らないで ください。",
+          "translation": "Please do not take one today.",
+          "wrong": [
+            "After eating breakfast I go to work.",
+            "I have a fever. My head hurts too.",
+            "I have to get to the office by nine."
+          ],
+          "voice": "f3"
+        },
+        {
+          "text": "熱[ねつ] が あります。 頭[あたま] も 痛[いた]い です。",
+          "translation": "I have a fever. My head hurts too.",
+          "wrong": [
+            "After eating breakfast I go to work.",
+            "Every morning I get up at six and take a shower.",
+            "What seems to be the matter?"
+          ],
+          "voice": "m2"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "お風呂に入ってもいいですか。",
+          "answer": "今日は入らないでください。",
+          "wrong": [
+            "お風呂は二階です。",
+            "はい、入りました。",
+            "いいえ、入っています。"
+          ],
+          "explanation": "Please do not take one today."
+        },
+        {
+          "prompt": "明日会社へ行かなければなりませんか。",
+          "answer": "いいえ、行かなくてもいいです。",
+          "wrong": [
+            "いいえ、行かなければなりません。",
+            "はい、行かなくてもいいです。",
+            "会社は駅の前です。"
+          ],
+          "explanation": "No, you do not have to go."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "毎朝6時に起きて、シャワーを浴びます。",
+            "朝ご飯を食べてから、会社へ行きます。",
+            "9時までに会社に着かなければなりません。",
+            "日曜日は早く起きなくてもいいです。"
+          ],
+          "question": "By what time must the speaker reach the office?",
+          "answer": "By nine",
+          "wrong": [
+            "By six",
+            "By eight",
+            "By ten"
+          ]
+        },
+        {
+          "lines": [
+            "毎朝6時に起きて、シャワーを浴びます。",
+            "朝ご飯を食べてから、会社へ行きます。",
+            "9時までに会社に着かなければなりません。",
+            "日曜日は早く起きなくてもいいです。"
+          ],
+          "question": "What is true on Sundays?",
+          "answer": "The speaker does not have to get up early",
+          "wrong": [
+            "The speaker has to go to work",
+            "The speaker must get up at six",
+            "The speaker takes a shower at nine"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch17",
+      "true_false": [
+        {
+          "lines": [
+            "A: 趣味は何ですか。",
+            "B: 写真を撮ることです。"
+          ],
+          "statement": "B’s hobby is taking photos.",
+          "answer": true,
+          "explanation": "こと turns the verb into a noun."
+        },
+        {
+          "lines": [
+            "A: ピアノを弾くことができますか。",
+            "B: いいえ、できません。"
+          ],
+          "statement": "B can play the piano.",
+          "answer": false,
+          "explanation": "できません means “cannot”."
+        },
+        {
+          "lines": [
+            "A: 寝る前に何をしますか。",
+            "B: 日記を書きます。"
+          ],
+          "statement": "B writes a diary before sleeping.",
+          "answer": true,
+          "explanation": "前に means “before”."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "名前を書きます。",
+          "task": "Say you can.",
+          "sentence": "名前を{}ことができます。",
+          "answer": "書く",
+          "also_accept": [
+            "かく"
+          ],
+          "explanation": "Use the dictionary form before ことができます."
+        },
+        {
+          "source": "車を運転します。",
+          "task": "Say you can.",
+          "sentence": "車を{}ことができます。",
+          "answer": "運転する",
+          "also_accept": [
+            "うんてんする"
+          ],
+          "explanation": "します becomes する."
+        },
+        {
+          "source": "映画を見ます。ご飯を食べます。",
+          "task": "Say you eat before the film.",
+          "sentence": "映画を{}前に、ご飯を食べます。",
+          "answer": "見る",
+          "also_accept": [
+            "みる"
+          ],
+          "explanation": "Use the dictionary form before 前に."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_seventeen.webp",
+          "alt": "Illustrated board showing 読む (read), 読める (can read), できます (be able to)",
+          "sentence": "{}",
+          "answer": "読む",
+          "options": [
+            "読める",
+            "読む",
+            "できます",
+            "あります"
+          ],
+          "translation": "read"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_seventeen.webp",
+          "alt": "Illustrated board showing 読む (read), 読める (can read), できます (be able to)",
+          "sentence": "{}",
+          "answer": "読める",
+          "options": [
+            "読む",
+            "できます",
+            "あります",
+            "読める"
+          ],
+          "translation": "can read"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_seventeen.webp",
+          "alt": "Illustrated board showing 読む (read), 読める (can read), できます (be able to)",
+          "sentence": "{}",
+          "answer": "できます",
+          "options": [
+            "あります",
+            "読める",
+            "できます",
+            "読む"
+          ],
+          "translation": "be able to"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "手を{}。",
+          "answer": "洗います",
+          "translation": "I wash my hands."
+        },
+        {
+          "sentence": "ピアノを{}。",
+          "answer": "弾きます",
+          "translation": "I play the piano."
+        },
+        {
+          "sentence": "歌を{}。",
+          "answer": "歌います",
+          "translation": "I sing a song."
+        },
+        {
+          "sentence": "切手を{}。",
+          "answer": "集めます",
+          "translation": "I collect stamps."
+        },
+        {
+          "sentence": "古い紙を{}。",
+          "answer": "捨てます",
+          "translation": "I throw away old paper."
+        },
+        {
+          "sentence": "ホテルを{}。",
+          "answer": "予約します",
+          "translation": "I book a hotel."
+        },
+        {
+          "sentence": "{}で払います。",
+          "answer": "現金",
+          "translation": "I pay in cash."
+        },
+        {
+          "sentence": "わたしの{}は写真です。",
+          "answer": "趣味",
+          "translation": "My hobby is photography."
+        },
+        {
+          "sentence": "毎晩{}を書きます。",
+          "answer": "日記",
+          "translation": "I write a diary every night."
+        },
+        {
+          "sentence": "わたしは{}が好きです。",
+          "answer": "動物",
+          "translation": "I like animals."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "私",
+            "は",
+            "写真",
+            "を",
+            "撮る",
+            "こと",
+            "です"
+          ],
+          "translation": "Mine is taking photos."
+        },
+        {
+          "words": [
+            "日本語",
+            "で",
+            "書く",
+            "こと",
+            "が",
+            "できます"
+          ],
+          "translation": "I can write it in Japanese."
+        },
+        {
+          "words": [
+            "今度",
+            "写真",
+            "を",
+            "見せて",
+            "ください"
+          ],
+          "translation": "Please show me your photos some time."
+        },
+        {
+          "words": [
+            "毎日",
+            "少し",
+            "ずつ",
+            "練習",
+            "します"
+          ],
+          "translation": "I practise a little every day."
+        }
+      ],
+      "listen": [
+        {
+          "text": "今度[こんど] 写真[しゃしん] を 見[み]せて ください。",
+          "translation": "Please show me your photos some time.",
+          "wrong": [
+            "Ken, what is your hobby?",
+            "Mine is taking photos.",
+            "Wow. Can you play Japanese songs too?"
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "日本語[にほんご] で 書[か]く こと が できます。",
+          "translation": "I can write it in Japanese.",
+          "wrong": [
+            "Please show me your photos some time.",
+            "I practise a little every day.",
+            "Mine is taking photos."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "でも、 漢字[かんじ] は まだ あまり 書[か]けません。",
+          "translation": "But I still cannot write many kanji.",
+          "wrong": [
+            "Before I go to bed, I write in my diary.",
+            "I practise a little every day.",
+            "Please show me your photos some time."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "はい、 少[すこ]し できます。 田中[たなか] さん の 趣味[しゅみ] は？",
+          "translation": "Yes, a few. What is your hobby, Ms Tanaka?",
+          "wrong": [
+            "I practise a little every day.",
+            "I can write it in Japanese.",
+            "Mine is taking photos."
+          ],
+          "voice": "m2"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "趣味は何ですか。",
+          "answer": "ピアノを弾くことです。",
+          "wrong": [
+            "はい、弾きます。",
+            "三時に弾きます。",
+            "音楽室です。"
+          ],
+          "explanation": "It is playing the piano."
+        },
+        {
+          "prompt": "日本の歌を弾くことができますか。",
+          "answer": "はい、少しできます。",
+          "wrong": [
+            "はい、歌いません。",
+            "日本の歌です。",
+            "いいえ、弾いてください。"
+          ],
+          "explanation": "Yes, a few."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "私は寝る前に、日記を書きます。",
+            "日本語で書くことができます。",
+            "でも、漢字はまだあまり書けません。",
+            "毎日少しずつ練習します。"
+          ],
+          "question": "When does the speaker write in the diary?",
+          "answer": "Before going to bed",
+          "wrong": [
+            "After breakfast",
+            "At work",
+            "On the train"
+          ]
+        },
+        {
+          "lines": [
+            "私は寝る前に、日記を書きます。",
+            "日本語で書くことができます。",
+            "でも、漢字はまだあまり書けません。",
+            "毎日少しずつ練習します。"
+          ],
+          "question": "What can the speaker still not write well?",
+          "answer": "Many kanji",
+          "wrong": [
+            "Hiragana",
+            "Their own name",
+            "A diary in English"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch18",
+      "true_false": [
+        {
+          "lines": [
+            "A: 富士山に登ったことがありますか。",
+            "B: いいえ、ありません。"
+          ],
+          "statement": "B has climbed Mt Fuji.",
+          "answer": false,
+          "explanation": "ありません: B has never done it."
+        },
+        {
+          "lines": [
+            "A: 日曜日は何をしましたか。",
+            "B: 掃除をしたり、洗濯をしたりしました。"
+          ],
+          "statement": "B did cleaning and laundry.",
+          "answer": true,
+          "explanation": "たり…たり lists things done."
+        },
+        {
+          "lines": [
+            "A: 調子はどうですか。",
+            "B: お陰様で、元気になりました。"
+          ],
+          "statement": "B has got better.",
+          "answer": true,
+          "explanation": "元気になりました means “got well”."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "日本へ行きました。",
+          "task": "Say you have been there before.",
+          "sentence": "日本へ{}ことがあります。",
+          "answer": "行った",
+          "also_accept": [
+            "いった"
+          ],
+          "explanation": "Use the た form + ことがあります."
+        },
+        {
+          "source": "すしを食べました。",
+          "task": "Say you have eaten it before.",
+          "sentence": "すしを{}ことがあります。",
+          "answer": "食べた",
+          "also_accept": [
+            "たべた"
+          ],
+          "explanation": "Use the た form + ことがあります."
+        },
+        {
+          "source": "寒いです。",
+          "task": "Say it has gradually become cold.",
+          "sentence": "段々{}なりました。",
+          "answer": "寒く",
+          "also_accept": [
+            "さむく"
+          ],
+          "explanation": "い adjectives: drop い, add く before なります."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/scenes/experience-scene.webp",
+          "alt": "A traveller pauses with a camera at a mountain shrine path beneath a torii gate in Japan.",
+          "sentence": "日本の山の神社へ{}ことがあります。",
+          "answer": "行った",
+          "options": [
+            "行く",
+            "行きます",
+            "行って",
+            "行った"
+          ],
+          "translation": "I have been to a mountain shrine in Japan."
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_eighteen.webp",
+          "alt": "A traveller pauses with a camera at a mountain shrine path beneath a torii gate in Japan.",
+          "sentence": "{}",
+          "answer": "日本へ 行った",
+          "options": [
+            "日本へ 行った",
+            "あります",
+            "ことが",
+            "おきます"
+          ],
+          "translation": "past event"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_eighteen.webp",
+          "alt": "A traveller pauses with a camera at a mountain shrine path beneath a torii gate in Japan.",
+          "sentence": "{}",
+          "answer": "ことが",
+          "options": [
+            "日本へ 行った",
+            "あります",
+            "おきます",
+            "ことが"
+          ],
+          "translation": "experience marker"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_eighteen.webp",
+          "alt": "A traveller pauses with a camera at a mountain shrine path beneath a torii gate in Japan.",
+          "sentence": "{}",
+          "answer": "あります",
+          "options": [
+            "日本へ 行った",
+            "あります",
+            "おきます",
+            "ことが"
+          ],
+          "translation": "have experienced"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "山に{}。",
+          "answer": "登ります",
+          "translation": "I climb a mountain."
+        },
+        {
+          "sentence": "ホテルに{}。",
+          "answer": "泊まります",
+          "translation": "I stay at a hotel."
+        },
+        {
+          "sentence": "部屋を{}。",
+          "answer": "掃除します",
+          "translation": "I clean the room."
+        },
+        {
+          "sentence": "毎朝服を{}。",
+          "answer": "洗濯します",
+          "translation": "I wash clothes every morning."
+        },
+        {
+          "sentence": "毎日ピアノを{}。",
+          "answer": "練習します",
+          "translation": "I practise the piano every day."
+        },
+        {
+          "sentence": "今日はとても{}です。",
+          "answer": "眠い",
+          "translation": "I am very sleepy today."
+        },
+        {
+          "sentence": "あの人は{}です。",
+          "answer": "強い",
+          "translation": "That person is strong."
+        },
+        {
+          "sentence": "日曜日に{}をします。",
+          "answer": "ゴルフ",
+          "translation": "I play golf on Sunday."
+        },
+        {
+          "sentence": "{}を見たことがあります。",
+          "answer": "相撲",
+          "translation": "I have seen sumo."
+        },
+        {
+          "sentence": "{}夏です。",
+          "answer": "もうすぐ",
+          "translation": "It will soon be summer."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "どう",
+            "でした",
+            "か"
+          ],
+          "translation": "How was it?"
+        },
+        {
+          "words": [
+            "私",
+            "も",
+            "一度",
+            "登りたい",
+            "です"
+          ],
+          "translation": "I want to climb it once too."
+        },
+        {
+          "words": [
+            "一度",
+            "登った",
+            "こと",
+            "が",
+            "あります"
+          ],
+          "translation": "I have climbed it once."
+        }
+      ],
+      "listen": [
+        {
+          "text": "晩[ばん] ご飯[はん] を 食[た]べた 後[あと] で、 テレビ を 見[み]ます。",
+          "translation": "After dinner I watch TV.",
+          "wrong": [
+            "It was hard, but the view was beautiful.",
+            "I went to Hokkaido. I climbed mountains, drank milk and so on.",
+            "The sea was beautiful. I saw lots of fish, too."
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "アナ さん は 富士山[ふじさん] に 登[のぼ]った こと が あります か。",
+          "translation": "Ana, have you ever climbed Mount Fuji?",
+          "wrong": [
+            "I have never been to Okinawa. How was it?",
+            "On Sundays I do things like cleaning and laundry.",
+            "No, not yet. Have you, Mr Sato?"
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "日曜日[にちようび] は 掃除[そうじ] を したり、 洗濯[せんたく] を したり します。",
+          "translation": "On Sundays I do things like cleaning and laundry.",
+          "wrong": [
+            "I want to climb it once too.",
+            "Did you go anywhere for the summer holiday?",
+            "How was it?"
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "私[わたし] も 一度[いちど] 登[のぼ]りたい です。",
+          "translation": "I want to climb it once too.",
+          "wrong": [
+            "I have never been to Okinawa. How was it?",
+            "Nice. I swam in Okinawa.",
+            "I have climbed it once."
+          ],
+          "voice": "f1"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "富士山に登ったことがありますか。",
+          "answer": "いいえ、まだありません。",
+          "wrong": [
+            "はい、登りません。",
+            "富士山は高いです。",
+            "いいえ、登っています。"
+          ],
+          "explanation": "No, not yet."
+        },
+        {
+          "prompt": "どうでしたか。",
+          "answer": "大変でしたが、景色がきれいでした。",
+          "wrong": [
+            "来月行きます。",
+            "電車で行きました。",
+            "はい、行ったことがあります。"
+          ],
+          "explanation": "It was hard, but the view was beautiful."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "日曜日は掃除をしたり、洗濯をしたりします。",
+            "午後は友達とテニスをしたり、買い物に行ったりします。",
+            "晩ご飯を食べた後で、テレビを見ます。"
+          ],
+          "question": "What does the speaker do after dinner?",
+          "answer": "Watches TV",
+          "wrong": [
+            "Plays tennis",
+            "Does the cleaning",
+            "Goes shopping"
+          ]
+        },
+        {
+          "lines": [
+            "日曜日は掃除をしたり、洗濯をしたりします。",
+            "午後は友達とテニスをしたり、買い物に行ったりします。",
+            "晩ご飯を食べた後で、テレビを見ます。"
+          ],
+          "question": "What does the speaker do on Sunday afternoons?",
+          "answer": "Plays tennis, goes shopping and so on",
+          "wrong": [
+            "Cleans and does the laundry",
+            "Works at the office",
+            "Watches films all day"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch19",
+      "true_false": [
+        {
+          "lines": [
+            "A: 明日は雨が降ると思いますか。",
+            "B: いいえ、降らないと思います。"
+          ],
+          "statement": "B thinks it will rain tomorrow.",
+          "answer": false,
+          "explanation": "降らない is the plain negative."
+        },
+        {
+          "lines": [
+            "A: 田中さんは何と言いましたか。",
+            "B: 明日来ると言いました。"
+          ],
+          "statement": "Tanaka said they will come tomorrow.",
+          "answer": true,
+          "explanation": "と言いました reports what was said."
+        },
+        {
+          "lines": [
+            "A: 日本は物価が高いですか。",
+            "B: はい、高いと思います。"
+          ],
+          "statement": "B thinks prices are high.",
+          "answer": true,
+          "explanation": "と思います means “I think”."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "田中さんは行きます。",
+          "task": "Say “I think…”.",
+          "sentence": "田中さんは{}と思います。",
+          "answer": "行く",
+          "also_accept": [
+            "いく"
+          ],
+          "explanation": "Use the plain form before と思います."
+        },
+        {
+          "source": "明日は雨です。",
+          "task": "Say “I think…”.",
+          "sentence": "明日は雨{}と思います。",
+          "answer": "だ",
+          "also_accept": [],
+          "explanation": "です becomes だ in the plain form."
+        },
+        {
+          "source": "木村さんは来ません。",
+          "task": "Say “I think…”.",
+          "sentence": "木村さんは{}と思います。",
+          "answer": "来ない",
+          "also_accept": [
+            "こない"
+          ],
+          "explanation": "ません becomes the ない form."
+        }
+      ],
+      "pictures": [],
+      "word_sentences": [
+        {
+          "sentence": "お金が{}。",
+          "answer": "要ります",
+          "translation": "I need money."
+        },
+        {
+          "sentence": "辞書で{}。",
+          "answer": "調べます",
+          "translation": "I look it up in a dictionary."
+        },
+        {
+          "sentence": "お金が{}。",
+          "answer": "足ります",
+          "translation": "I have enough money."
+        },
+        {
+          "sentence": "試合に{}。",
+          "answer": "勝ちます",
+          "translation": "I win the match."
+        },
+        {
+          "sentence": "{}は学生です。",
+          "answer": "僕",
+          "translation": "I am a student."
+        },
+        {
+          "sentence": "この{}が分かりません。",
+          "answer": "言葉",
+          "translation": "I don’t understand this word."
+        },
+        {
+          "sentence": "日本で{}を着ました。",
+          "answer": "着物",
+          "translation": "I wore a kimono in Japan."
+        },
+        {
+          "sentence": "テレビで{}を見ます。",
+          "answer": "ニュース",
+          "translation": "I watch the news on TV."
+        },
+        {
+          "sentence": "明日、{}があります。",
+          "answer": "試合",
+          "translation": "There is a match tomorrow."
+        },
+        {
+          "sentence": "{}雨が降ると思います。",
+          "answer": "多分",
+          "translation": "I think it will probably rain."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "相手",
+            "の",
+            "チーム",
+            "が",
+            "とても",
+            "強い",
+            "から"
+          ],
+          "translation": "Because the other team is very strong."
+        },
+        {
+          "words": [
+            "たぶん",
+            "日本",
+            "が",
+            "勝つ",
+            "と",
+            "思う",
+            "よ"
+          ],
+          "translation": "I think Japan will probably win."
+        }
+      ],
+      "listen": [
+        {
+          "text": "でも、 とても 便利[べんり] だ と 思[おも]います。",
+          "translation": "But I think it is very convenient.",
+          "wrong": [
+            "I think prices in Tokyo are high.",
+            "But I am sure it will be fine.",
+            "I also think it will get cold tomorrow."
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "明日[あした] の 試合[しあい]、 どう 思[おも]う？",
+          "translation": "What do you think about tomorrow’s match?",
+          "wrong": [
+            "Really? I think they will lose.",
+            "I think prices in Tokyo are high.",
+            "But I think it is very convenient."
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "ニュース で、 明日[あした] は 雨[あめ] が 降[ふ]る と 言[い]って いました。",
+          "translation": "The news said it will rain tomorrow.",
+          "wrong": [
+            "But I am sure it will be fine.",
+            "I think prices in Tokyo are high.",
+            "But I think it is very convenient."
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "でも、 きっと 大丈夫[だいじょうぶ] だ よ。",
+          "translation": "But I am sure it will be fine.",
+          "wrong": [
+            "Because the other team is very strong.",
+            "I think Japan will probably win.",
+            "Why?"
+          ],
+          "voice": "f2"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "明日の天気はどうですか。",
+          "answer": "雨が降ると思います。",
+          "wrong": [
+            "雨が降りました。",
+            "傘を持っています。",
+            "はい、そう思いません。"
+          ],
+          "explanation": "I think it will rain."
+        },
+        {
+          "prompt": "東京についてどう思いますか。",
+          "answer": "便利だと思います。",
+          "wrong": [
+            "東京に住んでいます。",
+            "東京へ行きました。",
+            "はい、東京です。"
+          ],
+          "explanation": "I think it is convenient."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "ニュースで、明日は雨が降ると言っていました。",
+            "私も明日は寒くなると思います。",
+            "東京は物価が高いと思います。",
+            "でも、とても便利だと思います。"
+          ],
+          "question": "What did the news say?",
+          "answer": "It will rain tomorrow",
+          "wrong": [
+            "It will snow tomorrow",
+            "It will be hot tomorrow",
+            "Tokyo is cheap"
+          ]
+        },
+        {
+          "lines": [
+            "ニュースで、明日は雨が降ると言っていました。",
+            "私も明日は寒くなると思います。",
+            "東京は物価が高いと思います。",
+            "でも、とても便利だと思います。"
+          ],
+          "question": "What does the speaker think of Tokyo?",
+          "answer": "Prices are high, but it is very convenient",
+          "wrong": [
+            "Prices are low and it is convenient",
+            "It is cheap and quiet",
+            "It is cold and inconvenient"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch20",
+      "true_false": [
+        {
+          "lines": [
+            "A: 眼鏡を掛けている人はだれですか。",
+            "B: 田中さんです。"
+          ],
+          "statement": "Tanaka is wearing glasses.",
+          "answer": true,
+          "explanation": "眼鏡を掛けている describes the person."
+        },
+        {
+          "lines": [
+            "A: これはだれが作ったケーキですか。",
+            "B: 母が作りました。"
+          ],
+          "statement": "B’s mother made the cake.",
+          "answer": true,
+          "explanation": "母が作りました: my mother made it."
+        },
+        {
+          "lines": [
+            "A: 帽子を被っている人が佐藤さんですか。",
+            "B: いいえ、佐藤さんはコートを着ている人です。"
+          ],
+          "statement": "Sato is wearing a hat.",
+          "answer": false,
+          "explanation": "Sato is the person wearing a coat."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "先生はコートを着ています。",
+          "task": "Describe the person.",
+          "sentence": "コートを{}人は先生です。",
+          "answer": "着ている",
+          "also_accept": [
+            "きている"
+          ],
+          "explanation": "A verb in plain form can describe a noun."
+        },
+        {
+          "source": "木村さんは靴を履いています。",
+          "task": "Describe the person.",
+          "sentence": "靴を{}人は木村さんです。",
+          "answer": "履いている",
+          "also_accept": [
+            "はいている"
+          ],
+          "explanation": "A verb in plain form can describe a noun."
+        },
+        {
+          "source": "母がケーキを作りました。",
+          "task": "Describe the cake.",
+          "sentence": "これは母が{}ケーキです。",
+          "answer": "作った",
+          "also_accept": [
+            "つくった"
+          ],
+          "explanation": "The た form describes the noun."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty.webp",
+          "alt": "Illustrated board showing 昨日 買った (description), 本 (noun), を 読みます (main action)",
+          "sentence": "{}",
+          "answer": "昨日 買った",
+          "options": [
+            "本",
+            "ください",
+            "昨日 買った",
+            "を 読みます"
+          ],
+          "translation": "description"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty.webp",
+          "alt": "Illustrated board showing 昨日 買った (description), 本 (noun), を 読みます (main action)",
+          "sentence": "{}",
+          "answer": "本",
+          "options": [
+            "を 読みます",
+            "本",
+            "ください",
+            "昨日 買った"
+          ],
+          "translation": "noun"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty.webp",
+          "alt": "Illustrated board showing 昨日 買った (description), 本 (noun), を 読みます (main action)",
+          "sentence": "{}",
+          "answer": "を 読みます",
+          "options": [
+            "本",
+            "昨日 買った",
+            "ください",
+            "を 読みます"
+          ],
+          "translation": "main action"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "セーターを{}。",
+          "answer": "着ます",
+          "translation": "I put on a sweater."
+        },
+        {
+          "sentence": "靴を{}。",
+          "answer": "履きます",
+          "translation": "I put on shoes."
+        },
+        {
+          "sentence": "帽子を{}。",
+          "answer": "被ります",
+          "translation": "I put on a hat."
+        },
+        {
+          "sentence": "眼鏡を{}。",
+          "answer": "掛けます",
+          "translation": "I put on glasses."
+        },
+        {
+          "sentence": "{}は学生です。",
+          "answer": "私たち",
+          "translation": "We are students."
+        },
+        {
+          "sentence": "寒いですから、{}を着ます。",
+          "answer": "コート",
+          "translation": "It is cold, so I wear a coat."
+        },
+        {
+          "sentence": "{}に住んでいます。",
+          "answer": "アパート",
+          "translation": "I live in an apartment."
+        },
+        {
+          "sentence": "{}で料理を作ります。",
+          "answer": "台所",
+          "translation": "I cook in the kitchen."
+        },
+        {
+          "sentence": "{}で寝ます。",
+          "answer": "布団",
+          "translation": "I sleep on a futon."
+        },
+        {
+          "sentence": "明日は{}があります。",
+          "answer": "予定",
+          "translation": "I have plans tomorrow."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "台所",
+            "が",
+            "広い",
+            "部屋",
+            "です"
+          ],
+          "translation": "It is a place with a big kitchen."
+        },
+        {
+          "words": [
+            "どの",
+            "人",
+            "です",
+            "か"
+          ],
+          "translation": "Which person?"
+        },
+        {
+          "words": [
+            "料理",
+            "が",
+            "上手",
+            "な",
+            "人",
+            "です",
+            "よ"
+          ],
+          "translation": "He is someone who is good at cooking."
+        },
+        {
+          "words": [
+            "山田",
+            "さん",
+            "は",
+            "どんな",
+            "人",
+            "です",
+            "か"
+          ],
+          "translation": "What kind of person is he?"
+        }
+      ],
+      "listen": [
+        {
+          "text": "家賃[やちん] は あまり 高[たか]く ありません。",
+          "translation": "The rent is not very high.",
+          "wrong": [
+            "What kind of person is he?",
+            "Which person?",
+            "Mr Sato, who is the person over there?"
+          ],
+          "voice": "f3"
+        },
+        {
+          "text": "どの 人[ひと] です か。",
+          "translation": "Which person?",
+          "wrong": [
+            "Mr Sato, who is the person over there?",
+            "What kind of person is he?",
+            "It is a place with a big kitchen."
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "隣[となり] に 住[す]んで いる 人[ひと] は 優[やさ]しい 人[ひと] です。",
+          "translation": "The person who lives next door is kind.",
+          "wrong": [
+            "The person wearing glasses.",
+            "Which person?",
+            "Mr Sato, who is the person over there?"
+          ],
+          "voice": "f3"
+        },
+        {
+          "text": "山田[やまだ] さん は どんな 人[ひと] です か。",
+          "translation": "What kind of person is he?",
+          "wrong": [
+            "He is someone who is good at cooking.",
+            "The rent is not very high.",
+            "Mr Sato, who is the person over there?"
+          ],
+          "voice": "f1"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "あそこにいる人はだれですか。",
+          "answer": "眼鏡を掛けている人ですか。山田さんです。",
+          "wrong": [
+            "あそこです。",
+            "はい、いました。",
+            "眼鏡を買いました。"
+          ],
+          "explanation": "The person wearing glasses? That is Mr Yamada."
+        },
+        {
+          "prompt": "山田さんはどんな人ですか。",
+          "answer": "料理が上手な人です。",
+          "wrong": [
+            "料理を作っています。",
+            "山田さんは駅にいます。",
+            "はい、そうです。"
+          ],
+          "explanation": "He is someone who is good at cooking."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "私が住んでいるアパートは駅から近いです。",
+            "台所が広い部屋です。",
+            "家賃はあまり高くありません。",
+            "隣に住んでいる人は優しい人です。"
+          ],
+          "question": "Where is the flat?",
+          "answer": "Close to the station",
+          "wrong": [
+            "Far from the station",
+            "Next to a bank",
+            "Near the sea"
+          ]
+        },
+        {
+          "lines": [
+            "私が住んでいるアパートは駅から近いです。",
+            "台所が広い部屋です。",
+            "家賃はあまり高くありません。",
+            "隣に住んでいる人は優しい人です。"
+          ],
+          "question": "What is the neighbour like?",
+          "answer": "Kind",
+          "wrong": [
+            "Noisy",
+            "Busy",
+            "Strict"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch21",
+      "true_false": [
+        {
+          "lines": [
+            "A: このボタンを押すと、どうなりますか。",
+            "B: お釣りが出ます。"
+          ],
+          "statement": "Pressing the button gives change.",
+          "answer": true,
+          "explanation": "と shows what always follows."
+        },
+        {
+          "lines": [
+            "A: 道を渡って、右へ曲がってください。",
+            "B: はい、右ですね。"
+          ],
+          "statement": "B should turn left.",
+          "answer": false,
+          "explanation": "右 is right; left is 左."
+        },
+        {
+          "lines": [
+            "A: 暇なとき、何をしますか。",
+            "B: 公園を歩きます。"
+          ],
+          "statement": "B walks in the park when free.",
+          "answer": true,
+          "explanation": "とき means “when”."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "ボタンを押します。音が出ます。",
+          "task": "Join them with と.",
+          "sentence": "ボタンを{}と、音が出ます。",
+          "answer": "押す",
+          "also_accept": [
+            "おす"
+          ],
+          "explanation": "Use the dictionary form before と."
+        },
+        {
+          "source": "橋を渡ります。",
+          "task": "Say “when you cross”.",
+          "sentence": "橋を{}とき、気を付けてください。",
+          "answer": "渡る",
+          "also_accept": [
+            "わたる"
+          ],
+          "explanation": "Use the dictionary form before とき."
+        },
+        {
+          "source": "角を曲がります。駅があります。",
+          "task": "Join them with と.",
+          "sentence": "角を{}と、駅があります。",
+          "answer": "曲がる",
+          "also_accept": [
+            "まがる"
+          ],
+          "explanation": "Use the dictionary form before と."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_one.webp",
+          "alt": "Illustrated board showing ボタンを 押す (trigger), と (then), ドアが 開く (natural result)",
+          "sentence": "{}",
+          "answer": "ボタンを 押す",
+          "options": [
+            "と",
+            "ドアが 開く",
+            "友だち",
+            "ボタンを 押す"
+          ],
+          "translation": "trigger"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_one.webp",
+          "alt": "Illustrated board showing ボタンを 押す (trigger), と (then), ドアが 開く (natural result)",
+          "sentence": "{}",
+          "answer": "と",
+          "options": [
+            "ボタンを 押す",
+            "友だち",
+            "と",
+            "ドアが 開く"
+          ],
+          "translation": "then"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_one.webp",
+          "alt": "Illustrated board showing ボタンを 押す (trigger), と (then), ドアが 開く (natural result)",
+          "sentence": "{}",
+          "answer": "ドアが 開く",
+          "options": [
+            "と",
+            "友だち",
+            "ボタンを 押す",
+            "ドアが 開く"
+          ],
+          "translation": "natural result"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "ドアを{}。",
+          "answer": "引きます",
+          "translation": "I pull the door."
+        },
+        {
+          "sentence": "ボタンを{}。",
+          "answer": "押します",
+          "translation": "I press the button."
+        },
+        {
+          "sentence": "橋を{}。",
+          "answer": "渡ります",
+          "translation": "I cross the bridge."
+        },
+        {
+          "sentence": "角を右へ{}。",
+          "answer": "曲がります",
+          "translation": "I turn right at the corner."
+        },
+        {
+          "sentence": "駅まで{}。",
+          "answer": "歩きます",
+          "translation": "I walk to the station."
+        },
+        {
+          "sentence": "来月{}。",
+          "answer": "引っ越しします",
+          "translation": "I am moving next month."
+        },
+        {
+          "sentence": "隣の部屋の{}が大きいです。",
+          "answer": "音",
+          "translation": "The noise from next door is loud."
+        },
+        {
+          "sentence": "この{}は便利です。",
+          "answer": "機械",
+          "translation": "This machine is convenient."
+        },
+        {
+          "sentence": "{}を右へ曲がってください。",
+          "answer": "交差点",
+          "translation": "Please turn right at the crossing."
+        },
+        {
+          "sentence": "{}に車を止めます。",
+          "answer": "駐車場",
+          "translation": "I park my car in the car park."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "春",
+            "に",
+            "なる",
+            "と",
+            "暖かく",
+            "なります"
+          ],
+          "translation": "When spring comes, it gets warm."
+        },
+        {
+          "words": [
+            "交差点",
+            "です",
+            "ね"
+          ],
+          "translation": "A crossroads."
+        }
+      ],
+      "listen": [
+        {
+          "text": "春[はる] に なる と、 桜[さくら] が とても きれい です。",
+          "translation": "When spring comes, the cherry blossoms are beautiful.",
+          "wrong": [
+            "When I was a child I often played in this park.",
+            "If you go straight along this road, there is a crossroads.",
+            "Watch out for cars when you cross the road."
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "すみません、 駅[えき] は どこ です か。",
+          "translation": "Excuse me, where is the station?",
+          "wrong": [
+            "A crossroads.",
+            "When spring comes, the cherry blossoms are beautiful.",
+            "If you go straight along this road, there is a crossroads."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "分[わ]かりました。 ありがとう ございます。",
+          "translation": "I see. Thank you very much.",
+          "wrong": [
+            "When I have free time I still walk here.",
+            "Excuse me, where is the station?",
+            "When I was a child I often played in this park."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "この 道[みち] を まっすぐ 行[い]く と、 交差点[こうさてん] が あります。",
+          "translation": "If you go straight along this road, there is a crossroads.",
+          "wrong": [
+            "If you leave the station and turn right, there is a big park.",
+            "When spring comes, the cherry blossoms are beautiful.",
+            "Watch out for cars when you cross the road."
+          ],
+          "voice": "m4"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "すみません、駅はどこですか。",
+          "answer": "この道をまっすぐ行くと、右にあります。",
+          "wrong": [
+            "駅へ行ったとき、買いました。",
+            "はい、駅です。",
+            "電車で行きます。"
+          ],
+          "explanation": "If you go straight along this road, it is on the right."
+        },
+        {
+          "prompt": "子供のとき、どこで遊びましたか。",
+          "answer": "この公園で遊びました。",
+          "wrong": [
+            "友達と遊びました。",
+            "毎日遊びました。",
+            "子供は三人です。"
+          ],
+          "explanation": "I played in this park."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "駅を出て右へ曲がると、大きい公園があります。",
+            "春になると、桜がとてもきれいです。",
+            "子供のとき、よくこの公園で遊びました。",
+            "暇なとき、今もここを散歩します。"
+          ],
+          "question": "What is there if you turn right after leaving the station?",
+          "answer": "A big park",
+          "wrong": [
+            "A school",
+            "A bank",
+            "Another station"
+          ]
+        },
+        {
+          "lines": [
+            "駅を出て右へ曲がると、大きい公園があります。",
+            "春になると、桜がとてもきれいです。",
+            "子供のとき、よくこの公園で遊びました。",
+            "暇なとき、今もここを散歩します。"
+          ],
+          "question": "When does the speaker still walk here?",
+          "answer": "When they have free time",
+          "wrong": [
+            "When it rains",
+            "Every morning before work",
+            "Only in spring"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch22",
+      "true_false": [
+        {
+          "lines": [
+            "A: 雨が降ったら、どうしますか。",
+            "B: うちにいます。"
+          ],
+          "statement": "B will go out if it rains.",
+          "answer": false,
+          "explanation": "うちにいます means B will stay home."
+        },
+        {
+          "lines": [
+            "A: 雨が降っても行きますか。",
+            "B: はい、行きます。"
+          ],
+          "statement": "B will go even if it rains.",
+          "answer": true,
+          "explanation": "ても means “even if”."
+        },
+        {
+          "lines": [
+            "A: お金がありますか。",
+            "B: 500円しかありません。"
+          ],
+          "statement": "B has only 500 yen.",
+          "answer": true,
+          "explanation": "しか + negative means “only”."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "駅に着きます。電話してください。",
+          "task": "Say “when you arrive”.",
+          "sentence": "駅に{}、電話してください。",
+          "answer": "着いたら",
+          "also_accept": [
+            "ついたら"
+          ],
+          "explanation": "たら joins the two."
+        },
+        {
+          "source": "考えます。分かりません。",
+          "task": "Say “even if I think”.",
+          "sentence": "{}、分かりません。",
+          "answer": "考えても",
+          "also_accept": [
+            "かんがえても"
+          ],
+          "explanation": "ても means “even if”."
+        },
+        {
+          "source": "安いです。買います。",
+          "task": "Say “if it is cheap”.",
+          "sentence": "{}、買います。",
+          "answer": "安かったら",
+          "also_accept": [
+            "やすかったら"
+          ],
+          "explanation": "い adjectives: drop い, add かったら."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/scenes/condition-rain-scene.webp",
+          "alt": "A person reaches for an umbrella in an entryway while rain falls outside.",
+          "sentence": "雨が{}、かさを持ちます。",
+          "answer": "降ったら",
+          "options": [
+            "降る",
+            "降って",
+            "降ります",
+            "降ったら"
+          ],
+          "translation": "If it rains, I will take an umbrella."
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_two.webp",
+          "alt": "A person reaches for an umbrella in an entryway while rain falls outside.",
+          "sentence": "{}",
+          "answer": "雨が 降ったら",
+          "options": [
+            "かさを",
+            "持ちます",
+            "雨が 降ったら",
+            "それ"
+          ],
+          "translation": "if it rains"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_two.webp",
+          "alt": "A person reaches for an umbrella in an entryway while rain falls outside.",
+          "sentence": "{}",
+          "answer": "かさを",
+          "options": [
+            "それ",
+            "雨が 降ったら",
+            "持ちます",
+            "かさを"
+          ],
+          "translation": "umbrella"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_two.webp",
+          "alt": "A person reaches for an umbrella in an entryway while rain falls outside.",
+          "sentence": "{}",
+          "answer": "持ちます",
+          "options": [
+            "かさを",
+            "持ちます",
+            "それ",
+            "雨が 降ったら"
+          ],
+          "translation": "take it"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "よく{}。",
+          "answer": "考えます",
+          "translation": "I think carefully."
+        },
+        {
+          "sentence": "3時に駅に{}。",
+          "answer": "着きます",
+          "translation": "I arrive at the station at three."
+        },
+        {
+          "sentence": "来年アメリカへ{}。",
+          "answer": "留学します",
+          "translation": "I am going to study in America next year."
+        },
+        {
+          "sentence": "試験ですから、{}。",
+          "answer": "頑張ります",
+          "translation": "I have an exam, so I will do my best."
+        },
+        {
+          "sentence": "夏休みに{}へ帰ります。",
+          "answer": "田舎",
+          "translation": "I go back to the countryside in the summer holidays."
+        },
+        {
+          "sentence": "東京の{}へ行きます。",
+          "answer": "大使館",
+          "translation": "I am going to the embassy in Tokyo."
+        },
+        {
+          "sentence": "学生の{}で旅行します。",
+          "answer": "グループ",
+          "translation": "I travel in a student group."
+        },
+        {
+          "sentence": "{}雨が降ったら、行きません。",
+          "answer": "もし",
+          "translation": "If it rains, I won’t go."
+        },
+        {
+          "sentence": "{}、忙しいです。",
+          "answer": "最近",
+          "translation": "I have been busy lately."
+        },
+        {
+          "sentence": "来月大阪へ{}します。",
+          "answer": "転勤",
+          "translation": "I am being transferred to Osaka next month."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "雨",
+            "が",
+            "降ったら",
+            "行きません"
+          ],
+          "translation": "If it rains, I will not go."
+        },
+        {
+          "words": [
+            "たぶん",
+            "10人",
+            "ぐらい",
+            "です"
+          ],
+          "translation": "Probably about ten."
+        }
+      ],
+      "listen": [
+        {
+          "text": "晴[は]れたら、 公園[こうえん] で バーベキュー を しましょう。",
+          "translation": "If it is sunny, let’s have a barbecue in the park.",
+          "wrong": [
+            "All right. See you tomorrow, then.",
+            "If it rains, where shall we have it?",
+            "All right. Call me when you get to the station. I will come and pick you up."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "雨[あめ] が 降[ふ]ったら、 私[わたし] の 家[うち] で しましょう。",
+          "translation": "If it rains, let’s have it at my place.",
+          "wrong": [
+            "If it rains, let’s go to the art museum.",
+            "How many people are coming to next week’s party?",
+            "If it is sunny, let’s eat our lunch boxes in the park."
+          ],
+          "voice": "m1",
+          "say": "雨が降ったら、私のうちでしましょう。"
+        },
+        {
+          "text": "ありがとう ございます。 楽[たの]しみ です ね。",
+          "translation": "Thank you. I’m looking forward to it.",
+          "wrong": [
+            "If it is sunny, let’s eat our lunch boxes in the park.",
+            "Call me when you get to the station.",
+            "What shall we do about tomorrow’s picnic if it rains?"
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "日本[にほん] に 着[つ]いたら、 まず 大使館[たいしかん] へ 行[い]きます。",
+          "translation": "When I arrive in Japan, I will go to the embassy first.",
+          "wrong": [
+            "Good idea. And if it is sunny?",
+            "If it rains, let’s have it at my place.",
+            "If it rains, let’s go to the art museum."
+          ],
+          "voice": "f1"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "明日雨が降ったらどうしますか。",
+          "answer": "雨が降ったら、美術館へ行きましょう。",
+          "wrong": [
+            "雨が降りました。",
+            "はい、降ります。",
+            "美術館は駅の隣です。"
+          ],
+          "explanation": "If it rains, let’s go to the art museum."
+        },
+        {
+          "prompt": "パスポートをなくしたんですが、どうしたらいいですか。",
+          "answer": "大使館へ行ったらいいですよ。",
+          "wrong": [
+            "パスポートは机の上にあります。",
+            "はい、なくしました。",
+            "いいえ、どういたしまして。"
+          ],
+          "explanation": "You should go to the embassy."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "もしお金がたくさんあったら、世界を旅行したいです。",
+            "大学を卒業したら、日本へ留学します。",
+            "日本に着いたら、まず大使館へ行きます。"
+          ],
+          "question": "What would the speaker do with a lot of money?",
+          "answer": "Travel the world",
+          "wrong": [
+            "Buy a house",
+            "Open a shop",
+            "Stop studying"
+          ]
+        },
+        {
+          "lines": [
+            "もしお金がたくさんあったら、世界を旅行したいです。",
+            "大学を卒業したら、日本へ留学します。",
+            "日本に着いたら、まず大使館へ行きます。"
+          ],
+          "question": "What will the speaker do first on arriving in Japan?",
+          "answer": "Go to the embassy",
+          "wrong": [
+            "Go to a university",
+            "Buy a ticket",
+            "Travel the world"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch23",
+      "true_false": [
+        {
+          "lines": [
+            "A: その時計はだれがくれましたか。",
+            "B: 父がくれました。"
+          ],
+          "statement": "B’s father gave B the watch.",
+          "answer": true,
+          "explanation": "くれました means someone gave it to me."
+        },
+        {
+          "lines": [
+            "A: だれが案内してくれましたか。",
+            "B: 佐藤さんが案内してくれました。"
+          ],
+          "statement": "B showed Sato around.",
+          "answer": false,
+          "explanation": "てくれました: Sato did it for B."
+        },
+        {
+          "lines": [
+            "A: 料理はだれに習いましたか。",
+            "B: 母に教えてもらいました。"
+          ],
+          "statement": "B’s mother taught B to cook.",
+          "answer": true,
+          "explanation": "てもらいました: B received the teaching."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "わたしは佐藤さんに本をもらいました。",
+          "task": "Say it with Sato as the giver.",
+          "sentence": "佐藤さんがわたしに本を{}。",
+          "answer": "くれました",
+          "also_accept": [],
+          "explanation": "くれます is used when someone gives to me."
+        },
+        {
+          "source": "友達を案内します。",
+          "task": "Say you did it as a favour.",
+          "sentence": "友達を{}あげました。",
+          "answer": "案内して",
+          "also_accept": [
+            "あんないして"
+          ],
+          "explanation": "てあげました is doing a favour."
+        },
+        {
+          "source": "先生が説明しました。",
+          "task": "Say you received the explanation.",
+          "sentence": "先生に{}もらいました。",
+          "answer": "説明して",
+          "also_accept": [
+            "せつめいして"
+          ],
+          "explanation": "てもらいました is receiving a favour."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_three.webp",
+          "alt": "Illustrated board showing わたし → 友だち (I give · あげます), 友だち → わたし (I receive · もらいます)",
+          "sentence": "{}",
+          "answer": "わたし → 友だち",
+          "options": [
+            "を 読みます",
+            "友だち → わたし",
+            "わたし → 友だち",
+            "わたし"
+          ],
+          "translation": "I give · あげます"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_three.webp",
+          "alt": "Illustrated board showing わたし → 友だち (I give · あげます), 友だち → わたし (I receive · もらいます)",
+          "sentence": "{}",
+          "answer": "友だち → わたし",
+          "options": [
+            "を 読みます",
+            "友だち → わたし",
+            "わたし",
+            "わたし → 友だち"
+          ],
+          "translation": "I receive · もらいます"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "友達がわたしに本を{}。",
+          "answer": "くれます",
+          "translation": "A friend gives me a book."
+        },
+        {
+          "sentence": "子供を公園へ{}。",
+          "answer": "連れて行きます",
+          "translation": "I take my child to the park."
+        },
+        {
+          "sentence": "駅まで友達を車で{}。",
+          "answer": "送ります",
+          "translation": "I drive my friend to the station."
+        },
+        {
+          "sentence": "友達を家族に{}。",
+          "answer": "紹介します",
+          "translation": "I introduce my friend to my family."
+        },
+        {
+          "sentence": "京都を{}。",
+          "answer": "案内します",
+          "translation": "I show someone around Kyoto."
+        },
+        {
+          "sentence": "お茶に砂糖を{}。",
+          "answer": "入れます",
+          "translation": "I put sugar in the tea."
+        },
+        {
+          "sentence": "{}は90歳です。",
+          "answer": "お祖父さん",
+          "translation": "My grandfather is 90."
+        },
+        {
+          "sentence": "この言葉の{}は何ですか。",
+          "answer": "意味",
+          "translation": "What does this word mean?"
+        },
+        {
+          "sentence": "{}食べました。",
+          "answer": "全部",
+          "translation": "I ate all of it."
+        },
+        {
+          "sentence": "毎朝母が{}を作ります。",
+          "answer": "お弁当",
+          "translation": "My mother makes a lunch box every morning."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "よかった",
+            "です",
+            "ね"
+          ],
+          "translation": "That is good."
+        },
+        {
+          "words": [
+            "祖父",
+            "は",
+            "町",
+            "を",
+            "案内",
+            "して",
+            "くれました"
+          ],
+          "translation": "My grandfather showed me around the town."
+        }
+      ],
+      "listen": [
+        {
+          "text": "今[いま] も 祖母[そぼ] の お菓子[かし] が 一番[いちばん] 好[す]き です。",
+          "translation": "I still like my grandmother’s sweets best.",
+          "wrong": [
+            "Next time I will cook for you. Please come.",
+            "That is good.",
+            "I wrote letters to my grandmother."
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "ありがとう。 楽[たの]しみ に して います。",
+          "translation": "Thank you. I am looking forward to it.",
+          "wrong": [
+            "Mr Sato, thank you for helping me move yesterday.",
+            "That is good.",
+            "I still like my grandmother’s sweets best."
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "私[わたし] は 祖母[そぼ] に 手紙[てがみ] を 書[か]いて あげました。",
+          "translation": "I wrote letters to my grandmother.",
+          "wrong": [
+            "It is very nice. My mother sent me curtains.",
+            "When I was a child, my grandmother often made sweets for me.",
+            "Not at all. How is the new place?"
+          ],
+          "voice": "f2"
+        },
+        {
+          "text": "とても いい です。 母[はは] が カーテン を 送[おく]って くれました。",
+          "translation": "It is very nice. My mother sent me curtains.",
+          "wrong": [
+            "That is good.",
+            "Thank you. I am looking forward to it.",
+            "I still like my grandmother’s sweets best."
+          ],
+          "voice": "f1"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "新しい部屋はどうですか。",
+          "answer": "とてもいいです。母がカーテンを送ってくれました。",
+          "wrong": [
+            "母に手紙を書きます。",
+            "はい、部屋です。",
+            "来週行きます。"
+          ],
+          "explanation": "It is very nice. My mother sent me curtains."
+        },
+        {
+          "prompt": "その本はだれがくれましたか。",
+          "answer": "友達がくれました。",
+          "wrong": [
+            "友達にあげました。",
+            "本屋で買います。",
+            "とてもおもしろいです。"
+          ],
+          "explanation": "A friend gave it to me."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "子供のとき、祖母がよくお菓子を作ってくれました。",
+            "祖父は町を案内してくれました。",
+            "私は祖母に手紙を書いてあげました。",
+            "今も祖母のお菓子が一番好きです。"
+          ],
+          "question": "What did the speaker’s grandmother often do?",
+          "answer": "Make sweets for the speaker",
+          "wrong": [
+            "Show the speaker around town",
+            "Write letters to the speaker",
+            "Send curtains"
+          ]
+        },
+        {
+          "lines": [
+            "子供のとき、祖母がよくお菓子を作ってくれました。",
+            "祖父は町を案内してくれました。",
+            "私は祖母に手紙を書いてあげました。",
+            "今も祖母のお菓子が一番好きです。"
+          ],
+          "question": "Who showed the speaker around town?",
+          "answer": "The grandfather",
+          "wrong": [
+            "The grandmother",
+            "A friend",
+            "A teacher"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch24",
+      "true_false": [
+        {
+          "lines": [
+            "A: 部屋から海が見えますか。",
+            "B: はい、よく見えます。"
+          ],
+          "statement": "You can see the sea from the room.",
+          "answer": true,
+          "explanation": "見えます means “can be seen”."
+        },
+        {
+          "lines": [
+            "A: 日本語が話せますか。",
+            "B: いいえ、話せません。"
+          ],
+          "statement": "B can speak Japanese.",
+          "answer": false,
+          "explanation": "話せません means “cannot speak”."
+        },
+        {
+          "lines": [
+            "A: 宿題をしましたか。",
+            "B: すみません、忘れてしまいました。"
+          ],
+          "statement": "B forgot the homework.",
+          "answer": true,
+          "explanation": "てしまいました shows regret."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "漢字を書きます。",
+          "task": "Say you can.",
+          "sentence": "漢字が{}。",
+          "answer": "書けます",
+          "also_accept": [
+            "かけます"
+          ],
+          "explanation": "書きます becomes 書けます; を becomes が."
+        },
+        {
+          "source": "すしを食べます。",
+          "task": "Say you can.",
+          "sentence": "すしが{}。",
+          "answer": "食べられます",
+          "also_accept": [
+            "たべられます"
+          ],
+          "explanation": "Group 2 verbs take られます."
+        },
+        {
+          "source": "英語を話します。",
+          "task": "Say you can.",
+          "sentence": "英語が{}。",
+          "answer": "話せます",
+          "also_accept": [
+            "はなせます"
+          ],
+          "explanation": "話します becomes 話せます."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_four.webp",
+          "alt": "Illustrated board showing 読む (action), 読める (potential), しか ない (only / limitation)",
+          "sentence": "{}",
+          "answer": "読む",
+          "options": [
+            "ボタンを 押す",
+            "読む",
+            "読める",
+            "しか ない"
+          ],
+          "translation": "action"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_four.webp",
+          "alt": "Illustrated board showing 読む (action), 読める (potential), しか ない (only / limitation)",
+          "sentence": "{}",
+          "answer": "読める",
+          "options": [
+            "しか ない",
+            "読む",
+            "読める",
+            "ボタンを 押す"
+          ],
+          "translation": "potential"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_four.webp",
+          "alt": "Illustrated board showing 読む (action), 読める (potential), しか ない (only / limitation)",
+          "sentence": "{}",
+          "answer": "しか ない",
+          "options": [
+            "読める",
+            "ボタンを 押す",
+            "読む",
+            "しか ない"
+          ],
+          "translation": "only / limitation"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "家で犬を{}。",
+          "answer": "飼います",
+          "translation": "I keep a dog at home."
+        },
+        {
+          "sentence": "新しい家を{}。",
+          "answer": "建てます",
+          "translation": "I build a new house."
+        },
+        {
+          "sentence": "毎朝公園を{}。",
+          "answer": "走ります",
+          "translation": "I run in the park every morning."
+        },
+        {
+          "sentence": "{}はありませんか。",
+          "answer": "忘れ物",
+          "translation": "Have you left anything behind?"
+        },
+        {
+          "sentence": "家に{}がいます。",
+          "answer": "ペット",
+          "translation": "I have a pet at home."
+        },
+        {
+          "sentence": "木の上に{}がいます。",
+          "answer": "鳥",
+          "translation": "There is a bird in the tree."
+        },
+        {
+          "sentence": "先生の{}が聞こえます。",
+          "answer": "声",
+          "translation": "I can hear the teacher’s voice."
+        },
+        {
+          "sentence": "夏に{}を見ました。",
+          "answer": "花火",
+          "translation": "I watched fireworks in summer."
+        },
+        {
+          "sentence": "山の上の{}はきれいです。",
+          "answer": "景色",
+          "translation": "The view from the mountain is beautiful."
+        },
+        {
+          "sentence": "{}で飲み物を買います。",
+          "answer": "自動販売機",
+          "translation": "I buy drinks from a vending machine."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "今",
+            "は",
+            "少し",
+            "話せる",
+            "よう",
+            "に",
+            "なりました"
+          ],
+          "translation": "Now I have become able to speak a little."
+        },
+        {
+          "words": [
+            "もっと",
+            "上手",
+            "に",
+            "なりたい",
+            "です"
+          ],
+          "translation": "I want to get better."
+        }
+      ],
+      "listen": [
+        {
+          "text": "今度[こんど] の 花火[はなび]、 一緒[いっしょ] に 見[み]ません か。",
+          "translation": "Would you like to watch the next fireworks together?",
+          "wrong": [
+            "Lovely. Can you hear the waves at night?",
+            "I can now read about a hundred kanji too.",
+            "I would love to."
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "今[いま] は 少[すこ]し 話[はな]せる よう に なりました。",
+          "translation": "Now I have become able to speak a little.",
+          "wrong": [
+            "Would you like to watch the next fireworks together?",
+            "I can see the sea. In summer I can see the fireworks too.",
+            "I can now read about a hundred kanji too."
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "漢字[かんじ] も 百[ひゃく] ぐらい 読[よ]める よう に なりました。",
+          "translation": "I can now read about a hundred kanji too.",
+          "wrong": [
+            "Yes, I can hear them well when it is quiet.",
+            "I would love to.",
+            "Lovely. Can you hear the waves at night?"
+          ],
+          "voice": "m2"
+        },
+        {
+          "text": "田中[たなか] さん の 部屋[へや] から 何[なに] が 見[み]えます か。",
+          "translation": "What can you see from your room, Ms Tanaka?",
+          "wrong": [
+            "Would you like to watch the next fireworks together?",
+            "Lovely. Can you hear the waves at night?",
+            "I would love to."
+          ],
+          "voice": "m2"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "部屋から何が見えますか。",
+          "answer": "海が見えます。",
+          "wrong": [
+            "海へ行きます。",
+            "はい、見ます。",
+            "窓の近くです。"
+          ],
+          "explanation": "I can see the sea."
+        },
+        {
+          "prompt": "夜は波の音が聞こえますか。",
+          "answer": "ええ、静かなときはよく聞こえます。",
+          "wrong": [
+            "ええ、海は静かです。",
+            "波の音を聞いてください。",
+            "はい、聞いていません。"
+          ],
+          "explanation": "Yes, I can hear them well when it is quiet."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "日本に来たとき、日本語がほとんど話せませんでした。",
+            "今は少し話せるようになりました。",
+            "漢字も百ぐらい読めるようになりました。",
+            "もっと上手になりたいです。"
+          ],
+          "question": "How was the speaker’s Japanese on arriving in Japan?",
+          "answer": "The speaker could hardly speak it",
+          "wrong": [
+            "The speaker spoke it well",
+            "The speaker could read a hundred kanji",
+            "The speaker had no interest in it"
+          ]
+        },
+        {
+          "lines": [
+            "日本に来たとき、日本語がほとんど話せませんでした。",
+            "今は少し話せるようになりました。",
+            "漢字も百ぐらい読めるようになりました。",
+            "もっと上手になりたいです。"
+          ],
+          "question": "About how many kanji can the speaker read now?",
+          "answer": "About a hundred",
+          "wrong": [
+            "About ten",
+            "About a thousand",
+            "None"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ch25",
+      "true_false": [
+        {
+          "lines": [
+            "A: どうして早く帰りますか。",
+            "B: 気分が悪いので、帰ります。"
+          ],
+          "statement": "B is leaving because they feel unwell.",
+          "answer": true,
+          "explanation": "ので gives the reason."
+        },
+        {
+          "lines": [
+            "A: これは何という食べ物ですか。",
+            "B: すしという食べ物です。"
+          ],
+          "statement": "The food is called tempura.",
+          "answer": false,
+          "explanation": "すしという means “called sushi”."
+        },
+        {
+          "lines": [
+            "A: どこで切符を買ったらいいですか。",
+            "B: あそこの自動販売機で買ってください。"
+          ],
+          "statement": "B says to use the machine over there.",
+          "answer": true,
+          "explanation": "自動販売機 is a vending machine."
+        }
+      ],
+      "transforms": [
+        {
+          "source": "雨です。行きません。",
+          "task": "Join them: “because it’s raining”.",
+          "sentence": "雨{}、行きません。",
+          "answer": "なので",
+          "also_accept": [],
+          "explanation": "Nouns take なので."
+        },
+        {
+          "source": "ご飯を食べます。散歩します。",
+          "task": "Say you walk after eating.",
+          "sentence": "ご飯を{}あとで、散歩します。",
+          "answer": "食べた",
+          "also_accept": [
+            "たべた"
+          ],
+          "explanation": "Use the た form before あとで."
+        },
+        {
+          "source": "どこで買いますか。",
+          "task": "Ask “where should I buy it?”.",
+          "sentence": "どこで{}いいですか。",
+          "answer": "買ったら",
+          "also_accept": [
+            "かったら"
+          ],
+          "explanation": "たらいいですか asks for advice."
+        }
+      ],
+      "pictures": [
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_five.webp",
+          "alt": "Illustrated board showing 食べる とき (before eating), 食べた とき (after eating)",
+          "sentence": "{}",
+          "answer": "食べる とき",
+          "options": [
+            "食べた とき",
+            "行きます",
+            "食べる とき",
+            "8時に"
+          ],
+          "translation": "before eating"
+        },
+        {
+          "image": "/images/grammar/n5/boards/n5_ch_twenty_five.webp",
+          "alt": "Illustrated board showing 食べる とき (before eating), 食べた とき (after eating)",
+          "sentence": "{}",
+          "answer": "食べた とき",
+          "options": [
+            "8時に",
+            "食べた とき",
+            "行きます",
+            "食べる とき"
+          ],
+          "translation": "after eating"
+        }
+      ],
+      "word_sentences": [
+        {
+          "sentence": "急ぎますから、電車に{}。",
+          "answer": "間に合います",
+          "translation": "I will hurry, so I will make the train."
+        },
+        {
+          "sentence": "道でお金を{}。",
+          "answer": "拾います",
+          "translation": "I pick up money on the street."
+        },
+        {
+          "sentence": "明日友達に{}。",
+          "answer": "連絡します",
+          "translation": "I will contact my friend tomorrow."
+        },
+        {
+          "sentence": "今日は{}がいいです。",
+          "answer": "気分",
+          "translation": "I feel good today."
+        },
+        {
+          "sentence": "道で{}を拾いました。",
+          "answer": "財布",
+          "translation": "I found a wallet on the street."
+        },
+        {
+          "sentence": "{}を捨てないでください。",
+          "answer": "ごみ",
+          "translation": "Please don’t throw away rubbish."
+        },
+        {
+          "sentence": "{}は忙しいです。",
+          "answer": "平日",
+          "translation": "Weekdays are busy."
+        },
+        {
+          "sentence": "{}の日曜日に行きましょう。",
+          "answer": "今度",
+          "translation": "Let’s go this coming Sunday."
+        },
+        {
+          "sentence": "{}いいですよ。",
+          "answer": "いつでも",
+          "translation": "Any time is fine."
+        },
+        {
+          "sentence": "{}を飲みます。",
+          "answer": "お湯",
+          "translation": "I drink hot water."
+        }
+      ],
+      "order": [
+        {
+          "words": [
+            "どこ",
+            "で",
+            "無くしました",
+            "か"
+          ],
+          "translation": "Where did you lose it?"
+        },
+        {
+          "words": [
+            "財布",
+            "を",
+            "無くしました"
+          ],
+          "translation": "I lost my wallet."
+        },
+        {
+          "words": [
+            "本当",
+            "に",
+            "ありがとう",
+            "ございました"
+          ],
+          "translation": "Thank you so much."
+        },
+        {
+          "words": [
+            "どう",
+            "しました",
+            "か"
+          ],
+          "translation": "What happened?"
+        }
+      ],
+      "listen": [
+        {
+          "text": "どう しよう。 財布[さいふ] が ありません。",
+          "translation": "What shall I do? My wallet is gone.",
+          "wrong": [
+            "Where did you lose it?",
+            "I hope someone has picked it up.",
+            "Yes, a student brought it in a little while ago."
+          ],
+          "voice": "f1"
+        },
+        {
+          "text": "瓶[びん] と 缶[かん] は 水曜日[すいようび] に 出[だ]します。",
+          "translation": "Bottles and cans go out on Wednesdays.",
+          "wrong": [
+            "Yes, that’s it! What a relief.",
+            "What happened?",
+            "What shall I do? My wallet is gone."
+          ],
+          "voice": "m4"
+        },
+        {
+          "text": "だれ か が 拾[ひろ]って くれた ん です ね。",
+          "translation": "Someone picked it up for you, then.",
+          "wrong": [
+            "What happened?",
+            "It is a black wallet. There are cards and money in it.",
+            "In Japan there are set days for putting out rubbish."
+          ],
+          "voice": "m1"
+        },
+        {
+          "text": "駅[えき] で 切符[きっぷ] を 買[か]った とき は ありました。",
+          "translation": "I had it when I bought a ticket at the station.",
+          "wrong": [
+            "When did you last use it?",
+            "I hope someone has picked it up.",
+            "Yes, a student brought it in a little while ago."
+          ],
+          "voice": "f1"
+        }
+      ],
+      "reply": [
+        {
+          "prompt": "最後に使ったのはいつですか。",
+          "answer": "駅で切符を買ったときです。",
+          "wrong": [
+            "駅で買います。",
+            "切符です。",
+            "はい、使いました。"
+          ],
+          "explanation": "When I bought a ticket at the station."
+        },
+        {
+          "prompt": "ごみはいつ出しますか。",
+          "answer": "瓶と缶は水曜日に出します。",
+          "wrong": [
+            "ごみ箱に入れます。",
+            "はい、出しません。",
+            "近所の人に聞きます。"
+          ],
+          "explanation": "Bottles and cans go out on Wednesdays."
+        }
+      ],
+      "reading": [
+        {
+          "lines": [
+            "日本ではごみを出す日が決まっています。",
+            "瓶と缶は水曜日に出します。",
+            "分からないときは、いつでも近所の人に聞いてください。"
+          ],
+          "question": "When do bottles and cans go out?",
+          "answer": "On Wednesdays",
+          "wrong": [
+            "On Mondays",
+            "On Sundays",
+            "On any day"
+          ]
+        },
+        {
+          "lines": [
+            "日本ではごみを出す日が決まっています。",
+            "瓶と缶は水曜日に出します。",
+            "分からないときは、いつでも近所の人に聞いてください。"
+          ],
+          "question": "Who should you ask when you are not sure?",
+          "answer": "Your neighbours",
+          "wrong": [
+            "The police",
+            "A teacher",
+            "Station staff"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -50,6 +50,10 @@ func (f *fakeContent) ListChapterWords(_ context.Context, level common.JLPTLevel
 	}, nil
 }
 
+func (f *fakeContent) ListLevelExercises(_ context.Context, _ common.JLPTLevel) ([]content.ChapterExercise, error) {
+	return f.exercises, nil
+}
+
 func (f *fakeContent) ListGrammarSentences(_ context.Context, level common.JLPTLevel) ([]content.GrammarSentence, error) {
 	if level != common.JLPTLevelN5 {
 		return nil, nil

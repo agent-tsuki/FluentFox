@@ -43,7 +43,8 @@ func NewStartTestService(repo TestSessionRepo, catalog *Catalog, questions *Ques
 
 // Start asks every facet of every item in scope once, in random order; a
 // kana unit quiz instead asks each kana several times, both ways round (see
-// kanaQuizPlan). Items the user has not learned yet are asked too: that is
+// kanaQuizPlan), and a grammar chapter's test mixes its kinds of exercise.
+// Items the user has not learned yet are asked too: that is
 // what a skip test is for. The score is worked out when the session is
 // completed.
 func (s *StartTestService) Start(ctx context.Context, userID uuid.UUID, req *StartTestRequest) (SessionStart, error) {
@@ -74,6 +75,11 @@ func (s *StartTestService) Start(ctx context.Context, userID uuid.UUID, req *Sta
 		questions = set.kanaQuizQuestions(items, s.rnd)
 	} else {
 		questions = set.everyFacet(items, 0)
+		if kind == common.TestKindUnitQuiz {
+			if session := set.chapterSession(items, scope, s.rnd); session != nil {
+				questions = session
+			}
+		}
 		s.rnd.Shuffle(len(questions), func(i, j int) { questions[i], questions[j] = questions[j], questions[i] })
 	}
 

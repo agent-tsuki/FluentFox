@@ -46,6 +46,14 @@ var questionAnswerKinds = map[common.QuestionType]answerKind{
 	common.QuestionGrammarGapMCQ:       kindGap,
 	common.QuestionGrammarGapTyped:     kindGap,
 	common.QuestionGrammarTranslateMCQ: kindTranslation,
+	common.QuestionExerciseTrueFalse:   kindGap,
+	common.QuestionExerciseTransform:   kindGap,
+	common.QuestionExerciseWordChoice:  kindGap,
+	common.QuestionExercisePicture:     kindGap,
+	common.QuestionExerciseOrder:       kindGap,
+	common.QuestionExerciseListen:      kindGap,
+	common.QuestionExerciseReply:       kindGap,
+	common.QuestionExerciseReading:     kindGap,
 }
 
 // Listening prompts are spoken by the client: the kana itself, or the
@@ -71,6 +79,14 @@ var questionPromptKinds = map[common.QuestionType]answerKind{
 	common.QuestionGrammarGapMCQ:       kindChar,
 	common.QuestionGrammarGapTyped:     kindChar,
 	common.QuestionGrammarTranslateMCQ: kindSentence,
+	common.QuestionExerciseTrueFalse:   kindChar,
+	common.QuestionExerciseTransform:   kindChar,
+	common.QuestionExerciseWordChoice:  kindChar,
+	common.QuestionExercisePicture:     kindChar,
+	common.QuestionExerciseOrder:       kindChar,
+	common.QuestionExerciseListen:      kindChar,
+	common.QuestionExerciseReply:       kindChar,
+	common.QuestionExerciseReading:     kindChar,
 }
 
 func itemValue(item *Item, kind answerKind) string {

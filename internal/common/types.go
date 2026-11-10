@@ -47,6 +47,7 @@ const (
 	SRSItemKanji           SRSItemType = "kanji"
 	SRSItemVocab           SRSItemType = "vocab"
 	SRSItemGrammarSentence SRSItemType = "grammar_sentence"
+	SRSItemGrammarExercise SRSItemType = "grammar_exercise"
 )
 
 // CardFacet maps to the card_facet PostgreSQL enum. Writing is unused in v1.
@@ -106,6 +107,14 @@ const (
 	QuestionGrammarGapMCQ       QuestionType = "grammar_gap_mcq"
 	QuestionGrammarGapTyped     QuestionType = "grammar_gap_typed"
 	QuestionGrammarTranslateMCQ QuestionType = "grammar_translate_mcq"
+	QuestionExerciseTrueFalse   QuestionType = "exercise_true_false"
+	QuestionExerciseTransform   QuestionType = "exercise_transform"
+	QuestionExerciseWordChoice  QuestionType = "exercise_word_choice"
+	QuestionExercisePicture     QuestionType = "exercise_picture"
+	QuestionExerciseOrder       QuestionType = "exercise_order"
+	QuestionExerciseListen      QuestionType = "exercise_listen"
+	QuestionExerciseReply       QuestionType = "exercise_reply"
+	QuestionExerciseReading     QuestionType = "exercise_reading"
 )
 
 // GradeReason maps to the grade_reason PostgreSQL enum.
@@ -345,4 +354,14 @@ const (
 	AudioJobDone      AudioJobStatus = "done"
 	AudioJobFailed    AudioJobStatus = "failed"
 	AudioJobCancelled AudioJobStatus = "cancelled"
+)
+
+// TutorialStatus maps to the tutorial_status PostgreSQL enum. A tutorial
+// with no row for the user is pending.
+type TutorialStatus string
+
+const (
+	TutorialPending   TutorialStatus = "pending"
+	TutorialSkipped   TutorialStatus = "skipped"
+	TutorialCompleted TutorialStatus = "completed"
 )

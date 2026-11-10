@@ -39,3 +39,9 @@ type ObjectStore interface {
 	Put(ctx context.Context, key, contentType, cacheControl string, body []byte) error
 	Delete(ctx context.Context, key string) error
 }
+
+// TutorialRepo stores which in-app tutorials a learner has seen.
+type TutorialRepo interface {
+	ListUserTutorials(ctx context.Context, userID uuid.UUID) ([]users.UserTutorial, error)
+	UpsertUserTutorial(ctx context.Context, t *users.UserTutorial) (users.UserTutorial, error)
+}

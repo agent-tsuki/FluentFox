@@ -23,6 +23,9 @@ const (
 // Listening files hang off the chapters, so they sync after them.
 const listeningContentDir = "listening"
 
+// Exercise files hang off the chapters too.
+const exerciseContentDir = "exercises"
+
 // syncContent upserts the embedded course content after the schema is up.
 // Running it on every deploy keeps production content in step with the repo;
 // it never deletes rows, so it is safe to repeat.
@@ -39,7 +42,10 @@ func syncContent(ctx context.Context, db *gorm.DB, log *zap.Logger) error {
 	if err := syncFiles(ctx, chapterContentDir, content.NewChapterSyncService(repo, log).Sync); err != nil {
 		return err
 	}
-	return syncFiles(ctx, listeningContentDir, content.NewListeningSyncService(repo, log).Sync)
+	if err := syncFiles(ctx, listeningContentDir, content.NewListeningSyncService(repo, log).Sync); err != nil {
+		return err
+	}
+	return syncFiles(ctx, exerciseContentDir, content.NewExerciseSyncService(repo, log).Sync)
 }
 
 func syncFiles[T any](ctx context.Context, dir string, sync func(context.Context, *T) error) error {

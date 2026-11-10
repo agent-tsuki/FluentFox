@@ -97,3 +97,22 @@ type UpdateLocationRequest struct {
 	Longitude float64 `json:"longitude"  minimum:"-180" maximum:"180"`
 	AccuracyM int     `json:"accuracy_m" minimum:"0"    maximum:"100000" doc:"Accuracy radius reported by the browser"`
 }
+
+type TutorialResponse struct {
+	Key         string     `json:"key"          doc:"Tutorial id, e.g. welcome"`
+	Status      string     `json:"status"       enum:"pending,skipped,completed"`
+	Version     int        `json:"version"      doc:"Tutorial version the status is for"`
+	LastStep    *int       `json:"last_step"    doc:"Step the learner skipped or stopped at, from 0"`
+	CompletedAt *time.Time `json:"completed_at" doc:"Last time it was finished"`
+	UpdatedAt   *time.Time `json:"updated_at"   doc:"Null while the learner has never touched it"`
+}
+
+type TutorialsResponse struct {
+	Tutorials []TutorialResponse `json:"tutorials" doc:"Every known tutorial; one never touched is pending"`
+}
+
+type UpdateTutorialRequest struct {
+	Status   string `json:"status"              enum:"pending,skipped,completed" doc:"pending again replays it"`
+	Version  int    `json:"version"             minimum:"1" maximum:"1000"`
+	LastStep *int   `json:"last_step,omitempty" minimum:"0" maximum:"50" doc:"Step reached, from 0"`
+}

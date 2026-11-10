@@ -27,8 +27,10 @@ type Item struct {
 	Readings   []string
 	KeyReading string
 	LookAlikes []uuid.UUID
-	// Set for grammar sentences only.
+	// Set for grammar sentences and chapter exercises.
 	Sentence *SentenceItem
+	// Set for chapter exercises only.
+	Exercise *ExerciseItem
 }
 
 // Group is the kana group key or the kanji group slug; skip tests use it as
@@ -47,6 +49,9 @@ type Pool struct {
 	Items []Item
 	Units []Unit
 	byID  map[uuid.UUID]int
+	// Chapter exercises: asked and marked in a chapter's test, but kept out
+	// of Items so they never reach lessons, reviews or mastery.
+	exercises []Item
 }
 
 func newPool(track common.LearningTrack, units []Unit, items []Item) *Pool {
@@ -159,6 +164,12 @@ type Pools []*Pool
 
 func (ps Pools) Find(itemType common.SRSItemType, id uuid.UUID) (*Pool, *Item, bool) {
 	for _, p := range ps {
+		if itemType == common.SRSItemGrammarExercise {
+			if item, ok := p.exercise(id); ok {
+				return p, item, true
+			}
+			continue
+		}
 		if common.LEARNING_TRACK_ITEM_TYPE[p.Track] != itemType {
 			continue
 		}

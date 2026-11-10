@@ -16,9 +16,10 @@ const (
 )
 
 // No route here is Public(), so every one needs a token and a verified email.
-func RegisterRoutes(api huma.API, profiles *ProfileHandler, sessions *SessionHandler) {
+func RegisterRoutes(api huma.API, profiles *ProfileHandler, sessions *SessionHandler, tutorials *TutorialHandler) {
 	registerProfileRoutes(api, profiles)
 	registerSessionRoutes(api, sessions)
+	registerTutorialRoutes(api, tutorials)
 }
 
 func registerProfileRoutes(api huma.API, h *ProfileHandler) {
@@ -105,4 +106,24 @@ func registerSessionRoutes(api huma.API, h *SessionHandler) {
 		Tags:        []string{routeTag},
 		Security:    humautil.BearerSecurity(),
 	}, h.RevokeSession)
+}
+
+func registerTutorialRoutes(api huma.API, h *TutorialHandler) {
+	huma.Register(api, huma.Operation{
+		OperationID: "list-tutorials",
+		Method:      http.MethodGet,
+		Path:        "/profile/tutorials",
+		Summary:     "List the in-app tutorials and whether the user skipped or finished each",
+		Tags:        []string{routeTag},
+		Security:    humautil.BearerSecurity(),
+	}, h.ListTutorials)
+
+	huma.Register(api, huma.Operation{
+		OperationID: "update-tutorial",
+		Method:      http.MethodPut,
+		Path:        "/profile/tutorials/{key}",
+		Summary:     "Record that a tutorial was skipped, finished, or set back to pending to replay it",
+		Tags:        []string{routeTag},
+		Security:    humautil.BearerSecurity(),
+	}, h.UpdateTutorial)
 }

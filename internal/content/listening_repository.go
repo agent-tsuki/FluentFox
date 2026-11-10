@@ -63,6 +63,34 @@ func (r *Repository) TrimPassages(ctx context.Context, tx *gorm.DB, chapterID uu
 	return nil
 }
 
+func (r *Repository) UpsertChapterExercise(ctx context.Context, tx *gorm.DB, e *ChapterExercise) error {
+	err := tx.WithContext(ctx).Exec(`
+		INSERT INTO chapter_exercise (id, chapter_id, position, kind, data, created_at, updated_at)
+		VALUES (?, ?, ?, ?, ?::jsonb, now(), now())
+		ON CONFLICT (chapter_id, position) DO UPDATE SET
+			kind = EXCLUDED.kind, data = EXCLUDED.data, updated_at = now()`,
+		uuid.New(), e.ChapterID, e.Position, e.Kind, string(e.Data)).Error
+	if err != nil {
+		return fmt.Errorf("upsert chapter exercise %d: %w", e.Position, err)
+	}
+	return nil
+}
+
+func (r *Repository) TrimChapterExercises(ctx context.Context, tx *gorm.DB, chapterID uuid.UUID, keep int) error {
+	if err := tx.WithContext(ctx).Exec(`DELETE FROM chapter_exercise WHERE chapter_id = ? AND position > ?`, chapterID, keep).Error; err != nil {
+		return fmt.Errorf("trim chapter exercises: %w", err)
+	}
+	return nil
+}
+
+func (r *Repository) ListChapterExercises(ctx context.Context, chapterID uuid.UUID) ([]ChapterExercise, error) {
+	var items []ChapterExercise
+	if err := r.db.WithContext(ctx).Where("chapter_id = ?", chapterID).Order("position").Find(&items).Error; err != nil {
+		return nil, fmt.Errorf("list chapter exercises: %w", err)
+	}
+	return items, nil
+}
+
 // TrimPassageLines drops a passage's lines after the first keep.
 func (r *Repository) TrimPassageLines(ctx context.Context, tx *gorm.DB, passageID uuid.UUID, keep int) error {
 	if err := tx.WithContext(ctx).Exec(`DELETE FROM chapter_passage_line WHERE passage_id = ? AND position > ?`, passageID, keep).Error; err != nil {

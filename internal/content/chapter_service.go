@@ -2,6 +2,7 @@ package content
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -19,6 +20,7 @@ type ChapterContentReader interface {
 	ListGrammarSentences(ctx context.Context, level common.JLPTLevel) ([]GrammarSentence, error)
 	ListChapterPassages(ctx context.Context, chapterID uuid.UUID) ([]ChapterPassage, error)
 	ListPassageLines(ctx context.Context, chapterID uuid.UUID) ([]ChapterPassageLine, error)
+	ListChapterExercises(ctx context.Context, chapterID uuid.UUID) ([]ChapterExercise, error)
 }
 
 var _ ChapterContentReader = (*Repository)(nil)
@@ -35,6 +37,21 @@ type ChapterContentResponse struct {
 	Words     []ChapterWordDTO      `json:"words"`
 	Sentences []ChapterSentenceText `json:"sentences" doc:"The practice sentences read in full"`
 	Passages  []ChapterPassageDTO   `json:"passages"  doc:"The Listening tab: short dialogues and passages, in order"`
+	// The Exercise tab's practice material: answers included, as nothing here is graded by the server.
+	Gaps          []ChapterGapDTO `json:"gaps"        doc:"The practice sentences with their gap and choices"`
+	TrueFalse     []TrueFalseItem `json:"true_false"`
+	Transforms    []TransformItem `json:"transforms"`
+	Pictures      []PictureItem   `json:"pictures"`
+	WordSentences []WordSentence  `json:"word_sentences" doc:"Sentences to drop a chapter word into"`
+}
+
+// ChapterGapDTO is a practice sentence with {} where its answer goes.
+type ChapterGapDTO struct {
+	Sentence    string   `json:"sentence"`
+	Answer      string   `json:"answer"`
+	Distractors []string `json:"distractors"`
+	Translation string   `json:"translation"`
+	Explanation string   `json:"explanation"`
 }
 
 // ChapterPassageDTO is one dialogue or passage. Its text is written with
@@ -99,6 +116,7 @@ func (s *ChapterContentService) Get(ctx context.Context, rawLevel, slug string) 
 	out := ChapterContentResponse{
 		Slug: chapter.Slug, Number: chapter.Number, Title: chapter.Title,
 		Words: []ChapterWordDTO{}, Sentences: []ChapterSentenceText{}, Passages: []ChapterPassageDTO{},
+		Gaps: []ChapterGapDTO{}, TrueFalse: []TrueFalseItem{}, Transforms: []TransformItem{}, Pictures: []PictureItem{}, WordSentences: []WordSentence{},
 	}
 	if err := s.addWords(ctx, level, chapter, &out); err != nil {
 		return ChapterContentResponse{}, err
@@ -109,7 +127,53 @@ func (s *ChapterContentService) Get(ctx context.Context, rawLevel, slug string) 
 	if err := s.addPassages(ctx, chapter, &out); err != nil {
 		return ChapterContentResponse{}, err
 	}
+	if err := s.addExercises(ctx, chapter, &out); err != nil {
+		return ChapterContentResponse{}, err
+	}
 	return out, nil
+}
+
+func (s *ChapterContentService) addExercises(ctx context.Context, chapter *GrammarChapter, out *ChapterContentResponse) error {
+	items, err := s.repo.ListChapterExercises(ctx, chapter.ID)
+	if err != nil {
+		return fmt.Errorf("get chapter exercises: %w", err)
+	}
+	for i := range items {
+		if err := addExercise(&items[i], out); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func addExercise(e *ChapterExercise, out *ChapterContentResponse) error {
+	var err error
+	switch e.Kind {
+	case ChapterExerciseTrueFalse:
+		var item TrueFalseItem
+		if err = json.Unmarshal(e.Data, &item); err == nil {
+			out.TrueFalse = append(out.TrueFalse, item)
+		}
+	case ChapterExerciseTransform:
+		var item TransformItem
+		if err = json.Unmarshal(e.Data, &item); err == nil {
+			out.Transforms = append(out.Transforms, item)
+		}
+	case ChapterExerciseWord:
+		var item WordSentence
+		if err = json.Unmarshal(e.Data, &item); err == nil {
+			out.WordSentences = append(out.WordSentences, item)
+		}
+	case ChapterExercisePicture:
+		var item PictureItem
+		if err = json.Unmarshal(e.Data, &item); err == nil {
+			out.Pictures = append(out.Pictures, item)
+		}
+	}
+	if err != nil {
+		return fmt.Errorf("decode %s exercise %d: %w", e.Kind, e.Position, err)
+	}
+	return nil
 }
 
 func (s *ChapterContentService) addWords(ctx context.Context, level common.JLPTLevel, chapter *GrammarChapter, out *ChapterContentResponse) error {
@@ -136,6 +200,9 @@ func (s *ChapterContentService) addSentences(ctx context.Context, level common.J
 		if st.ChapterID == chapter.ID {
 			text := strings.Replace(st.Sentence, "{}", st.Answer, 1)
 			out.Sentences = append(out.Sentences, ChapterSentenceText{Text: text, Translation: st.Translation})
+			out.Gaps = append(out.Gaps, ChapterGapDTO{
+				Sentence: st.Sentence, Answer: st.Answer, Distractors: st.Distractors, Translation: st.Translation, Explanation: st.Explanation,
+			})
 		}
 	}
 	return nil

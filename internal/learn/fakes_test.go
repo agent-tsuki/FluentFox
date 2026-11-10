@@ -457,7 +457,8 @@ var testChars = map[uuid.UUID]string{
 }
 
 type fakeContent struct {
-	err error
+	err       error
+	exercises []content.ChapterExercise
 }
 
 func (f *fakeContent) ListKanaUnits(_ context.Context, script common.KanaScript) ([]content.KanaUnit, error) {

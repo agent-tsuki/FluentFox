@@ -4,5 +4,5 @@ package content
 
 import "embed"
 
-//go:embed kana/*.json kanji/*.json chapters/*.json listening/*.json
+//go:embed kana/*.json kanji/*.json chapters/*.json listening/*.json exercises/*.json
 var FS embed.FS

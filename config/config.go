@@ -24,6 +24,9 @@ type Config struct {
 	// VercelDeployment permits the Vercel-controlled client-IP header. It is
 	// enabled only by Vercel's automatically exposed VERCEL=1 runtime variable.
 	VercelDeployment bool
+	// RailwayDeployment permits Railway's X-Real-IP header, which its edge
+	// overwrites on every request. Railway sets RAILWAY_ENVIRONMENT itself.
+	RailwayDeployment bool
 
 	// Database
 	DatabaseURL string
@@ -139,6 +142,8 @@ func Load() *Config {
 		AppEnv:           appEnv,
 		AppURL:           require(v, "APP_URL"),
 		VercelDeployment: v.GetString("VERCEL") == "1",
+
+		RailwayDeployment: v.GetString("RAILWAY_ENVIRONMENT") != "",
 
 		DatabaseURL: require(v, "DATABASE_URL"),
 		DBMaxConns:  int32(requireInt(v, "DB_MAX_CONNS")),

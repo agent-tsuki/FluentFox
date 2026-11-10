@@ -18,6 +18,7 @@ type ChapterReader interface {
 	ListGrammarChapters(ctx context.Context, level common.JLPTLevel) ([]content.GrammarChapter, error)
 	ListChapterWords(ctx context.Context, level common.JLPTLevel) ([]content.ChapterWord, error)
 	ListGrammarSentences(ctx context.Context, level common.JLPTLevel) ([]content.GrammarSentence, error)
+	ListLevelExercises(ctx context.Context, level common.JLPTLevel) ([]content.ChapterExercise, error)
 }
 
 // loadChapters builds a chapter track: the level's chapters are its units,
@@ -43,7 +44,13 @@ func (c *Catalog) loadChapters(ctx context.Context, track common.LearningTrack, 
 	if err != nil {
 		return nil, fmt.Errorf("load %s pool: %w", track, err)
 	}
-	return newPool(track, units, items), nil
+	pool := newPool(track, units, items)
+	if common.LEARNING_TRACK_ITEM_TYPE[track] == common.SRSItemGrammarSentence {
+		if pool.exercises, err = c.exerciseItems(ctx, level); err != nil {
+			return nil, fmt.Errorf("load %s pool: %w", track, err)
+		}
+	}
+	return pool, nil
 }
 
 func (c *Catalog) chapterWordItems(ctx context.Context, level common.JLPTLevel) ([]Item, error) {
